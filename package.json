@@ -1,29 +1,42 @@
 {
-  "name": "irha-toolkit",
-  "version": "0.0.1",
-  "description": "Centralized monorepo containing reusable libraries, shared modules, and utilities designed to streamline development across all my projects.",
-  "keywords": ["irha", "toolkit", "monorepo", "shared", "library", "utilities", "hub", "node", "typescript"],
-  "author": "Radoslav Irha <radoslav.irha@gmail.com>",
-  "license": "MIT",
-  "private": true,
-  "repository": "git@github.com:radoslavirha/toolkit-hub.git",
-  "scripts": {
-    "build": "pnpm --stream --recursive run build",
-    "lint": "pnpm --stream --recursive run lint",
-    "lint:fix": "pnpm --stream --recursive run lint:fix",
-    "test": "pnpm --stream --recursive --sequential run test",
-    "prepare": "husky install"
-  },
-  "dependencies": {
-    "husky": "^9.1.7"
-  },
-  "engines": {
-    "node": ">= 20.12.1",
-    "pnpm": ">= 9.14.4"
-  },
-  "os": [
-    "darwin",
-    "linux"
-  ],
-  "packageManager": "pnpm@9.14.4+sha256.26a726b633b629a3fabda006f696ae4260954a3632c8054112d7ae89779e5f9a"
+    "name": "irha-toolkit",
+    "version": "0.0.1",
+    "private": true,
+    "description": "Centralized monorepo containing reusable libraries, shared modules, and utilities designed to streamline development across all my projects.",
+    "keywords": [
+        "irha",
+        "toolkit",
+        "monorepo",
+        "shared",
+        "library",
+        "utilities",
+        "hub",
+        "node",
+        "typescript"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com:radoslavirha/toolkit-hub.git"
+    },
+    "license": "MIT",
+    "author": "Radoslav Irha <radoslav.irha@gmail.com>",
+    "scripts": {
+        "build": "pnpm --stream --recursive run build",
+        "lint": "pnpm --stream --recursive run lint",
+        "lint:fix": "pnpm --stream --recursive run lint:fix",
+        "prepare": "husky",
+        "test": "pnpm --stream --recursive --sequential run test"
+    },
+    "dependencies": {
+        "husky": "^9.1.7"
+    },
+    "packageManager": "pnpm@9.14.4+sha256.26a726b633b629a3fabda006f696ae4260954a3632c8054112d7ae89779e5f9a",
+    "engines": {
+        "node": ">= 20.12.1",
+        "pnpm": ">= 9.14.4"
+    },
+    "os": [
+        "darwin",
+        "linux"
+    ]
 }

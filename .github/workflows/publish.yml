@@ -1,0 +1,36 @@
+name: Publish packages to GitHub Packages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-packages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use pnpm 9
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+          run_install: false
+      # Setup .npmrc file to publish to GitHub Packages
+      - name: Use Node.js 20.12
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.12
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+          scope: '@radoslavirha'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build packages
+        run: pnpm build
+      - name: Publish packages
+        run: pnpm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

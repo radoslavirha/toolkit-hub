@@ -1,10 +1,10 @@
-# @irha-tookit/config-typescript
+# @radoslavirha/config-typescript
 
-Provides common typescript configuration **@irha-tookit/config-typescript/tsconfig.json**
+Provides common typescript configuration **@radoslavirha/config-typescript/tsconfig.json**
 
 ## Installation
 
-`pnpm add -D typescript @irha-tookit/config-typescript`
+`pnpm add -D typescript @radoslavirha/config-typescript`
 
 ## Usage
 
@@ -12,7 +12,7 @@ Create `tsconfig.json`:
 
 ```json
 {
-    "extends": "@irha-tookit/config-typescript/tsconfig.json",
+    "extends": "@radoslavirha/config-typescript/tsconfig.json",
     "compilerOptions": {
         "composite": false
     }

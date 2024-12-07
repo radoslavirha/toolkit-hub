@@ -1,18 +1,21 @@
 {
-    "name": "@irha-tookit/config-jest",
+    "name": "@radoslavirha/config-jest",
     "version": "0.0.1",
     "description": "Jest configuration and coverage tresholds",
-    "main": "dist/index.js",
     "keywords": [
         "jest",
         "test"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com:radoslavirha/toolkit-hub.git"
+    },
+    "main": "dist/index.js",
     "files": [
         "dist",
         "package.json",
         "README.md"
     ],
-    "README": "README.md",
     "scripts": {
         "barrels": "barrelsby --directory src --singleQuotes --delete",
         "build": "pnpm barrels && tsup",
@@ -20,31 +23,35 @@
         "lint:fix": "eslint --fix .",
         "prepublishOnly": "pnpm build"
     },
-    "peerDependencies": {
-        "jest": "catalog:",
-        "@swc/core": "catalog:",
-        "@swc/jest": "catalog:",
-        "@types/jest": "catalog:"
-    },
     "dependencies": {
         "jest-html-reporters": "^3.1.7",
         "jest-junit": "^16.0.0"
     },
     "devDependencies": {
-        "@irha-tookit/config-eslint": "workspace:*",
-        "@irha-tookit/config-typescript": "workspace:*",
-        "barrelsby": "catalog:",
+        "@radoslavirha/config-eslint": "workspace:*",
+        "@radoslavirha/config-typescript": "workspace:*",
         "@jest/types": "^29.6.3",
+        "barrelsby": "catalog:",
         "tsup": "catalog:"
     },
+    "peerDependencies": {
+        "@swc/core": "catalog:",
+        "@swc/jest": "catalog:",
+        "@types/jest": "catalog:",
+        "jest": "catalog:"
+    },
     "engines": {
-      "node": ">= 20.12.1",
-      "pnpm": ">= 9.14.4"
+        "node": ">= 20.12.1",
+        "pnpm": ">= 9.14.4"
     },
     "os": [
-      "darwin",
-      "linux"
+        "darwin",
+        "linux"
     ],
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "README": "README.md",
     "tsup": {
         "entry": [
             "src/index.ts"

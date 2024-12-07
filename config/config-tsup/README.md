@@ -1,17 +1,17 @@
-# @irha-tookit/config-tsup
+# @radoslavirha/config-tsup
 
 Provides basic tsup configuration for code transpilation.
 
 ## Installation
 
-`pnpm add -D tsup @irha-tookit/config-tsup`
+`pnpm add -D tsup @radoslavirha/config-tsup`
 
 ## Usage
 
 Create `tsup.config.ts`:
 
 ```ts
-import { cjsConfig, esmConfig } from '@irha-tookit/config-tsup';
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsup';
 import { defineConfig } from 'tsup';
 
 export default defineConfig([cjsConfig, esmConfig]);

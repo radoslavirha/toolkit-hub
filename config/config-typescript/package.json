@@ -1,26 +1,33 @@
 {
-    "name": "@irha-tookit/config-typescript",
+    "name": "@radoslavirha/config-typescript",
     "version": "0.0.1",
     "description": "Typescript configurations",
     "keywords": [
         "typescript"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com:radoslavirha/toolkit-hub.git"
+    },
     "files": [
         "tsconfig.json",
         "package.json",
         "README.md"
     ],
-    "README": "README.md",
     "peerDependencies": {
-        "typescript": "catalog:",
-        "tslib": "catalog:"
+        "tslib": "catalog:",
+        "typescript": "catalog:"
     },
     "engines": {
-      "node": ">= 20.12.1",
-      "pnpm": ">= 9.14.4"
+        "node": ">= 20.12.1",
+        "pnpm": ">= 9.14.4"
     },
     "os": [
-      "darwin",
-      "linux"
-    ]
+        "darwin",
+        "linux"
+    ],
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "README": "README.md"
 }

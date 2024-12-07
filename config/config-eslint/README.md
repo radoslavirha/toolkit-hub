@@ -1,10 +1,10 @@
-# @irha-tookit/config-eslint
+# @radoslavirha/config-eslint
 
 Provides eslint rules for typescript projects with pre-installed eslint. Uses eslint v9.
 
 ## Installation
 
-`pnpm add -D @irha-tookit/config-eslint`
+`pnpm add -D @radoslavirha/config-eslint`
 
 ## Usage
 
