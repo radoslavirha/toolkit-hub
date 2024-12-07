@@ -1,0 +1,6 @@
+{
+    "extends": "@irha-tookit/config-typescript/tsconfig.json",
+    "compilerOptions": {
+        "composite": false,
+    }
+}

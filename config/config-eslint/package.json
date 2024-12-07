@@ -1,0 +1,36 @@
+{
+    "name": "@irha-tookit/config-eslint",
+    "version": "0.0.1",
+    "description": "Eslint configuration",
+    "main": "src/index.js",
+    "keywords": [
+        "eslint",
+        "eslintconfig",
+        "eslint-config"
+    ],
+    "files": [
+        "src",
+        "package.json",
+        "README.md"
+    ],
+    "README": "README.md",
+    "scripts": {
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix ."
+    },
+    "peerDependencies": {
+        "eslint": "catalog:",
+        "typescript-eslint": "catalog:"
+    },
+    "devDependencies": {
+        "@stylistic/eslint-plugin": "^2.11.0"
+    },
+    "engines": {
+      "node": ">= 20.12.1",
+      "pnpm": ">= 9.14.4"
+    },
+    "os": [
+      "darwin",
+      "linux"
+    ]
+}

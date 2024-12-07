@@ -1,0 +1,51 @@
+name: Lint & Build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.12]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Use pnpm 9
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Lint workspaces
+        run: pnpm lint
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.12]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Use pnpm 9
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build workspaces
+        run: pnpm build

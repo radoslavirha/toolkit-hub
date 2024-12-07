@@ -1,0 +1,44 @@
+{
+    "name": "@irha-tookit/config-tsup",
+    "version": "0.0.1",
+    "description": "Base tsup configurations",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "keywords": [
+        "tsup"
+    ],
+    "files": [
+        "dist",
+        "package.json",
+        "README.md"
+    ],
+    "README": "README.md",
+    "scripts": {
+        "build": "tsup",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix .",
+        "prepublishOnly": "pnpm build"
+    },
+    "peerDependencies": {
+        "tsup": "catalog:"
+    },
+    "devDependencies": {
+        "@irha-tookit/config-eslint": "workspace:*",
+        "@irha-tookit/config-typescript": "workspace:*"
+    },
+    "engines": {
+      "node": ">= 20.12.1",
+      "pnpm": ">= 9.14.4"
+    },
+    "os": [
+      "darwin",
+      "linux"
+    ],
+    "tsup": {
+        "entry": [
+            "src/index.ts"
+        ],
+        "dts": true,
+        "clean": true
+    }
+}

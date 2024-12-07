@@ -1,0 +1,55 @@
+{
+    "name": "@irha-tookit/config-jest",
+    "version": "0.0.1",
+    "description": "Jest configuration and coverage tresholds",
+    "main": "dist/index.js",
+    "keywords": [
+        "jest",
+        "test"
+    ],
+    "files": [
+        "dist",
+        "package.json",
+        "README.md"
+    ],
+    "README": "README.md",
+    "scripts": {
+        "barrels": "barrelsby --directory src --singleQuotes --delete",
+        "build": "pnpm barrels && tsup",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix .",
+        "prepublishOnly": "pnpm build"
+    },
+    "peerDependencies": {
+        "jest": "catalog:",
+        "@swc/core": "catalog:",
+        "@swc/jest": "catalog:",
+        "@types/jest": "catalog:"
+    },
+    "dependencies": {
+        "jest-html-reporters": "^3.1.7",
+        "jest-junit": "^16.0.0"
+    },
+    "devDependencies": {
+        "@irha-tookit/config-eslint": "workspace:*",
+        "@irha-tookit/config-typescript": "workspace:*",
+        "barrelsby": "catalog:",
+        "@jest/types": "^29.6.3",
+        "tsup": "catalog:"
+    },
+    "engines": {
+      "node": ">= 20.12.1",
+      "pnpm": ">= 9.14.4"
+    },
+    "os": [
+      "darwin",
+      "linux"
+    ],
+    "tsup": {
+        "entry": [
+            "src/index.ts"
+        ],
+        "dts": true,
+        "clean": true
+    }
+}

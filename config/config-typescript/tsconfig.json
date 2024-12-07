@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "rootDir": "${configDir}/src",
+        "module": "NodeNext",
+        "target": "ESNext",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "moduleResolution": "NodeNext",
+        "strict": true,
+        "skipLibCheck": true,
+        "incremental": false,
+        "diagnostics": false,
+        "experimentalDecorators": true
+    },
+    "include": [
+        "${configDir}/src/**/*"
+    ],
+    "exclude": [
+        "${configDir}/node_modules",
+        "${configDir}/coverage"
+    ]
+}
