@@ -1,5 +1,5 @@
 {
-    "name": "irha-toolkit",
+    "name": "toolkit-hub",
     "version": "0.0.1",
     "private": true,
     "description": "Centralized monorepo containing reusable libraries, shared modules, and utilities designed to streamline development across all my projects.",
@@ -29,6 +29,10 @@
     },
     "dependencies": {
         "husky": "^9.1.7"
+    },
+    "devDependencies": {
+        "@changesets/changelog-github": "^0.5.0",
+        "@changesets/cli": "^2.27.10"
     },
     "engines": {
         "node": ">= 20.12.1",
