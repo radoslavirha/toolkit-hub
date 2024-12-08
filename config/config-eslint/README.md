@@ -26,3 +26,5 @@ Add scripts to your `package.json`:
 "lint": "eslint .",
 "lint:fix": "eslint --fix ."
 ```
+
+test
