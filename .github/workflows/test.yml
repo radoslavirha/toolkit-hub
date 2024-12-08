@@ -12,12 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.12]
+        node-version: [20]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Use pnpm 9
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: 9
       - name: Use Node.js ${{ matrix.node-version }}
