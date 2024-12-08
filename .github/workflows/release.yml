@@ -37,21 +37,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Install Octokit
-      #   run: pnpm add --global @octokit/rest
-      # - name: Create Release Pull Request
-      #   run: pnpm changeset version
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Publish to npm
-      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      #   run: pnpm changeset publish
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Create GitHub Releases
-      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      #   run: |
-      #     pnpm changeset status --output json > changeset-status.json
-      #     node .github/scripts/create-releases.js
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

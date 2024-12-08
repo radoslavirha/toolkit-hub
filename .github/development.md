@@ -6,3 +6,7 @@ This document describes the process for running this application on your local c
 
 - node.js > 20.12.1
 - pnpm > 9.14.4
+
+## Installation
+
+`pnpm install`
