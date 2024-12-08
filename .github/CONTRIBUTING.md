@@ -16,6 +16,7 @@ To get an overview of the project, read the [README](../README.md). Here are som
 - [Set up Git](https://docs.github.com/en/get-started/quickstart/set-up-git)
 - [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow)
 - [Collaborating with pull requests](https://docs.github.com/en/github/collaborating-with-pull-requests)
+- [Changesets](https://github.com/changesets/changesets)
 
 ## Getting started
 
@@ -35,10 +36,15 @@ Scan through our [existing issues](https://github.com/radoslavirha/toolkit-hub/i
 2. Create a working branch
 3. See [the development guide](development.md).
 
+### Create changeset
+
+This repository uses [Changesets](https://github.com/changesets/changesets). Before submitting a pull request, a contributor should create a changeset using `pnpm changeset`.
+
 ### Pull Request
 
 When you're finished with the changes, create a pull request, also known as a PR.
 
+- Create changeset using `pnpm changeset` and commit.
 - Don't forget to [link PR to issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue) if you are solving one.
 - Enable the checkbox to [allow maintainer edits](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/allowing-changes-to-a-pull-request-branch-created-from-a-fork) so the branch can be updated for a merge.
 - We may ask for changes to be made before a PR can be merged, either using [suggested changes](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/incorporating-feedback-in-your-pull-request) or pull request comments.

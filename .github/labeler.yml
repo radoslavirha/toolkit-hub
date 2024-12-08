@@ -1,0 +1,33 @@
+# Packages
+'@radoslavirha/config-eslint':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'config/config-eslint/*'
+
+'@radoslavirha/config-jest':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'config/config-jest/*'
+
+'@radoslavirha/config-tsup':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'config/config-tsup/*'
+
+'@radoslavirha/config-typescript':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'config/config-typescript/*'
+
+# Branches
+release:
+- base-branch: 'main'
+
+feature:
+- head-branch: ['^feature', 'feature']
+
+bugfix:
+- head-branch: ['^bugfix', 'bugfix', '^bug', 'bug']
+
+hotfix:
+- head-branch: ['^hotfix', 'hotfix']
