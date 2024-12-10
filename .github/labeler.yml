@@ -19,6 +19,11 @@
   - any-glob-to-any-file:
     - 'config/config-typescript/*'
 
+'@radoslavirha/tsed-platform':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'tsed/platform/*'
+
 # Branches
 release:
 - base-branch: 'main'

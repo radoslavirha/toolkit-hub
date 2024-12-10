@@ -1,5 +1,6 @@
 packages:
   - 'config/*'
+  - 'tsed/*'
 
 catalog:
   '@swc/core': ^1.10.0
@@ -11,3 +12,12 @@ catalog:
   tsup: ^8.3.5
   typescript: ^5.7.2
   typescript-eslint: ^8.17.0
+
+catalogs:
+  tsed:
+    "@tsed/ajv": ^8.3.2
+    "@tsed/core": ^8.3.2
+    "@tsed/di": ^8.3.2
+    "@tsed/logger": ^7.0.1
+    "@tsed/platform-express": ^8.3.2
+    "@tsed/platform-http": ^8.3.2

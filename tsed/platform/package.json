@@ -1,0 +1,75 @@
+{
+    "name": "@radoslavirha/tsed-platform",
+    "version": "0.0.1",
+    "description": "Ts.ED base platform utils",
+    "keywords": [
+        "tsed"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com:radoslavirha/toolkit-hub.git"
+    },
+    "type": "module",
+    "exports": {
+        "import": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist",
+        "package.json",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsup src/index.ts --format esm --dts --clean",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix .",
+        "prepublishOnly": "pnpm build"
+    },
+    "dependencies": {
+        "body-parser": "^1.20.3",
+        "compression": "^1.7.5",
+        "cookie-parser": "^1.4.7",
+        "cors": "^2.8.5",
+        "method-override": "^3.0.0"
+    },
+    "devDependencies": {
+        "@radoslavirha/config-eslint": "workspace:*",
+        "@radoslavirha/config-typescript": "workspace:*",
+        "@swc/core": "catalog:",
+        "@swc/jest": "catalog:",
+        "@types/body-parser": "^1.19.5",
+        "@types/compression": "^1.7.5",
+        "@types/cookie-parser": "^1.4.8",
+        "@types/cors": "^2.8.17",
+        "@types/jest": "catalog:",
+        "@types/method-override": "^3.0.0",
+        "jest": "catalog:",
+        "tsup": "catalog:"
+    },
+    "peerDependencies": {
+        "@tsed/ajv": "catalog:tsed",
+        "@tsed/core": "catalog:tsed",
+        "@tsed/di": "catalog:tsed",
+        "@tsed/logger": "catalog:tsed",
+        "@tsed/platform-express": "catalog:tsed",
+        "@tsed/platform-http": "catalog:tsed",
+        "ajv": "^8.17.1"
+    },
+    "engines": {
+        "node": ">= 20.12.1",
+        "pnpm": ">= 9.14.4"
+    },
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "README": "README.md"
+}
