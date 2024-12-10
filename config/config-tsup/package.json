@@ -9,15 +9,26 @@
         "type": "git",
         "url": "https://github.com:radoslavirha/toolkit-hub.git"
     },
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "exports": {
+        "import": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "require": {
+            "types": "./dist/index.d.cts",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "files": [
         "dist",
         "package.json",
         "README.md"
     ],
     "scripts": {
-        "build": "tsup",
+        "build": "tsup src/index.ts --format cjs,esm --dts --clean",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "prepublishOnly": "pnpm build"
@@ -40,12 +51,5 @@
     "publishConfig": {
         "registry": "https://npm.pkg.github.com"
     },
-    "README": "README.md",
-    "tsup": {
-        "entry": [
-            "src/index.ts"
-        ],
-        "dts": true,
-        "clean": true
-    }
+    "README": "README.md"
 }

@@ -10,15 +10,27 @@
         "type": "git",
         "url": "https://github.com:radoslavirha/toolkit-hub.git"
     },
-    "main": "dist/index.js",
+    "type": "module",
+    "exports": {
+        "import": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "require": {
+            "types": "./dist/index.d.cts",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "files": [
         "dist",
         "package.json",
         "README.md"
     ],
     "scripts": {
-        "barrels": "barrelsby --directory src --singleQuotes --delete",
-        "build": "pnpm barrels && tsup",
+        "build": "tsup src/index.ts --format cjs,esm --dts --clean",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "prepublishOnly": "pnpm build"
@@ -28,10 +40,9 @@
         "jest-junit": "^16.0.0"
     },
     "devDependencies": {
+        "@jest/types": "^29.6.3",
         "@radoslavirha/config-eslint": "workspace:*",
         "@radoslavirha/config-typescript": "workspace:*",
-        "@jest/types": "^29.6.3",
-        "barrelsby": "catalog:",
         "tsup": "catalog:"
     },
     "peerDependencies": {
@@ -51,12 +62,5 @@
     "publishConfig": {
         "registry": "https://npm.pkg.github.com"
     },
-    "README": "README.md",
-    "tsup": {
-        "entry": [
-            "src/index.ts"
-        ],
-        "dts": true,
-        "clean": true
-    }
+    "README": "README.md"
 }

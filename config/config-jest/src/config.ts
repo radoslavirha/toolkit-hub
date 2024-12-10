@@ -1,5 +1,5 @@
 import type { Config } from 'jest';
-import { Coverage90 } from './coverage';
+import { Coverage90 } from './coverage.js';
 
 export const config: Config = {
     clearMocks: true,
