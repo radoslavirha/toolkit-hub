@@ -11,7 +11,8 @@
         "type": "git",
         "url": "https://github.com:radoslavirha/toolkit-hub.git"
     },
-    "main": "src/index.js",
+    "type": "module",
+    "main": "src/index.mjs",
     "files": [
         "src",
         "package.json",

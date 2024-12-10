@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-const stylisticPlugin = require('@stylistic/eslint-plugin');
-const { config, configs } = require('typescript-eslint');
+import stylisticPlugin from '@stylistic/eslint-plugin';
+import { config, configs } from 'typescript-eslint';
 
 const ignores = ['coverage/**', 'dist/**', 'node_modules/**'];
 
-module.exports = config(
+export default config(
     { ignores },
     ...configs.recommended, // Apply recommended TS rules
     {

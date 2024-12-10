@@ -8,14 +8,13 @@ Provides eslint rules for typescript projects with pre-installed eslint. Uses es
 
 ## Usage
 
-Create `eslint.config.js` file and add following code:
+Create `eslint.config.mjs` file and add following code:
 
 ```js
-/* eslint-disable @typescript-eslint/no-require-imports */
-const { config } = require('typescript-eslint');
-const Config = require('./index');
+import { config } from 'typescript-eslint';
+import Config from '@radoslavirha/config-eslint';
 
-module.exports = config(...Config);
+export default config(...Config);
 ```
 
 You can extend it with own rules.
