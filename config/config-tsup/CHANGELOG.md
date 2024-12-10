@@ -1,5 +1,11 @@
 # @radoslavirha/config-tsup
 
+## 0.0.3
+
+### Patch Changes
+
+- [`cbd26bb`](https://github.com/radoslavirha/toolkit-hub/commit/cbd26bbc359e89f78c97591c85ffe2a50435acf5) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Export cjs and esm
+
 ## 0.0.2
 
 ### Patch Changes
