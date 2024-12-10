@@ -9,12 +9,10 @@ Ts.ED base platform utils.
 ## Usage
 
 ```ts
+// Server.ts
 import { Configuration } from '@tsed/di';
 import { BaseServer } from '@radoslavirha/tsed-platform';
 
-@Configuration({
-    httpPort: 4000
-})
 export class Server extends BaseServer {
     $beforeRoutesInit(): void {
         this.registerMiddlewares();
@@ -33,7 +31,8 @@ try {
         api: {
             service: 'service',
             version: '1.0.0'
-        }
+        },
+        httpPort: 4000
       };
 
     const platform = await PlatformExpress.Platform(Server, configuration);
