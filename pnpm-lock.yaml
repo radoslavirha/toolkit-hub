@@ -33,6 +33,25 @@ catalogs:
     typescript-eslint:
       specifier: ^8.17.0
       version: 8.17.0
+  tsed:
+    '@tsed/ajv':
+      specifier: ^8.3.2
+      version: 8.3.2
+    '@tsed/core':
+      specifier: ^8.3.2
+      version: 8.3.2
+    '@tsed/di':
+      specifier: ^8.3.2
+      version: 8.3.2
+    '@tsed/logger':
+      specifier: ^7.0.1
+      version: 7.0.1
+    '@tsed/platform-express':
+      specifier: ^8.3.2
+      version: 8.3.2
+    '@tsed/platform-http':
+      specifier: ^8.3.2
+      version: 8.3.2
 
 importers:
 
@@ -89,6 +108,9 @@ importers:
       '@radoslavirha/config-eslint':
         specifier: workspace:*
         version: link:../config-eslint
+      '@radoslavirha/config-tsup':
+        specifier: workspace:*
+        version: link:../config-tsup
       '@radoslavirha/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
@@ -160,6 +182,9 @@ importers:
       '@radoslavirha/config-eslint':
         specifier: workspace:*
         version: link:../../config/config-eslint
+      '@radoslavirha/config-tsup':
+        specifier: workspace:*
+        version: link:../../config/config-tsup
       '@radoslavirha/config-typescript':
         specifier: workspace:*
         version: link:../../config/config-typescript

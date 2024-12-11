@@ -1,4 +1,4 @@
-import { Options } from 'tsup';
+import type { Options } from 'tsup';
 
 const commonConfig = {
     entry: ['src/index.ts'],
@@ -18,5 +18,12 @@ export const esmConfig: Options = {
     name: 'ESM build',
     format: 'esm',
     outDir: 'dist/esm',
+    ...commonConfig
+};
+
+export const config: Options = {
+    name: 'ESM + CJS build',
+    format: ['esm', 'cjs'],
+    outDir: 'dist',
     ...commonConfig
 };
