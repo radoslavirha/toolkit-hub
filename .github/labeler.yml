@@ -4,11 +4,6 @@
   - any-glob-to-any-file:
     - 'config/config-eslint/*'
 
-'@radoslavirha/config-jest':
-- changed-files:
-  - any-glob-to-any-file:
-    - 'config/config-jest/*'
-
 '@radoslavirha/config-tsup':
 - changed-files:
   - any-glob-to-any-file:
@@ -18,6 +13,11 @@
 - changed-files:
   - any-glob-to-any-file:
     - 'config/config-typescript/*'
+
+'@radoslavirha/config-vitest':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'config/config-vitest/*'
 
 '@radoslavirha/tsed-platform':
 - changed-files:

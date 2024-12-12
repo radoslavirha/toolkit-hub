@@ -28,7 +28,9 @@
         "build": "tsup",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
-        "prepublishOnly": "pnpm build"
+        "prepublishOnly": "pnpm build",
+        "test": "vitest run",
+        "test:watch": "vitest"
     },
     "dependencies": {
         "body-parser": "^1.20.3",
@@ -41,16 +43,17 @@
         "@radoslavirha/config-eslint": "workspace:*",
         "@radoslavirha/config-tsup": "workspace:*",
         "@radoslavirha/config-typescript": "workspace:*",
+        "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
-        "@swc/jest": "catalog:",
+        "@swc/helpers": "^0.5.15",
         "@types/body-parser": "^1.19.5",
         "@types/compression": "^1.7.5",
         "@types/cookie-parser": "^1.4.8",
         "@types/cors": "^2.8.17",
-        "@types/jest": "catalog:",
         "@types/method-override": "^3.0.0",
-        "jest": "catalog:",
-        "tsup": "catalog:"
+        "@vitest/coverage-v8": "catalog:",
+        "tsup": "catalog:",
+        "vitest": "catalog:"
     },
     "peerDependencies": {
         "@tsed/ajv": "catalog:tsed",

@@ -1,9 +1,9 @@
 {
-    "name": "@radoslavirha/config-jest",
-    "version": "0.0.3",
-    "description": "Jest configuration and coverage tresholds",
+    "name": "@radoslavirha/config-vitest",
+    "version": "0.0.1",
+    "description": "Vitest configuration",
     "keywords": [
-        "jest",
+        "vitest",
         "test"
     ],
     "repository": {
@@ -36,11 +36,9 @@
         "prepublishOnly": "pnpm build"
     },
     "dependencies": {
-        "jest-html-reporters": "^3.1.7",
-        "jest-junit": "^16.0.0"
+        "unplugin-swc": "^1.5.1"
     },
     "devDependencies": {
-        "@jest/types": "^29.6.3",
         "@radoslavirha/config-eslint": "workspace:*",
         "@radoslavirha/config-tsup": "workspace:*",
         "@radoslavirha/config-typescript": "workspace:*",
@@ -48,9 +46,8 @@
     },
     "peerDependencies": {
         "@swc/core": "catalog:",
-        "@swc/jest": "catalog:",
-        "@types/jest": "catalog:",
-        "jest": "catalog:"
+        "@vitest/coverage-v8": "catalog:",
+        "vitest": "catalog:"
     },
     "engines": {
         "node": ">= 20.12.1",

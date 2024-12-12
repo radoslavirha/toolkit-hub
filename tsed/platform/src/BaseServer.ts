@@ -21,6 +21,10 @@ import { ServerConfigurationAPI } from './ServerConfiguration.js';
     },
     ajv: {
         returnsCoercedValues: true
+    },
+    api: {
+        service: 'test',
+        version: '0.0.1'
     }
 })
 export class BaseServer {
