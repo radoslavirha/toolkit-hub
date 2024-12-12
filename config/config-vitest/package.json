@@ -31,6 +31,7 @@
     ],
     "scripts": {
         "build": "tsup",
+        "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "prepublishOnly": "pnpm build"

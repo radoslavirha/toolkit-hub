@@ -22,6 +22,8 @@
     "author": "Radoslav Irha <radoslav.irha@gmail.com>",
     "scripts": {
         "build": "pnpm --stream --recursive run build",
+        "cleanup": "pnpm --stream --recursive run cleanup",
+        "cleanup:modules": "pnpm --stream --recursive run cleanup:modules && rm -rf node_modules",
         "lint": "pnpm --stream --recursive run lint",
         "lint:fix": "pnpm --stream --recursive run lint:fix",
         "prepare": "husky",

@@ -27,5 +27,8 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      # Temporary, need some workspace manager
+      - name: Build workspaces
+        run: pnpm build
       - name: Test workspaces
         run: pnpm test

@@ -29,6 +29,9 @@ jobs:
           scope: '@radoslavirha'
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      # Temporary, need some workspace manager
+      - name: Build workspaces
+        run: pnpm build
       - name: Create Release Pull Request and Publish to GitHub Packages
         id: changesets
         uses: changesets/action@v1

@@ -19,6 +19,7 @@
         "README.md"
     ],
     "scripts": {
+        "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
         "lint:fix": "eslint --fix ."
     },

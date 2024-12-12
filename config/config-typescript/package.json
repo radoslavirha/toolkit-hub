@@ -14,6 +14,9 @@
         "package.json",
         "README.md"
     ],
+    "scripts": {
+        "cleanup:modules": "rm -rf node_modules"
+    },
     "peerDependencies": {
         "tslib": "catalog:",
         "typescript": "catalog:"
