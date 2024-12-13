@@ -12,7 +12,7 @@ Create `vitest.config.ts` file and add following code:
 
 ```ts
 import { defaultConfig } from '@radoslavirha/config-vitest';
-import { coverageConfigDefaults, defineConfig } from 'vitest/config';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
     ...defaultConfig

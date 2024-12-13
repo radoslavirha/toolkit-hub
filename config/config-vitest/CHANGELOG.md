@@ -1,5 +1,11 @@
 # @radoslavirha/config-vitest
 
+## 0.0.3
+
+### Patch Changes
+
+- Set correct root and dir config options
+
 ## 0.0.2
 
 ### Patch Changes

@@ -5,7 +5,8 @@ import { pluginSWC } from './pluginSWC.js';
 export const defaultConfig: ViteUserConfig = {
     test: {
         globals: true,
-        root: './src',
+        root: '.',
+        dir: './src',
         coverage: {
             enabled: true,
             exclude: [
