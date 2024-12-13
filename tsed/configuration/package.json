@@ -1,7 +1,7 @@
 {
-    "name": "@radoslavirha/tsed-platform",
-    "version": "0.0.3",
-    "description": "Ts.ED base platform utils",
+    "name": "@radoslavirha/tsed-configuration",
+    "version": "0.0.1",
+    "description": "Ts.ED server configuration",
     "keywords": [
         "tsed"
     ],
@@ -35,12 +35,10 @@
         "test:watch": "vitest"
     },
     "dependencies": {
-        "@radoslavirha/tsed-configuration": "workspace:*",
-        "body-parser": "^1.20.3",
-        "compression": "^1.7.5",
-        "cookie-parser": "^1.4.7",
-        "cors": "^2.8.5",
-        "method-override": "^3.0.0"
+        "@radoslavirha/utils": "workspace:*",
+        "config": "^3.3.12",
+        "dotenv": "^16.4.7",
+        "read-pkg": "^9.0.1"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -48,12 +46,9 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
-        "@swc/helpers": "^0.5.15",
-        "@types/body-parser": "^1.19.5",
-        "@types/compression": "^1.7.5",
-        "@types/cookie-parser": "^1.4.8",
-        "@types/cors": "^2.8.17",
-        "@types/method-override": "^3.0.0",
+        "@swc/helpers": "catalog:",
+        "@types/config": "^3.3.5",
+        "@types/node": "^22.10.2",
         "@vitest/coverage-v8": "catalog:",
         "tsup": "catalog:",
         "vitest": "catalog:"
@@ -62,9 +57,8 @@
         "@tsed/ajv": "catalog:tsed",
         "@tsed/core": "catalog:tsed",
         "@tsed/di": "catalog:tsed",
-        "@tsed/logger": "catalog:tsed",
-        "@tsed/platform-express": "catalog:tsed",
-        "@tsed/platform-http": "catalog:tsed",
+        "@tsed/json-mapper": "catalog:tsed",
+        "@tsed/schema": "catalog:tsed",
         "ajv": "^8.17.1"
     },
     "engines": {

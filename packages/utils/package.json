@@ -1,9 +1,10 @@
 {
-    "name": "@radoslavirha/tsed-platform",
-    "version": "0.0.3",
-    "description": "Ts.ED base platform utils",
+    "name": "@radoslavirha/utils",
+    "version": "0.0.1",
+    "description": "Common utils",
     "keywords": [
-        "tsed"
+        "utils",
+        "lodash"
     ],
     "repository": {
         "type": "git",
@@ -14,9 +15,13 @@
         "import": {
             "types": "./dist/index.d.ts",
             "import": "./dist/index.js"
+        },
+        "require": {
+            "types": "./dist/index.d.cts",
+            "require": "./dist/index.cjs"
         }
     },
-    "main": "./dist/index.js",
+    "main": "./dist/index.cjs",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "files": [
@@ -35,12 +40,7 @@
         "test:watch": "vitest"
     },
     "dependencies": {
-        "@radoslavirha/tsed-configuration": "workspace:*",
-        "body-parser": "^1.20.3",
-        "compression": "^1.7.5",
-        "cookie-parser": "^1.4.7",
-        "cors": "^2.8.5",
-        "method-override": "^3.0.0"
+        "lodash": "^4.17.21"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -48,24 +48,11 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
-        "@swc/helpers": "^0.5.15",
-        "@types/body-parser": "^1.19.5",
-        "@types/compression": "^1.7.5",
-        "@types/cookie-parser": "^1.4.8",
-        "@types/cors": "^2.8.17",
-        "@types/method-override": "^3.0.0",
+        "@types/lodash": "^4.17.13",
+        "@types/node": "^22.10.2",
         "@vitest/coverage-v8": "catalog:",
         "tsup": "catalog:",
         "vitest": "catalog:"
-    },
-    "peerDependencies": {
-        "@tsed/ajv": "catalog:tsed",
-        "@tsed/core": "catalog:tsed",
-        "@tsed/di": "catalog:tsed",
-        "@tsed/logger": "catalog:tsed",
-        "@tsed/platform-express": "catalog:tsed",
-        "@tsed/platform-http": "catalog:tsed",
-        "ajv": "^8.17.1"
     },
     "engines": {
         "node": ">= 20.12.1",

@@ -19,6 +19,16 @@
   - any-glob-to-any-file:
     - 'config/config-vitest/*'
 
+'@radoslavirha/utils':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'packages/utils/*'
+
+'@radoslavirha/tsed-configuration':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'tsed/configuration/*'
+
 '@radoslavirha/tsed-platform':
 - changed-files:
   - any-glob-to-any-file:

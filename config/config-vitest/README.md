@@ -4,7 +4,7 @@ Provides vitest configuration.
 
 ## Installation
 
-`pnpm add -D @radoslavirha/config-vitest vitest @swc/core @vitest/coverage-v8`
+`pnpm add -D @radoslavirha/config-vitest vitest @swc/core @swc/helpers @vitest/coverage-v8`
 
 ## Usage
 

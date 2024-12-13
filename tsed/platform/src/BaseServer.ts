@@ -3,6 +3,7 @@ import { application } from '@tsed/platform-http';
 import '@tsed/platform-express';
 import '@tsed/ajv';
 import { $log } from '@tsed/logger';
+import { getServerDefaultConfig } from '@radoslavirha/tsed-configuration';
 import bodyParser from 'body-parser';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
@@ -11,17 +12,7 @@ import methodOverride from 'method-override';
 import { ServerConfigurationAPI } from './ServerConfiguration.js';
 
 @Configuration({
-    httpPort: 4000,
-    acceptMimes: ['application/json'],
-    httpsPort: false,
-    exclude: ['**/*.spec.ts'],
-    disableComponentsScan: true,
-    jsonMapper: {
-        additionalProperties: false
-    },
-    ajv: {
-        returnsCoercedValues: true
-    },
+    ...getServerDefaultConfig(),
     api: {
         service: 'test',
         version: '0.0.1'
