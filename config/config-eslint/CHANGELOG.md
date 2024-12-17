@@ -1,5 +1,11 @@
 # @radoslavirha/config-eslint
 
+## 0.0.5
+
+### Patch Changes
+
+- [`8859f2f`](https://github.com/radoslavirha/toolkit-hub/commit/8859f2fef7734c46c6090d7a659868cb1b8a7a52) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Correctly install stylistic package
+
 ## 0.0.4
 
 ### Patch Changes
