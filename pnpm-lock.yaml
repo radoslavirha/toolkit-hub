@@ -76,16 +76,15 @@ importers:
 
   config/config-eslint:
     dependencies:
+      '@stylistic/eslint-plugin':
+        specifier: ^2.11.0
+        version: 2.11.0(eslint@9.16.0)(typescript@5.7.2)
       eslint:
         specifier: 'catalog:'
         version: 9.16.0
       typescript-eslint:
         specifier: 'catalog:'
         version: 8.17.0(eslint@9.16.0)(typescript@5.7.2)
-    devDependencies:
-      '@stylistic/eslint-plugin':
-        specifier: ^2.11.0
-        version: 2.11.0(eslint@9.16.0)(typescript@5.7.2)
 
   config/config-tsup:
     dependencies:
