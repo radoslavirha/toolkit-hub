@@ -25,7 +25,7 @@ export class BaseServer {
     $onReady(): void {
         const api = this.settings.get<ServerConfigurationAPI>('api');
         
-        $log.info(`${ api.service } ${ api.version } is ready!`);
+        $log.info(`${ api?.service } ${ api?.version } is ready!`);
     }
 
     protected registerMiddlewares(): void {

@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-platform
 
+## 0.0.5
+
+### Patch Changes
+
+- make settings field optional for tests
+
 ## 0.0.4
 
 ### Patch Changes
