@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/tsed-platform",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "Ts.ED base platform utils",
     "keywords": [
         "tsed"

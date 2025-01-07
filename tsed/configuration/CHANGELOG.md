@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-configuration
 
+## 0.0.4
+
+### Patch Changes
+
+- [`822187b`](https://github.com/radoslavirha/toolkit-hub/commit/822187badf3cdd0a7e1881a0ac4514006b530d3f) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Improve error message
+
 ## 0.0.3
 
 ### Patch Changes
