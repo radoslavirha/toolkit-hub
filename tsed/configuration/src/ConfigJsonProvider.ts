@@ -20,7 +20,7 @@ export class ConfigJsonProvider<T> extends BaseConfigProvider<T> {
                     console.error(`Config file: ${ error.keyword } ${ error.message }`);
                 }
             }
-            throw new Error(`Invalid configuration! ${errors}`);
+            throw new Error(`Invalid configuration! ${JSON.stringify(errors)}`);
         }
     }
 
