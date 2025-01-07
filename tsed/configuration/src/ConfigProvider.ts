@@ -47,14 +47,14 @@ export class ConfigProvider<T> {
         return this.envs.NODE_ENV === 'test'; 
     }
 
-    constructor(options: ConfigProviderOptions<T>) {
+    constructor(options: ConfigProviderOptions<T>, debug = false) {
         this.service = options.service;
         this.fallbackPort = options.fallbackPort;
         this.configModel = options.configModel;
 
         this._envs = new EnvironmentVariablesProvider().config;
         this._packageJson = new PackageJsonProvider().config;
-        this._config = new ConfigJsonProvider(this.configModel).config;
+        this._config = new ConfigJsonProvider(this.configModel, debug).config;
 
         this._api = {
             service: options.service,

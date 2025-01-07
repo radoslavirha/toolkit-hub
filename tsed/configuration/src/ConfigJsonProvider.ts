@@ -6,13 +6,13 @@ import { Ajv } from 'ajv';
 import { BaseConfigProvider } from './BaseConfigProvider.js';
 
 export class ConfigJsonProvider<T> extends BaseConfigProvider<T> {
-    constructor(configModel: Type<T>) {
-        super(ConfigJsonProvider.validateConfigFile(configModel));
+    constructor(configModel: Type<T>, debug = false) {
+        super(ConfigJsonProvider.validateConfigFile(configModel, debug));
     }
 
-    static validateConfigFile<T>(configModel: Type<T>): T {
+    static validateConfigFile<T>(configModel: Type<T>, debug = false): T {
         try {
-            const config = ConfigJsonProvider.validateModel(configModel, cfg);
+            const config = ConfigJsonProvider.validateModel(configModel, cfg, debug);
             return config;
         } catch (errors) {
             if (Array.isArray(errors)) {
@@ -20,13 +20,17 @@ export class ConfigJsonProvider<T> extends BaseConfigProvider<T> {
                     console.error(`Config file: ${ error.keyword } ${ error.message }`);
                 }
             }
-            throw new Error('Invalid configuration!');
+            throw new Error(`Invalid configuration! ${errors}`);
         }
     }
 
-    private static validateModel<T>(model: Type<T>, input: unknown): T {
+    private static validateModel<T>(model: Type<T>, input: unknown, debug = false): T {
         const ajv = new Ajv({ allErrors: true });
     
+        if (debug) {
+            console.log('Config file', input);
+        }
+
         const schema = getJsonSchema(model);
     
         const validate = ajv.compile(schema);
