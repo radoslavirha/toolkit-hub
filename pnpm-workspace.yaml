@@ -16,12 +16,12 @@ catalog:
 
 catalogs:
   tsed:
-    '@tsed/ajv': ^8.3.4
-    '@tsed/common': ^8.3.4
-    '@tsed/core': ^8.3.4
-    '@tsed/di': ^8.3.4
-    '@tsed/json-mapper': ^8.3.4
+    '@tsed/ajv': ^8.4.6
+    '@tsed/common': ^8.4.6
+    '@tsed/core': ^8.4.6
+    '@tsed/di': ^8.4.6
+    '@tsed/json-mapper': ^8.4.6
     '@tsed/logger': ^7.0.1
-    '@tsed/platform-express': ^8.3.4
-    '@tsed/platform-http': ^8.3.4
-    '@tsed/schema': ^8.3.4
+    '@tsed/platform-express': ^8.4.6
+    '@tsed/platform-http': ^8.4.6
+    '@tsed/schema': ^8.4.6

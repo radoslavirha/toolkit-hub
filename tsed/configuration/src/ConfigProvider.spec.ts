@@ -70,7 +70,7 @@ describe('ConfigProvider', () => {
             new ConfigProvider(options);
         } catch (error) {
             expect(error).toBeInstanceOf(Error);
-            expect((error as Error).message).toEqual('Invalid configuration!');
+            expect((error as Error).message).toMatch('Invalid configuration!');
             // expect(spy).toBeCalledWith(expect.stringContaining('Config file: '));
         }
     });
