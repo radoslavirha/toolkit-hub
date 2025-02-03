@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-configuration
 
+## 0.0.5
+
+### Patch Changes
+
+- [`9f3d09e`](https://github.com/radoslavirha/toolkit-hub/commit/9f3d09ef5b962331999fa469bc99b385b001d3d6) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Updated Ts.ED to 8.4.6
+
 ## 0.0.4
 
 ### Patch Changes
