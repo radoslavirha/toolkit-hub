@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { CommonUtils } from './CommonUtils';
+import { CommonUtils } from './CommonUtils.js';
 
 describe('CommonUtils', () => {
     describe('cloneDeep', () => {
@@ -22,6 +22,19 @@ describe('CommonUtils', () => {
             model.property = 'value 2';
 
             expect(clone.property).toEqual('value 1');
+        });
+    });
+
+    describe('buildModel', () => {
+        class TestModel {
+            public property!: string;
+        }
+
+        it('should build model', async () => {
+            const model = CommonUtils.buildModel(TestModel, { property: 'value 1' });
+
+            expect(model).toBeInstanceOf(TestModel);
+            expect(model.property).toEqual('value 1');
         });
     });
 });
