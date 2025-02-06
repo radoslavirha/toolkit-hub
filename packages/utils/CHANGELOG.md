@@ -1,5 +1,11 @@
 # @radoslavirha/utils
 
+## 0.0.4
+
+### Patch Changes
+
+- [`225f006`](https://github.com/radoslavirha/toolkit-hub/commit/225f00601852ac6e4fedfef036ed12665352f0c2) Thanks [@radoslavirha](https://github.com/radoslavirha)! - New NumberUtils
+
 ## 0.0.3
 
 ### Patch Changes
