@@ -1,5 +1,11 @@
 # @radoslavirha/utils
 
+## 0.0.6
+
+### Patch Changes
+
+- [`3e3426e`](https://github.com/radoslavirha/toolkit-hub/commit/3e3426e9c1e24ce7c7434d3012b4f61ebd2a8562) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Correctly export GeoUtils
+
 ## 0.0.5
 
 ### Patch Changes
