@@ -1,5 +1,11 @@
 # @radoslavirha/utils
 
+## 0.0.5
+
+### Patch Changes
+
+- [`ae83c31`](https://github.com/radoslavirha/toolkit-hub/commit/ae83c315d49ea65e121841bc0a7e6b2bf3481c9c) Thanks [@radoslavirha](https://github.com/radoslavirha)! - New GeoUtils + extended NumberUtils
+
 ## 0.0.4
 
 ### Patch Changes
