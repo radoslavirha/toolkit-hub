@@ -55,7 +55,7 @@
         "vitest": "catalog:"
     },
     "engines": {
-        "node": ">= 20.12.1",
+        "node": ">= 22.14.0",
         "pnpm": ">= 9.14.4"
     },
     "os": [
