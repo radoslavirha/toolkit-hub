@@ -1,5 +1,16 @@
 # @radoslavirha/tsed-configuration
 
+## 0.1.0
+
+### Minor Changes
+
+- [`90d1c89`](https://github.com/radoslavirha/toolkit-hub/commit/90d1c891af365e4b60d6ef6c50b0b96ba1296206) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update Node.js to 22.14.0
+
+### Patch Changes
+
+- Updated dependencies [[`90d1c89`](https://github.com/radoslavirha/toolkit-hub/commit/90d1c891af365e4b60d6ef6c50b0b96ba1296206)]:
+  - @radoslavirha/utils@0.1.0
+
 ## 0.0.9
 
 ### Patch Changes
