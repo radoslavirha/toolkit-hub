@@ -1,0 +1,42 @@
+{
+    "name": "@radoslavirha/types",
+    "version": "0.1.0",
+    "description": "Common types",
+    "keywords": [
+        "types"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com:radoslavirha/toolkit-hub.git"
+    },
+    "type": "module",
+    "types": "./src/index.ts",
+    "files": [
+        "src",
+        "package.json",
+        "README.md"
+    ],
+    "scripts": {
+        "cleanup": "rm -rf coverage dist",
+        "cleanup:modules": "rm -rf node_modules",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix ."
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "@radoslavirha/config-eslint": "workspace:*",
+        "@radoslavirha/config-typescript": "workspace:*"
+    },
+    "engines": {
+        "node": ">= 22.14.0",
+        "pnpm": ">= 9.14.4"
+    },
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "README": "README.md"
+}

@@ -1,9 +1,10 @@
 {
-    "name": "@radoslavirha/tsed-platform",
+    "name": "@radoslavirha/tsed-swagger",
     "version": "0.1.0",
-    "description": "Ts.ED base platform utils",
+    "description": "Ts.ED swagger utils",
     "keywords": [
-        "tsed"
+        "tsed",
+        "swagger"
     ],
     "repository": {
         "type": "git",
@@ -40,36 +41,34 @@
     },
     "dependencies": {
         "@radoslavirha/tsed-configuration": "workspace:*",
-        "body-parser": "^1.20.3",
-        "compression": "^1.7.5",
-        "cookie-parser": "^1.4.7",
-        "cors": "^2.8.5",
-        "method-override": "^3.0.0"
+        "@radoslavirha/utils": "workspace:*",
+        "@swc/helpers": "catalog:",
+        "@tsed/openspec": "catalog:tsed"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
         "@radoslavirha/config-tsup": "workspace:*",
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
+        "@radoslavirha/types": "workspace:*",
         "@swc/core": "catalog:",
-        "@swc/helpers": "^0.5.15",
-        "@types/body-parser": "^1.19.5",
-        "@types/compression": "^1.7.5",
-        "@types/cookie-parser": "^1.4.8",
-        "@types/cors": "^2.8.17",
-        "@types/method-override": "^3.0.0",
+        "@types/html-minifier": "^4.0.5",
+        "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
+        "html-minifier": "^4.0.0",
+        "supertest": "catalog:",
         "tsup": "catalog:",
         "vitest": "catalog:"
     },
     "peerDependencies": {
-        "@tsed/ajv": "catalog:tsed",
-        "@tsed/core": "catalog:tsed",
+        "@radoslavirha/tsed-platform": "workspace:*",
         "@tsed/di": "catalog:tsed",
-        "@tsed/logger": "catalog:tsed",
-        "@tsed/platform-express": "catalog:tsed",
+        "@tsed/json-mapper": "catalog:tsed",
         "@tsed/platform-http": "catalog:tsed",
-        "ajv": "^8.17.1"
+        "@tsed/platform-params": "catalog:tsed",
+        "@tsed/platform-views": "catalog:tsed",
+        "@tsed/schema": "catalog:tsed",
+        "@tsed/swagger": "catalog:tsed"
     },
     "engines": {
         "node": ">= 22.14.0",

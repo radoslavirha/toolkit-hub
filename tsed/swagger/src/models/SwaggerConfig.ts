@@ -1,0 +1,45 @@
+import { CommonUtils } from '@radoslavirha/utils';
+import { AdditionalProperties, CollectionOf, Description, Example, Property, Required } from '@tsed/schema';
+import { SwaggerUIConfig } from './SwaggerUIConfig.js';
+import { SwaggerDocumentConfig } from './SwaggerDocumentConfig.js';
+import { SwaggerSecurityScheme } from '../enums/SwaggerSecurityScheme.enum.js';
+
+@AdditionalProperties(false)
+@Description(`Configuration of the Swagger module for building Swagger UI pages.`)
+export class SwaggerConfig {
+    @Required()
+    @Property()
+    @Description(`Title/application name for the Swagger UI page.`)
+    @Example('My API')
+    public title: string;
+
+    @Required()
+    @Property()
+    @Description(`Application name for the Swagger UI page.`)
+    @Example('1.0.0')
+    public version: string;
+
+    @Required()
+    @Property()
+    @Description(`Application description for the Swagger UI page.`)
+    @Example('This is a description of the application.')
+    public description: string;
+
+    @Required()
+    @CollectionOf(SwaggerDocumentConfig)
+    @Description(`An array of Swagger documents.`)
+    @Example([
+        CommonUtils.buildModel(SwaggerDocumentConfig, {
+            docs: 'v1',
+            security: [SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT]
+        }),
+        CommonUtils.buildModel(SwaggerDocumentConfig, {
+            docs: 'v2',
+            security: [SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT]
+        })
+    ])
+    public documents: SwaggerDocumentConfig[];
+
+    @Property(SwaggerUIConfig)
+    public swaggerUIOptions: SwaggerUIConfig = {};
+}

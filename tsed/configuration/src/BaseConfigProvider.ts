@@ -1,13 +1,13 @@
 import { CommonUtils } from '@radoslavirha/utils';
 
 export class BaseConfigProvider<T> {
-    #config: T;
+    private configuration: T;
 
     public get config(): T {
-        return CommonUtils.cloneDeep(this.#config);
+        return CommonUtils.cloneDeep(this.configuration);
     }
 
     constructor(config: T) {
-        this.#config = config;
+        this.configuration = config;
     }
 }

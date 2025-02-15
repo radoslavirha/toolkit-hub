@@ -19,6 +19,11 @@
   - any-glob-to-any-file:
     - 'config/config-vitest/*'
 
+'@radoslavirha/types':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'packages/types/*'
+
 '@radoslavirha/utils':
 - changed-files:
   - any-glob-to-any-file:
@@ -33,6 +38,11 @@
 - changed-files:
   - any-glob-to-any-file:
     - 'tsed/platform/*'
+
+'@radoslavirha/tsed-swagger':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'tsed/swagger/*'
 
 # Branches
 release:
