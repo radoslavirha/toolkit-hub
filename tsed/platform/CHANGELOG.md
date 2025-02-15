@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-platform
 
+## 0.1.1
+
+### Patch Changes
+
+- [`797409b`](https://github.com/radoslavirha/toolkit-hub/commit/797409b9c04a727a6b59bfcd90933dd2ff8abd49) Thanks [@radoslavirha](https://github.com/radoslavirha)! - New @radoslavirha/tsed-swagger and @radoslavirha/types
+
+- Updated dependencies [[`797409b`](https://github.com/radoslavirha/toolkit-hub/commit/797409b9c04a727a6b59bfcd90933dd2ff8abd49)]:
+  - @radoslavirha/tsed-configuration@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
