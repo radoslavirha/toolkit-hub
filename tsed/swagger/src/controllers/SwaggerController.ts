@@ -16,7 +16,7 @@ export class SwaggerController {
     @Constant('api')
     private api!: ServerConfiguration;
 
-    @Inject()
+    @Inject(PlatformViews)
     private platformViews: PlatformViews;
 
     @Get('/')
