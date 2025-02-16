@@ -30,7 +30,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsup",
+        "build": "tsup && cpx 'src/controllers/views/*.ejs' 'dist/views'",
         "cleanup": "rm -rf coverage dist",
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
@@ -53,6 +53,7 @@
         "@types/html-minifier": "^4.0.5",
         "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
+        "cpx": "^1.5.0",
         "html-minifier": "^4.0.0",
         "supertest": "catalog:",
         "tsup": "catalog:",
