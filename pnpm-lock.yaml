@@ -375,6 +375,9 @@ importers:
       '@tsed/openspec':
         specifier: catalog:tsed
         version: 8.4.7
+      '@tsed/platform-http':
+        specifier: catalog:tsed
+        version: 8.4.6(@tsed/engines@8.3.2)(@tsed/logger@7.0.1)(@tsed/openspec@8.4.7)
       '@tsed/platform-params':
         specifier: catalog:tsed
         version: 8.4.6(@tsed/core@8.4.6)(@tsed/di@8.4.6(@tsed/core@8.4.6)(@tsed/hooks@8.4.6)(@tsed/logger@7.0.1)(@tsed/schema@8.4.6(@tsed/core@8.4.6)(@tsed/hooks@8.4.6)(@tsed/openspec@8.4.7)))(@tsed/exceptions@8.4.6(@tsed/core@8.4.6))(@tsed/json-mapper@8.4.6(@tsed/core@8.4.6)(@tsed/schema@8.4.6(@tsed/core@8.4.6)(@tsed/hooks@8.4.6)(@tsed/openspec@8.4.7)))(@tsed/schema@8.4.6(@tsed/core@8.4.6)(@tsed/hooks@8.4.6)(@tsed/openspec@8.4.7))
@@ -406,9 +409,6 @@ importers:
       '@swc/core':
         specifier: 'catalog:'
         version: 1.10.1(@swc/helpers@0.5.15)
-      '@tsed/platform-http':
-        specifier: catalog:tsed
-        version: 8.4.6(@tsed/engines@8.3.2)(@tsed/logger@7.0.1)(@tsed/openspec@8.4.7)
       '@types/html-minifier':
         specifier: ^4.0.5
         version: 4.0.5
