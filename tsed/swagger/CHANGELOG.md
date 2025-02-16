@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.5
+
+### Patch Changes
+
+- [`9db82b6`](https://github.com/radoslavirha/toolkit-hub/commit/9db82b665afc2d2d4a889e569fce0d4df97b63eb) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Do not use shims
+
 ## 0.1.4
 
 ### Patch Changes
