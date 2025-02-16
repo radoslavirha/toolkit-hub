@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.7
+
+### Patch Changes
+
+- [`50a4f53`](https://github.com/radoslavirha/toolkit-hub/commit/50a4f53e8b48a4383f9aaa63446483bb3f2ebb4c) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Directly use PlatformViews in swagger module
+
 ## 0.1.6
 
 ### Patch Changes
