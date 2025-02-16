@@ -40,15 +40,8 @@
         "test:watch": "vitest"
     },
     "dependencies": {
-        "@radoslavirha/tsed-configuration": "workspace:*",
         "@radoslavirha/utils": "workspace:*",
-        "@swc/helpers": "catalog:",
-        "@tsed/di": "catalog:tsed",
-        "@tsed/json-mapper": "catalog:tsed",
-        "@tsed/openspec": "catalog:tsed",
-        "@tsed/platform-params": "catalog:tsed",
-        "@tsed/platform-views": "catalog:tsed",
-        "@tsed/schema": "catalog:tsed"
+        "@swc/helpers": "catalog:"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -69,6 +62,12 @@
     "peerDependencies": {
         "@radoslavirha/tsed-configuration": "workspace:*",
         "@radoslavirha/tsed-platform": "workspace:*",
+        "@tsed/di": "catalog:tsed",
+        "@tsed/json-mapper": "catalog:tsed",
+        "@tsed/openspec": "catalog:tsed",
+        "@tsed/platform-params": "catalog:tsed",
+        "@tsed/platform-views": "catalog:tsed",
+        "@tsed/schema": "catalog:tsed",
         "@tsed/swagger": "catalog:tsed"
     },
     "engines": {
