@@ -66,7 +66,7 @@ export class MyController {
 }
 ```
 
-Swagger controller usage. You need to copy view also ...to be described
+Swagger controller usage. View is automatically added.
 
 ```ts
 // Server.ts
@@ -75,12 +75,6 @@ import { SwaggerController } from '@radoslavirha/tsed-swagger';
 @Configuration({
   mount: {
     '/': [SwaggerController]
-  },
-  views: {
-    root: join(process.cwd(), '../views'),
-    extensions: {
-      ejs: 'ejs'
-    }
   }
 })
 export class Server extends BaseServer {

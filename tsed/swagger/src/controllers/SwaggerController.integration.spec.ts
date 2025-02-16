@@ -1,7 +1,6 @@
 import { BaseServer, ServerConfiguration } from '@radoslavirha/tsed-platform';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { minify } from 'html-minifier';
-import { join } from 'path';
 import SuperTest from 'supertest';
 import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { SwaggerController } from './SwaggerController.js';
@@ -13,12 +12,6 @@ describe('SwaggerController', () => {
         PlatformTest.bootstrap(BaseServer, <ServerConfiguration>{
             mount: {
                 '/': [SwaggerController]
-            },
-            views: {
-                root: join(process.cwd(), 'src/views'),
-                extensions: {
-                    ejs: 'ejs'
-                }
             },
             swagger: [
                 {

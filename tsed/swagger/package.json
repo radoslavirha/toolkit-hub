@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/tsed-swagger",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "Ts.ED swagger utils",
     "keywords": [
         "tsed",
@@ -43,7 +43,12 @@
         "@radoslavirha/tsed-configuration": "workspace:*",
         "@radoslavirha/utils": "workspace:*",
         "@swc/helpers": "catalog:",
-        "@tsed/openspec": "catalog:tsed"
+        "@tsed/di": "catalog:tsed",
+        "@tsed/json-mapper": "catalog:tsed",
+        "@tsed/openspec": "catalog:tsed",
+        "@tsed/platform-params": "catalog:tsed",
+        "@tsed/platform-views": "catalog:tsed",
+        "@tsed/schema": "catalog:tsed"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -52,6 +57,7 @@
         "@radoslavirha/config-vitest": "workspace:*",
         "@radoslavirha/types": "workspace:*",
         "@swc/core": "catalog:",
+        "@tsed/platform-http": "catalog:tsed",
         "@types/html-minifier": "^4.0.5",
         "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
@@ -61,13 +67,8 @@
         "vitest": "catalog:"
     },
     "peerDependencies": {
+        "@radoslavirha/tsed-configuration": "workspace:*",
         "@radoslavirha/tsed-platform": "workspace:*",
-        "@tsed/di": "catalog:tsed",
-        "@tsed/json-mapper": "catalog:tsed",
-        "@tsed/platform-http": "catalog:tsed",
-        "@tsed/platform-params": "catalog:tsed",
-        "@tsed/platform-views": "catalog:tsed",
-        "@tsed/schema": "catalog:tsed",
         "@tsed/swagger": "catalog:tsed"
     },
     "engines": {

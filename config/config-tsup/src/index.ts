@@ -4,7 +4,8 @@ const commonConfig = {
     entry: ['src/index.ts'],
     dts: true,
     clean: true,
-    tsconfig: './tsconfig.json'
+    tsconfig: './tsconfig.json',
+    shims: true
 };
 
 export const cjsConfig: Options = {
