@@ -1,5 +1,16 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.10
+
+### Patch Changes
+
+- [`a4dfc8e`](https://github.com/radoslavirha/toolkit-hub/commit/a4dfc8e4be98cbfe92d5c686cdd3fe250a9c806b) Thanks [@radoslavirha](https://github.com/radoslavirha)! - New @radoslavirha/tsed-common and @radoslavirha/tsed-mongoose
+
+- Updated dependencies [[`a4dfc8e`](https://github.com/radoslavirha/toolkit-hub/commit/a4dfc8e4be98cbfe92d5c686cdd3fe250a9c806b)]:
+  - @radoslavirha/tsed-configuration@0.1.2
+  - @radoslavirha/utils@0.1.1
+  - @radoslavirha/tsed-platform@0.1.3
+
 ## 0.1.9
 
 ### Patch Changes
