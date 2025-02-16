@@ -5,6 +5,7 @@ import { HeaderParams } from '@tsed/platform-params';
 import { Get, Hidden, Returns } from '@tsed/schema';
 import { SwaggerSettings } from '@tsed/swagger';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 @Hidden()
 @Controller('/')
@@ -25,9 +26,13 @@ export class SwaggerController {
         @Res()
         response: PlatformResponse
     ) {
-        const hostUrl = `${ protocol || 'http' }://${ host }`;
+        const hostUrl = `${ protocol || 'http' }://${ host }`;;
 
-        return await response.render(path.join(__dirname, '../views', 'swagger.ejs'), {
+        const _dirname = typeof __dirname !== 'undefined'
+            ? __dirname
+            : path.dirname(fileURLToPath(import.meta.url));
+
+        return await response.render(path.join(_dirname, '../views', 'swagger.ejs'), {
             BASE_URL: hostUrl,
             SERVICE: this.api.service,
             VERSION: this.api.version,
