@@ -1,7 +1,7 @@
 import { ServerConfiguration } from '@radoslavirha/tsed-platform';
-import { Constant, Controller } from '@tsed/di';
-import { PlatformResponse, Res } from '@tsed/platform-http';
+import { Constant, Controller, Inject } from '@tsed/di';
 import { HeaderParams } from '@tsed/platform-params';
+import PlatformViews from '@tsed/platform-views';
 import { Get, Hidden, Returns } from '@tsed/schema';
 import { SwaggerSettings } from '@tsed/swagger';
 import path from 'path';
@@ -16,15 +16,16 @@ export class SwaggerController {
     @Constant('api')
     private api!: ServerConfiguration;
 
+    @Inject()
+    private platformViews: PlatformViews;
+
     @Get('/')
     @(Returns(200, String).ContentType('text/html'))
     async get(
         @HeaderParams('x-forwarded-proto')
         protocol: string,
         @HeaderParams('host')
-        host: string,
-        @Res()
-        response: PlatformResponse
+        host: string
     ) {
         const hostUrl = `${ protocol || 'http' }://${ host }`;;
 
@@ -32,7 +33,7 @@ export class SwaggerController {
             ? __dirname
             : path.dirname(fileURLToPath(import.meta.url));
 
-        return await response.render(path.join(_dirname, '../views', 'swagger.ejs'), {
+        return await this.platformViews.render(path.join(_dirname, '../views', 'swagger.ejs'), {
             BASE_URL: hostUrl,
             SERVICE: this.api.service,
             VERSION: this.api.version,
