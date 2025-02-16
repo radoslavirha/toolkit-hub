@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.6
+
+### Patch Changes
+
+- [`fde7043`](https://github.com/radoslavirha/toolkit-hub/commit/fde704327fd7aa458e8b65784cfbe937a413e172) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Move @tsed/platform-http to peerDependencies in swagger module
+
 ## 0.1.5
 
 ### Patch Changes
