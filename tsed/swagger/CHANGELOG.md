@@ -1,5 +1,16 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.9
+
+### Patch Changes
+
+- [`59afd7b`](https://github.com/radoslavirha/toolkit-hub/commit/59afd7bb5252b45c60c8cb505afaeb645d264f1e) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix SwaggerController and views
+
+- Updated dependencies []:
+  - @radoslavirha/utils@0.1.0
+  - @radoslavirha/tsed-configuration@0.1.1
+  - @radoslavirha/tsed-platform@0.1.2
+
 ## 0.1.8
 
 ### Patch Changes
