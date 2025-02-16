@@ -29,10 +29,20 @@
   - any-glob-to-any-file:
     - 'packages/utils/*'
 
+'@radoslavirha/tsed-common':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'tsed/common/*'
+
 '@radoslavirha/tsed-configuration':
 - changed-files:
   - any-glob-to-any-file:
     - 'tsed/configuration/*'
+
+'@radoslavirha/tsed-mongoose':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'tsed/mongoose/*'
 
 '@radoslavirha/tsed-platform':
 - changed-files:

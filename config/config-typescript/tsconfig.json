@@ -10,7 +10,9 @@
         "skipLibCheck": true,
         "incremental": false,
         "diagnostics": false,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
+        "useDefineForClassFields": false
     },
     "include": [
         "${configDir}/src/**/*"

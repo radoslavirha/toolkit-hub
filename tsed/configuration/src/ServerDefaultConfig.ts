@@ -1,3 +1,6 @@
+/**
+ * Returns default server configuration.
+ */
 export const getServerDefaultConfig = (): Partial<TsED.Configuration> => ({
     httpPort: 4000,
     acceptMimes: ['application/json'],

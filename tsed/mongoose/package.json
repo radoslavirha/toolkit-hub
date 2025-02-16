@@ -1,0 +1,79 @@
+{
+    "name": "@radoslavirha/tsed-mongoose",
+    "version": "0.1.0",
+    "description": "Ts.ED mongoose utils",
+    "keywords": [
+        "tsed",
+        "mongoose"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com:radoslavirha/toolkit-hub.git"
+    },
+    "type": "module",
+    "exports": {
+        "import": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        },
+        "require": {
+            "types": "./dist/index.d.cts",
+            "require": "./dist/index.cjs"
+        }
+    },
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "files": [
+        "dist",
+        "package.json",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsup",
+        "cleanup": "rm -rf coverage dist",
+        "cleanup:modules": "rm -rf node_modules",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix .",
+        "prepublishOnly": "pnpm build",
+        "test": "vitest run",
+        "test:watch": "vitest"
+    },
+    "dependencies": {
+        "@radoslavirha/utils": "workspace:*",
+        "@swc/helpers": "catalog:"
+    },
+    "devDependencies": {
+        "@radoslavirha/config-eslint": "workspace:*",
+        "@radoslavirha/config-tsup": "workspace:*",
+        "@radoslavirha/config-typescript": "workspace:*",
+        "@radoslavirha/config-vitest": "workspace:*",
+        "@swc/core": "catalog:",
+        "@tsed/di": "catalog:tsed",
+        "@tsed/json-mapper": "catalog:tsed",
+        "@tsed/platform-http": "catalog:tsed",
+        "@tsed/testcontainers-mongo": "catalog:tsed",
+        "@vitest/coverage-v8": "catalog:",
+        "supertest": "catalog:",
+        "tsup": "catalog:",
+        "vitest": "catalog:"
+    },
+    "peerDependencies": {
+        "@radoslavirha/tsed-common": "workspace:*",
+        "@tsed/mongoose": "catalog:tsed",
+        "@tsed/schema": "catalog:tsed",
+        "mongoose": "catalog:"
+    },
+    "engines": {
+        "node": ">= 22.14.0",
+        "pnpm": ">= 9.14.4"
+    },
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "README": "README.md"
+}
