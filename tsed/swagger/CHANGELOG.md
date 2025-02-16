@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.8
+
+### Patch Changes
+
+- [`cd733f9`](https://github.com/radoslavirha/toolkit-hub/commit/cd733f958576f40126a2f93801a9a26315ab4dac) Thanks [@radoslavirha](https://github.com/radoslavirha)! - @Inject(PlatformViews) in swagger module
+
 ## 0.1.7
 
 ### Patch Changes
