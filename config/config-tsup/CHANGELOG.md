@@ -1,5 +1,11 @@
 # @radoslavirha/config-tsup
 
+## 0.1.1
+
+### Patch Changes
+
+- [`b66463f`](https://github.com/radoslavirha/toolkit-hub/commit/b66463f842aa0100dafa27d1d449b7d570bc47eb) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Use shims only in swagger module
+
 ## 0.1.0
 
 ### Minor Changes
