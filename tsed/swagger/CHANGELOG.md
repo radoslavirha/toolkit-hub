@@ -1,5 +1,16 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.4
+
+### Patch Changes
+
+- [`b66463f`](https://github.com/radoslavirha/toolkit-hub/commit/b66463f842aa0100dafa27d1d449b7d570bc47eb) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Use shims only in swagger module
+
+- Updated dependencies []:
+  - @radoslavirha/utils@0.1.0
+  - @radoslavirha/tsed-configuration@0.1.1
+  - @radoslavirha/tsed-platform@0.1.2
+
 ## 0.1.3
 
 ### Patch Changes
