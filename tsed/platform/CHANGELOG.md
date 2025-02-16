@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-platform
 
+## 0.1.2
+
+### Patch Changes
+
+- [`5f29771`](https://github.com/radoslavirha/toolkit-hub/commit/5f297715d58b14a0ccffdfe2e8e0fcb19aa7c624) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Improve SwaggerController
+
 ## 0.1.1
 
 ### Patch Changes
