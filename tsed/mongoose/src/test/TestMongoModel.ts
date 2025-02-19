@@ -7,7 +7,7 @@ import { BaseMongo } from '../models/BaseMongo.js';
     schemaOptions: { timestamps: true }
 })
 export class TestModelChildMongo extends BaseMongo {
-    @Property()
+    @Property(String)
     label!: string;
 }
 
@@ -16,7 +16,7 @@ export class TestModelChildMongo extends BaseMongo {
     schemaOptions: { timestamps: true }
 })
 export class TestModelMongo extends BaseMongo {
-    @Property()
+    @Property(String)
     label!: string;
 
     @Ref(() => TestModelChildMongo)

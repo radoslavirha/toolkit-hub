@@ -16,7 +16,7 @@ import { Property, Required } from '@tsed/schema';
 
 export class ConfigModel {
     @Required()
-    @Property()
+    @Property(String)
     field: string;
 }
 ```
@@ -28,14 +28,22 @@ Server bootstrap example usage:
 ```ts
 // index.ts
 import { ConfigProvider, ConfigProviderOptions } from '@radoslavirha/tsed-configuration';
+import { injector } from '@tsed/di';
 import { ConfigModel } from './ConfigModel.js';
 
 try {
-    const config = new ConfigProvider(<ConfigProviderOptions>{
+    const options = <ConfigProviderOptions<ConfigModel>>{
         service: 'Service name',
         fallbackPort: 4000,
-        configModel: ConfigModel
+        configModel: ConfigModel,
+        debug: false
     });
+
+    // Without DI
+    const config = new ConfigProvider(options);
+    // With DI
+    // This may be usable in some cases 
+    const config = injector().get(ConfigProvider, { useOpts: options });
     
     const configuration: ServerConfiguration = {
         ...config.server,

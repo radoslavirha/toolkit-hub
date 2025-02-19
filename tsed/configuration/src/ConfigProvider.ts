@@ -1,5 +1,6 @@
 import { CommonUtils } from '@radoslavirha/utils';
 import { Type } from '@tsed/core';
+import { Injectable, Opts } from '@tsed/di';
 import { ConfigJsonProvider } from './ConfigJsonProvider.js';
 import { ENVS, EnvironmentVariablesProvider } from './EnvironmentVariablesProvider.js';
 import { PackageJsonProvider, PkgJson } from './PackageJsonProvider.js';
@@ -12,8 +13,10 @@ export type ConfigProviderOptions<T = object> = {
      */
     fallbackPort: number;
     configModel: Type<T>;
+    debug?: boolean;
 };
 
+@Injectable()
 export class ConfigProvider<T> {
     readonly service: string;
     readonly fallbackPort: number;
@@ -47,14 +50,14 @@ export class ConfigProvider<T> {
         return this.envs.NODE_ENV === 'test'; 
     }
 
-    constructor(options: ConfigProviderOptions<T>, debug = false) {
+    constructor(@Opts options: ConfigProviderOptions<T>) {
         this.service = options.service;
         this.fallbackPort = options.fallbackPort;
         this.configModel = options.configModel;
 
         this._envs = new EnvironmentVariablesProvider().config;
         this._packageJson = new PackageJsonProvider().config;
-        this._config = new ConfigJsonProvider(this.configModel, debug).config;
+        this._config = new ConfigJsonProvider(this.configModel, options.debug).config;
 
         this._api = {
             service: options.service,

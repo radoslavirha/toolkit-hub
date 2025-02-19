@@ -8,19 +8,19 @@ import { SwaggerSecurityScheme } from '../enums/SwaggerSecurityScheme.enum.js';
 @Description(`Configuration of the Swagger module for building Swagger UI pages.`)
 export class SwaggerConfig {
     @Required()
-    @Property()
+    @Property(String)
     @Description(`Title/application name for the Swagger UI page.`)
     @Example('My API')
     public title: string;
 
     @Required()
-    @Property()
+    @Property(String)
     @Description(`Application name for the Swagger UI page.`)
     @Example('1.0.0')
     public version: string;
 
     @Required()
-    @Property()
+    @Property(String)
     @Description(`Application description for the Swagger UI page.`)
     @Example('This is a description of the application.')
     public description: string;

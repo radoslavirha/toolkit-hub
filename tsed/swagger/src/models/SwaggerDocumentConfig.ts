@@ -5,7 +5,7 @@ import { SwaggerSecurityScheme } from '../enums/SwaggerSecurityScheme.enum.js';
 @Description(`Configuration model for Swagger document/version.`)
 export class SwaggerDocumentConfig {
     @Required()
-    @Property()
+    @Property(String)
     @Description(`Version of the document like v1. This version is used in the URL path to access the Swagger UI.
         The same value should be used in @Docs() decorator.`)
     @Example('v1')
@@ -17,7 +17,7 @@ export class SwaggerDocumentConfig {
     @Example([SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT])
     public security: SwaggerSecurityScheme[];
 
-    @Property()
+    @Property(String)
     @Description(`An optional path where to store raw swagger.json.`)
     public outFile?: string;
 }

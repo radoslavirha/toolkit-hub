@@ -1,7 +1,7 @@
 import { Format, Property } from '@tsed/schema';
 
 export class BaseModel {
-    @Property()
+    @Property(String)
     public id: string;
 
     @Format('date-time')
