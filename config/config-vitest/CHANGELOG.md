@@ -1,5 +1,11 @@
 # @radoslavirha/config-vitest
 
+## 0.1.3
+
+### Patch Changes
+
+- [`d3b072a`](https://github.com/radoslavirha/toolkit-hub/commit/d3b072a1268d066a0563acc279e7e68a238019bc) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Updated vulnerable libraries
+
 ## 0.1.2
 
 ### Patch Changes

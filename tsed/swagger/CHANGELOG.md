@@ -1,5 +1,16 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.14
+
+### Patch Changes
+
+- [`d3b072a`](https://github.com/radoslavirha/toolkit-hub/commit/d3b072a1268d066a0563acc279e7e68a238019bc) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Updated vulnerable libraries
+
+- Updated dependencies [[`d3b072a`](https://github.com/radoslavirha/toolkit-hub/commit/d3b072a1268d066a0563acc279e7e68a238019bc)]:
+  - @radoslavirha/utils@0.1.4
+  - @radoslavirha/tsed-configuration@0.1.6
+  - @radoslavirha/tsed-platform@0.1.7
+
 ## 0.1.13
 
 ### Patch Changes

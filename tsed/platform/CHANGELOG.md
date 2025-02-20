@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-platform
 
+## 0.1.7
+
+### Patch Changes
+
+- [`d3b072a`](https://github.com/radoslavirha/toolkit-hub/commit/d3b072a1268d066a0563acc279e7e68a238019bc) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Updated vulnerable libraries
+
+- Updated dependencies [[`d3b072a`](https://github.com/radoslavirha/toolkit-hub/commit/d3b072a1268d066a0563acc279e7e68a238019bc)]:
+  - @radoslavirha/tsed-configuration@0.1.6
+
 ## 0.1.6
 
 ### Patch Changes
