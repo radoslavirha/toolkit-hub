@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-platform
 
+## 0.1.6
+
+### Patch Changes
+
+- [`ed4ce14`](https://github.com/radoslavirha/toolkit-hub/commit/ed4ce147d2a1241d587c9380726240cc3c93e4af) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix peerDependencies
+
+- Updated dependencies [[`ed4ce14`](https://github.com/radoslavirha/toolkit-hub/commit/ed4ce147d2a1241d587c9380726240cc3c93e4af)]:
+  - @radoslavirha/tsed-configuration@0.1.5
+
 ## 0.1.5
 
 ### Patch Changes

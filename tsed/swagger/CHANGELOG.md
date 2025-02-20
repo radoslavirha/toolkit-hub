@@ -1,5 +1,16 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.13
+
+### Patch Changes
+
+- [`ed4ce14`](https://github.com/radoslavirha/toolkit-hub/commit/ed4ce147d2a1241d587c9380726240cc3c93e4af) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix peerDependencies
+
+- Updated dependencies [[`ed4ce14`](https://github.com/radoslavirha/toolkit-hub/commit/ed4ce147d2a1241d587c9380726240cc3c93e4af)]:
+  - @radoslavirha/utils@0.1.3
+  - @radoslavirha/tsed-configuration@0.1.5
+  - @radoslavirha/tsed-platform@0.1.6
+
 ## 0.1.12
 
 ### Patch Changes
