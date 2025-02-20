@@ -1,5 +1,15 @@
 # @radoslavirha/tsed-mongoose
 
+## 0.1.5
+
+### Patch Changes
+
+- [`d3b072a`](https://github.com/radoslavirha/toolkit-hub/commit/d3b072a1268d066a0563acc279e7e68a238019bc) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Updated vulnerable libraries
+
+- Updated dependencies [[`d3b072a`](https://github.com/radoslavirha/toolkit-hub/commit/d3b072a1268d066a0563acc279e7e68a238019bc)]:
+  - @radoslavirha/utils@0.1.4
+  - @radoslavirha/tsed-common@0.1.5
+
 ## 0.1.4
 
 ### Patch Changes
