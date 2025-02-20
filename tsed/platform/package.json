@@ -59,7 +59,11 @@
         "@types/cors": "^2.8.17",
         "@types/method-override": "^3.0.0",
         "@vitest/coverage-v8": "catalog:",
+        "eslint": "catalog:",
+        "tslib": "catalog:",
         "tsup": "catalog:",
+        "typescript": "catalog:",
+        "typescript-eslint": "catalog:",
         "vitest": "catalog:"
     },
     "peerDependencies": {

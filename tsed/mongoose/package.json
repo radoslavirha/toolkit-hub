@@ -54,8 +54,12 @@
         "@tsed/platform-http": "catalog:tsed",
         "@tsed/testcontainers-mongo": "catalog:tsed",
         "@vitest/coverage-v8": "catalog:",
+        "eslint": "catalog:",
         "supertest": "catalog:",
+        "tslib": "catalog:",
         "tsup": "catalog:",
+        "typescript": "catalog:",
+        "typescript-eslint": "catalog:",
         "vitest": "catalog:"
     },
     "peerDependencies": {

@@ -54,9 +54,13 @@
         "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "cpx": "^1.5.0",
+        "eslint": "catalog:",
         "html-minifier": "^4.0.0",
         "supertest": "catalog:",
+        "tslib": "catalog:",
         "tsup": "catalog:",
+        "typescript": "catalog:",
+        "typescript-eslint": "catalog:",
         "vitest": "catalog:"
     },
     "peerDependencies": {
