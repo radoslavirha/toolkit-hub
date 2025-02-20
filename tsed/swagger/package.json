@@ -72,8 +72,8 @@
         "@tsed/swagger": "catalog:tsed"
     },
     "engines": {
-        "node": ">= 22.14.0",
-        "pnpm": ">= 9.14.4"
+        "node": ">= 22",
+        "pnpm": ">= 10"
     },
     "os": [
         "darwin",
