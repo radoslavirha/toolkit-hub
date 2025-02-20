@@ -22,7 +22,6 @@
         "lint": "eslint .",
         "lint:fix": "eslint --fix ."
     },
-    "dependencies": {},
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
         "@radoslavirha/config-typescript": "workspace:*"

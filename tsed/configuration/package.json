@@ -52,7 +52,7 @@
         "@swc/core": "catalog:",
         "@swc/helpers": "catalog:",
         "@types/config": "^3.3.5",
-        "@types/node": "^22.10.2",
+        "@types/node": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "tsup": "catalog:",
         "vitest": "catalog:"
@@ -63,7 +63,7 @@
         "@tsed/di": "catalog:tsed",
         "@tsed/json-mapper": "catalog:tsed",
         "@tsed/schema": "catalog:tsed",
-        "ajv": "^8.17.1"
+        "ajv": "catalog:tsed"
     },
     "engines": {
         "node": ">= 22.14.0",

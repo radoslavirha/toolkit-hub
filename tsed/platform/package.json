@@ -41,7 +41,7 @@
     "dependencies": {
         "@radoslavirha/tsed-configuration": "workspace:*",
         "body-parser": "^1.20.3",
-        "compression": "^1.7.5",
+        "compression": "^1.8.0",
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "method-override": "^3.0.0"
@@ -52,7 +52,7 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
-        "@swc/helpers": "^0.5.15",
+        "@swc/helpers": "catalog:",
         "@types/body-parser": "^1.19.5",
         "@types/compression": "^1.7.5",
         "@types/cookie-parser": "^1.4.8",
@@ -69,7 +69,7 @@
         "@tsed/logger": "catalog:tsed",
         "@tsed/platform-express": "catalog:tsed",
         "@tsed/platform-http": "catalog:tsed",
-        "ajv": "^8.17.1"
+        "ajv": "catalog:tsed"
     },
     "engines": {
         "node": ">= 22.14.0",

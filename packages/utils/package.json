@@ -48,8 +48,8 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
-        "@types/lodash": "^4.17.13",
-        "@types/node": "^22.10.2",
+        "@types/lodash": "^4.17.15",
+        "@types/node": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "tsup": "catalog:",
         "vitest": "catalog:"

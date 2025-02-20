@@ -24,7 +24,7 @@
         "lint:fix": "eslint --fix ."
     },
     "dependencies": {
-        "@stylistic/eslint-plugin": "^2.11.0"
+        "@stylistic/eslint-plugin": "^4.0.1"
     },
     "peerDependencies": {
         "eslint": "catalog:",
