@@ -1,6 +1,6 @@
 import { BaseServer, ServerConfiguration } from '@radoslavirha/tsed-platform';
 import { PlatformTest } from '@tsed/platform-http/testing';
-import { minify } from 'html-minifier';
+import { minify } from 'html-minifier-terser';
 import SuperTest from 'supertest';
 import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { SwaggerController } from './SwaggerController.js';
@@ -54,7 +54,7 @@ describe('SwaggerController', () => {
     it('Should call GET /', async () => {
         const response = await request.get('/');
 
-        const minified = minify(response.text, { collapseWhitespace: true });
+        const minified = await minify(response.text, { collapseWhitespace: true });
 
         expect(minified).toContain(`<title>My API 1.0.0</title>`);
         expect(minified).toContain(`<h1>My API 1.0.0</h1>`);
