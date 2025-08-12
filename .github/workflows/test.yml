@@ -15,7 +15,7 @@ jobs:
         node-version: [22]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Use pnpm 10
         uses: pnpm/action-setup@v4
         with:
