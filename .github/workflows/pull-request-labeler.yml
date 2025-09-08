@@ -17,4 +17,4 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Glob Labeler
-        uses: actions/labeler@v5
+        uses: actions/labeler@v6
