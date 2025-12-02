@@ -42,7 +42,7 @@ export class SwaggerController {
             VERSION: this.api.version,
             docs: this.swagger.map((conf) => {
                 return {
-                    url: hostUrl + conf.path,
+                    url: hostUrl + conf.path + '/',
                     ...conf
                 };
             })
