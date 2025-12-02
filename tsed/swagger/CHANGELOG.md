@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.17
+
+### Patch Changes
+
+- [`f975bd6`](https://github.com/radoslavirha/toolkit-hub/commit/f975bd6eff93c7900cc2b30b5531c8e317871ebe) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Append slash to swagger path
+
 ## 0.1.16
 
 ### Patch Changes
