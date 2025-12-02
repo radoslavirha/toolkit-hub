@@ -87,4 +87,60 @@ describe('SwaggerProvider', () => {
             }
         ]);
     });
+    it('Should build swagger configuration with serverUrl', async () => {
+        const configuration = CommonUtils.buildModel(SwaggerConfig, {
+            title: 'My API',
+            version: '1.0.0',
+            description: 'This is a description of the application.',
+            documents: [
+                CommonUtils.buildModel(SwaggerDocumentConfig, {
+                    docs: 'v1',
+                    security: [SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT],
+                    outFile: 'path1'
+                })
+            ],
+            swaggerUIOptions: CommonUtils.buildModel(SwaggerUIConfig, {}),
+            serverUrl: 'https://api.example.com/path'
+        });
+        const provider = new SwaggerProvider(configuration);
+
+        expect(provider.config).toStrictEqual([
+            {
+                path: '/v1/docs',
+                doc: 'v1',
+                specVersion: '3.0.3',
+                outFile: 'path1',
+                spec: {
+                    info: {
+                        title: 'My API - v1',
+                        version: '1.0.0',
+                        description: 'This is a description of the application.'
+                    },
+                    components: {
+                        securitySchemes: {
+                            [SwaggerSecurityScheme.BASIC]: {
+                                type: 'http',
+                                scheme: 'basic',
+                                description: 'Basic authentication'
+                            },
+                            [SwaggerSecurityScheme.BEARER_JWT]: {
+                                type: 'http',
+                                scheme: 'bearer',
+                                bearerFormat: 'JWT',
+                                description: 'Bearer JWT token'
+                            }
+                        }
+                    }
+                },
+                options: {
+                    urls: [
+                        {
+                            name: 'v1',
+                            url: 'https://api.example.com/path/v1/docs/swagger.json'
+                        }
+                    ]
+                }
+            }
+        ]);
+    });
 });

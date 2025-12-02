@@ -41,5 +41,10 @@ export class SwaggerConfig {
     public documents: SwaggerDocumentConfig[];
 
     @Property(SwaggerUIConfig)
+    @Description(`Configuration options for Swagger UI.`)
     public swaggerUIOptions: SwaggerUIConfig = {};
+
+    @Property(String)
+    @Description('Server URL to be used in the Swagger documentation including any proxy removed paths. Automatically sets urls in Swagger UI config.')
+    public serverUrl?: string;
 }

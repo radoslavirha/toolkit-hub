@@ -14,6 +14,17 @@ export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]> {
     }
 
     private static generateSettings(config: SwaggerConfig, settings: SwaggerDocumentConfig): SwaggerSettings {
+        const swaggerUIOptions = serialize(config.swaggerUIOptions, { type: SwaggerUIConfig });
+
+        if (config.serverUrl && !swaggerUIOptions.urls) {
+            swaggerUIOptions.urls = [
+                {
+                    name: settings.docs,
+                    url: `${ config.serverUrl }/${ settings.docs }/docs/swagger.json`
+                }
+            ];
+        }
+
         return <SwaggerSettings>{
             path: `/${ settings.docs }/docs`,
             doc: settings.docs,
@@ -29,7 +40,7 @@ export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]> {
                     securitySchemes: SwaggerProvider.getSecuritySchemes(settings.security)
                 }
             },
-            options: serialize(config.swaggerUIOptions, { type: SwaggerUIConfig })
+            options: swaggerUIOptions
         };
     }
 

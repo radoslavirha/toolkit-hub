@@ -27,7 +27,7 @@ export class SwaggerController {
         @HeaderParams('host')
         host: string
     ) {
-        const hostUrl = `${ protocol || 'http' }://${ host }`;;
+        const hostUrl = this.api.publicURL ?? `${ protocol || 'http' }://${ host }`;
 
         const _dirname = typeof __dirname !== 'undefined'
             ? __dirname
