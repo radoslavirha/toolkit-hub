@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.18
+
+### Patch Changes
+
+- [`e41fd3d`](https://github.com/radoslavirha/toolkit-hub/commit/e41fd3d9bf51a4c23494edf7145cbf3146112584) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix swagger tests
+
 ## 0.1.17
 
 ### Patch Changes
