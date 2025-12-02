@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-platform
 
+## 0.1.8
+
+### Patch Changes
+
+- [`ad22a55`](https://github.com/radoslavirha/toolkit-hub/commit/ad22a558adf4c43636b66e3529024dbd4e120c7b) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Improve swagger
+
 ## 0.1.7
 
 ### Patch Changes
