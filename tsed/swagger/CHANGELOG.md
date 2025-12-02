@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-swagger
 
+## 0.1.16
+
+### Patch Changes
+
+- [`ec7328c`](https://github.com/radoslavirha/toolkit-hub/commit/ec7328cbbfd6851aa577450e93c3a9c2b4616d79) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix swagger build
+
 ## 0.1.15
 
 ### Patch Changes
