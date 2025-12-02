@@ -30,7 +30,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsup && mkdir dist/views && cp src/controllers/views/swagger.ejs dist/views/",
+        "build": "pnpm cleanup && tsup && mkdir dist/views && cp src/controllers/views/swagger.ejs dist/views/",
         "cleanup": "rm -rf coverage dist",
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
