@@ -47,6 +47,7 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
+        "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "eslint": "catalog:",
         "supertest": "catalog:",

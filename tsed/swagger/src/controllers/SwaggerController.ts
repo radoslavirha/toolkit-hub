@@ -1,4 +1,4 @@
-import { ServerConfiguration } from '@radoslavirha/tsed-platform';
+import { APIInformation } from '@radoslavirha/tsed-configuration';
 import { Constant, Controller, Inject } from '@tsed/di';
 import { HeaderParams } from '@tsed/platform-params';
 import PlatformViews from '@tsed/platform-views';
@@ -14,7 +14,7 @@ export class SwaggerController {
     private swagger!: SwaggerSettings[];
 
     @Constant('api')
-    private api!: ServerConfiguration;
+    private api!: APIInformation;
 
     @Inject(PlatformViews)
     private platformViews: PlatformViews;

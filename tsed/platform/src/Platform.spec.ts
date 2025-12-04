@@ -11,7 +11,8 @@ describe('Platform', () => {
             const settings: ServerConfiguration = {
                 api: {
                     service: 'test',
-                    version: '0.0.1'
+                    version: '0.0.1',
+                    publicURL: 'http://localhost:3000/api'
                 }
             };
 

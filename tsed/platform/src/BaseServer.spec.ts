@@ -1,12 +1,18 @@
 import { $log } from '@tsed/logger';
 import { PlatformTest } from '@tsed/platform-http/testing';
+import SuperTest from 'supertest';
 import { describe, beforeEach, afterEach, expect, vi, it } from 'vitest';
+import { TestController } from './test/TestController.js';
 import { BaseServer } from './BaseServer.js';
 
 describe('ServerBase', () => {
     let server: BaseServer;
 
-    beforeEach(PlatformTest.bootstrap(BaseServer));
+    beforeEach(PlatformTest.bootstrap(BaseServer, {
+        mount: {
+            '/': [TestController]
+        }
+    }));
     beforeEach(() => {
         server = PlatformTest.get<BaseServer>(BaseServer);
     });
@@ -31,5 +37,19 @@ describe('ServerBase', () => {
 
         expect(logSpy).toHaveBeenCalledWith('Registering common middlewares...');
         expect(appSpy).toHaveBeenCalledTimes(6);
+    });
+
+    it('should register routes', async () => {
+        const request = SuperTest.agent(PlatformTest.callback());
+
+        // act
+        const response = await request.get(`/`);
+
+        // assert
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+            test: 'This is a test',
+            value: 12345
+        });
     });
 });

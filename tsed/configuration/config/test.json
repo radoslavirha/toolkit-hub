@@ -1,3 +1,8 @@
 {
-  "test": "value"
+  "test": "value",
+  "server": {
+    "httpPort": 4000
+  },
+  "serviceName": "test-service",
+  "publicURL": "http://localhost:4000/api"
 }

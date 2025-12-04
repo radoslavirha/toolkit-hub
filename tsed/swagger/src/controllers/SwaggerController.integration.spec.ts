@@ -4,6 +4,7 @@ import { minify } from 'html-minifier-terser';
 import SuperTest from 'supertest';
 import { describe, afterEach, expect, it } from 'vitest';
 import { SwaggerController } from './SwaggerController.js';
+import { APIInformation } from '@radoslavirha/tsed-configuration';
 
 describe('SwaggerController', () => {
     let request: SuperTest.Agent;
@@ -41,7 +42,7 @@ describe('SwaggerController', () => {
                     }
                 }
             ],
-            api: {
+            api: <APIInformation>{
                 service: 'My API',
                 version: '1.0.0'
             }
@@ -90,7 +91,7 @@ describe('SwaggerController', () => {
                     }
                 }
             ],
-            api: {
+            api: <APIInformation>{
                 service: 'My API',
                 version: '1.0.0',
                 publicURL: 'https://api.public-url.com/path'

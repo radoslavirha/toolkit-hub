@@ -1,12 +1,8 @@
 /* v8 ignore start */
-export interface ServerConfigurationAPI {
-    service: string;
-    version: string;
-    publicURL?: string;
-}
+import { APIInformation } from '@radoslavirha/tsed-configuration';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type ServerConfiguration<T extends object = {}> = {
-    api: ServerConfigurationAPI;
+    api: APIInformation;
 } & Partial<TsED.Configuration> & T;
 /* v8 ignore stop */

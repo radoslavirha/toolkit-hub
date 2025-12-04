@@ -64,6 +64,7 @@
     },
     "peerDependencies": {
         "@radoslavirha/tsed-common": "workspace:*",
+        "@tsed/core": "catalog:tsed",
         "@tsed/mongoose": "catalog:tsed",
         "@tsed/schema": "catalog:tsed",
         "mongoose": "catalog:"

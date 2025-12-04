@@ -26,7 +26,7 @@ export class ConfigJsonProvider<T> extends BaseConfigProvider<T> {
 
     private static validateModel<T>(model: Type<T>, input: unknown, debug = false): T {
         const ajv = new Ajv({ allErrors: true });
-    
+
         if (debug) {
             console.log('Config file', input);
         }

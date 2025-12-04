@@ -3,17 +3,16 @@ import { application } from '@tsed/platform-http';
 import '@tsed/platform-express';
 import '@tsed/ajv';
 import { $log } from '@tsed/logger';
-import { getServerDefaultConfig } from '@radoslavirha/tsed-configuration';
+import { APIInformation, getServerDefaultConfig } from '@radoslavirha/tsed-configuration';
 import bodyParser from 'body-parser';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import methodOverride from 'method-override';
-import { ServerConfigurationAPI } from './ServerConfiguration.js';
 
 @Configuration({
     ...getServerDefaultConfig(),
-    api: {
+    api: <APIInformation>{
         service: 'test',
         version: '0.0.1'
     }
@@ -23,7 +22,7 @@ export class BaseServer {
     private settings = configuration();
 
     $onReady(): void {
-        const api = this.settings.get<ServerConfigurationAPI>('api');
+        const api = this.settings.get<APIInformation>('api');
         
         $log.info(`${ api?.service } ${ api?.version } is ready!`);
     }

@@ -1,4 +1,5 @@
 import { BaseModel } from '@radoslavirha/tsed-common';
+import { Type } from '@tsed/core';
 import { CommonUtils } from '@radoslavirha/utils';
 import { MongooseDocumentMethods, Ref } from '@tsed/mongoose';
 import { SpecTypes, getJsonSchema } from '@tsed/schema';
@@ -53,7 +54,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
     }
 
     private getModelDefault<PROPERTY extends keyof MODEL>(model: MODEL, property: PROPERTY): MODEL[PROPERTY] | undefined {
-        const spec = getJsonSchema(model, { specType: SpecTypes.JSON });
+        const spec = getJsonSchema(model as unknown as Type<MODEL>, { specType: SpecTypes.JSON });
 
         return spec?.properties[property]?.default ?? undefined;
     }
