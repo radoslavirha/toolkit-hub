@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-mongoose
 
+## 0.1.6
+
+### Patch Changes
+
+- [`64895df`](https://github.com/radoslavirha/toolkit-hub/commit/64895dfde44d470cc82604a5a60d29e61d8e297e) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Improvements
+
+- Updated dependencies [[`64895df`](https://github.com/radoslavirha/toolkit-hub/commit/64895dfde44d470cc82604a5a60d29e61d8e297e)]:
+  - @radoslavirha/tsed-common@0.1.6
+
 ## 0.1.5
 
 ### Patch Changes
