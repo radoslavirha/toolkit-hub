@@ -40,11 +40,12 @@
     },
     "dependencies": {
         "@radoslavirha/tsed-configuration": "workspace:*",
-        "body-parser": "^1.20.3",
-        "compression": "^1.8.0",
-        "cookie-parser": "^1.4.7",
-        "cors": "^2.8.5",
-        "method-override": "^3.0.0"
+        "@radoslavirha/utils": "workspace:*",
+        "body-parser": "2.2.1",
+        "compression": "1.8.1",
+        "cookie-parser": "1.4.7",
+        "cors": "2.8.5",
+        "method-override": "3.0.0"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -54,11 +55,11 @@
         "@swc/core": "catalog:",
         "@swc/helpers": "catalog:",
         "@tsed/schema": "catalog:tsed",
-        "@types/body-parser": "^1.19.5",
-        "@types/compression": "^1.7.5",
-        "@types/cookie-parser": "^1.4.8",
-        "@types/cors": "^2.8.17",
-        "@types/method-override": "^3.0.0",
+        "@types/body-parser": "1.19.6",
+        "@types/compression": "1.8.1",
+        "@types/cookie-parser": "1.4.10",
+        "@types/cors": "2.8.19",
+        "@types/method-override": "3.0.0",
         "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "eslint": "catalog:",
@@ -79,7 +80,7 @@
         "ajv": "catalog:tsed"
     },
     "engines": {
-        "node": ">= 22",
+        "node": ">= 24",
         "pnpm": ">= 10"
     },
     "os": [

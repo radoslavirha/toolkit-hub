@@ -24,14 +24,14 @@
         "lint:fix": "eslint --fix ."
     },
     "dependencies": {
-        "@stylistic/eslint-plugin": "^4.0.1"
+        "@stylistic/eslint-plugin": "5.6.1"
     },
     "peerDependencies": {
         "eslint": "catalog:",
         "typescript-eslint": "catalog:"
     },
     "engines": {
-        "node": ">= 22",
+        "node": ">= 24",
         "pnpm": ">= 10"
     },
     "os": [

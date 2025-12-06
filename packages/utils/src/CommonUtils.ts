@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { ObjectUtils } from './ObjectUtils.js';
 
 /**
  * Utility class for common operations.
@@ -6,11 +7,39 @@ import _ from 'lodash';
 export class CommonUtils {
     /**
      * Clones an object deeply.
+     * @deprecated Use ObjectUtils.cloneDeep instead.
      * @param obj The object to clone.
      * @returns The cloned object.
      */
     public static cloneDeep<T>(obj: T): T {
-        return _.cloneDeep(obj);
+        return ObjectUtils.cloneDeep(obj);
+    }
+
+    /**
+     * Checks if the value is empty.
+     * @param value
+     * @returns 
+     */
+    public static isEmpty<T>(value: T): boolean {
+        return _.isEmpty(value);
+    }
+
+    /**
+     * Checks if the value is null or undefined.
+     * @param value
+     * @returns 
+     */
+    public static isNil<T>(value: T): boolean {
+        return _.isNil(value);
+    }
+
+    /**
+     * Checks if the value is not null or undefined.
+     * @param value
+     * @returns 
+     */
+    public static notNil<T>(value: T): value is NonNullable<T> {
+        return !_.isNil(value);
     }
 
     /**
@@ -18,8 +47,17 @@ export class CommonUtils {
      * @param value The value to check if is undefined.
      * @returns True/false response.
      */
-    public static isUndefined<T>(value?: T): boolean {
+    public static isUndefined<T>(value: T): boolean {
         return _.isUndefined(value);
+    }
+
+    /**
+     * Checks if the value is not undefined.
+     * @param value The value to check if is not undefined.
+     * @returns True/false response.
+     */
+    public static notUndefined<T>(value: T): boolean {
+        return !_.isUndefined(value);
     }
 
     /**

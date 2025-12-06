@@ -1,9 +1,16 @@
 import { defaultConfig } from '@radoslavirha/config-vitest';
+import { ObjectUtils } from '@radoslavirha/utils';
 import { defineConfig } from 'vitest/config';
 
-const config = { ...defaultConfig };
-config.test!.globalSetup = [import.meta.resolve('@tsed/testcontainers-mongo/vitest/setup')];
-config.test!.coverage?.exclude!.push('src/test');
-config.test!.coverage?.exclude!.push('src/types');
-
-export default defineConfig(config);
+export default defineConfig(ObjectUtils.mergeDeep(defaultConfig, {
+    test: {
+        globalSetup: [import.meta.resolve('@tsed/testcontainers-mongo/vitest/setup')],
+        coverage: {
+            exclude: [
+                'src/models',
+                'src/test',
+                'src/types'
+            ]
+        }
+    }
+}));

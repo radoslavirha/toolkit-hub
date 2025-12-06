@@ -40,7 +40,8 @@
         "test:watch": "vitest"
     },
     "dependencies": {
-        "lodash": "^4.17.21"
+        "@radoslavirha/types": "workspace:*",
+        "lodash": "4.17.21"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -48,7 +49,7 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
-        "@types/lodash": "^4.17.15",
+        "@types/lodash": "4.17.15",
         "@types/node": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "eslint": "catalog:",
@@ -59,7 +60,7 @@
         "vitest": "catalog:"
     },
     "engines": {
-        "node": ">= 22",
+        "node": ">= 24",
         "pnpm": ">= 10"
     },
     "os": [

@@ -9,6 +9,7 @@ export const defaultConfig: ViteUserConfig = {
         dir: './src',
         coverage: {
             enabled: true,
+            provider: 'v8',
             exclude: [
                 '**/index.ts',
                 ...coverageConfigDefaults.exclude

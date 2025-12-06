@@ -70,7 +70,7 @@
         "mongoose": "catalog:"
     },
     "engines": {
-        "node": ">= 22",
+        "node": ">= 24",
         "pnpm": ">= 10"
     },
     "os": [

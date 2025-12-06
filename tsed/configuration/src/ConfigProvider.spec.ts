@@ -2,7 +2,7 @@ import { Required } from '@tsed/schema';
 import { describe, expect, it } from 'vitest';
 import { ConfigProviderOptions, ConfigProvider } from './ConfigProvider.js';
 import { injector } from '@tsed/di';
-import { BaseConfig } from './BaseConfig.js';
+import { BaseConfig } from './models/BaseConfig.js';
 
 // Must match the config file in config/test.json
 class ConfigModel extends BaseConfig {
@@ -19,7 +19,7 @@ const options: ConfigProviderOptions<ConfigModel> = {
     configModel: ConfigModel
 };
 
-describe('ConfigProvider NODE_ENV=test', () => {
+describe('ConfigProvider', () => {
     describe('Should work with DI @UseOpts', () => {
         it('Should pass', async () => {
             const loader = injector().get(ConfigProvider, { useOpts: options });
@@ -59,6 +59,16 @@ describe('ConfigProvider NODE_ENV=test', () => {
             loader._envs.NODE_ENV = 'test';
     
             expect(loader.isTest).toEqual(true);
+        });
+        
+        it('Should load package.json', async () => {
+            const loader = injector().get(ConfigProvider, { useOpts: options });
+
+            expect(loader.packageJson).toEqual({
+                name: '@radoslavirha/tsed-configuration',
+                version: expect.any(String),
+                description: 'Ts.ED server configuration'
+            });
         });
     
         it('Should fail', async () => {
@@ -115,6 +125,16 @@ describe('ConfigProvider NODE_ENV=test', () => {
             loader._envs.NODE_ENV = 'test';
     
             expect(loader.isTest).toEqual(true);
+        });
+        
+        it('Should load package.json', async () => {
+            const loader = new ConfigProvider<ConfigModel>(options);
+
+            expect(loader.packageJson).toEqual({
+                name: '@radoslavirha/tsed-configuration',
+                version: expect.any(String),
+                description: 'Ts.ED server configuration'
+            });
         });
     
         it('Should fail', async () => {

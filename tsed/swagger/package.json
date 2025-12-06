@@ -50,11 +50,11 @@
         "@radoslavirha/config-vitest": "workspace:*",
         "@radoslavirha/types": "workspace:*",
         "@swc/core": "catalog:",
-        "@types/html-minifier-terser": "^7.0.2",
+        "@types/html-minifier-terser": "7.0.2",
         "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "eslint": "catalog:",
-        "html-minifier-terser": "^7.2.0",
+        "html-minifier-terser": "7.2.0",
         "supertest": "catalog:",
         "tslib": "catalog:",
         "tsup": "catalog:",
@@ -75,7 +75,7 @@
         "@tsed/swagger": "catalog:tsed"
     },
     "engines": {
-        "node": ">= 22",
+        "node": ">= 24",
         "pnpm": ">= 10"
     },
     "os": [

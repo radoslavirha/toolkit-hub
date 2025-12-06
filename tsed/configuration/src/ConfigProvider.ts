@@ -1,12 +1,12 @@
-import { CommonUtils } from '@radoslavirha/utils';
+import { CommonUtils, DefaultsUtil } from '@radoslavirha/utils';
 import { Type } from '@tsed/core';
 import { Injectable, Opts } from '@tsed/di';
 import { ConfigJsonProvider } from './ConfigJsonProvider.js';
 import { ENVS, EnvironmentVariablesProvider } from './EnvironmentVariablesProvider.js';
 import { PackageJsonProvider, PkgJson } from './PackageJsonProvider.js';
-import { getServerDefaultConfig } from './ServerDefaultConfig.js';
-import { BaseConfig } from './BaseConfig.js';
-import { APIInformation } from './APIInformation.js';
+import { getServerDefaultConfig } from './helpers/ServerDefaultConfig.js';
+import { BaseConfig } from './models/BaseConfig.js';
+import { APIInformation } from './models/APIInformation.js';
 
 export type ConfigProviderOptions<T extends BaseConfig> = {
     configModel: Type<T>;
@@ -50,15 +50,13 @@ export class ConfigProvider<T extends BaseConfig> {
         this._config = new ConfigJsonProvider(this.configModel, options.debug).config;
 
         this._api = CommonUtils.buildModel(APIInformation, {
-            /* v8 ignore start */
-            service: this.config.serviceName ?? this.packageJson.name,
-            /* v8 ignore stop */
+            service: DefaultsUtil.string(this.config.serviceName, this.packageJson.name),
             version: this.packageJson.version,
             description: this.packageJson.description,
             publicURL: this.config.publicURL
         });
 
-        this._server = {
+        this._server = <Partial<TsED.Configuration>>{
             ...getServerDefaultConfig(),
             ...this._config.server,
             envs: this.envs

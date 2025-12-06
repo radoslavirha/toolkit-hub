@@ -1,6 +1,7 @@
 {
     "extends": "@radoslavirha/config-typescript/tsconfig.json",
     "compilerOptions": {
+        "rootDir": "./src",
         "composite": false,
     }
 }

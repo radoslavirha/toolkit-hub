@@ -1,5 +1,6 @@
 import { NormalizeOptions, readPackageSync } from 'read-pkg';
 import { BaseConfigProvider } from './BaseConfigProvider.js';
+import { DefaultsUtil } from '@radoslavirha/utils';
 
 export interface PkgJson {
     name: string;
@@ -13,7 +14,7 @@ export class PackageJsonProvider extends BaseConfigProvider<PkgJson> {
     constructor() {
         super({
             name: readPackageSync(opts).name,
-            description: readPackageSync(opts).description ?? '',
+            description: DefaultsUtil.string(readPackageSync(opts).description, ''),
             version: readPackageSync(opts).version
         });
     }

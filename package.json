@@ -37,7 +37,7 @@
         "@changesets/cli": "^2.28.1"
     },
     "engines": {
-        "node": ">= 22",
+        "node": ">= 24",
         "pnpm": ">= 10"
     },
     "os": [

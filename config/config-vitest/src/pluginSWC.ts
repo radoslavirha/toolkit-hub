@@ -4,7 +4,7 @@ import { Plugin } from 'vitest/config';
 export const pluginSWC: Plugin = swc.vite({
     sourceMaps: 'inline',
     jsc: {
-        target: 'es2022',
+        target: 'esnext',
         externalHelpers: true,
         keepClassNames: true,
         parser: {
@@ -20,7 +20,7 @@ export const pluginSWC: Plugin = swc.vite({
         }
     },
     module: {
-        type: 'es6',
+        type: 'nodenext',
         strictMode: true,
         lazy: false,
         noInterop: false

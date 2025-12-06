@@ -40,9 +40,9 @@
     },
     "dependencies": {
         "@radoslavirha/utils": "workspace:*",
-        "config": "^3.3.12",
-        "dotenv": "^16.4.7",
-        "read-pkg": "^9.0.1"
+        "config": "4.1.1",
+        "dotenv": "17.2.3",
+        "read-pkg": "10.0.0"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -51,7 +51,7 @@
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
         "@swc/helpers": "catalog:",
-        "@types/config": "^3.3.5",
+        "@types/config": "3.3.5",
         "@types/node": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "eslint": "catalog:",
@@ -70,7 +70,7 @@
         "ajv": "catalog:tsed"
     },
     "engines": {
-        "node": ">= 22",
+        "node": ">= 24",
         "pnpm": ">= 10"
     },
     "os": [

@@ -37,7 +37,7 @@
         "prepublishOnly": "pnpm build"
     },
     "dependencies": {
-        "unplugin-swc": "^1.5.1"
+        "unplugin-swc": "1.5.9"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -55,7 +55,7 @@
         "vitest": "catalog:"
     },
     "engines": {
-        "node": ">= 22",
+        "node": ">= 24",
         "pnpm": ">= 10"
     },
     "os": [
