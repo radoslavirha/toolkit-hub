@@ -1,5 +1,11 @@
 # @radoslavirha/types
 
+## 0.2.2
+
+### Patch Changes
+
+- [`6a55e71`](https://github.com/radoslavirha/toolkit-hub/commit/6a55e71471f663bc8c93e12b38fc2e0cd0bb20c4) Thanks [@radoslavirha](https://github.com/radoslavirha)! - CI fixes
+
 ## 0.2.1
 
 ### Patch Changes
