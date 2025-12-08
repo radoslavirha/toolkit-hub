@@ -27,7 +27,7 @@ catalogs:
     '@tsed/di': 8.19.4
     '@tsed/json-mapper': 8.19.4
     '@tsed/logger': 8.0.4
-    '@tsed/mongoose': 8.19.4
+    '@tsed/mongoose': 8.19.5
     '@tsed/openspec': 8.19.4
     '@tsed/platform-express': 8.19.4
     '@tsed/platform-http': 8.19.4
