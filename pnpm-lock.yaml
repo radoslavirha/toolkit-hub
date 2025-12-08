@@ -62,8 +62,8 @@ catalogs:
       specifier: 8.0.4
       version: 8.0.4
     '@tsed/mongoose':
-      specifier: 8.19.4
-      version: 8.19.4
+      specifier: 8.19.5
+      version: 8.19.5
     '@tsed/openspec':
       specifier: 8.19.4
       version: 8.19.4
@@ -416,7 +416,7 @@ importers:
         version: 8.19.4
       '@tsed/mongoose':
         specifier: catalog:tsed
-        version: 8.19.4(@tsed/ajv@8.19.4(@tsed/core@8.19.4)(@tsed/di@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/logger@8.0.4))(@tsed/exceptions@8.19.4(@tsed/core@8.19.4))(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1))(@tsed/core@8.19.4)(@tsed/di@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/logger@8.0.4))(@tsed/json-mapper@8.19.4(@tsed/core@8.19.4)(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4)))(@tsed/logger@8.0.4)(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4))(mongoose@9.0.1)
+        version: 8.19.5(@tsed/ajv@8.19.4(@tsed/core@8.19.4)(@tsed/di@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/logger@8.0.4))(@tsed/exceptions@8.19.4(@tsed/core@8.19.4))(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1))(@tsed/core@8.19.4)(@tsed/di@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/logger@8.0.4))(@tsed/json-mapper@8.19.4(@tsed/core@8.19.4)(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4)))(@tsed/logger@8.0.4)(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4))(mongoose@9.0.1)
       '@tsed/schema':
         specifier: catalog:tsed
         version: 8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4)
@@ -1451,8 +1451,8 @@ packages:
   '@tsed/logger@8.0.4':
     resolution: {integrity: sha512-Ml7oqulFu2v2gZKly39zhpXVsi8G7ybu1NObn+oBI9CYDXqEyxyLbIzp3DB2kMo641ywrwIvdtq7j9d8xTtl9Q==}
 
-  '@tsed/mongoose@8.19.4':
-    resolution: {integrity: sha512-p2kHskfdSKVwXb94YXfx1nhzxhCkTqHedJs+2wCIxr5rZhePBbKF42CRlMR1Bbp+Xp1vJ8lh7a2b5EJ236wpXw==}
+  '@tsed/mongoose@8.19.5':
+    resolution: {integrity: sha512-NQ5vemSJZrHWkX00QWm63p90gDdBO7/gDP0IfPeWIAi7ME7HJYULHSgZCstNo8wsRBI3CVTgD9wDu9KjjXxhkQ==}
     peerDependencies:
       '@tsed/ajv': '>=8.0.0'
       '@tsed/core': '>=8.0.0'
@@ -4546,7 +4546,7 @@ snapshots:
       semver: 7.7.3
       tslib: 2.8.1
 
-  '@tsed/mongoose@8.19.4(@tsed/ajv@8.19.4(@tsed/core@8.19.4)(@tsed/di@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/logger@8.0.4))(@tsed/exceptions@8.19.4(@tsed/core@8.19.4))(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1))(@tsed/core@8.19.4)(@tsed/di@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/logger@8.0.4))(@tsed/json-mapper@8.19.4(@tsed/core@8.19.4)(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4)))(@tsed/logger@8.0.4)(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4))(mongoose@9.0.1)':
+  '@tsed/mongoose@8.19.5(@tsed/ajv@8.19.4(@tsed/core@8.19.4)(@tsed/di@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/logger@8.0.4))(@tsed/exceptions@8.19.4(@tsed/core@8.19.4))(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1))(@tsed/core@8.19.4)(@tsed/di@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/logger@8.0.4))(@tsed/json-mapper@8.19.4(@tsed/core@8.19.4)(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4)))(@tsed/logger@8.0.4)(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4))(mongoose@9.0.1)':
     dependencies:
       '@tsed/ajv': 8.19.4(@tsed/core@8.19.4)(@tsed/di@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/logger@8.0.4))(@tsed/exceptions@8.19.4(@tsed/core@8.19.4))(@tsed/schema@8.19.4(@tsed/core@8.19.4)(@tsed/hooks@8.19.4)(@tsed/openspec@8.19.4))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1)
       '@tsed/core': 8.19.4
