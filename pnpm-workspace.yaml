@@ -31,7 +31,7 @@ catalogs:
     '@tsed/openspec': 8.19.4
     '@tsed/platform-express': 8.19.4
     '@tsed/platform-http': 8.19.4
-    '@tsed/platform-params': 8.19.4
+    '@tsed/platform-params': 8.19.5
     '@tsed/platform-views': 8.19.4
     '@tsed/schema': 8.19.4
     '@tsed/swagger': 8.19.4
