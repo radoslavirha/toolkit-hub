@@ -239,8 +239,8 @@ importers:
         specifier: 'catalog:'
         version: 1.15.3(@swc/helpers@0.5.17)
       '@types/lodash':
-        specifier: 4.17.15
-        version: 4.17.15
+        specifier: 4.17.21
+        version: 4.17.21
       '@types/node':
         specifier: 'catalog:'
         version: 24.10.2
@@ -1183,8 +1183,8 @@ packages:
   '@manypkg/get-packages@1.1.3':
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
 
-  '@mongodb-js/saslprep@1.3.2':
-    resolution: {integrity: sha512-QgA5AySqB27cGTXBFmnpifAi7HxoGUeezwo6p9dI03MuDB6Pp33zgclqVb6oVK3j6I9Vesg0+oojW2XxB59SGg==}
+  '@mongodb-js/saslprep@1.4.0':
+    resolution: {integrity: sha512-ZHzx7Z3rdlWL1mECydvpryWN/ETXJiCxdgQKTAH+djzIPe77HdnSizKBDi1TVDXZjXyOj2IqEG/vPw71ULF06w==}
 
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
@@ -1665,8 +1665,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/lodash@4.17.15':
-    resolution: {integrity: sha512-w/P33JFeySuhN6JLkysYUK2gEmy9kHHFN7E8ro0tkfmlDOgxBDzWEZ/J8cWA+fHqFevpswDTFZnDx+R9lbL6xw==}
+  '@types/lodash@4.17.21':
+    resolution: {integrity: sha512-FOvQ0YPD5NOfPgMzJihoT+Za5pdkDJWcbpuj1DjaKZIr/gxodQjY/uWEFlTNqW2ugXHUiL8lRQgw63dzKHZdeQ==}
 
   '@types/method-override@3.0.0':
     resolution: {integrity: sha512-7XFHR6j7JljprBpzzRZatakUXm1kEGAM3PL/GSsGRHtDvOAKYCdmnXX/5YSl1eQrpJymGs9tRekSWEGaG+Ntjw==}
@@ -4319,7 +4319,7 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@mongodb-js/saslprep@1.3.2':
+  '@mongodb-js/saslprep@1.4.0':
     dependencies:
       sparse-bitfield: 3.0.3
 
@@ -4760,13 +4760,13 @@ snapshots:
 
   '@types/docker-modem@3.0.6':
     dependencies:
-      '@types/node': 24.10.1
+      '@types/node': 24.10.2
       '@types/ssh2': 1.15.5
 
   '@types/dockerode@3.3.47':
     dependencies:
       '@types/docker-modem': 3.0.6
-      '@types/node': 24.10.1
+      '@types/node': 24.10.2
       '@types/ssh2': 1.15.5
 
   '@types/estree@1.0.6': {}
@@ -4780,7 +4780,7 @@ snapshots:
 
   '@types/express-serve-static-core@5.1.0':
     dependencies:
-      '@types/node': 24.10.1
+      '@types/node': 24.10.2
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -4806,7 +4806,7 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/lodash@4.17.15': {}
+  '@types/lodash@4.17.21': {}
 
   '@types/method-override@3.0.0(@types/express@5.0.6)':
     dependencies:
@@ -4849,7 +4849,7 @@ snapshots:
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 24.10.1
+      '@types/node': 24.10.2
 
   '@types/serve-static@1.15.7':
     dependencies:
@@ -4860,15 +4860,15 @@ snapshots:
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 24.10.1
+      '@types/node': 24.10.2
 
   '@types/ssh2-streams@0.1.13':
     dependencies:
-      '@types/node': 24.10.1
+      '@types/node': 24.10.2
 
   '@types/ssh2@0.5.52':
     dependencies:
-      '@types/node': 24.10.1
+      '@types/node': 24.10.2
       '@types/ssh2-streams': 0.1.13
 
   '@types/ssh2@1.15.5':
@@ -6221,7 +6221,7 @@ snapshots:
 
   mongodb@7.0.0:
     dependencies:
-      '@mongodb-js/saslprep': 1.3.2
+      '@mongodb-js/saslprep': 1.4.0
       bson: 7.0.0
       mongodb-connection-string-url: 7.0.0
 

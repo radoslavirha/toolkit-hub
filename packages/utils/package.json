@@ -48,7 +48,7 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
-        "@types/lodash": "4.17.15",
+        "@types/lodash": "4.17.21",
         "@types/node": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "eslint": "catalog:",
