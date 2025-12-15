@@ -4,7 +4,7 @@ packages:
   - 'tsed/*'
 
 catalog:
-  '@swc/core': 1.15.3
+  '@swc/core': 1.15.5
   '@swc/helpers': 0.5.17
   '@types/node': 24.10.2
   '@types/supertest': 6.0.3
