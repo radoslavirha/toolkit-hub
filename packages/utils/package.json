@@ -40,7 +40,7 @@
     },
     "dependencies": {
         "@radoslavirha/types": "workspace:*",
-        "lodash": "4.17.21"
+        "lodash": "4.17.23"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -48,7 +48,7 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
-        "@types/lodash": "4.17.21",
+        "@types/lodash": "4.17.23",
         "@types/node": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "eslint": "catalog:",

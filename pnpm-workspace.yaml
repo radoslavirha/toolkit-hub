@@ -4,35 +4,35 @@ packages:
   - 'tsed/*'
 
 catalog:
-  '@swc/core': 1.15.5
-  '@swc/helpers': 0.5.17
-  '@types/node': 25.0.2
+  '@swc/core': 1.15.11
+  '@swc/helpers': 0.5.18
+  '@types/node': 25.2.3
   '@types/supertest': 6.0.3
-  '@vitest/coverage-v8': 4.0.15
-  eslint: 9.39.1
-  mongoose: 9.0.1
-  supertest: 7.1.4
+  '@vitest/coverage-v8': 4.0.18
+  eslint: 9.39.2
+  mongoose: 9.2.0
+  supertest: 7.2.2
   tslib: 2.8.1
   tsup: 8.5.1
   typescript: 5.9.3
-  typescript-eslint: 8.50.0
-  vitest: 4.0.15
+  typescript-eslint: 8.55.0
+  vitest: 4.0.18
 
 catalogs:
   tsed:
     ajv: 8.17.1
-    '@tsed/ajv': 8.19.5
-    '@tsed/common': 8.19.5
-    '@tsed/core': 8.19.5
-    '@tsed/di': 8.19.5
-    '@tsed/json-mapper': 8.19.5
+    '@tsed/ajv': 8.25.0
+    '@tsed/common': 8.25.0
+    '@tsed/core': 8.25.0
+    '@tsed/di': 8.25.0
+    '@tsed/json-mapper': 8.25.0
     '@tsed/logger': 8.0.4
-    '@tsed/mongoose': 8.19.5
-    '@tsed/openspec': 8.19.5
-    '@tsed/platform-express': 8.19.5
-    '@tsed/platform-http': 8.19.5
-    '@tsed/platform-params': 8.19.5
-    '@tsed/platform-views': 8.19.5
-    '@tsed/schema': 8.19.5
-    '@tsed/swagger': 8.19.5
-    '@tsed/testcontainers-mongo': 8.19.5
+    '@tsed/mongoose': 8.25.0
+    '@tsed/openspec': 8.25.0
+    '@tsed/platform-express': 8.25.0
+    '@tsed/platform-http': 8.25.0
+    '@tsed/platform-params': 8.25.0
+    '@tsed/platform-views': 8.25.0
+    '@tsed/schema': 8.25.0
+    '@tsed/swagger': 8.25.0
+    '@tsed/testcontainers-mongo': 8.25.0
