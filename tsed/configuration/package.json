@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "@radoslavirha/utils": "workspace:*",
-        "config": "4.2.0",
+        "config": "4.2.1",
         "dotenv": "17.2.4",
         "read-pkg": "10.1.0"
     },
