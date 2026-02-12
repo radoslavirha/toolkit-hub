@@ -309,8 +309,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils
       config:
-        specifier: 4.2.0
-        version: 4.2.0
+        specifier: 4.3.0
+        version: 4.3.0
       dotenv:
         specifier: 17.2.4
         version: 17.2.4
@@ -2134,8 +2134,8 @@ packages:
   confbox@0.1.8:
     resolution: {integrity: sha512-RMtmw0iFkeR4YV+fUOSucriAQNb9g8zFR52MWCtl+cCZOFRNL6zeB395vPzFhEjjn4fMxXudmELnl/KF/WrK6w==}
 
-  config@4.2.0:
-    resolution: {integrity: sha512-mk+ugmNm+BWc2YRlwmuJkORUvUyEP6w9cDUKU2sljFLYI4StXjqGDqQTA2wITi8sYaRdC/PGOuktqy7+Y4PApw==}
+  config@4.3.0:
+    resolution: {integrity: sha512-nY/JbYPBxOCTC+Kj9dUf21t49VxwsL6GXRsAxlTY9N6MBTx/6TBQgT2t5PsAY+XUCMCNudARJPevUZeN3NhyHQ==}
     engines: {node: '>= 20.0.0'}
 
   consola@3.4.0:
@@ -5345,7 +5345,7 @@ snapshots:
 
   confbox@0.1.8: {}
 
-  config@4.2.0:
+  config@4.3.0:
     dependencies:
       json5: 2.2.3
 
