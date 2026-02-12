@@ -33,6 +33,6 @@ catalogs:
     '@tsed/platform-http': 8.25.0
     '@tsed/platform-params': 8.25.0
     '@tsed/platform-views': 8.25.0
-    '@tsed/schema': 8.25.0
+    '@tsed/schema': 8.25.1
     '@tsed/swagger': 8.25.0
     '@tsed/testcontainers-mongo': 8.25.0
