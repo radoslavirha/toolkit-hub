@@ -20,18 +20,18 @@ catalog:
 catalogs:
   tsed:
     ajv: 8.17.1
-    '@tsed/ajv': 8.25.0
-    '@tsed/common': 8.25.0
-    '@tsed/core': 8.25.0
-    '@tsed/di': 8.25.0
-    '@tsed/json-mapper': 8.25.0
+    '@tsed/ajv': 8.25.1
+    '@tsed/common': 8.25.1
+    '@tsed/core': 8.25.1
+    '@tsed/di': 8.25.1
+    '@tsed/json-mapper': 8.25.1
     '@tsed/logger': 8.0.4
-    '@tsed/mongoose': 8.25.0
-    '@tsed/openspec': 8.25.0
-    '@tsed/platform-express': 8.25.0
-    '@tsed/platform-http': 8.25.0
-    '@tsed/platform-params': 8.25.0
-    '@tsed/platform-views': 8.25.0
-    '@tsed/schema': 8.25.0
-    '@tsed/swagger': 8.25.0
-    '@tsed/testcontainers-mongo': 8.25.0
+    '@tsed/mongoose': 8.25.1
+    '@tsed/openspec': 8.25.1
+    '@tsed/platform-express': 8.25.1
+    '@tsed/platform-http': 8.25.1
+    '@tsed/platform-params': 8.25.1
+    '@tsed/platform-views': 8.25.1
+    '@tsed/schema': 8.25.1
+    '@tsed/swagger': 8.25.1
+    '@tsed/testcontainers-mongo': 8.25.1
