@@ -2,6 +2,53 @@
 
 Base TypeScript compiler configuration for strict, modern Node.js applications. Provides sensible defaults for ESNext + Node.js projects with support for decorators and optimal type checking.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Base TypeScript compiler configuration with strict settings.
+
+**Install in pnpm monorepo:**
+```bash
+# Install in packages that need TypeScript compilation
+pnpm --filter YOUR_PACKAGE_NAME add -D @radoslavirha/config-typescript typescript tslib
+```
+
+**Essential Usage:**
+```json
+// tsconfig.json
+{
+  "extends": "@radoslavirha/config-typescript",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"]
+}
+```
+
+**Included Settings:**
+- Strict mode enabled
+- ESNext target + NodeNext module resolution
+- Decorator support (experimentalDecorators, emitDecoratorMetadata)
+- JSON module imports
+- Skip lib check for faster compilation
+
+**Override if needed:**
+```json
+{
+  "extends": "@radoslavirha/config-typescript",
+  "compilerOptions": {
+    "target": "ES2020",  // Override specific options
+    "outDir": "./build"
+  }
+}
+```
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash

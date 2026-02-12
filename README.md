@@ -2,6 +2,48 @@
 
 A comprehensive monorepo of TypeScript utilities, configurations, and Ts.ED framework extensions designed for building robust microservices. This toolkit provides standardized patterns, reusable utilities, and ready-to-use integrations to accelerate development across multiple projects.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Monorepo of TypeScript utilities, configs, and Ts.ED framework extensions for microservices.
+
+**Install in pnpm monorepo (from repository root):**
+```bash
+# Ts.ED framework packages
+pnpm --filter YOUR_SERVICE add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration
+pnpm --filter YOUR_SERVICE add @radoslavirha/tsed-swagger @radoslavirha/tsed-mongoose @radoslavirha/tsed-common
+
+# Utilities (framework-agnostic)
+pnpm --filter YOUR_SERVICE add @radoslavirha/utils @radoslavirha/types
+
+# Development configs (install in packages that need them)
+pnpm --filter YOUR_PACKAGE add -D @radoslavirha/config-eslint @radoslavirha/config-typescript @radoslavirha/config-tsup @radoslavirha/config-vitest
+```
+
+**Quick Links to Package Quick References:**
+
+Ts.ED Framework:
+- [tsed-platform](tsed/platform#-quick-reference-for-ai-agents) - Express server with middleware
+- [tsed-configuration](tsed/configuration#-quick-reference-for-ai-agents) - Config management
+- [tsed-swagger](tsed/swagger#-quick-reference-for-ai-agents) - API documentation
+- [tsed-mongoose](tsed/mongoose#-quick-reference-for-ai-agents) - MongoDB integration
+- [tsed-common](tsed/common#-quick-reference-for-ai-agents) - Base models
+
+Utilities:
+- [utils](packages/utils#-for-ai-agents) - Common functions (ALWAYS use instead of reimplementing)
+- [types](packages/types#-quick-reference-for-ai-agents) - TypeScript utility types
+
+Configs:
+- [config-tsup](config/config-tsup#-quick-reference-for-ai-agents) - Library builds
+- [config-vitest](config/config-vitest#-quick-reference-for-ai-agents) - Testing
+- [config-eslint](config/config-eslint#-quick-reference-for-ai-agents) - Linting
+- [config-typescript](config/config-typescript#-quick-reference-for-ai-agents) - TypeScript compiler
+
+**Full documentation below** ↓
+
+---
+
 ## 📦 Packages at a Glance
 
 ### Configuration Packages (`config/`)

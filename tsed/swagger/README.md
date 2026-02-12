@@ -2,6 +2,66 @@
 
 Automated OpenAPI/Swagger documentation for Ts.ED applications with multi-version support, custom branding, and security scheme configuration. This package provides a declarative configuration approach for setting up Swagger UI with versioned API documentation, pre-configured security schemes, and seamless integration with Ts.ED's dependency injection system.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Automated OpenAPI/Swagger documentation with multi-version support for Ts.ED applications.
+
+**Install in pnpm monorepo:**
+```bash
+# From repository root
+pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-swagger @radoslavirha/tsed-configuration @radoslavirha/tsed-platform @tsed/swagger @tsed/schema @tsed/di
+```
+
+**Essential Usage:**
+```typescript
+// 1. Bootstrap configuration (index.ts)
+import { SwaggerConfig, SwaggerProvider } from '@radoslavirha/tsed-swagger';
+
+const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+  title: config.api.service,
+  version: config.api.version,
+  documents: [
+    CommonUtils.buildModel(SwaggerDocumentConfig, {
+      docs: 'v1',
+      security: [SwaggerSecurityScheme.BEARER_JWT]
+    })
+  ]
+});
+const swaggerProvider = new SwaggerProvider(swaggerConfig);
+
+// 2. Server configuration
+import { SwaggerController } from '@radoslavirha/tsed-swagger';
+
+@Configuration({
+  mount: { '/api': controllers },
+  swagger: swaggerProvider.config  // Add Swagger settings
+})
+export class Server extends BaseServer {}
+
+// 3. Document controllers
+import { Docs } from '@radoslavirha/tsed-swagger';
+
+@Controller('/users')
+@Docs('v1')  // Include in v1 documentation
+export class UserController {
+  @Get('/:id')
+  @Returns(200, User)
+  async get(@PathParams('id') id: string): Promise<User> {}
+}
+```
+
+**Key Components:**
+- `SwaggerConfig` - Main configuration model
+- `SwaggerProvider` - Converts config to Ts.ED SwaggerSettings
+- `SwaggerController` - Custom-branded UI with version selector
+- `@Docs(version)` - Decorator to include controllers in specific API versions
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash

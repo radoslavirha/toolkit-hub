@@ -2,6 +2,48 @@
 
 TypeScript utility types for enhanced type safety and reusability. Provides specialized utility types for enum dictionaries and deep partial objects.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** TypeScript utility types for enums and deep partials.
+
+**Install in pnpm monorepo:**
+```bash
+pnpm --filter YOUR_PACKAGE_NAME add @radoslavirha/types
+```
+
+**Essential Usage:**
+```typescript
+import { EnumDictionary, FullPartial } from '@radoslavirha/types';
+
+// EnumDictionary - Type-safe enum mappings
+enum Role { ADMIN = 'ADMIN', USER = 'USER' }
+
+const permissions: EnumDictionary<Role, string[]> = {
+  [Role.ADMIN]: ['read', 'write', 'delete'],
+  [Role.USER]: ['read']  // TypeScript ensures all enum values are mapped
+};
+
+// FullPartial - Deep partial (recursive)
+interface Config {
+  database: { host: string; port: number; };
+  cache: { ttl: number; };
+}
+
+const partial: FullPartial<Config> = {
+  database: { host: 'localhost' }  // port is optional (deep partial)
+};
+```
+
+**Key Exports:**
+- `EnumDictionary<TKey, TType>` - Type-safe enum-to-value mappings
+- `FullPartial<T>` - Recursive partial type
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash

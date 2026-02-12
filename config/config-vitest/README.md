@@ -2,6 +2,58 @@
 
 Pre-configured Vitest test runner with SWC for blazing-fast TypeScript testing. Includes coverage thresholds, decorator support, and optimized settings for Ts.ED applications.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Fast TypeScript testing with Vitest + SWC.
+
+**Install in pnpm monorepo:**
+```bash
+# Install in packages that need testing
+pnpm --filter YOUR_PACKAGE_NAME add -D @radoslavirha/config-vitest vitest @swc/core @vitest/coverage-v8
+```
+
+**Essential Usage:**
+```typescript
+// vitest.config.ts
+import { defineConfig } from 'vitest/config';
+import { defaultConfig } from '@radoslavirha/config-vitest';
+
+export default defineConfig(defaultConfig);
+```
+
+```json
+// package.json
+{
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  }
+}
+```
+
+**Coverage Thresholds:**
+- `defaultConfig` - 95% coverage (branches, functions, lines, statements)
+- `Coverage90` - 90% thresholds
+- `Coverage100` - 100% thresholds
+
+**Custom Coverage:**
+```typescript
+import { defaultConfig, Coverage90 } from '@radoslavirha/config-vitest';
+import { ObjectUtils } from '@radoslavirha/utils';
+
+export default defineConfig(
+  ObjectUtils.mergeDeep(defaultConfig, { test: { coverage: Coverage90 } })
+);
+```
+
+**Features:** SWC compilation, decorator support, 95% default coverage
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash

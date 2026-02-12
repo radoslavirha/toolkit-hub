@@ -2,6 +2,64 @@
 
 Mongoose integration utilities for Ts.ED applications providing a clean architecture pattern for MongoDB integration. This package enforces separation between database schemas (Mongoose models) and API models through abstract mapper and service base classes. It provides type-safe bidirectional mapping, automatic population handling, and reusable CRUD patterns for building scalable microservices with clean layered architecture.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Clean architecture MongoDB integration with Mongoose for Ts.ED applications.
+
+**Install in pnpm monorepo:**
+```bash
+# From repository root
+pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-mongoose @radoslavirha/tsed-common @tsed/core @tsed/mongoose @tsed/schema mongoose
+```
+
+**Essential Pattern:**
+```typescript
+// 1. Mongoose Schema
+@Model() class EntityMongo extends BaseMongo { @Property() name: string; }
+
+// 2. API Model  
+class Entity extends BaseModel { @Property() name: string; }
+
+// 3. Mapper
+@Injectable() class EntityMapper extends MongoMapper<EntityMongo, Entity> {
+  async mongoToModel(mongo: EntityMongo): Promise<Entity> {
+    const model = new Entity();
+    this.mongoToModelBase(model, mongo);
+    model.name = mongo.name;
+    return model;
+  }
+  async modelToMongoCreateObject(model: Entity): Promise<MongoosePlainObjectCreate<EntityMongo>> {
+    return { name: model.name };
+  }
+  async modelToMongoUpdateObject(model: Entity): Promise<MongoosePlainObjectUpdate<EntityMongo>> {
+    return { name: model.name };
+  }
+}
+
+// 4. Service
+@Injectable() class EntityService extends MongoService<EntityMongo, Entity> {
+  constructor(@Inject(EntityMongo) model, mapper: EntityMapper) { super(model, mapper); }
+}
+
+// 5. Controller
+@Controller('/entities') class EntityController {
+  constructor(private service: EntityService) {}
+  @Get('/') getAll() { return this.service.find(); }
+  @Post('/') create(@BodyParams() data) { return this.service.create(data); }
+}
+```
+
+**Key Classes:**
+- `BaseMongo` - Base schema (_id, createdAt, updatedAt)
+- `MongoMapper<MONGO, MODEL>` - Abstract bidirectional mapper
+- `MongoService<MONGO, MODEL>` - Abstract service with CRUD + mapping
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash

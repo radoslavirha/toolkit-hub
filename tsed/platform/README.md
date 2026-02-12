@@ -4,6 +4,59 @@
 
 Express-based Ts.ED platform adapter providing standardized bootstrap, base server with common middleware stack (CORS, compression, body parsing), and performance-tracked handler pattern for building microservices quickly.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Express-based Ts.ED platform with pre-configured middleware and bootstrap utilities.
+
+**Install in pnpm monorepo:**
+```bash
+# From repository root
+pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration @tsed/di @tsed/platform-express @tsed/platform-http body-parser compression cookie-parser cors method-override
+```
+
+**Essential Pattern:**
+```typescript
+// 1. Create Server
+import { BaseServer } from '@radoslavirha/tsed-platform';
+import * as api from './controllers/index.js';
+
+@Configuration({ mount: { '/api': [...Object.values(api)] } })
+export class Server extends BaseServer {
+  $beforeRoutesInit(): void { this.registerMiddlewares(); }
+}
+
+// 2. Bootstrap (index.ts)
+import { Platform, ServerConfiguration } from '@radoslavirha/tsed-platform';
+
+const config = injector().get<ConfigService>(ConfigService);
+const platform = await Platform.bootstrap(Server, {
+  ...config.server,
+  api: config.api
+});
+await platform.listen();
+
+// 3. Optional: Use BaseHandler for business logic
+@Injectable()
+class Handler extends BaseHandler<Request, Response> {
+  constructor(private service: Service) {}
+  protected async performOperation(req: Request): Promise<Response> {
+    return this.service.process(req);
+  }
+}
+```
+
+**Key Components:**
+- `Platform.bootstrap()` - Bootstrap Ts.ED application
+- `BaseServer` - Pre-configured Express server with middleware (CORS, compression, body-parser)
+- `BaseHandler<IRequest, IResponse>` - Performance-tracked handler with logging
+- `ServerConfiguration` - Type for Ts.ED config with API metadata
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash

@@ -2,6 +2,56 @@
 
 Pre-configured tsup build configurations for TypeScript libraries with dual ESM/CJS output. Simplifies library bundling with TypeScript declaration generation and tree-shaking support.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Pre-configured TypeScript library builds with dual ESM/CJS output.
+
+**Install in pnpm monorepo:**
+```bash
+# Install in packages that need building
+pnpm --filter YOUR_PACKAGE_NAME add -D tsup @radoslavirha/config-tsup
+```
+
+**Essential Usage:**
+```typescript
+// tsup.config.ts
+import { defineConfig } from 'tsup';
+import { config } from '@radoslavirha/config-tsup';
+
+export default defineConfig(config);
+```
+
+```json
+// package.json
+{
+  "scripts": {
+    "build": "tsup"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+    }
+  }
+}
+```
+
+**Available Configs:**
+- `config` - Dual ESM + CJS output (recommended)
+- `esmConfig` - ESM only
+- `cjsConfig` - CJS only
+
+**Features:** Tree-shaking, TypeScript declarations, source maps, external dependencies, minification.
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash

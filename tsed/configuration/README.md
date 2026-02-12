@@ -2,6 +2,59 @@
 
 Central configuration provider for Ts.ED microservices. Aggregates configuration data from multiple sources (JSON files, environment variables, package.json) into a unified, type-safe provider with automatic schema validation using Ajv and Ts.ED decorators. This is a core service used across all microservices to provide consistent configuration management, validation, and access patterns.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Type-safe configuration management with validation for Ts.ED applications.
+
+**Install in pnpm monorepo:**
+```bash
+# From repository root
+pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-configuration @tsed/ajv @tsed/core @tsed/di @tsed/json-mapper @tsed/schema ajv
+```
+
+**Essential Pattern:**
+```typescript
+// 1. Define ConfigModel
+import { ConfigModel as BaseConfigModel } from '@radoslavirha/tsed-configuration';
+
+export class ConfigModel extends BaseConfigModel {
+  @Property() @Required() database: { url: string; };
+}
+
+// 2. Create ConfigService
+import { ConfigProvider } from '@radoslavirha/tsed-configuration';
+
+@Injectable()
+export class ConfigService extends ConfigProvider<ConfigModel> {
+  public static readonly options = { configModel: ConfigModel };
+  constructor() { super(ConfigService.options); }
+}
+
+// 3. Use in bootstrap (index.ts)
+import { injector } from '@tsed/di';
+
+const config = injector().get<ConfigService>(ConfigService);
+const platform = await Platform.bootstrap(Server, {
+  ...config.server,  // httpPort, httpsPort, etc.
+  api: config.api    // service, version, description
+});
+```
+
+**Configuration Sources (priority order):**
+1. Environment variables (e.g., `PORT=3000`)
+2. JSON config files (`config/default.json`, `config/{env}.json`)
+3. package.json (`name`, `version`)
+
+**Key Classes:**
+- `ConfigProvider<T>` - Abstract base provider with multi-source aggregation
+- `ConfigModel` - Base model with `api`, `server`, `env` properties
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash

@@ -2,6 +2,56 @@
 
 Shareable ESLint configuration for TypeScript projects using ESLint v9 with TypeScript ESLint and Stylistic plugins. Provides opinionated rules for code quality and consistent formatting across TypeScript microservices.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Shared ESLint configuration for TypeScript projects.
+
+**Install in pnpm monorepo:**
+```bash
+# Install in packages that need linting
+pnpm --filter YOUR_PACKAGE_NAME add -D @radoslavirha/config-eslint eslint
+```
+
+**Essential Usage:**
+```javascript
+// eslint.config.mjs
+import config from '@radoslavirha/config-eslint';
+
+export default config;
+```
+
+```json
+// package.json
+{
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  }
+}
+```
+
+**Configured Rules:**
+- TypeScript ESLint recommended
+- Stylistic formatting (semicolons, quotes, indentation)
+- Auto-ignores: node_modules, dist, coverage, .tsed
+
+**Customization:**
+```javascript
+// eslint.config.mjs
+import baseConfig from '@radoslavirha/config-eslint';
+
+export default [
+  ...baseConfig,
+  { rules: { 'your-rule': 'off' } }  // Override rules
+];
+```
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash

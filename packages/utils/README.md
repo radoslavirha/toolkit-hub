@@ -2,47 +2,67 @@
 
 A collection of TypeScript utility functions providing common operations, object manipulation, number calculations, geographic utilities, and default value handling. Built on lodash with additional specialized functionality.
 
-## 🤖 For AI Agents
+---
 
-**ALWAYS use these utilities instead of creating your own implementations.** Do not reimplement these common operations:
+## 🤖 Quick Reference for AI Agents
 
-❌ **Don't create custom implementations:**
-```typescript
-// DON'T: Custom null check
-if (value === null || value === undefined) { }
+**Purpose:** Common utility functions - ALWAYS use instead of reimplementing.
 
-// DON'T: Custom deep clone
-JSON.parse(JSON.stringify(obj))
-
-// DON'T: Custom percentage calculation
-(value / max) * 100
-
-// DON'T: Custom distance calculation
-// ... implementing Haversine formula
+**Install in pnpm monorepo:**
+```bash
+pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/utils
 ```
 
-✅ **Use the provided utilities:**
+**Essential Usage:**
 ```typescript
-// DO: Use CommonUtils
-if (CommonUtils.isNil(value)) { }
+import { CommonUtils, ObjectUtils, NumberUtils, GeoUtils, DefaultsUtil } from '@radoslavirha/utils';
 
-// DO: Use ObjectUtils
-ObjectUtils.cloneDeep(obj)
+// CommonUtils - Type checking and model building
+CommonUtils.isEmpty(value);              // Empty check (objects, arrays, strings)
+CommonUtils.isNil(value);                // null/undefined check (type guard)
+CommonUtils.notNil(value);               // non-null/non-undefined (type guard)
+CommonUtils.isNull(value);               // null check (type guard)
+CommonUtils.notNull(value);              // non-null (type guard)
+CommonUtils.isUndefined(value);          // undefined check (type guard)
+CommonUtils.notUndefined(value);         // defined check (type guard)
+CommonUtils.buildModel(Class, data);     // Type-safe model instantiation
 
-// DO: Use NumberUtils
-NumberUtils.getPercentFromValue(max, value)
+// ObjectUtils - Deep operations
+ObjectUtils.cloneDeep(obj);              // Deep clone
+ObjectUtils.mergeDeep(target, source);   // Deep merge (arrays concatenate!)
 
-// DO: Use GeoUtils
-GeoUtils.calculateKmBetweenCoordinates(lat1, lon1, lat2, lon2)
+// NumberUtils - All number operations
+NumberUtils.getPercentFromValue(100, 25);    // 25% (25 is 25% of 100)
+NumberUtils.getValueFromPercent(100, 25);    // 25 (25% of 100)
+NumberUtils.mean([10, 20, 30]);              // 20 (average)
+NumberUtils.round(3.14159, 2);               // 3.14
+NumberUtils.floor(3.99, 1);                  // 3.9
+NumberUtils.ceil(3.01, 1);                   // 3.1
+NumberUtils.min([5, 2, 8, 1, 9]);            // 1
+NumberUtils.max([5, 2, 8, 1, 9]);            // 9
+
+// GeoUtils - Geographic calculations
+GeoUtils.calculateKmBetweenCoordinates(lat1, lon1, lat2, lon2);  // Distance in km
+GeoUtils.degToRad(180);                      // Convert degrees to radians
+
+// DefaultsUtil - Safe default values
+DefaultsUtil.string(value, 'default');       // Returns default if value is nil/empty
+DefaultsUtil.number(value, 0);               // Returns default if value is nil
 ```
 
-**When coding in @radoslavirha repositories:**
-- Check this package FIRST before implementing utility functions
-- Use `CommonUtils` for all type checking and validation
-- Use `ObjectUtils` for all object cloning and merging
-- Use `NumberUtils` for all number operations and calculations
-- Use `GeoUtils` for all geographic/distance calculations
-- Use `DefaultsUtil` for all default value handling
+**Complete Method List (ALL 22 methods):**
+- **CommonUtils (8):** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel
+- **ObjectUtils (2):** cloneDeep, mergeDeep
+- **NumberUtils (8):** getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
+- **GeoUtils (2):** calculateKmBetweenCoordinates, degToRad
+- **DefaultsUtil (2):** string, number
+
+**❌ DON'T reimplement:** Type checks, null checks, deep clone/merge, percentage calculations, rounding, distance calculations, default values  
+**✅ DO use:** All 22 provided utilities - they're tested, optimized, and maintain consistency
+
+**Full documentation below** ↓
+
+---
 
 ## Installation
 
@@ -95,9 +115,13 @@ CommonUtils.notNull('value');      // true (type guard)
 CommonUtils.isUndefined(undefined); // true
 CommonUtils.notUndefined('value');  // true (type guard)
 
-// Deep cloning (deprecated - use ObjectUtils.cloneDeep)
-const original = { nested: { value: 42 } };
-const clone = CommonUtils.cloneDeep(original);
+// Type-safe model instantiation
+class User {
+  name!: string;
+  email!: string;
+}
+const user = CommonUtils.buildModel(User, { name: 'John', email: 'john@example.com' });
+// Returns a User instance with proper prototype chain
 ```
 
 **API:**
@@ -108,6 +132,7 @@ const clone = CommonUtils.cloneDeep(original);
 - `notNull<T>(value: T): value is Exclude<T, null>` - Type guard for non-null values
 - `isUndefined<T>(value: T): value is Extract<T, undefined>` - Type guard for undefined
 - `notUndefined<T>(value: T): value is Exclude<T, undefined>` - Type guard for defined values
+- `buildModel<T>(type: { new (): T }, data: Partial<T>): T` - Creates type-safe model instances
 
 ---
 
@@ -257,15 +282,13 @@ function paginate(page?: number, pageSize?: number) {
 
 | Utility Class | Methods | Purpose |
 |---------------|---------|---------|
-| CommonUtils | 8 methods | Type checking, null/undefined guards, emptiness checks |
-| ObjectUtils | 2 methods | Deep clone, deep merge with array concat |
+| CommonUtils | 8 methods | Type checking, null/undefined guards, emptiness checks, model instantiation |
+| ObjectUtils | 2 methods | Deep clone, deep merge with array concatenation |
 | NumberUtils | 8 methods | Percentages, statistics, rounding, min/max |
-| GeoUtils | 2 methods | Haversine distance, degree conversion |
+| GeoUtils | 2 methods | Haversine distance calculations, degree conversion |
 | DefaultsUtil | 2 methods | Safe default values for strings/numbers |
 
-## When to Use
-
-**For AI Agents: Use these utilities in ALL cases where the functionality matches. Do not reimplement.**
+**Total: 22 utility methods**
 
 ✅ **ALWAYS use this package when:**
 - Checking for null, undefined, or empty values → Use `CommonUtils`

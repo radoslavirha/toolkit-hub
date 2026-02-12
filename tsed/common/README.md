@@ -2,6 +2,56 @@
 
 Base models and common utilities for Ts.ED applications. Provides standardized model patterns with automatic timestamp handling and API documentation support.
 
+---
+
+## 🤖 Quick Reference for AI Agents
+
+**Purpose:** Base models with standard fields for Ts.ED API responses.
+
+**Install in pnpm monorepo:**
+```bash
+pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-common @tsed/schema
+```
+
+**Essential Usage:**
+```typescript
+import { BaseModel } from '@radoslavirha/tsed-common';
+import { Property } from '@tsed/schema';
+
+// Extend BaseModel for API response models
+export class User extends BaseModel {
+  @Property()
+  name: string;
+
+  @Property()
+  email: string;
+}
+
+// BaseModel provides: id (string), createdAt (Date), updatedAt (Date)
+// All decorated for OpenAPI documentation
+```
+
+**Use with mapper pattern:**
+```typescript
+// Convert from Mongoose to API model
+toModel(doc: UserMongo): User {
+  return {
+    id: doc._id.toString(),
+    createdAt: doc.createdAt,
+    updatedAt: doc.updatedAt,
+    name: doc.name,
+    email: doc.email
+  };
+}
+```
+
+**Key Export:**
+- `BaseModel` - Standard fields: `id`, `createdAt`, `updatedAt` (all with @Property, @Format decorators)
+
+**Full documentation below** ↓
+
+---
+
 ## Installation
 
 ```bash
