@@ -1,22 +1,162 @@
 # @radoslavirha/types
 
-Variety of shareable types.
+TypeScript utility types for enhanced type safety and reusability. Provides specialized utility types for enum dictionaries and deep partial objects.
 
 ## Installation
 
-`pnpm add -D @radoslavirha/types`
+```bash
+# Simple repository
+pnpm add @radoslavirha/types
+
+# Monorepo - install in specific workspace package
+pnpm --filter my-service add @radoslavirha/types
+
+# Monorepo - install in all workspace packages (if shared)
+pnpm -r add @radoslavirha/types
+```
+
+See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+
+## What's Included
+
+- **EnumDictionary<TKey, TType>** - Type-safe enum-to-value mappings
+- **FullPartial<T>** - Deep partial type utility (recursive)
 
 ## Usage
 
-```ts
+### EnumDictionary
+
+Creates a type-safe dictionary where keys are constrained to enum values and values are of a specified type. Ensures all enum values are mapped and prevents typos in dictionary keys.
+
+```typescript
 import { EnumDictionary } from '@radoslavirha/types';
 
-enum KEYS {
-    A = 'A',
-    B = 'B'
+// Define an enum
+enum UserRole {
+    ADMIN = 'ADMIN',
+    USER = 'USER',
+    GUEST = 'GUEST'
 }
-const dictionary: EnumDictionary<KEYS, string> = {
-    [KEYS.A]: 'value',
-    [KEYS.B]: 'another value',
+
+// Create a type-safe dictionary
+const rolePermissions: EnumDictionary<UserRole, string[]> = {
+    [UserRole.ADMIN]: ['read', 'write', 'delete'],
+    [UserRole.USER]: ['read', 'write'],
+    [UserRole.GUEST]: ['read'],
 };
+
+// TypeScript ensures all roles are defined
+// Missing a role? Compile error!
+// Typo in role name? Compile error!
+
+// Access values safely
+const adminPerms = rolePermissions[UserRole.ADMIN]; // string[]
 ```
+
+**Complex objects example:**
+
+```typescript
+enum Status {
+    PENDING = 'PENDING',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED'
+}
+
+interface StatusConfig {
+    label: string;
+    color: string;
+    icon: string;
+}
+
+const statusConfigs: EnumDictionary<Status, StatusConfig> = {
+    [Status.PENDING]: {
+        label: 'Pending Review',
+        color: 'yellow',
+        icon: 'clock'
+    },
+    [Status.APPROVED]: {
+        label: 'Approved',
+        color: 'green',
+        icon: 'check'
+    },
+    [Status.REJECTED]: {
+        label: 'Rejected',
+        color: 'red',
+        icon: 'x'
+    }
+};
+
+function getStatusDisplay(status: Status): string {
+    const config = statusConfigs[status];
+    return `${config.icon} ${config.label}`;
+}
+```
+
+### FullPartial
+
+Makes all properties of an object optional recursively, including nested objects. Unlike TypeScript's built-in `Partial<T>`, this utility type applies the partial transformation to all nested levels.
+
+```typescript
+import { FullPartial } from '@radoslavirha/types';
+
+// Complex nested type
+interface User {
+    id: string;
+    name: string;
+    profile: {
+        email: string;
+        address: {
+            street: string;
+            city: string;
+            country: string;
+        };
+        preferences: {
+            theme: string;
+            notifications: boolean;
+        };
+    };
+}
+
+// Standard Partial - only first level optional
+type ShallowPartial = Partial<User>;
+// ❌ profile.email is still required if profile exists
+
+// FullPartial - all levels optional
+type DeepPartial = FullPartial<User>;
+// ✅ Every property at every level is optional
+
+// Practical usage: partial update objects
+function updateUser(id: string, updates: FullPartial<User>): void {
+    // Can update any nested property without providing the full structure
+    const validUpdate: FullPartial<User> = {
+        profile: {
+            address: {
+                city: 'New York' // Only city, no need for street/country
+            }
+        }
+    };
+}
+```
+
+**Partial update example:**
+```typescript
+class UserService {
+    async update(id: string, updates: FullPartial<User>): Promise<User> {
+        // Apply only provided properties at any depth
+    }
+}
+```
+
+## When to Use
+
+✅ Use **EnumDictionary** when:
+- Mapping enum values to configurations or data
+- Need exhaustive enum handling with type safety
+
+✅ Use **FullPartial** when:
+- Implementing partial update APIs with nested objects
+- Need optional nested properties (built-in `Partial<T>` only works on first level)
+
+## Related Packages
+
+- [@radoslavirha/utils](../utils/) - Uses `FullPartial` in `ObjectUtils.mergeDeep`

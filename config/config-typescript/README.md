@@ -1,20 +1,127 @@
 # @radoslavirha/config-typescript
 
-Provides common typescript configuration **@radoslavirha/config-typescript/tsconfig.json**
+Base TypeScript compiler configuration for strict, modern Node.js applications. Provides sensible defaults for ESNext + Node.js projects with support for decorators and optimal type checking.
 
 ## Installation
 
-`pnpm add -D typescript @radoslavirha/config-typescript`
+```bash
+# Simple repository
+pnpm add -D @radoslavirha/config-typescript tslib typescript
+
+# Monorepo - install at workspace root (shared config)
+pnpm add -D -w @radoslavirha/config-typescript tslib typescript
+```
+
+See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+
+**Peer dependencies:**
+- `typescript` >= 5.0.0
+- `tslib` >= 2.0.0
+
+## What's Included
+
+### Compiler Settings
+
+✅ **Strict Mode** - All strict type checking options enabled  
+✅ **ESNext Target** - Modern JavaScript features  
+✅ **Node.js Module Resolution** - NodeNext for modern Node.js  
+✅ **Decorator Support** - Experimental decorators (for Ts.ED)  
+✅ **JSON Modules** - Import JSON files as modules  
+✅ **Skip Lib Check** - Faster compilation by skipping type checks in `.d.ts` files
+
+### Key Features
+
+- **Zero Configuration** - Works out of the box
+- **Ts.ED Compatible** - Decorator settings for Ts.ED framework
+- **Monorepo Ready** - Supports TypeScript project references
+- **Production Optimized** - No incremental builds or diagnostics
 
 ## Usage
 
-Create `tsconfig.json`:
+### Basic Setup
+
+Create `tsconfig.json` in your project root:
 
 ```json
 {
     "extends": "@radoslavirha/config-typescript/tsconfig.json",
     "compilerOptions": {
+        "rootDir": "./src",
         "composite": false
     }
 }
 ```
+
+### Compilation
+
+Use TypeScript compiler directly or via build tools:
+
+```bash
+# Direct compilation
+pnpm tsc
+
+# With build tool (tsup, swc, etc.)
+pnpm build
+```
+
+## Customization
+
+### Override Compiler Options
+
+```json
+{
+    "extends": "@radoslavirha/config-typescript/tsconfig.json",
+    "compilerOptions": {
+        "composite": false,
+        "outDir": "./dist",
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": ["*"]
+        }
+    }
+}
+```
+
+### Change Source Directory
+
+```json
+{
+    "extends": "@radoslavirha/config-typescript/tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "./lib",
+        "composite": false
+    },
+    "include": ["lib/**/*"]
+}
+```
+
+### Add Type Definitions
+
+```json
+{
+    "extends": "@radoslavirha/config-typescript/tsconfig.json",
+    "compilerOptions": {
+        "types": ["node", "jest"],
+        "composite": false
+    }
+}
+```
+
+## When to Use
+
+✅ Use this config when:
+- Building Node.js applications or libraries
+- Using TypeScript with ESNext features
+- Working with Ts.ED or other decorator frameworks
+- Need strict type checking
+- Starting a new microservice
+
+❌ Don't use when:
+- Targeting browsers (use different target/lib settings)
+- Using non-Node.js runtime (Deno, Bun)
+
+## Related Packages
+
+- [@radoslavirha/config-eslint](../config-eslint/) - ESLint rules for TypeScript
+- [@radoslavirha/config-tsup](../config-tsup/) - Build configuration using this tsconfig
+- [@radoslavirha/config-vitest](../config-vitest/) - Test configuration with TypeScript support

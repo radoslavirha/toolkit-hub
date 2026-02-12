@@ -1,5 +1,5 @@
 import { Required } from '@tsed/schema';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { ConfigProviderOptions, ConfigProvider } from './ConfigProvider.js';
 import { injector } from '@tsed/di';
 import { BaseConfig } from './models/BaseConfig.js';
@@ -20,6 +20,19 @@ const options: ConfigProviderOptions<ConfigModel> = {
 };
 
 describe('ConfigProvider', () => {
+    let consoleLogSpy: ReturnType<typeof vi.spyOn>;
+    let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+        consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+        consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        consoleLogSpy.mockRestore();
+        consoleErrorSpy.mockRestore();
+    });
+
     describe('Should work with DI @UseOpts', () => {
         it('Should pass', async () => {
             const loader = injector().get(ConfigProvider, { useOpts: options });
@@ -53,6 +66,19 @@ describe('ConfigProvider', () => {
                 envs: expect.any(Object)
             });
         });
+
+        it('Should pass with debug enabled', async () => {
+            const debugOptions: ConfigProviderOptions<ConfigModel> = {
+                configModel: ConfigModel,
+                debug: true
+            };
+            const loader = injector().get(ConfigProvider, { useOpts: debugOptions });
+    
+            expect(loader.api).toBeDefined();
+            expect(loader.config).toBeDefined();
+            expect(consoleLogSpy).toHaveBeenCalledWith('Raw configuration loaded:', expect.any(String));
+            expect(consoleLogSpy).toHaveBeenCalledWith('Generated JSON Schema:', expect.any(String));
+        });
     
         it('Should pass - isTest', async () => {
             const loader = injector().get(ConfigProvider, { useOpts: options });
@@ -81,6 +107,8 @@ describe('ConfigProvider', () => {
             } catch (error) {
                 expect(error).toBeInstanceOf(Error);
                 expect((error as Error).message).toMatch('Invalid configuration!');
+                expect(consoleErrorSpy).toHaveBeenCalledWith('Configuration validation failed:');
+                expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('root:'));
             }
         });
     });
@@ -126,6 +154,19 @@ describe('ConfigProvider', () => {
     
             expect(loader.isTest).toEqual(true);
         });
+
+        it('Should pass with debug enabled', async () => {
+            const debugOptions: ConfigProviderOptions<ConfigModel> = {
+                configModel: ConfigModel,
+                debug: true
+            };
+            const loader = new ConfigProvider<ConfigModel>(debugOptions);
+    
+            expect(loader.api).toBeDefined();
+            expect(loader.config).toBeDefined();
+            expect(consoleLogSpy).toHaveBeenCalledWith('Raw configuration loaded:', expect.any(String));
+            expect(consoleLogSpy).toHaveBeenCalledWith('Generated JSON Schema:', expect.any(String));
+        });
         
         it('Should load package.json', async () => {
             const loader = new ConfigProvider<ConfigModel>(options);
@@ -138,7 +179,6 @@ describe('ConfigProvider', () => {
         });
     
         it('Should fail', async () => {
-            // const spy = vi.spyOn(console, 'error').mockImplementation(vi.fn());
             const options: ConfigProviderOptions<ConfigModelInvalid> = {
                 configModel: ConfigModelInvalid
             };
@@ -148,7 +188,8 @@ describe('ConfigProvider', () => {
             } catch (error) {
                 expect(error).toBeInstanceOf(Error);
                 expect((error as Error).message).toMatch('Invalid configuration!');
-                // expect(spy).toBeCalledWith(expect.stringContaining('Config file: '));
+                expect(consoleErrorSpy).toHaveBeenCalledWith('Configuration validation failed:');
+                expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('root:'));
             }
         });
     });

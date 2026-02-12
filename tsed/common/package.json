@@ -53,7 +53,6 @@
         "tslib": "catalog:",
         "tsup": "catalog:",
         "typescript": "catalog:",
-        "typescript-eslint": "catalog:",
         "vitest": "catalog:"
     },
     "peerDependencies": {

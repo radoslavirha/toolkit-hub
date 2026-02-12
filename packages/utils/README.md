@@ -1,17 +1,287 @@
 # @radoslavirha/utils
 
-Variety of shareable utils.
+A collection of TypeScript utility functions providing common operations, object manipulation, number calculations, geographic utilities, and default value handling. Built on lodash with additional specialized functionality.
+
+## 🤖 For AI Agents
+
+**ALWAYS use these utilities instead of creating your own implementations.** Do not reimplement these common operations:
+
+❌ **Don't create custom implementations:**
+```typescript
+// DON'T: Custom null check
+if (value === null || value === undefined) { }
+
+// DON'T: Custom deep clone
+JSON.parse(JSON.stringify(obj))
+
+// DON'T: Custom percentage calculation
+(value / max) * 100
+
+// DON'T: Custom distance calculation
+// ... implementing Haversine formula
+```
+
+✅ **Use the provided utilities:**
+```typescript
+// DO: Use CommonUtils
+if (CommonUtils.isNil(value)) { }
+
+// DO: Use ObjectUtils
+ObjectUtils.cloneDeep(obj)
+
+// DO: Use NumberUtils
+NumberUtils.getPercentFromValue(max, value)
+
+// DO: Use GeoUtils
+GeoUtils.calculateKmBetweenCoordinates(lat1, lon1, lat2, lon2)
+```
+
+**When coding in @radoslavirha repositories:**
+- Check this package FIRST before implementing utility functions
+- Use `CommonUtils` for all type checking and validation
+- Use `ObjectUtils` for all object cloning and merging
+- Use `NumberUtils` for all number operations and calculations
+- Use `GeoUtils` for all geographic/distance calculations
+- Use `DefaultsUtil` for all default value handling
 
 ## Installation
 
-`pnpm add -D @radoslavirha/utils`
+```bash
+# Simple repository
+pnpm add @radoslavirha/utils
+
+# Monorepo - install in specific workspace package
+pnpm --filter my-service add @radoslavirha/utils
+
+# Monorepo - install in all workspace packages (if shared)
+pnpm -r add @radoslavirha/utils
+```
+
+See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+
+**Dependencies:**
+- `lodash` - Core utility functions
+- `@radoslavirha/types` - TypeScript utility types
+
+## What's Included
+
+- **CommonUtils** - General purpose utilities (isEmpty, isNil, type checks)
+- **ObjectUtils** - Deep cloning and merging with array concatenation
+- **NumberUtils** - Percentage calculations, rounding, statistical operations
+- **GeoUtils** - Geographic distance calculations (Haversine formula)
+- **DefaultsUtil** - Safe default value handling for strings and numbers
 
 ## Usage
 
-```ts
-import { CommonUtils } from '@radoslavirha/utils';
-import { defineConfig } from 'vitest/config';
+### CommonUtils
 
-const object = { key: 'value' };
-const clone = CommonUtils.cloneDeep(object);
+General purpose utility functions for common operations.
+
+```typescript
+import { CommonUtils } from '@radoslavirha/utils';
+
+// Empty checks
+CommonUtils.isEmpty([]);           // true
+CommonUtils.isEmpty({ key: 'value' }); // false
+
+// Null/undefined checks (type guards)
+CommonUtils.isNil(null);           // true
+CommonUtils.isNil(undefined);      // true
+CommonUtils.notNil('value');       // true (type guard)
+
+CommonUtils.isNull(null);          // true
+CommonUtils.notNull('value');      // true (type guard)
+
+CommonUtils.isUndefined(undefined); // true
+CommonUtils.notUndefined('value');  // true (type guard)
+
+// Deep cloning (deprecated - use ObjectUtils.cloneDeep)
+const original = { nested: { value: 42 } };
+const clone = CommonUtils.cloneDeep(original);
 ```
+
+**API:**
+- `isEmpty<T>(value: T): boolean` - Checks if value is empty (objects, arrays, strings, etc.)
+- `isNil<T>(value: T): value is Extract<T, null | undefined>` - Type guard for null or undefined
+- `notNil<T>(value: T): value is NonNullable<T>` - Type guard for non-null/non-undefined values
+- `isNull<T>(value: T): value is Extract<T, null>` - Type guard for null
+- `notNull<T>(value: T): value is Exclude<T, null>` - Type guard for non-null values
+- `isUndefined<T>(value: T): value is Extract<T, undefined>` - Type guard for undefined
+- `notUndefined<T>(value: T): value is Exclude<T, undefined>` - Type guard for defined values
+
+---
+
+### ObjectUtils
+
+Object manipulation utilities with deep operations.
+
+```typescript
+import { ObjectUtils } from '@radoslavirha/utils';
+
+// Deep clone
+const original = { nested: { array: [1, 2, 3] } };
+const clone = ObjectUtils.cloneDeep(original);
+clone.nested.array.push(4); // original unchanged
+
+// Deep merge with array concatenation
+const target = { 
+    name: 'App', 
+    features: ['auth', 'api'],
+    config: { port: 3000 }
+};
+const source = { 
+    features: ['logging'],
+    config: { host: 'localhost' }
+};
+const merged = ObjectUtils.mergeDeep(target, source);
+// Result: {
+//   name: 'App',
+//   features: ['auth', 'api', 'logging'],  // Arrays concatenated!
+//   config: { port: 3000, host: 'localhost' }
+// }
+```
+
+**API:**
+- `cloneDeep<T>(object: T): T` - Creates a deep clone
+- `mergeDeep<T>(target: T, source: FullPartial<T>): T` - Deep merge with array concatenation
+
+**Note:** Unlike lodash's `merge`, `mergeDeep` concatenates arrays instead of replacing them.
+
+---
+
+### NumberUtils
+
+Number operations including percentages, rounding, and statistics.
+
+```typescript
+import { NumberUtils } from '@radoslavirha/utils';
+
+// Percentage calculations
+NumberUtils.getPercentFromValue(200, 50);  // 25 (50 is 25% of 200)
+NumberUtils.getValueFromPercent(200, 25);  // 50 (25% of 200 is 50)
+
+// Statistical operations
+NumberUtils.mean([10, 20, 30, 40, 50]);   // 30
+
+// Rounding operations
+NumberUtils.round(3.14159, 2);    // 3.14
+NumberUtils.floor(3.99, 1);       // 3.9
+NumberUtils.ceil(3.01, 1);        // 3.1
+
+// Min/Max
+NumberUtils.min([5, 2, 8, 1, 9]); // 1
+NumberUtils.max([5, 2, 8, 1, 9]); // 9
+```
+
+**API:**
+- `getPercentFromValue(maxValue: number, value: number): number` - Calculate percentage
+- `getValueFromPercent(maxValue: number, percent: number): number` - Calculate value from percentage
+- `mean(values: number[]): number` - Calculate mean/average
+- `round(value: number, precision?: number): number` - Round to precision (default: 0)
+- `floor(value: number, precision?: number): number` - Floor to precision
+- `ceil(value: number, precision?: number): number` - Ceil to precision
+- `min(values: number[]): number` - Find minimum value
+- `max(values: number[]): number` - Find maximum value
+
+---
+
+### GeoUtils
+
+Geographic calculations using the Haversine formula.
+
+```typescript
+import { GeoUtils } from '@radoslavirha/utils';
+
+// Calculate distance between two coordinates
+const distance = GeoUtils.calculateKmBetweenCoordinates(
+    40.7128, -74.0060,  // New York City
+    51.5074, -0.1278    // London
+);
+console.log(distance); // ~5570.2464 km (rounded to 4 decimal places)
+
+// Convert degrees to radians (utility method)
+const radians = GeoUtils.degToRad(180); // 3.14159...
+```
+
+**API:**
+- `calculateKmBetweenCoordinates(lat1: number, lon1: number, lat2: number, lon2: number): number` - Distance in kilometers (rounded to 4 decimals)
+- `degToRad(deg: number): number` - Convert degrees to radians
+
+**Use Cases:**
+- Distance-based search (find nearby locations)
+- Travel distance calculations
+- Geofencing logic
+- Route optimization
+
+---
+
+### DefaultsUtil
+
+Safe default value handling for optional parameters.
+
+```typescript
+import { DefaultsUtil } from '@radoslavirha/utils';
+
+// String defaults
+DefaultsUtil.string(null, 'default');      // 'default'
+DefaultsUtil.string(undefined, 'default'); // 'default'
+DefaultsUtil.string('', 'default');        // 'default' (empty string → default)
+DefaultsUtil.string('value', 'default');   // 'value'
+
+// Number defaults
+DefaultsUtil.number(null, 42);      // 42
+DefaultsUtil.number(undefined, 42); // 42
+DefaultsUtil.number(0, 42);         // 0 (zero is valid)
+DefaultsUtil.number(100, 42);       // 100
+
+// Practical usage in functions
+function greet(name?: string): string {
+    const userName = DefaultsUtil.string(name, 'Guest');
+    return `Hello, ${userName}!`;
+}
+
+function paginate(page?: number, pageSize?: number) {
+    const currentPage = DefaultsUtil.number(page, 1);
+    const size = DefaultsUtil.number(pageSize, 20);
+    return { page: currentPage, size };
+}
+```
+
+**API:**
+- `string(value: string | undefined | null, defaultValue: string): string` - Returns default if value is nil or empty
+- `number(value: number | undefined | null, defaultValue: number): number` - Returns default if value is nil
+
+**Note:** For strings, empty string (`''`) is considered "no value" and returns the default. For numbers, `0` is a valid value.
+
+## API Reference Summary
+
+| Utility Class | Methods | Purpose |
+|---------------|---------|---------|
+| CommonUtils | 8 methods | Type checking, null/undefined guards, emptiness checks |
+| ObjectUtils | 2 methods | Deep clone, deep merge with array concat |
+| NumberUtils | 8 methods | Percentages, statistics, rounding, min/max |
+| GeoUtils | 2 methods | Haversine distance, degree conversion |
+| DefaultsUtil | 2 methods | Safe default values for strings/numbers |
+
+## When to Use
+
+**For AI Agents: Use these utilities in ALL cases where the functionality matches. Do not reimplement.**
+
+✅ **ALWAYS use this package when:**
+- Checking for null, undefined, or empty values → Use `CommonUtils`
+- Cloning or merging objects → Use `ObjectUtils`
+- Performing any number calculations (percentages, rounding, statistics) → Use `NumberUtils`
+- Calculating geographic distances → Use `GeoUtils`
+- Setting default values for optional parameters → Use `DefaultsUtil`
+- Working in @radoslavirha repositories → These utilities are REQUIRED
+
+❌ **Never:**
+- Implement custom type checking functions
+- Use `JSON.parse(JSON.stringify())` for cloning
+- Write custom percentage or rounding logic
+- Implement Haversine or other geo formulas
+- Use `value || defaultValue` pattern (use `DefaultsUtil` instead)
+
+## Related Packages
+
+- [@radoslavirha/types](../types/) - TypeScript utility types used by ObjectUtils

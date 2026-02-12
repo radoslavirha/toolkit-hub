@@ -27,8 +27,7 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "eslint": "catalog:",
         "tslib": "catalog:",
-        "typescript": "catalog:",
-        "typescript-eslint": "catalog:"
+        "typescript": "catalog:"
     },
     "engines": {
         "node": ">= 24",

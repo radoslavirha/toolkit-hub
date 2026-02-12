@@ -1,4 +1,4 @@
-import { config } from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
 import Config from '@radoslavirha/config-eslint';
 
-export default config(...Config);
+export default defineConfig(...Config);

@@ -2,28 +2,6 @@ import { describe, expect, it } from 'vitest';
 import { CommonUtils } from './CommonUtils.js';
 
 describe('CommonUtils', () => {
-    describe('cloneDeep', () => {
-        class TestModel {
-            public property: string;
-
-            constructor(property: string) {
-                this.property = property;
-            }
-        }
-
-        it('should deeply clone', async () => {
-            const model = new TestModel('value 1');
-
-            const clone = CommonUtils.cloneDeep(model);
-
-            expect(clone).toBeInstanceOf(TestModel);
-            expect(clone.property).toEqual('value 1');
-
-            model.property = 'value 2';
-
-            expect(clone.property).toEqual('value 1');
-        });
-    });
 
     describe('isEmpty', () => {
         it('check empty object', async () => {
@@ -100,6 +78,64 @@ describe('CommonUtils', () => {
             const response = CommonUtils.notNil('string');
 
             expect(response).toBeTruthy();
+        });
+    });
+
+    describe('isNull', () => {
+        it('check number', async () => {
+            const response = CommonUtils.isNull(24);
+
+            expect(response).toBeFalsy();
+        });
+
+        it('check boolean', async () => {
+            const response = CommonUtils.isNull(true);
+
+            expect(response).toBeFalsy();
+        });
+
+        it('check undefined', async () => {
+            const response = CommonUtils.isNull(undefined);
+
+            expect(response).toBeFalsy();
+        });
+
+        it('check null', async () => {
+            const response = CommonUtils.isNull(null);
+
+            expect(response).toBeTruthy();
+        });
+    });
+
+    describe('notNull', () => {
+        it('check string', async () => {
+            const response = CommonUtils.notNull('string');
+
+            expect(response).toBeTruthy();
+        });
+
+        it('check number', async () => {
+            const response = CommonUtils.notNull(24);
+
+            expect(response).toBeTruthy();
+        });
+
+        it('check boolean', async () => {
+            const response = CommonUtils.notNull(true);
+
+            expect(response).toBeTruthy();
+        });
+
+        it('check undefined', async () => {
+            const response = CommonUtils.notNull(undefined);
+
+            expect(response).toBeTruthy();
+        });
+
+        it('check null', async () => {
+            const response = CommonUtils.notNull(null);
+
+            expect(response).toBeFalsy();
         });
     });
 

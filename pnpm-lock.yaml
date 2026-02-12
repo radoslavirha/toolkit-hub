@@ -39,9 +39,6 @@ catalogs:
     typescript:
       specifier: 5.9.3
       version: 5.9.3
-    typescript-eslint:
-      specifier: 8.55.0
-      version: 8.55.0
     vitest:
       specifier: 4.0.18
       version: 4.0.18
@@ -112,18 +109,15 @@ importers:
       '@stylistic/eslint-plugin':
         specifier: 5.8.0
         version: 5.8.0(eslint@9.39.2)
+      typescript-eslint:
+        specifier: 8.55.0
+        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
+    devDependencies:
       eslint:
         specifier: 'catalog:'
         version: 9.39.2
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
 
   config/config-tsup:
-    dependencies:
-      tsup:
-        specifier: 'catalog:'
-        version: 8.5.1(@swc/core@1.15.11(@swc/helpers@0.5.18))(postcss@8.5.3)(typescript@5.9.3)(yaml@2.8.2)
     devDependencies:
       '@radoslavirha/config-eslint':
         specifier: workspace:*
@@ -137,15 +131,15 @@ importers:
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
+      tsup:
+        specifier: 'catalog:'
+        version: 8.5.1(@swc/core@1.15.11(@swc/helpers@0.5.18))(postcss@8.5.3)(typescript@5.9.3)(yaml@2.8.2)
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
 
   config/config-typescript:
-    dependencies:
+    devDependencies:
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -155,18 +149,9 @@ importers:
 
   config/config-vitest:
     dependencies:
-      '@swc/core':
-        specifier: 'catalog:'
-        version: 1.15.11(@swc/helpers@0.5.18)
-      '@vitest/coverage-v8':
-        specifier: 'catalog:'
-        version: 4.0.18(vitest@4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2))
       unplugin-swc:
         specifier: 1.5.9
         version: 1.5.9(@swc/core@1.15.11(@swc/helpers@0.5.18))(rollup@4.34.8)
-      vitest:
-        specifier: 'catalog:'
-        version: 4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2)
     devDependencies:
       '@radoslavirha/config-eslint':
         specifier: workspace:*
@@ -177,6 +162,12 @@ importers:
       '@radoslavirha/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
+      '@swc/core':
+        specifier: 'catalog:'
+        version: 1.15.11(@swc/helpers@0.5.18)
+      '@vitest/coverage-v8':
+        specifier: 'catalog:'
+        version: 4.0.18(vitest@4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2))
       eslint:
         specifier: 'catalog:'
         version: 9.39.2
@@ -189,9 +180,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
-      typescript-eslint:
+      vitest:
         specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
+        version: 4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2)
 
   packages/types:
     devDependencies:
@@ -210,9 +201,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
 
   packages/utils:
     dependencies:
@@ -259,9 +247,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
       vitest:
         specifier: 'catalog:'
         version: 4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2)
@@ -314,9 +299,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
       vitest:
         specifier: 'catalog:'
         version: 4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2)
@@ -326,24 +308,6 @@ importers:
       '@radoslavirha/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@tsed/ajv':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/exceptions@8.25.0(@tsed/core@8.25.0))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1)
-      '@tsed/core':
-        specifier: catalog:tsed
-        version: 8.25.0
-      '@tsed/di':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4)
-      '@tsed/json-mapper':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/core@8.25.0)(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))
-      '@tsed/schema':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)
-      ajv:
-        specifier: catalog:tsed
-        version: 8.17.1
       config:
         specifier: 4.2.0
         version: 4.2.0
@@ -372,6 +336,21 @@ importers:
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.18
+      '@tsed/ajv':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/exceptions@8.25.0(@tsed/core@8.25.0))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1)
+      '@tsed/core':
+        specifier: catalog:tsed
+        version: 8.25.0
+      '@tsed/di':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4)
+      '@tsed/json-mapper':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/core@8.25.0)(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))
+      '@tsed/schema':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)
       '@types/config':
         specifier: 3.3.5
         version: 3.3.5
@@ -381,6 +360,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.0.18(vitest@4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2))
+      ajv:
+        specifier: catalog:tsed
+        version: 8.17.1
       eslint:
         specifier: 'catalog:'
         version: 9.39.2
@@ -393,36 +375,18 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
       vitest:
         specifier: 'catalog:'
         version: 4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2)
 
   tsed/mongoose:
     dependencies:
-      '@radoslavirha/tsed-common':
-        specifier: workspace:*
-        version: link:../common
       '@radoslavirha/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.18
-      '@tsed/core':
-        specifier: catalog:tsed
-        version: 8.25.0
-      '@tsed/mongoose':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/ajv@8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/exceptions@8.25.0(@tsed/core@8.25.0))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1))(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/json-mapper@8.25.0(@tsed/core@8.25.0)(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)))(@tsed/logger@8.0.4)(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(mongoose@9.2.0)
-      '@tsed/schema':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)
-      mongoose:
-        specifier: 'catalog:'
-        version: 9.2.0
     devDependencies:
       '@radoslavirha/config-eslint':
         specifier: workspace:*
@@ -436,18 +400,30 @@ importers:
       '@radoslavirha/config-vitest':
         specifier: workspace:*
         version: link:../../config/config-vitest
+      '@radoslavirha/tsed-common':
+        specifier: workspace:*
+        version: link:../common
       '@swc/core':
         specifier: 'catalog:'
         version: 1.15.11(@swc/helpers@0.5.18)
+      '@tsed/core':
+        specifier: catalog:tsed
+        version: 8.25.0
       '@tsed/di':
         specifier: catalog:tsed
         version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4)
       '@tsed/json-mapper':
         specifier: catalog:tsed
         version: 8.25.0(@tsed/core@8.25.0)(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))
+      '@tsed/mongoose':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/ajv@8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/exceptions@8.25.0(@tsed/core@8.25.0))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1))(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/json-mapper@8.25.0(@tsed/core@8.25.0)(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)))(@tsed/logger@8.0.4)(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(mongoose@9.2.0)
       '@tsed/platform-http':
         specifier: catalog:tsed
         version: 8.25.0(@tsed/engines@8.5.0)(@tsed/logger@8.0.4)(@tsed/openspec@8.25.0)(@types/multer@1.4.12)
+      '@tsed/schema':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)
       '@tsed/testcontainers-mongo':
         specifier: catalog:tsed
         version: 8.25.0(@testcontainers/mongodb@10.18.0)(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/platform-http@8.25.0(@tsed/engines@8.5.0)(@tsed/logger@8.0.4)(@tsed/openspec@8.25.0)(@types/multer@1.4.12))(mongodb@7.0.0)(testcontainers@10.18.0)
@@ -457,6 +433,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 9.39.2
+      mongoose:
+        specifier: 'catalog:'
+        version: 9.2.0
       supertest:
         specifier: 'catalog:'
         version: 7.2.2
@@ -469,9 +448,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
       vitest:
         specifier: 'catalog:'
         version: 4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2)
@@ -484,27 +460,6 @@ importers:
       '@radoslavirha/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@tsed/ajv':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/exceptions@8.25.0(@tsed/core@8.25.0))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1)
-      '@tsed/core':
-        specifier: catalog:tsed
-        version: 8.25.0
-      '@tsed/di':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4)
-      '@tsed/logger':
-        specifier: catalog:tsed
-        version: 8.0.4
-      '@tsed/platform-express':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/json-mapper@8.25.0(@tsed/core@8.25.0)(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)))(@tsed/logger@8.0.4)(@tsed/openspec@8.25.0)(@tsed/platform-http@8.25.0(@tsed/engines@8.5.0)(@tsed/logger@8.0.4)(@tsed/openspec@8.25.0)(@types/multer@1.4.12))(@tsed/platform-views@8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/engines@8.5.0)(@tsed/exceptions@8.25.0(@tsed/core@8.25.0))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(body-parser@2.2.2)(express@4.21.2)(multer@2.0.2)
-      '@tsed/platform-http':
-        specifier: catalog:tsed
-        version: 8.25.0(@tsed/engines@8.5.0)(@tsed/logger@8.0.4)(@tsed/openspec@8.25.0)(@types/multer@1.4.12)
-      ajv:
-        specifier: catalog:tsed
-        version: 8.17.1
       body-parser:
         specifier: 2.2.2
         version: 2.2.2
@@ -539,6 +494,24 @@ importers:
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.18
+      '@tsed/ajv':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/exceptions@8.25.0(@tsed/core@8.25.0))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1)
+      '@tsed/core':
+        specifier: catalog:tsed
+        version: 8.25.0
+      '@tsed/di':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4)
+      '@tsed/logger':
+        specifier: catalog:tsed
+        version: 8.0.4
+      '@tsed/platform-express':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/json-mapper@8.25.0(@tsed/core@8.25.0)(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)))(@tsed/logger@8.0.4)(@tsed/openspec@8.25.0)(@tsed/platform-http@8.25.0(@tsed/engines@8.5.0)(@tsed/logger@8.0.4)(@tsed/openspec@8.25.0)(@types/multer@1.4.12))(@tsed/platform-views@8.25.0(@tsed/core@8.25.0)(@tsed/di@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4))(@tsed/engines@8.5.0)(@tsed/exceptions@8.25.0(@tsed/core@8.25.0))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)))(@tsed/schema@8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0))(body-parser@2.2.2)(express@4.21.2)(multer@2.0.2)
+      '@tsed/platform-http':
+        specifier: catalog:tsed
+        version: 8.25.0(@tsed/engines@8.5.0)(@tsed/logger@8.0.4)(@tsed/openspec@8.25.0)(@types/multer@1.4.12)
       '@tsed/schema':
         specifier: catalog:tsed
         version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/openspec@8.25.0)
@@ -563,6 +536,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.0.18(vitest@4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2))
+      ajv:
+        specifier: catalog:tsed
+        version: 8.17.1
       eslint:
         specifier: 'catalog:'
         version: 9.39.2
@@ -578,27 +554,43 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
       vitest:
         specifier: 'catalog:'
         version: 4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2)
 
   tsed/swagger:
     dependencies:
-      '@radoslavirha/tsed-configuration':
-        specifier: workspace:*
-        version: link:../configuration
-      '@radoslavirha/tsed-platform':
-        specifier: workspace:*
-        version: link:../platform
       '@radoslavirha/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.18
+    devDependencies:
+      '@radoslavirha/config-eslint':
+        specifier: workspace:*
+        version: link:../../config/config-eslint
+      '@radoslavirha/config-tsup':
+        specifier: workspace:*
+        version: link:../../config/config-tsup
+      '@radoslavirha/config-typescript':
+        specifier: workspace:*
+        version: link:../../config/config-typescript
+      '@radoslavirha/config-vitest':
+        specifier: workspace:*
+        version: link:../../config/config-vitest
+      '@radoslavirha/tsed-configuration':
+        specifier: workspace:*
+        version: link:../configuration
+      '@radoslavirha/tsed-platform':
+        specifier: workspace:*
+        version: link:../platform
+      '@radoslavirha/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@swc/core':
+        specifier: 'catalog:'
+        version: 1.15.11(@swc/helpers@0.5.18)
       '@tsed/di':
         specifier: catalog:tsed
         version: 8.25.0(@tsed/core@8.25.0)(@tsed/hooks@8.25.0)(@tsed/logger@8.0.4)
@@ -623,25 +615,6 @@ importers:
       '@tsed/swagger':
         specifier: catalog:tsed
         version: 8.25.0(@tsed/platform-http@8.25.0(@tsed/engines@8.5.0)(@tsed/logger@8.0.4)(@tsed/openspec@8.25.0)(@types/multer@1.4.12))
-    devDependencies:
-      '@radoslavirha/config-eslint':
-        specifier: workspace:*
-        version: link:../../config/config-eslint
-      '@radoslavirha/config-tsup':
-        specifier: workspace:*
-        version: link:../../config/config-tsup
-      '@radoslavirha/config-typescript':
-        specifier: workspace:*
-        version: link:../../config/config-typescript
-      '@radoslavirha/config-vitest':
-        specifier: workspace:*
-        version: link:../../config/config-vitest
-      '@radoslavirha/types':
-        specifier: workspace:*
-        version: link:../../packages/types
-      '@swc/core':
-        specifier: 'catalog:'
-        version: 1.15.11(@swc/helpers@0.5.18)
       '@types/html-minifier-terser':
         specifier: 7.0.2
         version: 7.0.2
@@ -669,9 +642,6 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.55.0(eslint@9.39.2)(typescript@5.9.3)
       vitest:
         specifier: 'catalog:'
         version: 4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2)
@@ -4762,13 +4732,13 @@ snapshots:
 
   '@types/docker-modem@3.0.6':
     dependencies:
-      '@types/node': 25.0.2
+      '@types/node': 25.2.3
       '@types/ssh2': 1.15.5
 
   '@types/dockerode@3.3.47':
     dependencies:
       '@types/docker-modem': 3.0.6
-      '@types/node': 25.0.2
+      '@types/node': 25.2.3
       '@types/ssh2': 1.15.5
 
   '@types/estree@1.0.6': {}
@@ -4782,7 +4752,7 @@ snapshots:
 
   '@types/express-serve-static-core@5.1.0':
     dependencies:
-      '@types/node': 25.0.2
+      '@types/node': 25.2.3
       '@types/qs': 6.14.0
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -4851,7 +4821,7 @@ snapshots:
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 25.0.2
+      '@types/node': 25.2.3
 
   '@types/serve-static@1.15.7':
     dependencies:
@@ -4862,15 +4832,15 @@ snapshots:
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 25.0.2
+      '@types/node': 25.2.3
 
   '@types/ssh2-streams@0.1.13':
     dependencies:
-      '@types/node': 25.0.2
+      '@types/node': 25.2.3
 
   '@types/ssh2@0.5.52':
     dependencies:
-      '@types/node': 25.0.2
+      '@types/node': 25.2.3
       '@types/ssh2-streams': 0.1.13
 
   '@types/ssh2@1.15.5':

@@ -1,9 +1,10 @@
 import stylisticPlugin from '@stylistic/eslint-plugin';
-import { config, configs } from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
+import { configs } from 'typescript-eslint';
 
 const ignores = ['coverage/**', 'dist/**', 'node_modules/**'];
 
-export default config(
+export default defineConfig(
     { ignores },
     ...configs.recommended, // Apply recommended TS rules
     {
