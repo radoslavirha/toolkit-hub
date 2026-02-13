@@ -39,6 +39,58 @@ describe('CommonUtils', () => {
 
             expect(response).toBeFalsy();
         });
+
+        it('check empty Map', async () => {
+            const response = CommonUtils.isEmpty(new Map());
+
+            expect(response).toBeTruthy();
+        });
+
+        it('check non-empty Map', async () => {
+            const map = new Map();
+            map.set('key', 'value');
+            const response = CommonUtils.isEmpty(map);
+
+            expect(response).toBeFalsy();
+        });
+
+        it('check empty Set', async () => {
+            const response = CommonUtils.isEmpty(new Set());
+
+            expect(response).toBeTruthy();
+        });
+
+        it('check non-empty Set', async () => {
+            const set = new Set();
+            set.add('value');
+            const response = CommonUtils.isEmpty(set);
+
+            expect(response).toBeFalsy();
+        });
+
+        it('check null', async () => {
+            const response = CommonUtils.isEmpty(null);
+
+            expect(response).toBeTruthy();
+        });
+
+        it('check undefined', async () => {
+            const response = CommonUtils.isEmpty(undefined);
+
+            expect(response).toBeTruthy();
+        });
+
+        it('check number (always non-empty)', async () => {
+            const response = CommonUtils.isEmpty(0);
+
+            expect(response).toBeTruthy();
+        });
+
+        it('check boolean (always non-empty)', async () => {
+            const response = CommonUtils.isEmpty(false);
+
+            expect(response).toBeTruthy();
+        });
     });
 
     describe('isNil', () => {

@@ -27,6 +27,18 @@ describe('DefaultsUtil', () => {
             
             expect(result).toBe('fallback');
         });
+
+        it('returns string with whitespace when value has only whitespace', () => {
+            const result = DefaultsUtil.string('   ', 'fallback');
+            
+            expect(result).toBe('   ');
+        });
+
+        it('returns string with special characters', () => {
+            const result = DefaultsUtil.string('!@#$%', 'fallback');
+            
+            expect(result).toBe('!@#$%');
+        });
     });
 
     describe('number', () => {
@@ -46,6 +58,18 @@ describe('DefaultsUtil', () => {
             const result = DefaultsUtil.number(7, 42);
 
             expect(result).toBe(7);
+        });
+
+        it('returns zero when value is zero', () => {
+            const result = DefaultsUtil.number(0, 42);
+
+            expect(result).toBe(0);
+        });
+
+        it('returns negative number when value is negative', () => {
+            const result = DefaultsUtil.number(-5, 42);
+
+            expect(result).toBe(-5);
         });
     });
 });
