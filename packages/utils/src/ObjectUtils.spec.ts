@@ -38,6 +38,47 @@ describe('ObjectUtils', () => {
             expect(cloned).not.toBe(original); // Ensure it's a different reference
             expect(cloned instanceof TestClass).toBe(true); // Ensure the cloned object is still an instance of TestClass
         });
+
+        it('should handle null values', () => {
+            const original = { a: null, b: { c: null } };
+            const cloned = ObjectUtils.cloneDeep(original);
+
+            expect(cloned).toEqual(original);
+            expect(cloned).not.toBe(original);
+        });
+
+        it('should handle undefined values', () => {
+            const original = { a: undefined, b: { c: undefined } };
+            const cloned = ObjectUtils.cloneDeep(original);
+
+            expect(cloned).toEqual(original);
+            expect(cloned).not.toBe(original);
+        });
+
+        it('should handle Date objects', () => {
+            const original = { date: new Date('2023-01-01') };
+            const cloned = ObjectUtils.cloneDeep(original);
+
+            expect(cloned.date).toEqual(original.date);
+            expect(cloned.date).not.toBe(original.date);
+        });
+
+        it('should handle empty objects', () => {
+            const original = {};
+            const cloned = ObjectUtils.cloneDeep(original);
+
+            expect(cloned).toEqual(original);
+            expect(cloned).not.toBe(original);
+        });
+
+        it('should handle arrays with mixed types', () => {
+            const original = [1, 'string', { a: 1 }, [2, 3], null, undefined];
+            const cloned = ObjectUtils.cloneDeep(original);
+
+            expect(cloned).toEqual(original);
+            expect(cloned).not.toBe(original);
+            expect(cloned[2]).not.toBe(original[2]);
+        });
     });
 
     describe('mergeDeep', () => {
@@ -79,6 +120,78 @@ describe('ObjectUtils', () => {
 
             expect(merged).not.toBe(target); // Ensure it's a different reference
             expect(merged.b).not.toBe(target.b); // Ensure nested objects are also new references
+        });
+
+        it('should handle empty source object', () => {
+            const target = { a: 1, b: { c: 2 } };
+            const source = {};
+            
+            const merged = ObjectUtils.mergeDeep(target, source);
+
+            expect(merged).toEqual(target);
+            expect(merged).not.toBe(target);
+        });
+
+        it('should handle empty target object', () => {
+            const target = {};
+            const source = { a: 1, b: { c: 2 } };
+            
+            const merged = ObjectUtils.mergeDeep(target, source);
+
+            expect(merged).toEqual(source);
+        });
+
+        it('should merge nested arrays by concatenation', () => {
+            const target = { arr: [1, 2, 3] };
+            const source = { arr: [4, 5] };
+            
+            const merged = ObjectUtils.mergeDeep(target, source);
+
+            expect(merged.arr).toEqual([1, 2, 3, 4, 5]);
+        });
+
+        it('should handle null values in source', () => {
+            const target = { a: 1, b: { c: 2 } };
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const source = { b: { c: null as any } };
+            
+            const merged = ObjectUtils.mergeDeep(target, source);
+
+            expect(merged.b.c).toBeNull();
+        });
+
+        it('should deeply merge multiple levels', () => {
+            const target = { 
+                a: { 
+                    b: { 
+                        c: { 
+                            d: 1 
+                        } 
+                    } 
+                } 
+            };
+            const source = { 
+                a: { 
+                    b: { 
+                        c: { 
+                            e: 2 
+                        } 
+                    } 
+                } 
+            };
+            
+            const merged = ObjectUtils.mergeDeep(target, source);
+
+            expect(merged).toEqual({
+                a: {
+                    b: {
+                        c: {
+                            d: 1,
+                            e: 2
+                        }
+                    }
+                }
+            });
         });
     });
 });
