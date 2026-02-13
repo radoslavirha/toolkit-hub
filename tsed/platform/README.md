@@ -381,205 +381,12 @@ async update(
 }
 ```
 
-## Complete Working Example
+## See Also
 
-Full Ts.ED microservice using all platform components:
-
-```typescript
-// src/config/ConfigService.ts
-import { Injectable } from '@tsed/di';
-import { ConfigProvider, ConfigProviderOptions } from '@radoslavirha/tsed-configuration';
-import { ConfigModel } from './ConfigModel';
-
-@Injectable()
-export class ConfigService extends ConfigProvider<ConfigModel> {
-    public static readonly options: ConfigProviderOptions<ConfigModel> = {
-        configModel: ConfigModel
-    };
-
-    constructor() {
-        super(ConfigService.options);
-    }
-}
-```
-
-```typescript
-// src/models/Request.ts
-import { Property, Required } from '@tsed/schema';
-
-export class Request {
-    @Required()
-    @Property()
-    name: string;
-
-    @Required()
-    @Property()
-    email: string;
-}
-```
-
-```typescript
-// src/models/Response.ts
-import { Property, Required } from '@tsed/schema';
-
-export class Response {
-    @Required()
-    @Property()
-    id: string;
-
-    @Required()
-    @Property()
-    name: string;
-
-    @Required()
-    @Property()
-    email: string;
-
-    @Property()
-    createdAt: Date;
-}
-```
-
-```typescript
-// src/handlers/Handler.ts
-import { Injectable } from '@tsed/di';
-import { BaseHandler } from '@radoslavirha/tsed-platform';
-import { BadRequest } from '@tsed/exceptions';
-import { Request } from '../models/Request';
-import { Response } from '../models/Response';
-
-@Injectable()
-export class Handler extends BaseHandler<Request, Response> {
-    constructor(private service: Service) {}
-
-    protected async performOperation(request: Request): Promise<Response> {
-        // Business logic
-        return this.service.create(request);
-    }
-}
-```
-
-```typescript
-// src/controllers/Controller.ts
-import { Controller, Inject } from '@tsed/di';
-import { Post, Get, Returns, BodyParams, PathParams } from '@tsed/schema';
-import { Handler } from '../handlers/Handler';
-import { Request } from '../models/Request';
-import { Response } from '../models/Response';
-
-@Controller('/')
-export class Controller {
-    constructor(private handler: Handler) {}
-
-    @Post('/')
-    @Returns(201, Response)
-    @Returns(400).Description('Bad request')
-    async create(@BodyParams() request: Request): Promise<Response> {
-        return this.handler.execute(request);
-    }
-}
-```
-
-```typescript
-// src/Server.ts
-import { Configuration } from '@tsed/di';
-import { BaseServer } from '@radoslavirha/tsed-platform';
-import * as api from './controllers/index.js';
-
-@Configuration({
-    mount: {
-        '/api': [...Object.values(api)]
-    }
-})
-export class Server extends BaseServer {
-    $beforeRoutesInit(): void {
-        this.registerMiddlewares();
-    }
-}
-```
-
-```typescript
-// src/index.ts
-import { $log } from '@tsed/common';
-import { injector } from '@tsed/di';
-import { Platform, ServerConfiguration } from '@radoslavirha/tsed-platform';
-import { Server } from './Server';
-import { ConfigService } from './config/ConfigService';
-
-try {
-    // Load configuration
-    const config = injector().get<ConfigService>(ConfigService);
-
-    // Bootstrap platform
-    const configuration: ServerConfiguration = {
-        ...config.server,
-        api: config.api
-    };
-
-    const platform = await Platform.bootstrap(Server, configuration);
-    await platform.listen();
-} catch (error) {
-    $log.error('Bootstrap failed:', error);
-    process.exit(1);
-}
-```
-
-## Integration with Other Packages
-
-### With @radoslavirha/tsed-configuration
-
-Platform requires ConfigService for API metadata and server configuration:
-
-```typescript
-import { injector } from '@tsed/di';
-import { Platform, ServerConfiguration } from '@radoslavirha/tsed-platform';
-import { ConfigService } from '@radoslavirha/tsed-configuration';
-
-const config = injector().get<ConfigService>(ConfigService);
-
-const configuration: ServerConfiguration = {
-    ...config.server,  // httpPort, httpsPort, etc.
-    api: config.api    // service, version, description, publicURL
-};
-
-const platform = await Platform.bootstrap(Server, configuration);
-```
-
-### With @radoslavirha/tsed-swagger
-
-Add Swagger documentation to your platform:
-
-```typescript
-import { SwaggerProvider, SwaggerConfig } from '@radoslavirha/tsed-swagger';
-
-const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
-    title: config.api.service,
-    version: config.api.version,
-    documents: [/* ... */]
-});
-
-const swaggerProvider = new SwaggerProvider(swaggerConfig);
-
-const configuration: ServerConfiguration = {
-    ...config.server,
-    api: config.api,
-    swagger: swaggerProvider.config  // Add Swagger settings
-};
-```
-
-See [@radoslavirha/tsed-swagger README](../swagger/) for full Swagger integration.
-
-## When to Use
-
-✅ **Use this package when:**
-- Building Ts.ED microservices with Express
-- Need standardized middleware stack (CORS, compression, body parsing)
-- Want consistent handler pattern with performance tracking
-- Building multiple microservices with common patterns
-
-❌ **Don't use when:**
-- Using different HTTP framework (Koa, Fastify, Hapi)
-- Building serverless functions (AWS Lambda, Azure Functions)
+**For complete integration examples**, see [AGENTS.md](../../AGENTS.md) including:
+- Full REST API patterns
+- Multi-package integration
+- When to use this package (decision trees)
 
 ## Best Practices
 
@@ -588,6 +395,8 @@ See [@radoslavirha/tsed-swagger README](../swagger/) for full Swagger integratio
 3. **Use BaseHandler** for business logic to separate HTTP concerns from business logic
 4. **Use top-level try-catch** in index.ts (no async function wrapper) to match Ts.ED patterns
 5. **Access Express app** via `this.app` in BaseServer for custom middleware
+
+---
 
 ## Related Packages
 

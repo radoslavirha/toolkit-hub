@@ -482,57 +482,11 @@ export class AuthMiddleware {
 }
 ```
 
-## Production Tips
+---
 
-### Docker Deployment
+## See Also
 
-**Dockerfile:**
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package.json ./
-RUN npm install
-COPY . .
-ENV NODE_ENV=production
-CMD ["node", "dist/index.js"]
-```
-
-### Kubernetes ConfigMap
-
-```yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: app-config
-data:
-  production.json: |
-    {
-      "publicURL": "https://api.k8s.example.com",
-      "server": {
-        "port": 8080
-      }
-    }
-```
-
-### Validation Best Practices
-
-1. **Required fields:** Use `@Required()` for mandatory config
-2. **Defaults in code:** Use `DefaultsUtil` or schema defaults for optional fields
-3. **Environment secrets:** Never commit `.env` files, use CI/CD secrets
-4. **Type safety:** Always extend `BaseConfig` for custom models
-5. **Debug mode:** Enable `debug: true` during development to see validation errors
-
-## When to Use
-
-✅ Use this package when:
-- Building Ts.ED applications with complex configuration
-- Need type-safe configuration with validation
-- Managing multiple environments (dev, staging, prod)
-- Combining JSON files + environment variables
-- Want centralized configuration management
-
-❌ Don't use when:
-- Not using Ts.ED framework
+**For integration patterns and decision guidance**, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

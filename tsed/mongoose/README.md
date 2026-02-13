@@ -837,106 +837,14 @@ export class OrderService extends MongoService<OrderMongo, OrderModel> {
 }
 ```
 
-## Testing
+## See Also
 
-### Unit Testing Mappers
+**For complete integration examples and testing patterns**, see [AGENTS.md](../../AGENTS.md) including:
+- Full REST API with MongoDB
+- Multi-package integration
+- When to use this package (decision trees)
 
-Test mappers in isolation by mocking Mongoose documents:
-
-```typescript
-import { describe, it, expect } from 'vitest';
-import { CommonUtils } from '@radoslavirha/utils';
-import { UserMapper } from './UserMapper';
-import { UserMongo } from './UserMongo';
-import { UserModel } from './UserModel';
-
-describe('UserMapper', () => {
-    const mapper = new UserMapper();
-
-    describe('mongoToModel', () => {
-        it('should map Mongoose document to API model', async () => {
-            const mongo = CommonUtils.buildModel(UserMongo, {
-                _id: '507f1f77bcf86cd799439011',
-                name: 'John Doe',
-                email: 'john@example.com',
-                role: 'admin',
-                createdAt: new Date('2024-01-01'),
-                updatedAt: new Date('2024-01-02')
-            });
-
-            const model = await mapper.mongoToModel(mongo);
-
-            expect(model).toBeInstanceOf(UserModel);
-            expect(model.id).toBe('507f1f77bcf86cd799439011');
-            expect(model.name).toBe('John Doe');
-            expect(model.email).toBe('john@example.com');
-            expect(model.role).toBe('admin');
-            expect(model.createdAt).toStrictEqual(new Date('2024-01-01'));
-            expect(model.updatedAt).toStrictEqual(new Date('2024-01-02'));
-        });
-    });
-
-    describe('modelToMongoCreateObject', () => {
-        it('should convert model to create object', async () => {
-            const model = CommonUtils.buildModel(UserModel, {
-                name: 'Jane Doe',
-                email: 'jane@example.com',
-                role: 'user'
-            });
-
-            const createObj = await mapper.modelToMongoCreateObject(model);
-
-            expect(createObj).toStrictEqual({
-                name: 'Jane Doe',
-                email: 'jane@example.com',
-                role: 'user'
-            });
-            expect(createObj).not.toHaveProperty('_id');
-            expect(createObj).not.toHaveProperty('createdAt');
-        });
-    });
-});
-```
-
-### Integration Testing Services
-
-Test services with real MongoDB using Ts.ED TestContainersMongo:
-
-```typescript
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { PlatformTest } from '@tsed/common';
-import { TestContainersMongo } from '@tsed/testcontainers-mongo';
-import { CommonUtils } from '@radoslavirha/utils';
-import { UserService } from './UserService';
-import { UserModel } from './UserModel';
-
-describe('UserService', () => {
-    let userService: UserService;
-
-    beforeEach(() => TestContainersMongo.create());
-    beforeEach(() => {
-        userService = PlatformTest.get<UserService>(UserService);
-    });
-    afterEach(() => TestContainersMongo.reset());
-
-    it('should create and retrieve user', async () => {
-        const newUser = CommonUtils.buildModel(UserModel, {
-            name: 'Test User',
-            email: 'test@example.com',
-            role: 'user'
-        });
-
-        const created = await userService.create(newUser);
-        expect(created).toBeInstanceOf(UserModel);
-        expect(created.id).toBeDefined();
-        expect(created.name).toBe('Test User');
-
-        const found = await userService.findById(created.id);
-        expect(found).toBeInstanceOf(UserModel);
-        expect(found).toStrictEqual(created);
-    });
-});
-```
+---
 
 ## When to Use
 

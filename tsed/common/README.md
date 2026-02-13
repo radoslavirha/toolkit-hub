@@ -167,18 +167,11 @@ export class UserModel extends BaseModel {
 
 All properties use `@Property` from `@tsed/schema` for automatic Swagger/OpenAPI documentation.
 
-## When to Use
+## See Also
 
-✅ Use `BaseModel` when:
-- Building REST APIs with Ts.ED
-- Need standardized response models with timestamps
-- Want automatic OpenAPI/Swagger documentation
-- Separating API models from database models
+**For complete patterns and decision guidance**, see [AGENTS.md](../../AGENTS.md)
 
-❌ Don't use `BaseModel` when:
-- Building database schemas directly (use `BaseMongo` from tsed-mongoose instead)
-- Creating request DTOs (timestamps not needed for input)
-- Working outside Ts.ED framework
+---
 
 ## Related Packages
 

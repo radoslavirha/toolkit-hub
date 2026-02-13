@@ -40,6 +40,9 @@ Configs:
 - [config-eslint](config/config-eslint#-quick-reference-for-ai-agents) - Linting
 - [config-typescript](config/config-typescript#-quick-reference-for-ai-agents) - TypeScript compiler
 
+**📘 For cross-package integration patterns, architecture guidance, and decision trees:**
+- **[AGENTS.md](AGENTS.md)** - Complete guide for building Ts.ED services with this toolkit
+
 **Full documentation below** ↓
 
 ---
