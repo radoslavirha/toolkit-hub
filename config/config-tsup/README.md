@@ -548,20 +548,11 @@ Use code splitting for ESM:
 }
 ```
 
-## When to Use
+---
 
-✅ Use this config when:
-- Building TypeScript libraries for npm
-- Need dual ESM/CJS support
-- Want declaration file generation
-- Publishing packages to registry
-- Building monorepo packages
+## See Also
 
-❌ Don't use when:
-- Building applications (not libraries)
-- Need custom bundling (use Rollup/Webpack directly)
-- Only targeting one format
-- Need advanced bundle optimization
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

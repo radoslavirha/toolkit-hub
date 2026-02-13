@@ -169,9 +169,7 @@ All properties use `@Property` from `@tsed/schema` for automatic Swagger/OpenAPI
 
 ## See Also
 
-**For complete patterns and decision guidance**, see [AGENTS.md](../../AGENTS.md)
-
----
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

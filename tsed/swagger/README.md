@@ -507,10 +507,7 @@ const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
 
 ## See Also
 
-**For complete integration examples**, see [AGENTS.md](../../AGENTS.md) including:
-- Full REST API with MongoDB pattern
-- Multi-package integration examples
-- When to use this package (decision trees)
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

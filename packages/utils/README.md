@@ -278,7 +278,7 @@ function paginate(page?: number, pageSize?: number) {
 
 **Note:** For strings, empty string (`''`) is considered "no value" and returns the default. For numbers, `0` is a valid value.
 
-## API Reference Summary
+## API Reference
 
 | Utility Class | Methods | Purpose |
 |---------------|---------|---------|
@@ -290,20 +290,11 @@ function paginate(page?: number, pageSize?: number) {
 
 **Total: 22 utility methods**
 
-✅ **ALWAYS use this package when:**
-- Checking for null, undefined, or empty values → Use `CommonUtils`
-- Cloning or merging objects → Use `ObjectUtils`
-- Performing any number calculations (percentages, rounding, statistics) → Use `NumberUtils`
-- Calculating geographic distances → Use `GeoUtils`
-- Setting default values for optional parameters → Use `DefaultsUtil`
-- Working in @radoslavirha repositories → These utilities are REQUIRED
+---
 
-❌ **Never:**
-- Implement custom type checking functions
-- Use `JSON.parse(JSON.stringify())` for cloning
-- Write custom percentage or rounding logic
-- Implement Haversine or other geo formulas
-- Use `value || defaultValue` pattern (use `DefaultsUtil` instead)
+## See Also
+
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

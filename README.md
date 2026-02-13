@@ -205,10 +205,35 @@ When setting up new APIs, services, or projects in @radoslavirha repositories, *
 - `@radoslavirha/tsed-mongoose` - when using MongoDB
 - `@radoslavirha/tsed-common` - for base models
 
-## 📖 Documentation
+## 📖 Documentation Structure
 
-Each package contains comprehensive documentation:
-- **README.md** - Installation, usage, API reference, examples
-- **CHANGELOG.md** - Version history and breaking changes
+This monorepo uses a **two-level documentation system** optimized for both humans and AI agents:
+
+### 📘 [AGENTS.md](AGENTS.md) - AI Agent Guide
+**For AI agents building services with this toolkit:**
+- Cross-package integration patterns (Full REST API, Background Workers, etc.)
+- Architecture patterns (Clean Architecture, DI flows, layer separation)
+- Anti-patterns and common mistakes
+- Decision trees (which packages to use when)
+- All utility methods quick reference
+- Configuration best practices
+
+### 📄 Package READMEs - Deep Dives
+**Each package README contains:**
+- 🤖 **Quick Reference for AI Agents** (minimal essential usage)
+- Installation instructions
+- What's included (exports table)
+- Usage guide (step-by-step)
+- API reference (detailed documentation)
+- See Also (link to AGENTS.md for patterns)
+- Related packages
+
+**Navigation:**
+- Start with [AGENTS.md](AGENTS.md) for multi-package patterns
+- Dive into individual package READMEs for API details
+- All READMEs follow consistent structure for easy agent parsing
+
+### 📝 Version History
+- **CHANGELOG.md** in each package - Version history and breaking changes
 
 Navigate to package directories for detailed documentation.

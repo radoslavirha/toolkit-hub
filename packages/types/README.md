@@ -189,15 +189,45 @@ class UserService {
 }
 ```
 
-## When to Use
+---
 
-✅ Use **EnumDictionary** when:
-- Mapping enum values to configurations or data
-- Need exhaustive enum handling with type safety
+## API Reference
 
-✅ Use **FullPartial** when:
-- Implementing partial update APIs with nested objects
-- Need optional nested properties (built-in `Partial<T>` only works on first level)
+### EnumDictionary<TKey extends string | number | symbol, TType>
+
+Creates a type where the keys are constrained to the values of an enum and values are of type `TType`.
+
+**Type Parameters:**
+- `TKey` - The enum type to use as keys
+- `TType` - The type of values in the dictionary
+
+**Example:**
+```typescript
+enum Status { PENDING = 'PENDING', ACTIVE = 'ACTIVE' }
+const config: EnumDictionary<Status, { color: string }> = {
+  [Status.PENDING]: { color: 'yellow' },
+  [Status.ACTIVE]: { color: 'green' }
+};
+```
+
+### FullPartial<T>
+
+Recursively makes all properties of type `T` optional, including nested objects.
+
+**Type Parameter:**
+- `T` - The type to make fully partial
+
+**Example:**
+```typescript
+interface User { profile: { email: string; name: string; } }
+const update: FullPartial<User> = { profile: { email: 'new@email.com' } }; // name is optional
+```
+
+---
+
+## See Also
+
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

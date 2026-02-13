@@ -96,7 +96,7 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 
 - **`BaseConfigProvider<T>`** - Abstract base for creating custom providers
 
-## Architecture
+## Architecture Pattern
 
 The configuration system follows a layered approach:
 
@@ -486,7 +486,7 @@ export class AuthMiddleware {
 
 ## See Also
 
-**For integration patterns and decision guidance**, see [AGENTS.md](../../AGENTS.md)
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

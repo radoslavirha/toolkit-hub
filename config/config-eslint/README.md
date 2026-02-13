@@ -291,19 +291,11 @@ pnpm add -D husky lint-staged
 }
 ```
 
-## When to Use
+---
 
-✅ Use this config when:
-- Building TypeScript projects (Node.js, Ts.ED, libraries)
-- Want consistent code style across multiple projects
-- Need opinionated rules without manual configuration
-- Starting a new microservice from scratch
+## See Also
 
-❌ Don't use when:
-- Need highly customized ESLint rules
-- Using JavaScript only (not TypeScript)
-- Prefer different code style (e.g., 2-space indent, no semicolons)
-- Already have established ESLint config
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

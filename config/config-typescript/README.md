@@ -154,18 +154,11 @@ pnpm build
 }
 ```
 
-## When to Use
+---
 
-✅ Use this config when:
-- Building Node.js applications or libraries
-- Using TypeScript with ESNext features
-- Working with Ts.ED or other decorator frameworks
-- Need strict type checking
-- Starting a new microservice
+## See Also
 
-❌ Don't use when:
-- Targeting browsers (use different target/lib settings)
-- Using non-Node.js runtime (Deno, Bun)
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

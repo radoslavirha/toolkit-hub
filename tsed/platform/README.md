@@ -101,7 +101,7 @@ Platform.bootstrap(Server, config)
     → Error handling
 ```
 
-## Usage Guide
+## Usage
 
 ### Prerequisites
 
@@ -383,10 +383,7 @@ async update(
 
 ## See Also
 
-**For complete integration examples**, see [AGENTS.md](../../AGENTS.md) including:
-- Full REST API patterns
-- Multi-package integration
-- When to use this package (decision trees)
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Best Practices
 

@@ -244,20 +244,11 @@ export default defineConfig(
 );
 ```
 
-## When to Use
+---
 
-✅ Use this config when:
-- Testing TypeScript projects with Vitest
-- Using decorators (Ts.ED, TypeORM, etc.)
-- Need fast test execution
-- Want coverage reporting with thresholds
-- Building Node.js applications or libraries
+## See Also
 
-❌ Don't use when:
-- Using Jest (need different config)
-- Not using TypeScript
-- Don't need decorator support (can use simpler config)
-- Testing browser-only code (need DOM environment)
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 

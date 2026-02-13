@@ -839,39 +839,10 @@ export class OrderService extends MongoService<OrderMongo, OrderModel> {
 
 ## See Also
 
-**For complete integration examples and testing patterns**, see [AGENTS.md](../../AGENTS.md) including:
-- Full REST API with MongoDB
-- Multi-package integration
-- When to use this package (decision trees)
-
----
-
-## When to Use
-
-✅ **Use this package when:**
-- Building Ts.ED APIs with MongoDB/Mongoose
-- Need clean separation between database and API layers
-- Want type-safe mapping with compile-time checking
-- Working with Mongoose population and references
-- Building scalable microservices with reusable patterns
-- Need protection from accidental modification of system fields
-
-❌ **Don't use when:**
-- Using a different database (PostgreSQL, MySQL, etc.) - use appropriate ORM
-- Building simple prototypes without layered architecture
-- API models exactly match database schemas 1:1 with no transformations
-- Not using Ts.ED framework
+For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)
 
 ## Related Packages
 
 - **[@radoslavirha/tsed-common](../common/)** - Base API models (BaseModel) and common utilities
 - **[@radoslavirha/utils](../../packages/utils/)** - Utility functions (cloning, validation, etc.)
 - **[@radoslavirha/types](../../packages/types/)** - TypeScript utility types
-
-## Contributing
-
-See [Contributing Guide](../../CONTRIBUTING.md) for development setup and guidelines.
-
-## License
-
-MIT
