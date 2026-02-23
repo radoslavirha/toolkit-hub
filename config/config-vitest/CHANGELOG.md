@@ -1,5 +1,11 @@
 # @radoslavirha/config-vitest
 
+## 0.3.0
+
+### Minor Changes
+
+- [`f1b53cb`](https://github.com/radoslavirha/toolkit-hub/commit/f1b53cb89500d57b598a965eb78d1c69fe2851ef) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Improvements, documentation
+
 ## 0.2.2
 
 ### Patch Changes
