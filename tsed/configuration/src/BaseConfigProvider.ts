@@ -45,7 +45,7 @@ import { ObjectUtils } from '@radoslavirha/utils';
  * - Each access to `config` creates a new clone (consider caching if called frequently)
  * - Subclasses should perform validation/loading in constructor before calling `super()`
  */
-export class BaseConfigProvider<T> {
+export class BaseConfigProvider<T extends object> {
     private readonly configuration: T;
 
     /**

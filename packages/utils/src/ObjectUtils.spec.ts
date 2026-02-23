@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { Dictionary, FullPartial } from '@radoslavirha/types';
 import { ObjectUtils } from './ObjectUtils.js';
-import { FullPartial } from '@radoslavirha/types';
 
 describe('ObjectUtils', () => {
     describe('cloneDeep', () => {
@@ -192,6 +192,98 @@ describe('ObjectUtils', () => {
                     }
                 }
             });
+        });
+    });
+
+    describe('keys', () => {
+        it('returns typed keys from a plain object', () => {
+            const obj = { host: 'localhost', port: 3000 };
+            const result: ('host' | 'port')[] = ObjectUtils.keys(obj);
+
+            expect(result).toEqual(['host', 'port']);
+        });
+
+        it('returns string keys from a dictionary', () => {
+            const dict: Dictionary<number> = { a: 1, b: 2 };
+            const result: string[] = ObjectUtils.keys(dict);
+
+            expect(result).toEqual(['a', 'b']);
+        });
+
+        it('returns empty array for null', () => {
+            expect(ObjectUtils.keys(null)).toEqual([]);
+        });
+
+        it('returns empty array for undefined', () => {
+            expect(ObjectUtils.keys(undefined)).toEqual([]);
+        });
+
+        it('returns empty array for an empty object', () => {
+            expect(ObjectUtils.keys({})).toEqual([]);
+        });
+    });
+
+    describe('isObject', () => {
+        it('returns true for a plain object', () => {
+            expect(ObjectUtils.isObject({ a: 1 })).toBe(true);
+        });
+
+        it('returns true for an array', () => {
+            expect(ObjectUtils.isObject([1, 2])).toBe(true);
+        });
+
+        it('returns true for a function', () => {
+            expect(ObjectUtils.isObject(() => {})).toBe(true);
+        });
+
+        it('returns true for a class instance', () => {
+            class Foo {}
+
+            expect(ObjectUtils.isObject(new Foo())).toBe(true);
+        });
+
+        it('returns false for a string', () => {
+            expect(ObjectUtils.isObject('string')).toBe(false);
+        });
+
+        it('returns false for a number', () => {
+            expect(ObjectUtils.isObject(42)).toBe(false);
+        });
+
+        it('returns false for null', () => {
+            expect(ObjectUtils.isObject(null)).toBe(false);
+        });
+    });
+
+    describe('isPlainObject', () => {
+        it('returns true for a plain object literal', () => {
+            expect(ObjectUtils.isPlainObject({ a: 1 })).toBe(true);
+        });
+
+        it('returns true for Object.create(null)', () => {
+            expect(ObjectUtils.isPlainObject(Object.create(null))).toBe(true);
+        });
+
+        it('returns false for an array', () => {
+            expect(ObjectUtils.isPlainObject([1, 2])).toBe(false);
+        });
+
+        it('returns false for a class instance', () => {
+            class Foo {}
+
+            expect(ObjectUtils.isPlainObject(new Foo())).toBe(false);
+        });
+
+        it('returns false for a string', () => {
+            expect(ObjectUtils.isPlainObject('string')).toBe(false);
+        });
+
+        it('returns false for null', () => {
+            expect(ObjectUtils.isPlainObject(null)).toBe(false);
+        });
+
+        it('returns false for a function', () => {
+            expect(ObjectUtils.isPlainObject(() => {})).toBe(false);
         });
     });
 });

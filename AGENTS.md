@@ -20,8 +20,8 @@
 
 | Package | Purpose | When to use |
 |---------|---------|-------------|
-| [@radoslavirha/utils](packages/utils/) | 22 common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
-| [@radoslavirha/types](packages/types/) | TypeScript utility types | When you need common reusable types |
+| [@radoslavirha/utils](packages/utils/) | 36 common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
+| [@radoslavirha/types](packages/types/) | TypeScript utility types (`Dictionary`, `EnumDictionary`, `NullableProperty`, `FullPartial`) | When you need common reusable types or to avoid lodash type imports |
 
 ### Configuration Packages
 
@@ -474,7 +474,7 @@ export class ConfigService extends ConfigProvider<ConfigModel> {
 
 ## 🛠️ Utilities Quick Reference
 
-### @radoslavirha/utils - All 22 Methods
+### @radoslavirha/utils - All 36 Methods
 
 **CommonUtils (8 methods):**
 - `isEmpty<T>(value: T): boolean` - Check if empty (objects, arrays, strings, maps, sets, null/undefined)
@@ -486,9 +486,32 @@ export class ConfigService extends ConfigProvider<ConfigModel> {
 - `notUndefined<T>(value: T): boolean` - Check if NOT undefined (type guard)
 - `buildModel<T>(type: new() => T, data: Partial<T>): T` - Type-safe model construction
 
-**ObjectUtils (2 methods):**
-- `cloneDeep<T>(object: T): T` - Deep clone with no shared references
-- `mergeDeep<T>(target: T, source: FullPartial<T>): T` - Deep merge (arrays concatenate)
+**ObjectUtils (5 methods):**
+- `isObject<T>(value: T): value is Extract<T, object>` - Check if value is any object type (includes arrays, functions, class instances)
+- `isPlainObject<T>(value: T): value is Extract<T, Record<string, unknown>>` - Check if value is a plain object (POJO only, excludes arrays/functions)
+- `keys<T extends object>(object: T | null | undefined): Array<Extract<keyof T, string>>` - Get typed object keys
+- `keys<T>(object: Dictionary<T> | null | undefined): string[]` - Get dictionary keys (`Dictionary` from `@radoslavirha/types`)
+- `cloneDeep<T extends object>(object: T): T` - Deep clone with no shared references
+- `mergeDeep<T extends object, S extends object>(target: T, source: S): T & S` - Deep merge (arrays concatenate)
+
+**ArrayUtils (2 methods):**
+- `isArray<T>(value: T): value is Extract<T, unknown[]>` - Check if value is an array (type guard)
+- `toArray<T>(value: T | T[] | undefined | null): T[]` - Convert value to array; returns `[]` for null/undefined, wraps single value, passes through arrays
+
+**BooleanUtils (1 method):**
+- `isBoolean<T>(value: T): value is Extract<T, boolean>` - Check if value is a boolean primitive (type guard)
+
+**StringUtils (1 method):**
+- `isString<T>(value: T): value is Extract<T, string>` - Check if value is a string primitive or String object (type guard)
+
+**MappingUtils (7 methods):**
+- `mapOptionalModel<TValue extends object | null | undefined, TOut, TArgs extends unknown[] = []>(model: TValue, mapper: (model: NonNullable<TValue>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut>>` - Map optional model while preserving nullability
+- `mapArray<TValue extends unknown[] | null, TOut, TArgs extends unknown[] = []>(models: TValue, mapper: (model: ArrayElement<NonNullable<TValue>>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut[]>>` - Map array with null support
+- `mapOptionalArray<TValue extends unknown[] | null | undefined, TOut, TArgs extends unknown[] = []>(models: TValue, mapper: (model: ArrayElement<NonNullable<TValue>>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut[]>>` - Map optional array with null/undefined support
+- `mapMap<TValue extends Map<unknown, unknown> | null, TKeyOut, TValueOut>(source: TValue, mapper: (key: MapKey<NonNullable<TValue>>, value: MapValue<NonNullable<TValue>>) => Promise<[TKeyOut, TValueOut]>): Promise<Result<TValue, Map<TKeyOut, TValueOut>>>` - Map Map entries with null support
+- `mapOptionalMap<TValue extends Map<unknown, unknown> | null | undefined, TKeyOut, TValueOut>(source: TValue, mapper: (key: MapKey<NonNullable<TValue>>, value: MapValue<NonNullable<TValue>>) => Promise<[TKeyOut, TValueOut]>): Promise<Result<TValue, Map<TKeyOut, TValueOut>>>` - Map optional Map entries
+- `mapEnum<TSource extends Record<string, string | number>, TTarget extends Record<string, string | number>, TValue extends TSource[keyof TSource] | null>(sourceTypeObject: Record<string, TSource>, targetTypeObject: Record<string, TTarget>, value: TValue, ignoreUnknownKeys?: boolean): Result<TValue, TTarget[keyof TTarget]>` - Map enum values by matching source key name
+- `mapOptionalEnum<TSource extends Record<string, string | number>, TTarget extends Record<string, string | number>, TValue extends TSource[keyof TSource] | null | undefined>(sourceTypeObject: Record<string, TSource>, targetTypeObject: Record<string, TTarget>, value: TValue, ignoreUnknownKeys?: boolean): Result<TValue, TTarget[keyof TTarget]>` - Map optional enum values with null/undefined support
 
 **NumberUtils (8 methods):**
 - `getPercentFromValue(maxValue: number, value: number): number` - Calculate percentage
@@ -510,7 +533,7 @@ export class ConfigService extends ConfigProvider<ConfigModel> {
 
 **Usage:**
 ```typescript
-import { CommonUtils, NumberUtils, GeoUtils, ObjectUtils, DefaultsUtil } from '@radoslavirha/utils';
+import { CommonUtils, NumberUtils, GeoUtils, ObjectUtils, MappingUtils, ArrayUtils, BooleanUtils, StringUtils, DefaultsUtil } from '@radoslavirha/utils';
 
 // Type-safe model creation
 const config = CommonUtils.buildModel(SwaggerConfig, { title: 'API' });
@@ -526,8 +549,24 @@ const percent = NumberUtils.getPercentFromValue(200, 50); // 25
 const average = NumberUtils.mean([1, 2, 3, 4, 5]); // 3
 
 // Object operations
+ObjectUtils.isObject(value);          // true for objects, arrays, functions
+ObjectUtils.isPlainObject(value);     // true for plain POJOs only
+const keys = ObjectUtils.keys(config);
 const clone = ObjectUtils.cloneDeep(original);
 const merged = ObjectUtils.mergeDeep(target, source);
+
+// Array operations
+ArrayUtils.isArray(value);            // type guard for arrays
+ArrayUtils.toArray(value);            // always returns T[]
+
+// Type checks
+BooleanUtils.isBoolean(value);        // type guard for booleans
+StringUtils.isString(value);          // type guard for strings
+
+// Mapping operations
+const mappingUtils = new MappingUtils();
+const mappedModel = await mappingUtils.mapOptionalModel(model, async (item) => ({ id: item.id }));
+const mappedArray = await mappingUtils.mapArray([1, 2, 3], async (value) => value * 2);
 
 // Geospatial (NY to London)
 const distance = GeoUtils.calculateKmBetweenCoordinates(
