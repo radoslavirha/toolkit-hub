@@ -1,6 +1,14 @@
 import { defaultConfig } from '@radoslavirha/config-vitest';
-import { defineConfig } from 'vitest/config';
+import { defineConfig, mergeConfig } from 'vitest/config';
 
-const config = { ...defaultConfig };
-
-export default defineConfig(config);
+export default defineConfig(
+    mergeConfig(defaultConfig, {
+        test: {
+            coverage: {
+                exclude: [
+                    '**/models/**'
+                ]
+            }
+        }
+    })
+);

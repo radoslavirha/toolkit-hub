@@ -14,7 +14,7 @@
 | [@radoslavirha/tsed-configuration](tsed/configuration/) | Config management (JSON/ENV) | **Always** - Required for Ts.ED service configuration |
 | [@radoslavirha/tsed-swagger](tsed/swagger/) | Multi-version Swagger/OpenAPI docs | When building Ts.ED REST APIs that need documentation |
 | [@radoslavirha/tsed-mongoose](tsed/mongoose/) | Clean architecture MongoDB integration | When using MongoDB with mapper pattern in Ts.ED  service |
-| [@radoslavirha/tsed-common](tsed/common/) | Base models & utilities | When using Ts.ED models or tsed-mongoose |
+| [@radoslavirha/tsed-common](tsed/common/) | Base models & typed serialization utilities | When using Ts.ED models or tsed-mongoose |
 
 ### Utility Packages
 
@@ -135,7 +135,7 @@ export class MongoModel extends BaseMongo {
 }
 
 // 4. API Model (tsed-common)
-import { BaseModel } from '@radoslavirha/tsed-common';
+import { BaseModel, Serializer } from '@radoslavirha/tsed-common';
 
 export class Model extends BaseModel {
   @Property() name: string;
@@ -617,7 +617,7 @@ What are you building?
 - [tsed-configuration README](tsed/configuration/README.md#-quick-reference-for-ai-agents) - Config management
 - [tsed-swagger README](tsed/swagger/README.md#-quick-reference-for-ai-agents) - API documentation
 - [tsed-mongoose README](tsed/mongoose/README.md#-quick-reference-for-ai-agents) - MongoDB integration
-- [tsed-common README](tsed/common/README.md#-quick-reference-for-ai-agents) - Base models
+- [tsed-common README](tsed/common/README.md#-quick-reference-for-ai-agents) - Base models & serialization
 
 ### Utility Packages
 - [utils README](packages/utils/README.md#-quick-reference-for-ai-agents) - 22 utility methods

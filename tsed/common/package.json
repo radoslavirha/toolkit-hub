@@ -34,7 +34,8 @@
         "cleanup": "rm -rf coverage dist",
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
-        "lint:fix": "eslint --fix ."
+        "lint:fix": "eslint --fix .",
+        "test": "vitest run"
     },
     "dependencies": {
         "@radoslavirha/utils": "workspace:*",
@@ -46,6 +47,9 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
+        "@tsed/core": "catalog:tsed",
+        "@tsed/json-mapper": "catalog:tsed",
+        "@tsed/schema": "catalog:tsed",
         "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "eslint": "catalog:",
@@ -56,6 +60,8 @@
         "vitest": "catalog:"
     },
     "peerDependencies": {
+        "@tsed/core": "catalog:tsed",
+        "@tsed/json-mapper": "catalog:tsed",
         "@tsed/schema": "catalog:tsed"
     },
     "engines": {
