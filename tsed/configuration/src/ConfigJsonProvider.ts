@@ -2,7 +2,7 @@ import { Type } from '@tsed/core';
 import { deserialize } from '@tsed/json-mapper';
 import { getJsonSchema } from '@tsed/schema';
 import cfg from 'config';
-import { Ajv, ErrorObject } from 'ajv';
+import { Ajv, ErrorObject, Options } from 'ajv';
 import { BaseConfigProvider } from './BaseConfigProvider.js';
 import { BaseConfig } from './models/BaseConfig.js';
 
@@ -57,7 +57,7 @@ import { BaseConfig } from './models/BaseConfig.js';
  * @throws {Error} If configuration file is missing, invalid JSON, or fails validation
  */
 export class ConfigJsonProvider<T extends BaseConfig> extends BaseConfigProvider<T> {
-    private static readonly AJV_OPTIONS = { allErrors: true };
+    private static readonly AJV_OPTIONS: Options = { allErrors: true };
 
     /**
      * Creates a new configuration provider.
