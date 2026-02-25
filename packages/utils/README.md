@@ -29,6 +29,7 @@ CommonUtils.buildModel(Class, data);     // Type-safe model instantiation
 
 // ObjectUtils - Deep operations
 ObjectUtils.keys(obj);                   // Object keys
+ObjectUtils.values(obj);                 // Object / enum values
 ObjectUtils.cloneDeep(obj);              // Deep clone
 ObjectUtils.mergeDeep(target, source);   // Deep merge (arrays concatenate!)
 
@@ -57,16 +58,16 @@ DefaultsUtil.string(value, 'default');       // Returns default if value is nil/
 DefaultsUtil.number(value, 0);               // Returns default if value is nil
 ```
 
-**Complete Method List (ALL 30 methods):**
+**Complete Method List (ALL 31 methods):**
 - **CommonUtils (8):** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel
-- **ObjectUtils (3):** keys, cloneDeep, mergeDeep
+- **ObjectUtils (4):** keys, values, cloneDeep, mergeDeep
 - **MappingUtils (7):** mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum
 - **NumberUtils (8):** getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
 - **GeoUtils (2):** calculateKmBetweenCoordinates, degToRad
 - **DefaultsUtil (2):** string, number
 
 **❌ DON'T reimplement:** Type checks, null checks, deep clone/merge, percentage calculations, rounding, distance calculations, default values  
-**✅ DO use:** All 30 provided utilities - they're tested, optimized, and maintain consistency
+**✅ DO use:** All 31 provided utilities - they're tested, optimized, and maintain consistency
 
 **Full documentation below** ↓
 
@@ -152,6 +153,18 @@ Object manipulation utilities with deep operations.
 ```typescript
 import { ObjectUtils } from '@radoslavirha/utils';
 
+// Object values
+const config = { host: 'localhost', port: 3000 };
+ObjectUtils.values(config); // ['localhost', 3000] as (string | number)[]
+
+// Enum values (string enum)
+enum Direction { Up = 'UP', Down = 'DOWN' }
+ObjectUtils.values(Direction); // ['UP', 'DOWN']
+
+// Dictionary values
+const dict: Record<string, number> = { a: 1, b: 2 };
+ObjectUtils.values(dict); // [1, 2] as number[]
+
 // Deep clone
 const original = { nested: { array: [1, 2, 3] } };
 const clone = ObjectUtils.cloneDeep(original);
@@ -178,6 +191,8 @@ const merged = ObjectUtils.mergeDeep(target, source);
 **API:**
 - `keys<T extends object>(object: T | null | undefined): Array<Extract<keyof T, string>>` - Returns typed object keys
 - `keys<T>(object: Dictionary<T> | null | undefined): string[]` - Returns dictionary keys
+- `values<T extends object>(object: T | null | undefined): Array<T[keyof T]>` - Returns typed object/enum values
+- `values<T>(object: Dictionary<T> | null | undefined): T[]` - Returns dictionary values
 - `cloneDeep<T>(object: T): T` - Creates a deep clone
 - `mergeDeep<T>(target: T, source: FullPartial<T>): T` - Deep merge with array concatenation
 

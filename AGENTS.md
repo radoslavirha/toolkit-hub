@@ -486,11 +486,13 @@ export class ConfigService extends ConfigProvider<ConfigModel> {
 - `notUndefined<T>(value: T): boolean` - Check if NOT undefined (type guard)
 - `buildModel<T>(type: new() => T, data: Partial<T>): T` - Type-safe model construction
 
-**ObjectUtils (5 methods):**
+**ObjectUtils (6 methods):**
 - `isObject<T>(value: T): value is Extract<T, object>` - Check if value is any object type (includes arrays, functions, class instances)
 - `isPlainObject<T>(value: T): value is Extract<T, Record<string, unknown>>` - Check if value is a plain object (POJO only, excludes arrays/functions)
 - `keys<T extends object>(object: T | null | undefined): Array<Extract<keyof T, string>>` - Get typed object keys
 - `keys<T>(object: Dictionary<T> | null | undefined): string[]` - Get dictionary keys (`Dictionary` from `@radoslavirha/types`)
+- `values<T extends object>(object: T | null | undefined): Array<T[keyof T]>` - Get typed object/enum values
+- `values<T>(object: Dictionary<T> | null | undefined): T[]` - Get dictionary values
 - `cloneDeep<T extends object>(object: T): T` - Deep clone with no shared references
 - `mergeDeep<T extends object, S extends object>(target: T, source: S): T & S` - Deep merge (arrays concatenate)
 
@@ -552,6 +554,7 @@ const average = NumberUtils.mean([1, 2, 3, 4, 5]); // 3
 ObjectUtils.isObject(value);          // true for objects, arrays, functions
 ObjectUtils.isPlainObject(value);     // true for plain POJOs only
 const keys = ObjectUtils.keys(config);
+const vals = ObjectUtils.values(config);
 const clone = ObjectUtils.cloneDeep(original);
 const merged = ObjectUtils.mergeDeep(target, source);
 

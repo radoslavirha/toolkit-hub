@@ -223,6 +223,49 @@ describe('ObjectUtils', () => {
         });
     });
 
+    describe('values', () => {
+        it('returns typed values from a plain object', () => {
+            const obj = { host: 'localhost', port: 3000 };
+            const result: (string | number)[] = ObjectUtils.values(obj);
+
+            expect(result).toEqual(['localhost', 3000]);
+        });
+
+        it('returns typed values from a dictionary', () => {
+            const dict: Dictionary<number> = { a: 1, b: 2 };
+            const result: number[] = ObjectUtils.values(dict);
+
+            expect(result).toEqual([1, 2]);
+        });
+
+        it('returns enum values from a string enum', () => {
+            enum Direction { Up = 'UP', Down = 'DOWN' }
+            const result = ObjectUtils.values(Direction);
+
+            expect(result).toEqual(['UP', 'DOWN']);
+        });
+
+        it('returns enum values from a numeric enum', () => {
+            enum Status { Active = 1, Inactive = 2 }
+            // Numeric enums have reverse mappings, so _.values returns both keys and values
+            const numericValues = ObjectUtils.values(Status).filter((v) => typeof v === 'number');
+
+            expect(numericValues).toEqual([1, 2]);
+        });
+
+        it('returns empty array for null', () => {
+            expect(ObjectUtils.values(null)).toEqual([]);
+        });
+
+        it('returns empty array for undefined', () => {
+            expect(ObjectUtils.values(undefined)).toEqual([]);
+        });
+
+        it('returns empty array for an empty object', () => {
+            expect(ObjectUtils.values({})).toEqual([]);
+        });
+    });
+
     describe('isObject', () => {
         it('returns true for a plain object', () => {
             expect(ObjectUtils.isObject({ a: 1 })).toBe(true);

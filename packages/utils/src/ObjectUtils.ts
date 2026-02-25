@@ -51,6 +51,33 @@ export class ObjectUtils {
     }
 
     /**
+     * Returns the enumerable property values of an object with type safety.
+     * When passed a typed object, returns strongly typed values. When passed a dictionary, returns typed values.
+     * Handles null and undefined gracefully by returning an empty array.
+     * @template T The type of the object.
+     * @param object The object to extract values from. Can be typed objects or dictionaries.
+     * @returns An array of the object's enumerable property values. For typed objects, values are strongly typed.
+     * @example
+     * const config = { host: 'localhost', port: 3000 };
+     * const vals = ObjectUtils.values(config); // ['localhost', 3000] with type: (string | number)[]
+     *
+     * // Works great with enums
+     * enum Direction { Up = 'UP', Down = 'DOWN' }
+     * const dirValues = ObjectUtils.values(Direction); // ['UP', 'DOWN'] with type: string[]
+     *
+     * const nullable = null;
+     * const nullVals = ObjectUtils.values(nullable); // [] (empty array)
+     *
+     * const dictionary: Record<string, number> = { a: 1, b: 2 };
+     * const dictVals = ObjectUtils.values(dictionary); // [1, 2] with type: number[]
+     */
+    public static values<T extends object>(object: T | null | undefined): Array<T[keyof T]>;
+    public static values<T>(object: Dictionary<T> | null | undefined): T[];
+    public static values(object: unknown): unknown[] {
+        return _.values(object);
+    }
+
+    /**
      * Creates a deep clone of an object, recursively copying all nested properties.
      * The cloned object is completely independent from the original.
      * @template T The type of the object to clone, must be an object.
