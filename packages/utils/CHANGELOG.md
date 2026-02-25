@@ -1,5 +1,11 @@
 # @radoslavirha/utils
 
+## 0.4.0
+
+### Minor Changes
+
+- [`1e72ddf`](https://github.com/radoslavirha/toolkit-hub/commit/1e72ddf56b4d95d06d60519f1cfb52a6f1a9a898) Thanks [@radoslavirha](https://github.com/radoslavirha)! - New ObjectUtils.values() method
+
 ## 0.3.0
 
 ### Minor Changes
