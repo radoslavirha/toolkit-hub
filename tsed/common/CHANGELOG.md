@@ -1,5 +1,16 @@
 # @radoslavirha/tsed-common
 
+## 0.4.0
+
+### Minor Changes
+
+- [`5253d54`](https://github.com/radoslavirha/toolkit-hub/commit/5253d547d88584bab2565121cefd407cdcf0cac1) Thanks [@radoslavirha](https://github.com/radoslavirha)! - New JSONSchemaValidator in @radoslavirha/tsed-common
+
+### Patch Changes
+
+- Updated dependencies [[`1e72ddf`](https://github.com/radoslavirha/toolkit-hub/commit/1e72ddf56b4d95d06d60519f1cfb52a6f1a9a898)]:
+  - @radoslavirha/utils@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes
