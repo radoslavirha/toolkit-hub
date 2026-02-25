@@ -76,8 +76,6 @@ describe('ConfigProvider', () => {
     
             expect(loader.api).toBeDefined();
             expect(loader.config).toBeDefined();
-            expect(consoleLogSpy).toHaveBeenCalledWith('Raw configuration loaded:', expect.any(String));
-            expect(consoleLogSpy).toHaveBeenCalledWith('Generated JSON Schema:', expect.any(String));
         });
     
         it('Should pass - isTest', async () => {
@@ -164,8 +162,6 @@ describe('ConfigProvider', () => {
     
             expect(loader.api).toBeDefined();
             expect(loader.config).toBeDefined();
-            expect(consoleLogSpy).toHaveBeenCalledWith('Raw configuration loaded:', expect.any(String));
-            expect(consoleLogSpy).toHaveBeenCalledWith('Generated JSON Schema:', expect.any(String));
         });
         
         it('Should load package.json', async () => {

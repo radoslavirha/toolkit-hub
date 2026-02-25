@@ -15,7 +15,7 @@ pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-common @tsed/schema @tsed
 
 **Essential Usage:**
 ```typescript
-import { BaseModel, Serializer } from '@radoslavirha/tsed-common';
+import { BaseModel, Serializer, JSONSchemaValidator } from '@radoslavirha/tsed-common';
 import { Property } from '@tsed/schema';
 
 // Extend BaseModel for API response models
@@ -38,11 +38,15 @@ const model = Serializer.deserialize(rawPayload, User);
 
 // Deserialize an array of POJOs
 const models = Serializer.deserializeArray(rawArray, User);
+
+// Validate and deserialize arbitrary input against a model schema
+const validated = JSONSchemaValidator.validate(User, rawPayload);
 ```
 
 **Key Exports:**
 - `BaseModel` - Standard fields: `id`, `createdAt`, `updatedAt` (all with @Property, @Format decorators)
 - `Serializer` - Typed wrappers for `@tsed/json-mapper`'s `serialize`/`deserialize`
+- `JSONSchemaValidator` - AJV-based schema validation of arbitrary input against a Ts.ED model
 - `SerializeOptions` / `DeserializeOptions` - Option types (omit `type`, which is a required parameter)
 
 **Full documentation below** ↓
@@ -88,11 +92,49 @@ Typed wrappers around `@tsed/json-mapper`'s `serialize` and `deserialize` functi
 - `Serializer.serialize(input, type, options?)` - Serialize a model to a plain object
 - `Serializer.deserialize(input, type, options?)` - Deserialize a POJO to a model instance
 - `Serializer.deserializeArray(input[], type, options?)` - Deserialize an array of POJOs
-- `updatedAt` (Date) - Last update timestamp
 
-All properties are decorated with `@Property` and `@Format` from `@tsed/schema` for automatic OpenAPI documentation generation.
+### JSONSchemaValidator
+
+AJV-based runtime validation of arbitrary input against a Ts.ED model. Useful for validating external data (e.g. configuration files, API payloads) before processing.
+
+- Derives a JSON Schema from `@tsed/schema` decorators at runtime
+- Deserializes the input via `Serializer` into a typed model instance
+- Validates the deserialized instance with AJV (`allErrors: true`)
+- Throws an `ErrorObject[]` array on failure so all violations are surfaced at once
 
 ## Usage
+
+### JSONSchemaValidator Usage
+
+Use `JSONSchemaValidator` to validate arbitrary raw input against a Ts.ED model before processing. It combines AJV validation with `Serializer` deserialization in one step.
+
+```typescript
+import { JSONSchemaValidator } from '@radoslavirha/tsed-common';
+import { Required, Property } from '@tsed/schema';
+
+class CreateUserRequest {
+    @Required()
+    name!: string;
+
+    @Property()
+    age?: number;
+}
+
+// Valid – returns a typed CreateUserRequest instance
+const request = JSONSchemaValidator.validate(CreateUserRequest, rawBody);
+
+// Invalid – throws ErrorObject[]
+try {
+    JSONSchemaValidator.validate(CreateUserRequest, { age: 30 });
+} catch (errors: unknown) {
+    if (Array.isArray(errors)) {
+        errors.forEach(e => console.error(e.instancePath, e.message));
+    }
+}
+
+// With debug logging – logs raw input and generated JSON Schema
+JSONSchemaValidator.validate(CreateUserRequest, rawBody, true);
+```
 
 ### Serializer Usage
 
@@ -185,7 +227,7 @@ export class UserModel extends BaseModel {
 }
 ```
 
-### API Reference
+## API Reference
 
 ### BaseModel
 
@@ -218,6 +260,21 @@ Static utility class wrapping `@tsed/json-mapper`.
 
 - `SerializeOptions` - `JsonSerializerOptions` minus `type` (e.g. `useAlias`, `groups`)
 - `DeserializeOptions` - `JsonDeserializerOptions` minus `type` (e.g. `useAlias`, `groups`, `generics`)
+
+### JSONSchemaValidator
+
+**Methods:**
+
+- `validate<T>(model: Type<T>, input: unknown, debug?: boolean): T`  
+  Validates and deserializes `input` against the JSON Schema derived from `model`. Returns a typed `T` instance on success; throws `ErrorObject[]` on validation failure.
+
+**Parameters:**
+
+- `model` - Ts.ED model class decorated with `@tsed/schema` decorators (e.g. `@Required`, `@Property`)
+- `input` - Arbitrary raw value to validate (typically a plain object from parsed JSON)
+- `debug` *(optional, default `false`)* - When `true`, logs the serialized input (`'Raw data:'`) and generated JSON Schema (`'Generated JSON Schema:'`) to `console.log`
+
+**Throws:** `ErrorObject[]` (AJV) - Array of all validation errors when the input does not match the schema. All errors are collected before throwing (`allErrors: true`).
 
 ## See Also
 

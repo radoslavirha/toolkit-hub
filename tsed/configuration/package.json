@@ -38,6 +38,7 @@
         "test:watch": "vitest"
     },
     "dependencies": {
+        "@radoslavirha/tsed-common": "workspace:*",
         "@radoslavirha/utils": "workspace:*",
         "config": "4.3.0",
         "dotenv": "17.2.4",
@@ -50,7 +51,6 @@
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
         "@swc/helpers": "catalog:",
-        "@tsed/ajv": "catalog:tsed",
         "@tsed/core": "catalog:tsed",
         "@tsed/di": "catalog:tsed",
         "@tsed/json-mapper": "catalog:tsed",
@@ -58,7 +58,6 @@
         "@types/config": "3.3.5",
         "@types/node": "catalog:",
         "@vitest/coverage-v8": "catalog:",
-        "ajv": "catalog:tsed",
         "eslint": "catalog:",
         "tslib": "catalog:",
         "tsup": "catalog:",
@@ -66,12 +65,10 @@
         "vitest": "catalog:"
     },
     "peerDependencies": {
-        "@tsed/ajv": "catalog:tsed",
         "@tsed/core": "catalog:tsed",
         "@tsed/di": "catalog:tsed",
         "@tsed/json-mapper": "catalog:tsed",
-        "@tsed/schema": "catalog:tsed",
-        "ajv": "catalog:tsed"
+        "@tsed/schema": "catalog:tsed"
     },
     "engines": {
         "node": ">= 24",

@@ -259,6 +259,12 @@ importers:
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.18
+      '@tsed/ajv':
+        specifier: catalog:tsed
+        version: 8.25.1(@tsed/core@8.25.1)(@tsed/di@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/logger@8.0.4))(@tsed/exceptions@8.25.1(@tsed/core@8.25.1))(@tsed/schema@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/openspec@8.25.1))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1)
+      ajv:
+        specifier: catalog:tsed
+        version: 8.17.1
     devDependencies:
       '@radoslavirha/config-eslint':
         specifier: workspace:*
@@ -311,6 +317,9 @@ importers:
 
   tsed/configuration:
     dependencies:
+      '@radoslavirha/tsed-common':
+        specifier: workspace:*
+        version: link:../common
       '@radoslavirha/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -342,9 +351,6 @@ importers:
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.18
-      '@tsed/ajv':
-        specifier: catalog:tsed
-        version: 8.25.1(@tsed/core@8.25.1)(@tsed/di@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/logger@8.0.4))(@tsed/exceptions@8.25.1(@tsed/core@8.25.1))(@tsed/schema@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/openspec@8.25.1))(ajv-errors@3.0.0(ajv@8.17.1))(ajv@8.17.1)
       '@tsed/core':
         specifier: catalog:tsed
         version: 8.25.1
@@ -366,9 +372,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.0.18(vitest@4.0.18(@types/node@25.2.3)(terser@5.39.0)(yaml@2.8.2))
-      ajv:
-        specifier: catalog:tsed
-        version: 8.17.1
       eslint:
         specifier: 'catalog:'
         version: 9.39.2

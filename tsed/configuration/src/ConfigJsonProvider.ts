@@ -1,8 +1,6 @@
 import { Type } from '@tsed/core';
-import { deserialize } from '@tsed/json-mapper';
-import { getJsonSchema } from '@tsed/schema';
 import cfg from 'config';
-import { Ajv, ErrorObject, Options } from 'ajv';
+import { JSONSchemaValidator } from '@radoslavirha/tsed-common';
 import { BaseConfigProvider } from './BaseConfigProvider.js';
 import { BaseConfig } from './models/BaseConfig.js';
 
@@ -57,8 +55,6 @@ import { BaseConfig } from './models/BaseConfig.js';
  * @throws {Error} If configuration file is missing, invalid JSON, or fails validation
  */
 export class ConfigJsonProvider<T extends BaseConfig> extends BaseConfigProvider<T> {
-    private static readonly AJV_OPTIONS: Options = { allErrors: true };
-
     /**
      * Creates a new configuration provider.
      * @param configModel The TypeScript class decorated with @Property for validation
@@ -78,12 +74,12 @@ export class ConfigJsonProvider<T extends BaseConfig> extends BaseConfigProvider
      */
     static validateConfigFile<T>(configModel: Type<T>, debug = false): T {
         try {
-            return ConfigJsonProvider.validateModel(configModel, cfg, debug);
+            return JSONSchemaValidator.validate(configModel, cfg, debug);
         } catch (errors) {
             // Log individual validation errors
             if (Array.isArray(errors)) {
                 console.error('Configuration validation failed:');
-                for (const error of errors as ErrorObject[]) {
+                for (const error of errors) {
                     const path = error.instancePath || 'root';
                     console.error(`  - ${path}: ${error.keyword} ${error.message}`);
                 }
@@ -91,42 +87,5 @@ export class ConfigJsonProvider<T extends BaseConfig> extends BaseConfigProvider
             
             throw new Error(`Invalid configuration! Check the errors above or verify your config file.`);
         }
-    }
-
-    /**
-     * Validates and deserializes the configuration against the model schema.
-     * @template T The configuration model type
-     * @param model The model class with JSON Schema decorators
-     * @param input The raw configuration object from the config package
-     * @param debug If true, logs the input configuration
-     * @returns The validated and typed configuration instance
-     * @throws {ErrorObject[]} Array of Ajv validation errors if validation fails
-     */
-    private static validateModel<T>(model: Type<T>, input: unknown, debug = false): T {
-        const ajv = new Ajv(ConfigJsonProvider.AJV_OPTIONS);
-
-        if (debug) {
-            console.log('Raw configuration loaded:', JSON.stringify(input, null, 2));
-        }
-
-        // Generate JSON Schema from model decorators
-        const schema = getJsonSchema(model);
-        
-        if (debug) {
-            console.log('Generated JSON Schema:', JSON.stringify(schema, null, 2));
-        }
-
-        // Deserialize once to get typed instance
-        const deserializedConfig = deserialize<T>(input, { type: model });
-
-        // Validate against schema
-        const validate = ajv.compile(schema);
-        const isValid = validate(deserializedConfig);
-
-        if (!isValid) {
-            throw validate.errors;
-        }
-
-        return deserializedConfig;
     }
 }
