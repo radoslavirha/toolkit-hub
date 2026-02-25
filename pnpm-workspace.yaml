@@ -19,7 +19,7 @@ catalog:
 
 catalogs:
   tsed:
-    ajv: 8.17.1
+    ajv: 8.18.0
     '@tsed/ajv': 8.25.1
     '@tsed/common': 8.25.1
     '@tsed/core': 8.25.1
