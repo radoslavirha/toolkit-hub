@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-swagger
 
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`b9a6fe2`](https://github.com/radoslavirha/toolkit-hub/commit/b9a6fe200a0452ee6cffa1619f876dd95c3044ba)]:
+  - @radoslavirha/utils@0.5.0
+  - @radoslavirha/tsed-configuration@0.4.1
+  - @radoslavirha/tsed-platform@0.3.2
+
 ## 3.0.0
 
 ### Patch Changes
