@@ -1,6 +1,29 @@
 import _ from 'lodash';
 import { Dictionary } from '@radoslavirha/types';
 import { ArrayUtils } from './ArrayUtils.js';
+import { CommonUtils } from './CommonUtils.js';
+
+/**
+ * Represents T with the `enabled` property narrowed to the literal `true`.
+ * All other properties of T are preserved as-is.
+ * Produced by `ObjectUtils.isEnabled` when the type guard passes.
+ * @template T The source type, must have an optional `enabled: boolean` field.
+ * @example
+ * class Feature {
+ *   constructor(public name: string, public enabled?: boolean) {}
+ * }
+ *
+ * function activate(feature: Enabled<Feature>) {
+ *   console.log(feature.enabled); // type: true
+ *   console.log(feature.name);    // type: string
+ * }
+ *
+ * const f = new Feature('dark-mode', true);
+ * if (ObjectUtils.isEnabled(f)) {
+ *   activate(f); // safe — TypeScript knows enabled is true
+ * }
+ */
+export type Enabled<T extends { enabled?: boolean }> = T & { enabled: true };
 
 /**
  * Utility class for object operations.
@@ -118,5 +141,41 @@ export class ObjectUtils {
 
             return undefined;
         });
+    }
+
+    /**
+     * Checks if the value exists and has `enabled` set to `true`.
+     * Returns `false` for `null`, `undefined`, `enabled: false`, and `enabled: undefined`.
+     * When it returns `true`, TypeScript narrows the type to `Enabled<T>` — i.e. T with `enabled: true`.
+     * @template T The type of value to check, must have an optional `enabled: boolean` field.
+     * @param value The value to check. May be `null` or `undefined`.
+     * @returns `true` if the value is non-null/undefined and `enabled === true`, narrowing to `Enabled<T>`.
+     * @example
+     * class Feature {
+     *   constructor(public name: string, public enabled?: boolean) {}
+     * }
+     *
+     * const f = new Feature('dark-mode', true);
+     * if (ObjectUtils.isEnabled(f)) {
+     *   f.enabled; // type: true
+     *   f.name;    // type: string
+     * }
+     *
+     * ObjectUtils.isEnabled(new Feature('x', false));  // false
+     * ObjectUtils.isEnabled(new Feature('x'));          // false (enabled is undefined)
+     * ObjectUtils.isEnabled(null);                      // false
+     * ObjectUtils.isEnabled(undefined);                 // false
+     *
+     * // Works on nested objects:
+     * class Parent {
+     *   constructor(public child: Feature | null) {}
+     * }
+     * const p = new Parent(new Feature('child', true));
+     * if (ObjectUtils.isEnabled(p.child)) {
+     *   p.child.enabled; // type: true
+     * }
+     */
+    public static isEnabled<T extends { enabled?: boolean }>(value: T | null | undefined): value is Enabled<T> {
+        return CommonUtils.notNil(value) && value.enabled === true;
     }
 }

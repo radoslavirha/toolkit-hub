@@ -329,4 +329,74 @@ describe('ObjectUtils', () => {
             expect(ObjectUtils.isPlainObject(() => {})).toBe(false);
         });
     });
+
+    describe('isEnabled', () => {
+        class Feature {
+            constructor(
+                public name: string,
+                public enabled?: boolean
+            ) {}
+        }
+
+        class ChildFeature {
+            constructor(
+                public score: number,
+                public enabled?: boolean
+            ) {}
+        }
+
+        class ParentFeature {
+            constructor(
+                public name: string,
+                public child?: ChildFeature
+            ) {}
+        }
+
+        it('returns true when enabled is true', () => {
+            expect(ObjectUtils.isEnabled(new Feature('feature', true))).toBe(true);
+        });
+
+        it('returns false when enabled is false', () => {
+            expect(ObjectUtils.isEnabled(new Feature('feature', false))).toBe(false);
+        });
+
+        it('returns false when enabled is undefined', () => {
+            expect(ObjectUtils.isEnabled(new Feature('feature'))).toBe(false);
+        });
+
+        it('returns false when value is null', () => {
+            expect(ObjectUtils.isEnabled(null)).toBe(false);
+        });
+
+        it('returns false when value is undefined', () => {
+            expect(ObjectUtils.isEnabled(undefined)).toBe(false);
+        });
+
+        it('works on nested object with enabled: true', () => {
+            const parent = new ParentFeature('parent', new ChildFeature(99, true));
+
+            expect(ObjectUtils.isEnabled(parent.child)).toBe(true);
+        });
+
+        it('returns false on nested object with enabled: false', () => {
+            const parent = new ParentFeature('parent', new ChildFeature(99, false));
+
+            expect(ObjectUtils.isEnabled(parent.child)).toBe(false);
+        });
+
+        it('returns false on nested object with enabled missing', () => {
+            const parent = new ParentFeature('parent', new ChildFeature(99));
+
+            expect(ObjectUtils.isEnabled(parent.child)).toBe(false);
+        });
+
+        it('returns false on nested object with enabled missing', () => {
+            const parent = new ParentFeature('parent', new ChildFeature(99, true));
+
+            if(ObjectUtils.isEnabled(parent.child)) {
+                expect(parent.child.enabled).toBe(true); // TypeScript should narrow parent.child to ChildFeature with enabled: true
+                expect(parent.child.score).toBe(99); // TypeScript should narrow parent.child to ChildFeature with enabled: true
+            }
+        });
+    });
 });

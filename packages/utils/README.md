@@ -32,6 +32,7 @@ ObjectUtils.keys(obj);                   // Object keys
 ObjectUtils.values(obj);                 // Object / enum values
 ObjectUtils.cloneDeep(obj);              // Deep clone
 ObjectUtils.mergeDeep(target, source);   // Deep merge (arrays concatenate!)
+ObjectUtils.isEnabled(feature);          // Type guard: non-null and enabled === true
 
 // MappingUtils - Null-safe mapping helpers
 const mappingUtils = new MappingUtils();
@@ -58,9 +59,9 @@ DefaultsUtil.string(value, 'default');       // Returns default if value is nil/
 DefaultsUtil.number(value, 0);               // Returns default if value is nil
 ```
 
-**Complete Method List (ALL 31 methods):**
+**Complete Method List (ALL 33 methods + 1 type):**
 - **CommonUtils (8):** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel
-- **ObjectUtils (4):** keys, values, cloneDeep, mergeDeep
+- **ObjectUtils (5 + 1 type):** keys, values, cloneDeep, mergeDeep, isEnabled — plus `Enabled<T>` type
 - **MappingUtils (7):** mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum
 - **NumberUtils (8):** getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
 - **GeoUtils (2):** calculateKmBetweenCoordinates, degToRad
@@ -195,12 +196,39 @@ const merged = ObjectUtils.mergeDeep(target, source);
 - `values<T>(object: Dictionary<T> | null | undefined): T[]` - Returns dictionary values
 - `cloneDeep<T>(object: T): T` - Creates a deep clone
 - `mergeDeep<T>(target: T, source: FullPartial<T>): T` - Deep merge with array concatenation
+- `isEnabled<T extends { enabled?: boolean }>(value: T | null | undefined): value is Enabled<T>` - Type guard: returns `true` when value is non-null/undefined and `enabled === true`, narrowing to `Enabled<T>`
+- `Enabled<T>` *(type)* - T with `enabled` narrowed to literal `true`; produced by `isEnabled`
+
+**Usage example for `isEnabled`:**
+```typescript
+class Feature {
+  constructor(public name: string, public enabled?: boolean) {}
+}
+
+const f = new Feature('dark-mode', true);
+if (ObjectUtils.isEnabled(f)) {
+  f.enabled; // type: true
+  f.name;    // type: string
+}
+
+ObjectUtils.isEnabled(new Feature('x', false)); // false
+ObjectUtils.isEnabled(new Feature('x'));         // false (enabled is undefined)
+ObjectUtils.isEnabled(null);                     // false
+ObjectUtils.isEnabled(undefined);                // false
+
+// Works on nested class instances:
+class Parent {
+  constructor(public child: Feature | null) {}
+}
+const p = new Parent(new Feature('child', true));
+if (ObjectUtils.isEnabled(p.child)) {
+  p.child.enabled; // type: true
+}
+```
 
 **Note:** Unlike lodash's `merge`, `mergeDeep` concatenates arrays instead of replacing them.
 
 ---
-
-### MappingUtils
 
 Null-safe mapping utilities for models, arrays, maps, and enums.
 
@@ -341,13 +369,13 @@ function paginate(page?: number, pageSize?: number) {
 | Utility Class | Methods | Purpose |
 |---------------|---------|---------|
 | CommonUtils | 8 methods | Type checking, null/undefined guards, emptiness checks, model instantiation |
-| ObjectUtils | 3 methods | Typed object keys, deep clone, deep merge with array concatenation |
+| ObjectUtils | 5 methods + 1 type | Typed object keys, deep clone, deep merge with array concatenation, enabled type guard |
 | MappingUtils | 7 methods | Null-safe mapping for models, arrays, maps, and enums |
 | NumberUtils | 8 methods | Percentages, statistics, rounding, min/max |
 | GeoUtils | 2 methods | Haversine distance calculations, degree conversion |
 | DefaultsUtil | 2 methods | Safe default values for strings/numbers |
 
-**Total: 30 utility methods**
+**Total: 32 utility methods + 1 type**
 
 ---
 

@@ -486,7 +486,7 @@ export class ConfigService extends ConfigProvider<ConfigModel> {
 - `notUndefined<T>(value: T): boolean` - Check if NOT undefined (type guard)
 - `buildModel<T>(type: new() => T, data: Partial<T>): T` - Type-safe model construction
 
-**ObjectUtils (6 methods):**
+**ObjectUtils (7 methods + 1 type):**
 - `isObject<T>(value: T): value is Extract<T, object>` - Check if value is any object type (includes arrays, functions, class instances)
 - `isPlainObject<T>(value: T): value is Extract<T, Record<string, unknown>>` - Check if value is a plain object (POJO only, excludes arrays/functions)
 - `keys<T extends object>(object: T | null | undefined): Array<Extract<keyof T, string>>` - Get typed object keys
@@ -495,6 +495,8 @@ export class ConfigService extends ConfigProvider<ConfigModel> {
 - `values<T>(object: Dictionary<T> | null | undefined): T[]` - Get dictionary values
 - `cloneDeep<T extends object>(object: T): T` - Deep clone with no shared references
 - `mergeDeep<T extends object, S extends object>(target: T, source: S): T & S` - Deep merge (arrays concatenate)
+- `isEnabled<T extends { enabled?: boolean }>(value: T | null | undefined): value is Enabled<T>` - Type guard: returns `true` when value is non-null/undefined and `enabled === true`, narrowing to `Enabled<T>`
+- `Enabled<T>` *(type)* - T with `enabled` narrowed to literal `true`; produced by `isEnabled`
 
 **ArrayUtils (2 methods):**
 - `isArray<T>(value: T): value is Extract<T, unknown[]>` - Check if value is an array (type guard)
@@ -557,6 +559,12 @@ const keys = ObjectUtils.keys(config);
 const vals = ObjectUtils.values(config);
 const clone = ObjectUtils.cloneDeep(original);
 const merged = ObjectUtils.mergeDeep(target, source);
+
+// Enabled type guard
+if (ObjectUtils.isEnabled(feature)) {
+  feature.enabled; // type: true — TypeScript knows it's enabled
+}
+// Works with null/undefined/missing enabled field — all return false
 
 // Array operations
 ArrayUtils.isArray(value);            // type guard for arrays
