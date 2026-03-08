@@ -87,10 +87,18 @@ export class Controller {
 
 ```typescript
 // 1. Configuration Service (tsed-configuration)
+import { z } from 'zod';
+import { BaseConfig } from '@radoslavirha/tsed-configuration';
+
+export const AppConfigSchema = BaseConfig.extend({
+  config: z.object({ mongodb: z.object({ url: z.string() }) })
+});
+export type AppConfig = z.infer<typeof AppConfigSchema>;
+
 @Injectable()
-export class ConfigService extends ConfigProvider<ConfigModel> {
-  public static readonly options: ConfigProviderOptions<ConfigModel> = {
-    configModel: ConfigModel
+export class ConfigService extends ConfigProvider<AppConfig> {
+  public static readonly options: ConfigProviderOptions<AppConfig> = {
+    schema: AppConfigSchema
   };
   constructor() {
     super(ConfigService.options);
@@ -445,25 +453,29 @@ config/
 
 **Loading Priority:** `default.json` → `{NODE_ENV}.json` → Environment variables
 
-### Configuration Model Pattern
+### Configuration Schema Pattern
 
 ```typescript
-// config/ConfigModel.ts
+// config/AppConfigSchema.ts
+import { z } from 'zod';
 import { BaseConfig } from '@radoslavirha/tsed-configuration';
-export class ConfigModel extends BaseConfig {
-  @Property() server: ServerConfig;
-  @Property() api: APIConfig;
-  @Property() mongo: MongoConfig;
-}
+
+export const AppConfigSchema = BaseConfig.extend({
+  mongo: z.object({ url: z.string() })
+});
+export type AppConfig = z.infer<typeof AppConfigSchema>;
 
 // config/ConfigService.ts
+import { Injectable } from '@tsed/di';
 import { ConfigProvider, ConfigProviderOptions } from '@radoslavirha/tsed-configuration';
+import { AppConfigSchema, AppConfig } from './AppConfigSchema.js';
+
 @Injectable()
-export class ConfigService extends ConfigProvider<ConfigModel> {
-  public static readonly options: ConfigProviderOptions<ConfigModel> = {
-    configModel: ConfigModel
+export class ConfigService extends ConfigProvider<AppConfig> {
+  public static readonly options: ConfigProviderOptions<AppConfig> = {
+    schema: AppConfigSchema
   };
-  
+
   constructor() {
     super(ConfigService.options);
   }

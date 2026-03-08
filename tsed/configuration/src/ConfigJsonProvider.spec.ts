@@ -1,14 +1,17 @@
-import { Required } from '@tsed/schema';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
-import { JSONSchemaValidator } from '@radoslavirha/tsed-common';
+import { z } from 'zod';
 import { ConfigJsonProvider } from './ConfigJsonProvider.js';
 import { BaseConfig } from './models/BaseConfig.js';
 
 // Must match the config file in config/test.json
-class ConfigModel extends BaseConfig {
-    @Required()
-    test!: string;
-}
+const ConfigModel = BaseConfig.extend({
+    test: z.string()
+});
+
+// invalid: test2 is required but absent from config/test.json
+const ConfigModelInvalid = ConfigModel.extend({
+    test2: z.string()
+});
 
 describe('ConfigJsonProvider', () => {
     let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
@@ -25,24 +28,18 @@ describe('ConfigJsonProvider', () => {
         const provider = new ConfigJsonProvider(ConfigModel);
 
         expect(provider.config).toBeDefined();
+        expect(provider.config.test).toBe('value');
     });
 
-    it('should throw with generic message when validator throws a non-array error', () => {
+    it('should throw and log error', () => {
         expect.hasAssertions();
 
-        const spy = vi.spyOn(JSONSchemaValidator, 'validate').mockImplementation(() => {
-            throw new Error('unexpected validator error');
-        });
-
         try {
-            new ConfigJsonProvider(ConfigModel);
+            new ConfigJsonProvider(ConfigModelInvalid);
         } catch (error) {
             expect(error).toBeInstanceOf(Error);
             expect((error as Error).message).toMatch('Invalid configuration!');
-            // Array.isArray is false for Error, so the per-error logging should NOT be called
             expect(consoleErrorSpy).not.toHaveBeenCalledWith('Configuration validation failed:');
-        } finally {
-            spy.mockRestore();
         }
     });
 });

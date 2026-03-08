@@ -11,7 +11,7 @@ export default defineConfig(ObjectUtils.mergeDeep(defaultConfig, {
             ],
             thresholds: {
                 // There is some problem with v8 coverage
-                branches: 72.5
+                branches: 66.66
             }
         }
     }

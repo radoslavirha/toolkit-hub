@@ -1,22 +1,17 @@
-import { AdditionalProperties, Description, Required, Property } from '@tsed/schema';
+import { z } from 'zod';
 
 /**
- * TsED server configuration.
- * 
- * Defines the server configuration properties for the application.
- * 
- * @remarks
- * Currently configured to support basic HTTP server setup with httpPort.
+ * Zod schema for TsED server configuration.
+ *
+ * Uses `z.looseObject()` so any additional Ts.ED configuration properties
+ * are forwarded to the server without being stripped.
  */
-@AdditionalProperties(true)
-@Description('TsED server configuration.')
-export class ServerConfig implements Partial<TsED.Configuration> {
-    /**
-     * The HTTP port to listen on.
-     * @type {number}
-     */
-    @Required()
-    @Property(Number)
-    @Description('The HTTP port to listen on.')
-    public httpPort: number;
-}
+export const ServerConfig = z.looseObject({
+    httpPort: z.number()
+});
+
+/**
+ * TypeScript type for TsED server configuration.
+ * Derived from {@link ServerConfig}.
+ */
+export type ServerConfig = z.infer<typeof ServerConfig>;

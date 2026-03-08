@@ -1,22 +1,23 @@
-import { Required } from '@tsed/schema';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { z } from 'zod';
 import { ConfigProviderOptions, ConfigProvider } from './ConfigProvider.js';
 import { injector } from '@tsed/di';
 import { BaseConfig } from './models/BaseConfig.js';
 
 // Must match the config file in config/test.json
-class ConfigModel extends BaseConfig {
-    @Required()
-    test!: string;
-}
+const ConfigModel = BaseConfig.extend({
+    test: z.string()
+});
+type ConfigModel = z.infer<typeof ConfigModel>;
 
-class ConfigModelInvalid extends ConfigModel {
-    @Required()
-    test2!: string;
-}
+// invalid: test2 is required but absent from config/test.json
+const ConfigModelInvalid = ConfigModel.extend({
+    test2: z.string()
+});
+type ConfigModelInvalid = z.infer<typeof ConfigModelInvalid>;
 
 const options: ConfigProviderOptions<ConfigModel> = {
-    configModel: ConfigModel
+    schema: ConfigModel
 };
 
 describe('ConfigProvider', () => {
@@ -69,7 +70,7 @@ describe('ConfigProvider', () => {
 
         it('Should pass with debug enabled', async () => {
             const debugOptions: ConfigProviderOptions<ConfigModel> = {
-                configModel: ConfigModel,
+                schema: ConfigModel,
                 debug: true
             };
             const loader = injector().get(ConfigProvider, { useOpts: debugOptions });
@@ -97,7 +98,7 @@ describe('ConfigProvider', () => {
     
         it('Should fail', async () => {
             const options: ConfigProviderOptions<ConfigModelInvalid> = {
-                configModel: ConfigModelInvalid
+                schema: ConfigModelInvalid
             };
     
             try {
@@ -105,8 +106,8 @@ describe('ConfigProvider', () => {
             } catch (error) {
                 expect(error).toBeInstanceOf(Error);
                 expect((error as Error).message).toMatch('Invalid configuration!');
-                expect(consoleErrorSpy).toHaveBeenCalledWith('Configuration validation failed:');
-                expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('root:'));
+                expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('Configuration validation failed:'));
+                expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('test2'));
             }
         });
     });
@@ -155,7 +156,7 @@ describe('ConfigProvider', () => {
 
         it('Should pass with debug enabled', async () => {
             const debugOptions: ConfigProviderOptions<ConfigModel> = {
-                configModel: ConfigModel,
+                schema: ConfigModel,
                 debug: true
             };
             const loader = new ConfigProvider<ConfigModel>(debugOptions);
@@ -176,7 +177,7 @@ describe('ConfigProvider', () => {
     
         it('Should fail', async () => {
             const options: ConfigProviderOptions<ConfigModelInvalid> = {
-                configModel: ConfigModelInvalid
+                schema: ConfigModelInvalid
             };
     
             try {
@@ -184,8 +185,8 @@ describe('ConfigProvider', () => {
             } catch (error) {
                 expect(error).toBeInstanceOf(Error);
                 expect((error as Error).message).toMatch('Invalid configuration!');
-                expect(consoleErrorSpy).toHaveBeenCalledWith('Configuration validation failed:');
-                expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('root:'));
+                expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('Configuration validation failed:'));
+                expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringContaining('test2'));
             }
         });
     });

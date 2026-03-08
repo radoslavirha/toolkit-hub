@@ -1,58 +1,36 @@
-import { Description, Property, Required } from '@tsed/schema';
+import { z } from 'zod';
 import { ServerConfig } from './ServerConfig.js';
 
 /**
- * Base model for JSON configuration files.
- * 
- * This class serves as the foundation for application configuration models.
- * All custom configuration classes should extend this base class to ensure
- * consistent server configuration and metadata properties.
- * 
- * @remarks
- * - Should be decorated with @tsed/schema decorators for JSON Schema validation
- * - Configuration files are loaded from the `config/` directory via the 'config' package
- * - Validated using Ajv against the generated JSON Schema
- * 
+ * Base Zod schema for JSON configuration files.
+ *
+ * All application configuration schemas should be built by extending this schema
+ * to ensure consistent server configuration and metadata properties.
+ *
  * @example
  * ```typescript
- * import { Property } from '@tsed/schema';
- * import { BaseConfig } from './models/BaseConfig.js';
- * 
- * export class AppConfig extends BaseConfig {
- *     @Property()
- *     databaseUrl: string;
- *     
- *     @Property()
- *     apiKey: string;
- * }
+ * import { z } from 'zod';
+ * import { BaseConfig } from '@radoslavirha/tsed-configuration';
+ *
+ * export const AppConfig = BaseConfig.extend({
+ *     databaseUrl: z.string(),
+ *     apiKey: z.string()
+ * });
+ *
+ * export type AppConfig = z.infer<typeof AppConfig>;
  * ```
  */
-@Description('Base server configuration.')
-export class BaseConfig {
-    /**
-     * TsED server configuration settings.
-     * @type {ServerConfig}
-     */
-    @Required()
-    @Property(ServerConfig)
-    @Description('TsED server configuration.')
-    public server: ServerConfig;
+export const BaseConfig = z.object({
+    /** TsED server configuration settings. */
+    server: ServerConfig,
+    /** Service name. If not set, the name from package.json will be used. */
+    serviceName: z.string().optional(),
+    /** Public URL of the service including protocol, domain and path if deployed behind a reverse proxy. */
+    publicURL: z.string().optional()
+});
 
-    /**
-     * Service name. If not set, the name from package.json will be used.
-     * @type {string}
-     */
-
-    @Property(String)
-    @Description('Service name. If not set, the name from package.json will be used.')
-    public serviceName?: string;
-
-    /**
-     * Public URL of the service including protocol, domain and path if deployed behind a reverse proxy.
-     * @type {string}
-     * @example 'https://api.example.com/v1'
-     */
-    @Property(String)
-    @Description('Public URL of the service including protocol, domain and path if deployed behind a reverse proxy.')
-    public publicURL?: string;
-}
+/**
+ * TypeScript type for the base configuration.
+ * Derived from {@link BaseConfig}.
+ */
+export type BaseConfig = z.infer<typeof BaseConfig>;

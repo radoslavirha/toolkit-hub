@@ -1,5 +1,5 @@
 import { CommonUtils, DefaultsUtil, ObjectUtils } from '@radoslavirha/utils';
-import { Type } from '@tsed/core';
+import type { ZodType } from 'zod';
 import { Injectable, Opts } from '@tsed/di';
 import { ConfigJsonProvider } from './ConfigJsonProvider.js';
 import { ENVS, EnvironmentVariablesProvider } from './EnvironmentVariablesProvider.js';
@@ -13,8 +13,8 @@ import { APIInformation } from './models/APIInformation.js';
  * @template T The configuration model type extending BaseConfig
  */
 export type ConfigProviderOptions<T extends BaseConfig> = {
-    /** The configuration model class decorated with @tsed/schema decorators */
-    configModel: Type<T>;
+    /** Zod schema whose inferred output type extends {@link BaseConfig}. */
+    schema: ZodType<T>;
     /** Enable debug logging for configuration loading and validation */
     debug?: boolean;
 };
@@ -34,16 +34,21 @@ export type ConfigProviderOptions<T extends BaseConfig> = {
  * 
  * @example
  * ```typescript
- * import { ConfigProvider, ConfigProviderOptions } from '@radoslavirha/tsed-configuration';
+ * import { z } from 'zod';
+ * import { ConfigProvider, ConfigProviderOptions, BaseConfigSchema } from '@radoslavirha/tsed-configuration';
  * import { Injectable } from '@tsed/di';
- * import { ConfigModel } from '../models/ConfigModel.js';
- * 
+ *
+ * export const AppConfigSchema = BaseConfigSchema.extend({
+ *     databaseUrl: z.string(),
+ * });
+ * export type AppConfig = z.infer<typeof AppConfigSchema>;
+ *
  * @Injectable()
- * export class ConfigService extends ConfigProvider<ConfigModel> {
- *     public static readonly options: ConfigProviderOptions<ConfigModel> = {
- *         configModel: ConfigModel
+ * export class ConfigService extends ConfigProvider<AppConfig> {
+ *     public static readonly options: ConfigProviderOptions<AppConfig> = {
+ *         schema: AppConfigSchema
  *     };
- * 
+ *
  *     constructor() {
  *         super(ConfigService.options);
  *     }
@@ -68,9 +73,6 @@ export type ConfigProviderOptions<T extends BaseConfig> = {
  */
 @Injectable()
 export class ConfigProvider<T extends BaseConfig> {
-    /** The configuration model class */
-    readonly configModel: Type<T>;
-
     /** Internal API information model */
     readonly _api: APIInformation;
     /** Internal configuration model instance */
@@ -144,11 +146,9 @@ export class ConfigProvider<T extends BaseConfig> {
      * @throws {Error} If configuration validation fails
      */
     constructor(@Opts options: ConfigProviderOptions<T>) {
-        this.configModel = options.configModel;
-
         this._envs = new EnvironmentVariablesProvider().config;
         this._packageJson = new PackageJsonProvider().config;
-        this._config = new ConfigJsonProvider(this.configModel, options.debug).config;
+        this._config = new ConfigJsonProvider(options.schema, options.debug).config;
 
         this._api = CommonUtils.buildModel(APIInformation, {
             service: DefaultsUtil.string(this.config.serviceName, this.packageJson.name),

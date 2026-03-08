@@ -62,13 +62,15 @@
         "tslib": "catalog:",
         "tsup": "catalog:",
         "typescript": "catalog:",
-        "vitest": "catalog:"
+        "vitest": "catalog:",
+        "zod": "catalog:"
     },
     "peerDependencies": {
         "@tsed/core": "catalog:tsed",
         "@tsed/di": "catalog:tsed",
         "@tsed/json-mapper": "catalog:tsed",
-        "@tsed/schema": "catalog:tsed"
+        "@tsed/schema": "catalog:tsed",
+        "zod": "catalog:"
     },
     "engines": {
         "node": ">= 24",
