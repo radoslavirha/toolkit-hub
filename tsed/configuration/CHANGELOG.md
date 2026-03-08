@@ -1,5 +1,16 @@
 # @radoslavirha/tsed-configuration
 
+## 0.5.0
+
+### Minor Changes
+
+- [`80701b9`](https://github.com/radoslavirha/toolkit-hub/commit/80701b952c214527123b8299b949107fedaa20c8) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Use Zod validator
+
+### Patch Changes
+
+- Updated dependencies [[`b97d4d8`](https://github.com/radoslavirha/toolkit-hub/commit/b97d4d847c06dfbdff38aea739a224c36ebc7ff5)]:
+  - @radoslavirha/tsed-common@0.4.2
+
 ## 0.4.1
 
 ### Patch Changes

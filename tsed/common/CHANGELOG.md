@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-common
 
+## 0.4.2
+
+### Patch Changes
+
+- [`b97d4d8`](https://github.com/radoslavirha/toolkit-hub/commit/b97d4d847c06dfbdff38aea739a224c36ebc7ff5) Thanks [@radoslavirha](https://github.com/radoslavirha)! - New ZodValidator
+
 ## 0.4.1
 
 ### Patch Changes
