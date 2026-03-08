@@ -14,7 +14,7 @@
 | [@radoslavirha/tsed-configuration](tsed/configuration/) | Config management (JSON/ENV) | **Always** - Required for Ts.ED service configuration |
 | [@radoslavirha/tsed-swagger](tsed/swagger/) | Multi-version Swagger/OpenAPI docs | When building Ts.ED REST APIs that need documentation |
 | [@radoslavirha/tsed-mongoose](tsed/mongoose/) | Clean architecture MongoDB integration | When using MongoDB with mapper pattern in Ts.ED  service |
-| [@radoslavirha/tsed-common](tsed/common/) | Base models, typed serialization & AJV schema validation | When using Ts.ED models, tsed-mongoose, or validating arbitrary input |
+| [@radoslavirha/tsed-common](tsed/common/) | Base models, typed serialization, and AJV/Zod schema validation | When using Ts.ED models, tsed-mongoose, or validating arbitrary input |
 
 ### Utility Packages
 
@@ -135,7 +135,7 @@ export class MongoModel extends BaseMongo {
 }
 
 // 4. API Model (tsed-common)
-import { BaseModel, Serializer, JSONSchemaValidator } from '@radoslavirha/tsed-common';
+import { BaseModel, Serializer, JSONSchemaValidator, ZodValidator } from '@radoslavirha/tsed-common';
 
 export class Model extends BaseModel {
   @Property() name: string;
