@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-swagger
 
+## 4.0.2
+
+### Patch Changes
+
+- [`cefab8c`](https://github.com/radoslavirha/toolkit-hub/commit/cefab8cb4dafc05e6a31618014ec8cfc0ea967a3) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update docs, dependencies
+
+- Updated dependencies [[`cefab8c`](https://github.com/radoslavirha/toolkit-hub/commit/cefab8cb4dafc05e6a31618014ec8cfc0ea967a3)]:
+  - @radoslavirha/types@0.3.2
+  - @radoslavirha/utils@0.5.2
+  - @radoslavirha/tsed-configuration@0.5.2
+  - @radoslavirha/tsed-platform@0.3.5
+
 ## 4.0.1
 
 ### Patch Changes
