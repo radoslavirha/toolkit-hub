@@ -1,5 +1,13 @@
 # @radoslavirha/tsed-mongoose
 
+## 3.1.2
+
+### Patch Changes
+
+- [`2180452`](https://github.com/radoslavirha/toolkit-hub/commit/2180452c22b31454dc44e17661352c174d628a0f) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix deserialization
+
+- [`6d50aa4`](https://github.com/radoslavirha/toolkit-hub/commit/6d50aa4ecb08afac7d8a2e3bedc3928f0c9a7c22) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix MongooseModel import
+
 ## 3.1.1
 
 ### Patch Changes
