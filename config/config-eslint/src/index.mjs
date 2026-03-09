@@ -24,7 +24,7 @@ export default defineConfig(
             '@stylistic/key-spacing': ['error', { beforeColon: false }],
             '@stylistic/semi': ['error', 'always'],
             '@stylistic/space-infix-ops': 'error',
-            '@stylistic/quotes': ['error', 'single', { avoidEscape: true, allowTemplateLiterals: true }],
+            '@stylistic/quotes': ['error', 'single', { avoidEscape: true, allowTemplateLiterals: 'always' }],
             '@stylistic/indent': ['error', 4],
             '@stylistic/no-whitespace-before-property': 'error',
             '@stylistic/object-curly-spacing': ['error', 'always']
