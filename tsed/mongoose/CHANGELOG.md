@@ -1,5 +1,19 @@
 # @radoslavirha/tsed-mongoose
 
+## 3.1.0
+
+### Minor Changes
+
+- [`ee57533`](https://github.com/radoslavirha/toolkit-hub/commit/ee575331526d61391abb26e3dcb48d8165ed94da) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Create repository
+
+### Patch Changes
+
+- [`6951e80`](https://github.com/radoslavirha/toolkit-hub/commit/6951e80d87867b7843e5b79936dc92113a9a4932) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies
+
+- Updated dependencies [[`6951e80`](https://github.com/radoslavirha/toolkit-hub/commit/6951e80d87867b7843e5b79936dc92113a9a4932)]:
+  - @radoslavirha/utils@0.5.1
+  - @radoslavirha/tsed-common@0.4.3
+
 ## 3.0.2
 
 ### Patch Changes
