@@ -30,17 +30,24 @@ class Entity extends BaseModel { @Property() name: string; }
     model.name = mongo.name;
     return model;
   }
-  async modelToMongoCreateObject(model: Entity): Promise<MongoosePlainObjectCreate<EntityMongo>> {
+  async modelToMongoCreateObject(model: Entity): Promise<MongoCreate<EntityMongo>> {
     return { name: model.name };
   }
-  async modelToMongoUpdateObject(model: Entity): Promise<MongoosePlainObjectUpdate<EntityMongo>> {
+  async modelToMongoUpdateObject(model: Entity): Promise<MongoUpdate<EntityMongo>> {
     return { name: model.name };
   }
 }
 
-// 4. Service
+// 4. Repository
+@Injectable() class EntityRepository extends MongoRepository<EntityMongo> {
+  @Inject(EntityMongo) protected model!: MongooseModel<EntityMongo>;
+  protected type = EntityMongo;
+}
+
+// 5. Service
 @Injectable() class EntityService extends MongoService<EntityMongo, Entity> {
-  constructor(@Inject(EntityMongo) model, mapper: EntityMapper) { super(model, mapper); }
+  @Inject(EntityRepository) protected repository!: EntityRepository;
+  @Inject() protected mapper!: EntityMapper;
 }
 
 // 5. Controller
@@ -54,6 +61,7 @@ class Entity extends BaseModel { @Property() name: string; }
 **Key Classes:**
 - `BaseMongo` - Base schema (_id, createdAt, updatedAt)
 - `MongoMapper<MONGO, MODEL>` - Abstract bidirectional mapper
+- `MongoRepository<MONGO>` - Abstract repository for DB operations
 - `MongoService<MONGO, MODEL>` - Abstract service with CRUD + mapping
 
 **Full documentation below** ↓
@@ -88,13 +96,17 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 
 - **`BaseMongo`** - Base Mongoose schema with `_id`, `createdAt`, `updatedAt`
 - **`MongoMapper<MONGO, MODEL>`** - Abstract mapper for bidirectional conversions
+- **`MongoRepository<MONGO>`** - Abstract base repository for DB operations
 - **`MongoService<MONGO, MODEL>`** - Abstract service with mapping helpers
 
 ### Type Utilities
 
-- **`MongoosePlainObject<T>`** - Plain object type for Mongoose documents
-- **`MongoosePlainObjectCreate<T>`** - Create type (omits `_id`, timestamps)
-- **`MongoosePlainObjectUpdate<T>`** - Update type (omits `_id`, `createdAt`)
+- **`MongoCreate<T>`** - Strictly-typed create payload (strictly forbids `_id`, `createdAt`, `updatedAt`)
+- **`MongoUpdate<T>`** - Strictly-typed update payload (strictly forbids `_id`, `createdAt`, `updatedAt`)
+- **`MongoFilter<T>`** - Filter type for repository queries
+- **`MongoDeleteResult`** - Typed result from delete operations
+- **`MongoUpdateResult`** - Typed result from count-based update operations
+- **`MongoConfigSchema`** / **`MongoConfig`** - Zod schema and TypeScript type for MongoDB connection config
 
 ## Architecture Pattern
 
@@ -104,12 +116,13 @@ This package enforces a clean architecture pattern with clear separation of conc
 Controller (HTTP Layer)
     ↓
 Service (Business Logic)
-    ↓
-Mapper (Transformation Layer)
-    ↓
-Mongoose Model (Data Layer)
-    ↓
-MongoDB Database
+    ↓                   ↓
+Mapper              Repository
+(Transformation)    (Data Access)
+    ↓                   ↓
+API Model       Mongoose Model (Data Layer)
+                         ↓
+                   MongoDB Database
 ```
 
 **Data Flow:**
@@ -189,7 +202,7 @@ Create a mapper to handle bidirectional conversion between Mongoose documents an
 
 ```typescript
 import { Injectable } from '@tsed/di';
-import { MongoMapper, MongoosePlainObjectCreate, MongoosePlainObjectUpdate } from '@radoslavirha/tsed-mongoose';
+import { MongoMapper, MongoCreate, MongoUpdate } from '@radoslavirha/tsed-mongoose';
 import { UserMongo } from './UserMongo';
 import { UserModel } from './UserModel';
 
@@ -216,7 +229,7 @@ export class UserMapper extends MongoMapper<UserMongo, UserModel> {
      * Convert API model to plain object for creation (for inserts)
      * Omits _id, createdAt, updatedAt (auto-managed by MongoDB)
      */
-    public async modelToMongoCreateObject(model: UserModel): Promise<MongoosePlainObjectCreate<UserMongo>> {
+    public async modelToMongoCreateObject(model: UserModel): Promise<MongoCreate<UserMongo>> {
         return {
             name: model.name,
             email: model.email,
@@ -228,7 +241,7 @@ export class UserMapper extends MongoMapper<UserMongo, UserModel> {
      * Convert API model to plain object for updates (for updates)
      * Omits _id, createdAt (immutable), allows updatedAt auto-update
      */
-    public async modelToMongoUpdateObject(model: UserModel): Promise<MongoosePlainObjectUpdate<UserMongo>> {
+    public async modelToMongoUpdateObject(model: UserModel): Promise<MongoUpdate<UserMongo>> {
         return {
             name: model.name,
             email: model.email,
@@ -244,22 +257,76 @@ export class UserMapper extends MongoMapper<UserMongo, UserModel> {
 - Return type-safe plain objects for create/update operations
 - Create and update objects automatically exclude system-managed fields
 
-### 4. Implement Service (Business Logic Layer)
+### 4. Implement Repository (Data Access Layer)
 
-Create a service that implements your business logic using the mapper and Mongoose model. The service provides helper methods for common operations.
+Create a repository that owns all direct Mongoose queries. The repository must inject the Mongoose model, declare the document type, and expose only the data-access methods your domain needs. Use `.lean()` for performance and call the built-in `deserialize()`/`deserializeArray()` helpers to get typed class instances back.
 
 ```typescript
 import { Injectable, Inject } from '@tsed/di';
 import { MongooseModel } from '@tsed/mongoose';
-import { MongoService } from '@radoslavirha/tsed-mongoose';
+import { Type } from '@tsed/core';
+import { MongoRepository, MongoCreate, MongoUpdate, MongoFilter, MongoDeleteResult } from '@radoslavirha/tsed-mongoose';
+import { UserMongo } from './UserMongo';
+
+@Injectable()
+export class UserRepository extends MongoRepository<UserMongo> {
+    @Inject(UserMongo)
+    protected model!: MongooseModel<UserMongo>;
+
+    protected type: Type<UserMongo> = UserMongo;
+
+    async findById(id: string): Promise<UserMongo | null> {
+        const result = await this.model.findById(id).lean<UserMongo>();
+        return this.deserialize(result);
+    }
+
+    async findAll(): Promise<UserMongo[]> {
+        const results = await this.model.find().lean<UserMongo[]>();
+        return this.deserializeArray(results);
+    }
+
+    async create(data: MongoCreate<UserMongo>): Promise<UserMongo> {
+        const doc = await this.model.create(data);
+        return this.deserialize(this.convertHydratedDocumentToObject(doc))!;
+    }
+
+    async updateById(id: string, data: MongoUpdate<UserMongo>): Promise<UserMongo | null> {
+        const result = await this.model
+            .findByIdAndUpdate(id, { $set: data }, { new: true })
+            .lean<UserMongo>();
+        return this.deserialize(result);
+    }
+
+    async deleteById(id: string): Promise<MongoDeleteResult> {
+        const result = await this.model.deleteOne({ _id: id } satisfies MongoFilter<UserMongo>);
+        return { deleted: result.deletedCount > 0, deletedCount: result.deletedCount };
+    }
+}
+```
+
+**Key Points:**
+- Inject the Mongoose model with `@Inject(UserMongo)` and declare `protected type`
+- Use `.lean()` on all read queries for performance — results are plain objects
+- Call `deserialize()` / `deserializeArray()` to reconstruct typed class instances
+- Call `convertHydratedDocumentToObject()` after `model.create()` (which doesn't support `.lean()`)
+- Business logic does NOT belong here — keep queries data-access only
+
+### 5. Implement Service (Business Logic Layer)
+
+Create a service that implements your business logic using the repository (for DB access) and the mapper (for transformations). The service provides helper methods for common operations.
+
+```typescript
+import { Injectable, Inject } from '@tsed/di';
+import { MongoService, MongoDeleteResult } from '@radoslavirha/tsed-mongoose';
 import { UserMongo } from './UserMongo';
 import { UserModel } from './UserModel';
 import { UserMapper } from './UserMapper';
+import { UserRepository } from './UserRepository';
 
 @Injectable()
 export class UserService extends MongoService<UserMongo, UserModel> {
-    @Inject(UserMongo)
-    protected model: MongooseModel<UserMongo>;
+    @Inject(UserRepository)
+    protected repository: UserRepository;
 
     @Inject()
     protected mapper: UserMapper;
@@ -268,7 +335,7 @@ export class UserService extends MongoService<UserMongo, UserModel> {
      * Find user by ID
      */
     async findById(id: string): Promise<UserModel | null> {
-        const mongo = await this.model.findById(id).exec();
+        const mongo = await this.repository.findById(id);
         return this.mapSingle(mongo); // Handles null gracefully
     }
 
@@ -276,8 +343,8 @@ export class UserService extends MongoService<UserMongo, UserModel> {
      * Find all users
      */
     async findAll(): Promise<UserModel[]> {
-        const mongo = await this.model.find().exec();
-        return this.mapMany(mongo); // Maps array in parallel
+        const mongos = await this.repository.findAll();
+        return this.mapMany(mongos); // Maps array in parallel
     }
 
     /**
@@ -285,7 +352,7 @@ export class UserService extends MongoService<UserMongo, UserModel> {
      */
     async create(model: UserModel): Promise<UserModel> {
         const createObject = await this.getCreateObject(model);
-        const mongo = await this.model.create(createObject);
+        const mongo = await this.repository.create(createObject);
         return this.mapper.mongoToModel(mongo);
     }
 
@@ -294,27 +361,26 @@ export class UserService extends MongoService<UserMongo, UserModel> {
      */
     async update(id: string, model: UserModel): Promise<UserModel | null> {
         const updateObject = await this.getUpdateObject(model);
-        const mongo = await this.model.findByIdAndUpdate(id, updateObject, { new: true }).exec();
+        const mongo = await this.repository.updateById(id, updateObject);
         return this.mapSingle(mongo);
     }
 
     /**
      * Delete user
      */
-    async delete(id: string): Promise<boolean> {
-        const result = await this.model.findByIdAndDelete(id).exec();
-        return result !== null;
+    async delete(id: string): Promise<MongoDeleteResult> {
+        return this.repository.deleteById(id);
     }
 }
 ```
 
 **Key Points:**
 - Use `@Injectable()` and inject dependencies with `@Inject()`
-- Inject both the Mongoose model and mapper as protected properties
+- Inject the repository (for DB) and mapper (for transformations) as protected properties
 - Use helper methods: `getCreateObject()`, `getUpdateObject()`, `mapSingle()`, `mapMany()`
-- Always use `.exec()` on Mongoose queries for proper TypeScript typing
+- Delegate all Mongoose queries to the repository — never call `this.model` directly in a service
 
-### 5. Use in Controller (HTTP Layer)
+### 6. Use in Controller (HTTP Layer)
 
 Use the service in your Ts.ED controller to expose REST API endpoints.
 
@@ -419,11 +485,11 @@ public async mongoToModel(mongo: UserMongo): Promise<UserModel> {
 }
 ```
 
-#### `modelToMongoCreateObject(model: MODEL): Promise<MongoosePlainObjectCreate<MONGO>>`
-Converts an API model to a plain object for document creation. The return type automatically excludes `_id`, `createdAt`, and `updatedAt`.
+#### `modelToMongoCreateObject(model: MODEL): Promise<MongoCreate<MONGO>>`
+Converts an API model to a plain object for document creation. The return type strictly forbids `_id`, `createdAt`, and `updatedAt`.
 
 ```typescript
-public async modelToMongoCreateObject(model: UserModel): Promise<MongoosePlainObjectCreate<UserMongo>> {
+public async modelToMongoCreateObject(model: UserModel): Promise<MongoCreate<UserMongo>> {
     return {
         name: model.name,
         email: model.email
@@ -431,11 +497,11 @@ public async modelToMongoCreateObject(model: UserModel): Promise<MongoosePlainOb
 }
 ```
 
-#### `modelToMongoUpdateObject(model: MODEL): Promise<MongoosePlainObjectUpdate<MONGO>>`
-Converts an API model to a plain object for document updates. The return type automatically excludes `_id` and `createdAt`.
+#### `modelToMongoUpdateObject(model: MODEL): Promise<MongoUpdate<MONGO>>`
+Converts an API model to a plain object for document updates. The return type strictly forbids `_id` and `createdAt`.
 
 ```typescript
-public async modelToMongoUpdateObject(model: UserModel): Promise<MongoosePlainObjectUpdate<UserMongo>> {
+public async modelToMongoUpdateObject(model: UserModel): Promise<MongoUpdate<UserMongo>> {
     return {
         name: model.name,
         email: model.email
@@ -503,7 +569,7 @@ Gets a property value from the model, with fallback to schema defaults if undefi
 **Usage:** Safely access model properties with default value support.
 
 ```typescript
-public async modelToMongoCreateObject(model: UserModel): Promise<MongoosePlainObjectCreate<UserMongo>> {
+public async modelToMongoCreateObject(model: UserModel): Promise<MongoCreate<UserMongo>> {
     return {
         name: this.getModelValue(model, 'name'), // Falls back to schema default
         role: this.getModelValue(model, 'role') ?? 'user' // Custom fallback
@@ -513,8 +579,44 @@ public async modelToMongoCreateObject(model: UserModel): Promise<MongoosePlainOb
 
 **Note:** For more advanced default value handling, consider using `DefaultsUtil` from `@radoslavirha/utils` which provides utilities for setting default values on objects with type safety.
 
-#### `getModelDefault<PROPERTY>(property: PROPERTY): MODEL[PROPERTY] | undefined`
-Gets the default value for a property from the Mongoose schema definition.
+---
+
+### MongoRepository<MONGO>
+
+Abstract base repository for raw database operations. Owns all direct Mongoose queries. Subclasses inject the Mongoose model, declare the document type, and implement only the queries their domain needs.
+
+**All queries should use `.lean()` for performance.** Results are deserialized using the built-in helpers.
+
+**Type Parameters:**
+- `MONGO extends BaseMongo` - Your Mongoose schema class
+
+**Abstract Properties (must inject):**
+
+#### `protected model: MongooseModel<MONGO>`
+The Mongoose model for database operations. Inject using `@Inject(YourMongoClass)`.
+
+```typescript
+@Inject(UserMongo)
+protected model!: MongooseModel<UserMongo>;
+```
+
+#### `protected type: Type<MONGO>`
+The class constructor of your Mongoose document type. Used by `deserialize()` to reconstruct typed instances.
+
+```typescript
+protected type: Type<UserMongo> = UserMongo;
+```
+
+**Helper Methods:**
+
+#### `protected deserialize(data: MONGO | null): MONGO | null`
+Deserializes a lean/plain query result into a typed `MONGO` instance using Ts.ED. Returns `null` when input is `null`.
+
+#### `protected deserializeArray(data: MONGO[]): MONGO[]`
+Deserializes an array of lean/plain query results into typed `MONGO` instances.
+
+#### `protected convertHydratedDocumentToObject(document: HydratedDocument<MONGO>): MONGO`
+Converts a Mongoose `HydratedDocument` (returned by `model.create()`) to a plain object. Use this when `.lean()` is not available.
 
 ---
 
@@ -528,12 +630,12 @@ Abstract base class for services providing CRUD operations and mapping helpers. 
 
 **Abstract Properties (must inject):**
 
-#### `protected model: MongooseModel<MONGO>`
-The Mongoose model for database operations. Inject using `@Inject(YourMongoClass)`.
+#### `protected repository: MongoRepository<MONGO>`
+The repository for database operations. Inject using `@Inject(YourRepository)`.
 
 ```typescript
-@Inject(UserMongo)
-protected model: MongooseModel<UserMongo>;
+@Inject(UserRepository)
+protected repository: UserRepository;
 ```
 
 #### `protected mapper: MongoMapper<MONGO, MODEL>`
@@ -546,28 +648,28 @@ protected mapper: UserMapper;
 
 **Helper Methods:**
 
-#### `protected getCreateObject(model: MODEL): Promise<MongoosePlainObjectCreate<MONGO>>`
-Converts an API model to a Mongoose create object (omits `_id`, `createdAt`, `updatedAt`).
+#### `protected getCreateObject(model: MODEL): Promise<MongoCreate<MONGO>>`
+Convenience wrapper that calls `mapper.modelToMongoCreateObject(model)`. Returns a strictly-typed create payload.
 
 **Usage:** In service create operations.
 
 ```typescript
 async create(model: UserModel): Promise<UserModel> {
     const createObj = await this.getCreateObject(model);
-    const mongo = await this.model.create(createObj);
+    const mongo = await this.repository.create(createObj);
     return this.mapper.mongoToModel(mongo);
 }
 ```
 
-#### `protected getUpdateObject(model: MODEL): Promise<MongoosePlainObjectUpdate<MONGO>>`
-Converts an API model to a Mongoose update object (omits `_id`, `createdAt`).
+#### `protected getUpdateObject(model: MODEL): Promise<MongoUpdate<MONGO>>`
+Convenience wrapper that calls `mapper.modelToMongoUpdateObject(model)`. Returns a strictly-typed update payload.
 
 **Usage:** In service update operations.
 
 ```typescript
 async update(id: string, model: UserModel): Promise<UserModel | null> {
     const updateObj = await this.getUpdateObject(model);
-    const mongo = await this.model.findByIdAndUpdate(id, updateObj, { new: true });
+    const mongo = await this.repository.updateById(id, updateObj);
     return this.mapSingle(mongo);
 }
 ```
@@ -579,7 +681,7 @@ Maps a single Mongoose document to an API model. Returns `null` if input is null
 
 ```typescript
 async findById(id: string): Promise<UserModel | null> {
-    const mongo = await this.model.findById(id).exec();
+    const mongo = await this.repository.findById(id);
     return this.mapSingle(mongo); // Returns null if not found
 }
 ```
@@ -591,7 +693,7 @@ Maps an array of Mongoose documents to API models. Processes all documents in pa
 
 ```typescript
 async findAll(): Promise<UserModel[]> {
-    const mongos = await this.model.find().exec();
+    const mongos = await this.repository.findAll();
     return this.mapMany(mongos); // Parallel mapping
 }
 ```
@@ -600,35 +702,64 @@ async findAll(): Promise<UserModel[]> {
 
 ### Type Utilities
 
-Type utilities for creating type-safe plain objects from Mongoose documents.
-
-#### `MongoosePlainObject<T>`
-Converts a Mongoose document type to a plain object type by removing Mongoose methods and getters.
+#### `MongoCreate<T>`
+Strictly-typed payload for creating a new Mongoose document. Makes fields from `T` optional and uses `never` to **strictly forbid** `id`, `_id`, `createdAt`, and `updatedAt` — TypeScript rejects assignments even from intermediary variables carrying these keys.
 
 **Usage:**
 ```typescript
-type UserPlain = MongoosePlainObject<UserDocument>;
-// Result: { _id: ObjectId, name: string, email: string, ... }
+type UserCreate = MongoCreate<UserMongo>;
+// Result: Partial<{ name: string, email: string, role: string }>
+// Strictly forbids: id, _id, createdAt, updatedAt
 ```
 
-#### `MongoosePlainObjectCreate<T>`
-Type for document creation. Makes all properties optional (Partial) and excludes auto-managed fields: `id`, `_id`, `createdAt`, `updatedAt`.
+#### `MongoUpdate<T>`
+Strictly-typed payload for updating an existing Mongoose document. All fields optional for partial updates. Uses `never` to **strictly forbid** `id`, `_id`, `createdAt`, and `updatedAt`.
 
 **Usage:**
 ```typescript
-type UserCreate = MongoosePlainObjectCreate<UserMongo>;
+type UserUpdate = MongoUpdate<UserMongo>;
 // Result: Partial<{ name: string, email: string, role: string }>
-// Excludes: _id, createdAt, updatedAt
+// Strictly forbids: id, _id, createdAt, updatedAt
 ```
 
-#### `MongoosePlainObjectUpdate<T>`
-Type for document updates. Makes all properties optional (Partial) and excludes immutable fields: `id`, `_id`, `createdAt`, `updatedAt`.
+#### `MongoFilter<T>`
+Filter type for `MongoRepository` queries. Drop-in replacement for Mongoose's `QueryFilter<T>` that works correctly with `BaseMongo._id: string`.
 
 **Usage:**
 ```typescript
-type UserUpdate = MongoosePlainObjectUpdate<UserMongo>;
-// Result: Partial<{ name: string, email: string, role: string }>
-// Excludes: _id, createdAt (updatedAt is auto-updated by Mongoose)
+async findByRole(role: string): Promise<UserMongo[]> {
+    const results = await this.model.find({ role } satisfies MongoFilter<UserMongo>).lean<UserMongo[]>();
+    return this.deserializeArray(results);
+}
+```
+
+#### `MongoDeleteResult`
+Typed result from MongoDB delete operations.
+
+**Properties:**
+- `deleted: boolean` - Whether at least one document was deleted
+- `deletedCount: number` - Total number of documents removed
+
+#### `MongoUpdateResult`
+Typed result from count-based MongoDB update operations.
+
+**Properties:**
+- `matched: number` - Number of documents that matched the filter
+- `modified: number` - Number of documents actually modified
+- `upserted: boolean` - Whether a new document was inserted (upsert)
+- `upsertedId: string | null` - The `_id` of the upserted document, or `null`
+
+#### `MongoConfigSchema` / `MongoConfig`
+Zod schema and TypeScript type for MongoDB connection configuration. Use with `@radoslavirha/tsed-configuration` when adding MongoDB support.
+
+```typescript
+import { MongoConfigSchema, MongoConfig } from '@radoslavirha/tsed-mongoose';
+import { BaseConfig } from '@radoslavirha/tsed-configuration';
+
+export const AppConfigSchema = BaseConfig.extend({
+    config: z.object({ mongodb: MongoConfigSchema })
+});
+export type AppConfig = z.infer<typeof AppConfigSchema>;
 ```
 
 ## Advanced Patterns
@@ -685,14 +816,14 @@ export class PostMapper extends MongoMapper<PostMongo, PostModel> {
         return model;
     }
 
-    public async modelToMongoCreateObject(model: PostModel): Promise<MongoosePlainObjectCreate<PostMongo>> {
+    public async modelToMongoCreateObject(model: PostModel): Promise<MongoCreate<PostMongo>> {
         return {
             title: model.title,
             author: model.authorId as any // Store as ObjectId reference
         };
     }
 
-    public async modelToMongoUpdateObject(model: PostModel): Promise<MongoosePlainObjectUpdate<PostMongo>> {
+    public async modelToMongoUpdateObject(model: PostModel): Promise<MongoUpdate<PostMongo>> {
         return {
             title: model.title,
             author: model.authorId as any
@@ -710,7 +841,7 @@ import { DefaultsUtil } from '@radoslavirha/utils';
 
 @Injectable()
 export class UserMapper extends MongoMapper<UserMongo, UserModel> {
-    public async modelToMongoCreateObject(model: UserModel): Promise<MongoosePlainObjectCreate<UserMongo>> {
+    public async modelToMongoCreateObject(model: UserModel): Promise<MongoCreate<UserMongo>> {
         // Option 1: Using getModelValue with custom fallback
         return {
             name: this.getModelValue(model, 'name') ?? 'Anonymous',
@@ -718,114 +849,123 @@ export class UserMapper extends MongoMapper<UserMongo, UserModel> {
             role: this.getModelValue(model, 'role'), // Falls back to schema default if undefined
             status: 'active' // Fixed default value
         };
-
-        // Option 2: Using DefaultsUtil for complex default handling
-        return DefaultsUtil.setDefaults({
-            name: model.name,
-            email: model.email,
-            role: model.role,
-            status: model.status
-        }, {
-            name: 'Anonymous',
-            role: 'user',
-            status: 'active'
-        });
     }
 }
 ```
 
 ### Complex Query Operations
 
-Extend service with custom query methods:
+Split custom query logic between the repository (raw DB queries) and the service (business logic + mapping):
 
 ```typescript
+// Repository handles all direct Mongoose queries
 @Injectable()
-export class UserService extends MongoService<UserMongo, UserModel> {
+export class UserRepository extends MongoRepository<UserMongo> {
     @Inject(UserMongo)
-    protected model: MongooseModel<UserMongo>;
+    protected model!: MongooseModel<UserMongo>;
 
-    @Inject()
-    protected mapper: UserMapper;
+    protected type: Type<UserMongo> = UserMongo;
 
-    /**
-     * Find users by role with pagination
-     */
-    async findByRole(role: string, page: number = 1, limit: number = 10): Promise<UserModel[]> {
-        const mongo = await this.model
-            .find({ role })
-            .skip((page - 1) * limit)
+    async findByRolePaginated(role: string, skip: number, limit: number): Promise<UserMongo[]> {
+        const results = await this.model
+            .find({ role } satisfies MongoFilter<UserMongo>)
+            .skip(skip)
             .limit(limit)
             .sort({ createdAt: -1 })
-            .exec();
-        
-        return this.mapMany(mongo);
+            .lean<UserMongo[]>();
+        return this.deserializeArray(results);
     }
 
-    /**
-     * Search users by name (case-insensitive)
-     */
-    async searchByName(query: string): Promise<UserModel[]> {
-        const mongo = await this.model
-            .find({ name: { $regex: query, $options: 'i' } })
-            .exec();
-        
-        return this.mapMany(mongo);
+    async findByName(query: string): Promise<UserMongo[]> {
+        const results = await this.model
+            .find({ name: { $regex: query, $options: 'i' } } satisfies MongoFilter<UserMongo>)
+            .lean<UserMongo[]>();
+        return this.deserializeArray(results);
     }
 
-    /**
-     * Count users by role
-     */
     async countByRole(role: string): Promise<number> {
         return this.model.countDocuments({ role });
     }
 
-    /**
-     * Batch update users
-     */
-    async updateMany(filter: object, updates: Partial<UserModel>): Promise<number> {
-        const updateObj = await this.getUpdateObject(updates as UserModel);
-        const result = await this.model.updateMany(filter, updateObj);
-        return result.modifiedCount;
+    async updateManyByRole(role: string, data: MongoUpdate<UserMongo>): Promise<MongoUpdateResult> {
+        const result = await this.model.updateMany({ role }, { $set: data });
+        return {
+            matched: result.matchedCount,
+            modified: result.modifiedCount,
+            upserted: result.upsertedCount > 0,
+            upsertedId: result.upsertedId ? String(result.upsertedId) : null
+        };
+    }
+}
+
+// Service applies business logic and mapping
+@Injectable()
+export class UserService extends MongoService<UserMongo, UserModel> {
+    @Inject(UserRepository)
+    protected repository: UserRepository;
+
+    @Inject()
+    protected mapper: UserMapper;
+
+    async findByRolePaginated(role: string, page: number = 1, limit: number = 10): Promise<UserModel[]> {
+        const mongos = await this.repository.findByRolePaginated(role, (page - 1) * limit, limit);
+        return this.mapMany(mongos);
+    }
+
+    async searchByName(query: string): Promise<UserModel[]> {
+        const mongos = await this.repository.findByName(query);
+        return this.mapMany(mongos);
+    }
+
+    async countByRole(role: string): Promise<number> {
+        return this.repository.countByRole(role);
     }
 }
 ```
 
 ### Transaction Support
 
-Handle MongoDB transactions in services:
+Handle MongoDB transactions by passing a session through the repository:
 
 ```typescript
 import { ClientSession } from 'mongoose';
+import { Inject, Injectable } from '@tsed/di';
+import { MongooseModel } from '@tsed/mongoose';
+import { Type } from '@tsed/core';
+import { MongoRepository, MongoCreate, MongoFilter } from '@radoslavirha/tsed-mongoose';
+
+@Injectable()
+export class OrderRepository extends MongoRepository<OrderMongo> {
+    @Inject(OrderMongo)
+    protected model!: MongooseModel<OrderMongo>;
+
+    protected type: Type<OrderMongo> = OrderMongo;
+
+    async createWithSession(data: MongoCreate<OrderMongo>, session: ClientSession): Promise<OrderMongo> {
+        const [doc] = await this.model.create([data], { session });
+        return this.deserialize(this.convertHydratedDocumentToObject(doc))!;
+    }
+}
 
 @Injectable()
 export class OrderService extends MongoService<OrderMongo, OrderModel> {
-    @Inject(OrderMongo)
-    protected model: MongooseModel<OrderMongo>;
+    @Inject(OrderRepository)
+    protected repository: OrderRepository;
 
     @Inject()
     protected mapper: OrderMapper;
 
-    @Inject()
-    private userService: UserService;
+    async createWithTransaction(order: OrderModel): Promise<OrderModel> {
+        const session: ClientSession = await this.repository['model'].db.startSession();
 
-    /**
-     * Create order with user balance update in transaction
-     */
-    async createWithTransaction(order: OrderModel, userId: string): Promise<OrderModel> {
-        const session: ClientSession = await this.model.db.startSession();
-        
         try {
             session.startTransaction();
 
-            // Create order
             const createObj = await this.getCreateObject(order);
-            const [orderMongo] = await this.model.create([createObj], { session });
-
-            // Update user balance
-            await this.userService.updateBalance(userId, -order.total, session);
+            const orderMongo = await this.repository.createWithSession(createObj, session);
 
             await session.commitTransaction();
-            
+
             return this.mapper.mongoToModel(orderMongo);
         } catch (error) {
             await session.abortTransaction();

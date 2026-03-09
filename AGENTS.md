@@ -63,8 +63,8 @@ export class Server extends BaseServer {}
 // 2. Inject via constructor
 @Injectable()
 export class Service extends MongoService<MongoModel, Model> {
-  @Inject(MongoModel)
-  protected model!: MongooseModel<MongoModel>;
+  @Inject(Repository)
+  protected repository!: Repository;
 
   @Inject(Mapper)
   protected mapper!: Mapper;
@@ -151,8 +151,7 @@ export class Model extends BaseModel {
 }
 
 // 5. Mapper (tsed-mongoose + utils)
-import { MongoMapper } from '@radoslavirha/tsed-mongoose';
-import { CommonUtils } from '@radoslavirha/utils';
+import { MongoMapper, MongoCreate, MongoUpdate } from '@radoslavirha/tsed-mongoose';
 
 @Injectable()
 export class Mapper extends MongoMapper<MongoModel, Model> {
@@ -164,34 +163,46 @@ export class Mapper extends MongoMapper<MongoModel, Model> {
     return model;
   }
   
-  async modelToMongoCreateObject(model: Model): Promise<MongoosePlainObjectCreate<MongoModel>> {
-    const mongo = new MongoModel() as MongoPlainObjectCreate<MongoModel>;
-    mongo.name = this.getModelValue(model, 'name');
-    mongo.email = this.getModelValue(model, 'email');
-    return serialize(mongo);
+  async modelToMongoCreateObject(model: Model): Promise<MongoCreate<MongoModel>> {
+    return {
+      name: this.getModelValue(model, 'name'),
+      email: this.getModelValue(model, 'email'),
+    };
   }
   
-  async modelToMongoUpdateObject(model: Model): Promise<MongoosePlainObjectUpdate<MongoModel>> {
-    const mongo = new MongoModel() as MongoPlainObjectUpdate<MongoModel>;
-    mongo.name = this.getModelValue(model, 'name', true);
-    mongo.email = this.getModelValue(model, 'email', true);
-    return serialize(mongo);
+  async modelToMongoUpdateObject(model: Model): Promise<MongoUpdate<MongoModel>> {
+    return {
+      name: this.getModelValue(model, 'name', true),
+      email: this.getModelValue(model, 'email', true),
+    };
   }
 }
 
-// 6. Service (tsed-mongoose)
+// 6. Repository (tsed-mongoose)
+import { MongoRepository } from '@radoslavirha/tsed-mongoose';
+import { Type } from '@tsed/core';
+
+@Injectable()
+export class Repository extends MongoRepository<MongoModel> {
+  @Inject(MongoModel)
+  protected model!: MongooseModel<MongoModel>;
+
+  protected type: Type<MongoModel> = MongoModel;
+}
+
+// 7. Service (tsed-mongoose)
 import { MongoService } from '@radoslavirha/tsed-mongoose';
 
 @Injectable()
 export class Service extends MongoService<MongoModel, Model> {
-  @Inject(MongoModel)
-  protected model!: MongooseModel<MongoModel>;
+  @Inject(Repository)
+  protected repository!: Repository;
 
   @Inject(Mapper)
   protected mapper!: Mapper;
 }
 
-// 7. Controller (tsed-swagger)
+// 8. Controller (tsed-swagger)
 import { Docs } from '@tsed/swagger';
 import { SwaggerSecurityScheme } from '@radoslavirha/tsed-swagger';
 
@@ -399,8 +410,8 @@ class Mapper extends MongoMapper<MongoModel, Model> {
 ```typescript
 class Mapper extends MongoMapper<MongoModel, Model> {
   async mongoToModel(mongo: MongoModel): Promise<Model> { ... }
-  async modelToMongoCreateObject(model: Model): Promise<MongoosePlainObjectCreate<MongoModel>> { ... }
-  async modelToMongoUpdateObject(model: Model): Promise<MongoosePlainObjectUpdate<MongoModel>> { ... }
+  async modelToMongoCreateObject(model: Model): Promise<MongoCreate<MongoModel>> { ... }
+  async modelToMongoUpdateObject(model: Model): Promise<MongoUpdate<MongoModel>> { ... }
 }
 ```
 
