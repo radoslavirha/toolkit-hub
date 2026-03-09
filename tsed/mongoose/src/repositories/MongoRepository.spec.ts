@@ -18,12 +18,15 @@ describe('MongoRepository', () => {
         it('returns a TestModelMongo instance (not just a plain shape) after lean() query', async () => {
             const doc = await repository.create({ label: 'hello' });
 
-            expect.assertions(2);
+            expect.assertions(5);
 
             const result = await repository.findById(doc._id);
 
             expect(result).toBeInstanceOf(TestModelMongo);
+            expect(result!._id).toBeTypeOf('string');
             expect(result!.label).toBe('hello');
+            expect(result!.createdAt).toBeInstanceOf(Date);
+            expect(result!.updatedAt).toBeInstanceOf(Date);
         });
 
         it('returns null when the document does not exist', async () => {
@@ -39,15 +42,22 @@ describe('MongoRepository', () => {
 
     describe('deserializeArray — via find', () => {
         it('returns TestModelMongo instances for all results', async () => {
-            await repository.createMany([{ label: 'first' }, { label: 'second' }]);
+            await repository.create({ label: 'first' });
+            await repository.create({ label: 'second' });
 
-            expect.assertions(4);
+            expect.assertions(10);
 
             const results = await repository.find();
 
             expect(results).toHaveLength(2);
             expect(results[0]).toBeInstanceOf(TestModelMongo);
+            expect(results[0]._id).toBeTypeOf('string');
+            expect(results[0].createdAt).toBeInstanceOf(Date);
+            expect(results[0].updatedAt).toBeInstanceOf(Date);
             expect(results[1]).toBeInstanceOf(TestModelMongo);
+            expect(results[1]._id).toBeTypeOf('string');
+            expect(results[1].createdAt).toBeInstanceOf(Date);
+            expect(results[1].updatedAt).toBeInstanceOf(Date);
             expect(results.map(r => r.label).sort()).toStrictEqual(['first', 'second']);
         });
 
@@ -62,12 +72,15 @@ describe('MongoRepository', () => {
 
     describe('convertHydratedDocumentToObject — via create', () => {
         it('returns a TestModelMongo instance after inserting via model.create()', async () => {
-            expect.assertions(2);
+            expect.assertions(5);
 
             const result = await repository.create({ label: 'created' });
 
             expect(result).toBeInstanceOf(TestModelMongo);
+            expect(result._id).toBeTypeOf('string');
             expect(result.label).toBe('created');
+            expect(result.createdAt).toBeInstanceOf(Date);
+            expect(result.updatedAt).toBeInstanceOf(Date);
         });
     });
 });

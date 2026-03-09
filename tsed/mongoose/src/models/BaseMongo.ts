@@ -1,5 +1,5 @@
 import { ObjectID } from '@tsed/mongoose';
-import { Format } from '@tsed/schema';
+import { Format, Property } from '@tsed/schema';
 
 /**
  * Base model class for Mongoose models in Ts.ED applications.
@@ -70,6 +70,7 @@ export class BaseMongo {
      * @type {Date}
      * @format date-time
      */
+    @Property(Date)
     @Format('date-time')
     public createdAt: Date;
 
@@ -82,6 +83,7 @@ export class BaseMongo {
      * @type {Date}
      * @format date-time
      */
+    @Property(Date)
     @Format('date-time')
     public updatedAt: Date;
 }

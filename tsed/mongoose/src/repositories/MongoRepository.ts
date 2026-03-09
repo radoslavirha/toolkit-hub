@@ -120,7 +120,12 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
             return null;
         }
 
-        return Serializer.deserialize<MONGO>(data, this.type);
+        return Serializer.deserialize<MONGO>(data, this.type, {
+            useAlias: false,
+            additionalProperties: true,
+            disabledUnsecureConstructor: false,
+            groups: false
+        });
     }
 
     /**
