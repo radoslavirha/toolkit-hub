@@ -1,4 +1,4 @@
-import { MongooseModel } from '@tsed/mongoose';
+import type { MongooseModel } from '@tsed/mongoose';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { TestContainersMongo } from '@tsed/testcontainers-mongo';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';

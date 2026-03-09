@@ -263,7 +263,7 @@ Create a repository that owns all direct Mongoose queries. The repository must i
 
 ```typescript
 import { Injectable, Inject } from '@tsed/di';
-import { MongooseModel } from '@tsed/mongoose';
+import type { MongooseModel } from '@tsed/mongoose';
 import { Type } from '@tsed/core';
 import { MongoRepository, MongoCreate, MongoUpdate, MongoFilter, MongoDeleteResult } from '@radoslavirha/tsed-mongoose';
 import { UserMongo } from './UserMongo';
@@ -930,7 +930,7 @@ Handle MongoDB transactions by passing a session through the repository:
 ```typescript
 import { ClientSession } from 'mongoose';
 import { Inject, Injectable } from '@tsed/di';
-import { MongooseModel } from '@tsed/mongoose';
+import type { MongooseModel } from '@tsed/mongoose';
 import { Type } from '@tsed/core';
 import { MongoRepository, MongoCreate, MongoFilter } from '@radoslavirha/tsed-mongoose';
 

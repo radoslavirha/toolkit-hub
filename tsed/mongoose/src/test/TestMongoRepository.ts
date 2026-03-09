@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@tsed/di';
-import { MongooseModel } from '@tsed/mongoose';
+import type { MongooseModel } from '@tsed/mongoose';
 import { Type } from '@tsed/core';
 
 import { MongoRepository } from '../repositories/MongoRepository.js';

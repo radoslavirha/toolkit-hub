@@ -1,4 +1,4 @@
-import { MongooseModel } from '@tsed/mongoose';
+import type { MongooseModel } from '@tsed/mongoose';
 import { Type } from '@tsed/core';
 import { CommonUtils } from '@radoslavirha/utils';
 import { Serializer } from '@radoslavirha/tsed-common';
@@ -30,7 +30,7 @@ import { BaseMongo } from '../models/BaseMongo.js';
  * @example
  * ```typescript
  * import { Injectable, Inject } from '@tsed/di';
- * import { MongooseModel } from '@tsed/mongoose';
+ * import type { MongooseModel } from '@tsed/mongoose';
  * import { Type } from '@tsed/core';
  * import {
  *   MongoRepository,
