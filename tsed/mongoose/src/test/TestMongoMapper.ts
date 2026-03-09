@@ -3,8 +3,8 @@ import { serialize } from '@tsed/json-mapper';
 import { MongoMapper } from '../mappers/MongoMapper.js';
 import { TestModel } from './TestModel.js';
 import { TestModelMongo } from './TestMongoModel.js';
-import { MongoosePlainObjectCreate } from '../types/MongoosePlainObjectCreate.js';
-import { MongoosePlainObjectUpdate } from '../types/MongoosePlainObjectUpdate.js';
+import { MongoCreate } from '../types/MongoCreate.js';
+import { MongoUpdate } from '../types/MongoUpdate.js';
 
 @Service()
 export class TestMongoMapper extends MongoMapper<TestModelMongo, TestModel> {
@@ -18,7 +18,7 @@ export class TestMongoMapper extends MongoMapper<TestModelMongo, TestModel> {
         return model;
     }
 
-    public async modelToMongoCreateObject(model: TestModel): Promise<MongoosePlainObjectCreate<TestModelMongo>> {
+    public async modelToMongoCreateObject(model: TestModel): Promise<MongoCreate<TestModelMongo>> {
         const mongo = new TestModelMongo() as Partial<TestModelMongo>;
 
         mongo.label = this.getModelValue(model, 'label');
@@ -27,7 +27,7 @@ export class TestMongoMapper extends MongoMapper<TestModelMongo, TestModel> {
         return serialize(mongo);
     }
 
-    public async modelToMongoUpdateObject(model: TestModel): Promise<MongoosePlainObjectUpdate<TestModelMongo>> {
+    public async modelToMongoUpdateObject(model: TestModel): Promise<MongoUpdate<TestModelMongo>> {
         const mongo = new TestModelMongo() as Partial<TestModelMongo>;
 
         mongo.label = this.getModelValue(model, 'label', true);

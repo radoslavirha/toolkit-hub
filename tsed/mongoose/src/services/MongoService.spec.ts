@@ -5,8 +5,8 @@ import { TestMongoMapper } from '../test/TestMongoMapper.js';
 import { TestModelMongo } from '../test/TestMongoModel.js';
 import { TestMongoService } from '../test/TestMongoService.js';
 import { Types } from 'mongoose';
-import { MongoosePlainObjectCreate } from '../types/MongoosePlainObjectCreate.js';
-import { MongoosePlainObjectUpdate } from '../types/MongoosePlainObjectUpdate.js';
+import { MongoCreate } from '../types/MongoCreate.js';
+import { MongoUpdate } from '../types/MongoUpdate.js';
 
 describe('MongoService', () => {
     let service: TestMongoService;
@@ -23,7 +23,7 @@ describe('MongoService', () => {
     it('getCreateObject', async () => {
         const spy = vi
             .spyOn(mapper, 'modelToMongoCreateObject')
-            .mockResolvedValue(<MongoosePlainObjectCreate<TestModelMongo>>{ label: 'label', child_id: 'child_id' });
+            .mockResolvedValue(<MongoCreate<TestModelMongo>>{ label: 'label', child_id: 'child_id' });
         const model = new TestModel();
         model.label = 'label';
 
@@ -39,7 +39,7 @@ describe('MongoService', () => {
     it('getUpdateObject', async () => {
         const spy = vi
             .spyOn(mapper, 'modelToMongoUpdateObject')
-            .mockResolvedValue(<MongoosePlainObjectUpdate<TestModelMongo>>{ label: 'label', child_id: 'child_id' });
+            .mockResolvedValue(<MongoUpdate<TestModelMongo>>{ label: 'label', child_id: 'child_id' });
         const model = new TestModel();
         model.label = 'label';
 
@@ -57,7 +57,7 @@ describe('MongoService', () => {
             .spyOn(mapper, 'mongoToModel')
             .mockResolvedValue(<TestModel>{ label: 'label', child_id: 'child_id' });
         const mongo = new TestModelMongo();
-        mongo._id = new Types.ObjectId('654bcd82bba81536a4ed4df3');
+        mongo._id = new Types.ObjectId('654bcd82bba81536a4ed4df3').toHexString();
         mongo.label = 'label';
         mongo.createdAt = new Date('2023-12-09T21:08:36.576Z');
         mongo.updatedAt = new Date('2023-12-09T21:08:36.576Z');
@@ -88,13 +88,13 @@ describe('MongoService', () => {
             .spyOn(mapper, 'mongoToModel')
             .mockResolvedValue(<TestModel>{ label: 'label', child_id: 'child_id' });
         const mongo = new TestModelMongo();
-        mongo._id = new Types.ObjectId('654bcd82bba81536a4ed4df3');
+        mongo._id = new Types.ObjectId('654bcd82bba81536a4ed4df3').toHexString();
         mongo.label = 'label';
         mongo.createdAt = new Date('2023-12-09T21:08:36.576Z');
         mongo.updatedAt = new Date('2023-12-09T21:08:36.576Z');
 
         const mongo2 = new TestModelMongo();
-        mongo2._id = new Types.ObjectId('654bcd82bba81536a4ed4df3');
+        mongo2._id = new Types.ObjectId('654bcd82bba81536a4ed4df3').toHexString();
         mongo2.label = 'label2';
         mongo2.createdAt = new Date('2023-12-09T21:08:36.576Z');
         mongo2.updatedAt = new Date('2023-12-09T21:08:36.576Z');

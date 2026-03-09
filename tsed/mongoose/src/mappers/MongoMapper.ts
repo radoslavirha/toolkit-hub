@@ -1,11 +1,11 @@
 import { BaseModel } from '@radoslavirha/tsed-common';
 import { Type } from '@tsed/core';
-import { CommonUtils } from '@radoslavirha/utils';
+import { CommonUtils, MappingUtils } from '@radoslavirha/utils';
 import { MongooseDocumentMethods, Ref } from '@tsed/mongoose';
 import { SpecTypes, getJsonSchema } from '@tsed/schema';
 import { BaseMongo } from '../models/BaseMongo.js';
-import { MongoosePlainObjectCreate } from '../types/MongoosePlainObjectCreate.js';
-import { MongoosePlainObjectUpdate } from '../types/MongoosePlainObjectUpdate.js';
+import { MongoCreate } from '../types/MongoCreate.js';
+import { MongoUpdate } from '../types/MongoUpdate.js';
 
 /**
  * Abstract base mapper for converting between Mongoose documents and application models.
@@ -25,31 +25,28 @@ import { MongoosePlainObjectUpdate } from '../types/MongoosePlainObjectUpdate.js
  * @example
  * ```typescript
  * import { MongoMapper } from './mappers/MongoMapper';
- * import { User } from './models/User.mongo';
- * import { UserModel } from './models/User.model';
+ * import { Item } from './models/Item.mongo';
+ * import { ItemModel } from './models/Item.model';
  * 
- * export class UserMapper extends MongoMapper<User, UserModel> {
- *   async mongoToModel(mongo: User): Promise<UserModel> {
- *     const model = new UserModel();
+ * export class ItemMapper extends MongoMapper<Item, ItemModel> {
+ *   async mongoToModel(mongo: Item): Promise<ItemModel> {
+ *     const model = new ItemModel();
  *     this.mongoToModelBase(model, mongo);
  *     
  *     model.name = mongo.name;
- *     model.email = mongo.email;
  *     
  *     return model;
  *   }
  *   
- *   async modelToMongoCreateObject(model: UserModel): Promise<MongoosePlainObjectCreate<User>> {
+ *   async modelToMongoCreateObject(model: ItemModel): Promise<MongoCreate<Item>> {
  *     return {
- *       name: model.name,
- *       email: model.email
+ *       name: model.name
  *     };
  *   }
  *   
- *   async modelToMongoUpdateObject(model: UserModel): Promise<MongoosePlainObjectUpdate<User>> {
+ *   async modelToMongoUpdateObject(model: ItemModel): Promise<MongoUpdate<Item>> {
  *     return {
- *       name: model.name,
- *       email: model.email
+ *       name: model.name
  *     };
  *   }
  * }
@@ -61,7 +58,7 @@ import { MongoosePlainObjectUpdate } from '../types/MongoosePlainObjectUpdate.js
  * - Helper methods simplify handling of Mongoose references and populated documents
  * - Supports extracting default values from JSON Schema decorators
  */
-export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseModel> {
+export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseModel> extends MappingUtils {
     /**
      * Converts a Mongoose document to an application model.
      * 
@@ -81,7 +78,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * @returns Promise resolving to a plain object suitable for Mongoose create operations
      * @abstract
      */
-    public abstract modelToMongoCreateObject(model: MODEL): Promise<MongoosePlainObjectCreate<MONGO>>;
+    public abstract modelToMongoCreateObject(model: MODEL): Promise<MongoCreate<MONGO>>;
     
     /**
      * Converts an application model to a plain object for Mongoose document updates.
@@ -93,7 +90,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * @returns Promise resolving to a plain object suitable for Mongoose update operations
      * @abstract
      */
-    public abstract modelToMongoUpdateObject(model: MODEL): Promise<MongoosePlainObjectUpdate<MONGO>>;
+    public abstract modelToMongoUpdateObject(model: MODEL): Promise<MongoUpdate<MONGO>>;
 
     /**
      * Maps base fields from Mongoose document to application model.
@@ -112,8 +109,8 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * 
      * @example
      * ```typescript
-     * async mongoToModel(mongo: User): Promise<UserModel> {
-     *   const model = new UserModel();
+     * async mongoToModel(mongo: Item): Promise<ItemModel> {
+     *   const model = new ItemModel();
      *   this.mongoToModelBase(model, mongo);
      *   // ... map custom fields
      *   return model;
@@ -121,9 +118,9 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * ```
      */
     protected mongoToModelBase(model: Partial<MODEL>, mongo: MONGO): MODEL {
-        model.id = String(mongo._id);
+        model.id = mongo._id;
         model.createdAt = mongo.createdAt;
-        model.updatedAt = mongo.createdAt;
+        model.updatedAt = mongo.updatedAt;
 
         return model as MODEL;
     }
@@ -154,7 +151,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      */
     protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T>): string {
         return this.canBePopulated(value)
-            ? String((value as unknown as MongooseDocumentMethods<T>).toClass()._id)
+            ? (value as unknown as MongooseDocumentMethods<T>).toClass()._id
             : String(value);
     }
 
@@ -231,16 +228,15 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * 
      * @example
      * ```typescript
-     * async modelToMongoCreateObject(model: UserModel): Promise<MongoosePlainObjectCreate<User>> {
+     * async modelToMongoCreateObject(model: ItemModel): Promise<MongoCreate<Item>> {
      *   return {
      *     name: this.getModelValue(model, 'name'),
      *     status: this.getModelValue(model, 'status'), // Uses default if undefined
-     *     email: model.email
      *   };
      * }
      * 
      * // For updates, use patch mode to avoid overwriting with defaults
-     * async modelToMongoUpdateObject(model: UserModel): Promise<MongoosePlainObjectUpdate<User>> {
+     * async modelToMongoUpdateObject(model: ItemModel): Promise<MongoUpdate<Item>> {
      *   return {
      *     name: this.getModelValue(model, 'name', true), // Won't use default
      *   };

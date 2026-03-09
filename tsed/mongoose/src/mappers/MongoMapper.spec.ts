@@ -18,7 +18,7 @@ describe('MongoMapper', () => {
 
     it('mongoToModelBase', async () => {
         const mongo = new TestModelMongo();
-        mongo._id = new Types.ObjectId('654bcd82bba81536a4ed4df3');
+        mongo._id = new Types.ObjectId('654bcd82bba81536a4ed4df3').toHexString();
         mongo.createdAt = new Date('2023-12-09T21:08:36.576Z');
         mongo.updatedAt = new Date('2023-12-09T21:08:36.576Z');
 
@@ -107,18 +107,17 @@ describe('MongoMapper', () => {
     });
 
     it('getIdFromPotentiallyPopulated - from populated', async () => {
-        const childId = '654bcd82bba81536a4ed4df3';
+        const childId: string = '654bcd82bba81536a4ed4df3';
         const Model = PlatformTest.get<MongooseModel<TestModelMongo>>(TestModelMongo);
         const ModelChild = PlatformTest.get<MongooseModel<TestModelChildMongo>>(TestModelChildMongo);
-
-        const mongoChild = new ModelChild();
-        mongoChild._id = new Types.ObjectId(childId);
 
         const mongo = new Model({
             _id: 'test',
             createdAt: new Date('2023-12-09T21:08:36.576Z'),
             updatedAt: new Date('2023-12-09T21:08:36.576Z'),
-            child_id: mongoChild
+            child_id: new ModelChild({
+                _id: childId
+            })
         });
 
         expect.assertions(1);

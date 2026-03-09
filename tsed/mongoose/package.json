@@ -63,7 +63,8 @@
         "tslib": "catalog:",
         "tsup": "catalog:",
         "typescript": "catalog:",
-        "vitest": "catalog:"
+        "vitest": "catalog:",
+        "zod": "catalog:"
     },
     "peerDependencies": {
         "@radoslavirha/tsed-common": "workspace:*",

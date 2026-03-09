@@ -1,7 +1,7 @@
 import { BaseModel } from '@radoslavirha/tsed-common';
-import { MongooseModel } from '@tsed/mongoose';
 import { MongoMapper } from '../mappers/MongoMapper.js';
 import { BaseMongo } from '../models/BaseMongo.js';
+import { MongoRepository } from '../repositories/MongoRepository.js';
 
 /**
  * Abstract base service for MongoDB operations in Ts.ED applications.
@@ -20,40 +20,40 @@ import { BaseMongo } from '../models/BaseMongo.js';
  * 
  * @example
  * ```typescript
- * import { Injectable } from '@tsed/di';
- * import { MongooseModel } from '@tsed/mongoose';
+ * import { Injectable, Inject } from '@tsed/di';
  * import { MongoService } from './services/MongoService';
- * import { User } from './models/User.mongo';
- * import { UserModel } from './models/User.model';
- * import { UserMapper } from './mappers/UserMapper';
+ * import { Item } from './models/Item.mongo';
+ * import { ItemModel } from './models/Item.model';
+ * import { ItemMapper } from './mappers/ItemMapper';
+ * import { ItemRepository } from './repositories/ItemRepository';
  * 
  * @Injectable()
- * export class UserService extends MongoService<User, UserModel> {
- *   @Inject(User)
- *   protected model: MongooseModel<User>;
+ * export class ItemService extends MongoService<Item, ItemModel> {
+ *   @Inject(ItemRepository)
+ *   protected repository: ItemRepository;
  * 
  *   @Inject()
- *   protected mapper: UserMapper;
+ *   protected mapper: ItemMapper;
  * 
- *   async findById(id: string): Promise<UserModel | null> {
- *     const mongo = await this.model.findById(id);
+ *   async findById(id: string): Promise<ItemModel | null> {
+ *     const mongo = await this.repository.findById(id);
  *     return this.mapSingle(mongo);
  *   }
  * 
- *   async create(model: UserModel): Promise<UserModel> {
+ *   async create(model: ItemModel): Promise<ItemModel> {
  *     const createObj = await this.getCreateObject(model);
- *     const mongo = await this.model.create(createObj);
+ *     const mongo = await this.repository.create(createObj);
  *     return this.mapSingle(mongo);
  *   }
  * 
- *   async update(id: string, model: UserModel): Promise<UserModel | null> {
+ *   async update(id: string, model: ItemModel): Promise<ItemModel | null> {
  *     const updateObj = await this.getUpdateObject(model);
- *     const mongo = await this.model.findByIdAndUpdate(id, updateObj, { new: true });
+ *     const mongo = await this.repository.updateById(id, updateObj);
  *     return this.mapSingle(mongo);
  *   }
  * 
- *   async findAll(): Promise<UserModel[]> {
- *     const mongos = await this.model.find();
+ *   async findAll(): Promise<ItemModel[]> {
+ *     const mongos = await this.repository.findAll();
  *     return this.mapMany(mongos);
  *   }
  * }
@@ -67,14 +67,14 @@ import { BaseMongo } from '../models/BaseMongo.js';
  */
 export abstract class MongoService<MONGO extends BaseMongo, MODEL extends BaseModel> {
     /**
-     * The Mongoose model for database operations.
+     * The repository for raw database operations.
      * 
      * Must be injected by subclasses using @Inject decorator.
      * 
      * @abstract
      * @protected
      */
-    protected abstract model: MongooseModel<MONGO>;
+    protected abstract repository: MongoRepository<MONGO>;
     
     /**
      * The mapper for converting between Mongoose documents and application models.
@@ -98,9 +98,9 @@ export abstract class MongoService<MONGO extends BaseMongo, MODEL extends BaseMo
      * 
      * @example
      * ```typescript
-     * async create(model: UserModel): Promise<UserModel> {
+     * async create(model: ItemModel): Promise<ItemModel> {
      *   const createObj = await this.getCreateObject(model);
-     *   const mongo = await this.model.create(createObj);
+     *   const mongo = await this.repository.create(createObj);
      *   return this.mapSingle(mongo);
      * }
      * ```
@@ -123,7 +123,7 @@ export abstract class MongoService<MONGO extends BaseMongo, MODEL extends BaseMo
      * ```typescript
      * async update(id: string, model: UserModel): Promise<UserModel | null> {
      *   const updateObj = await this.getUpdateObject(model);
-     *   const mongo = await this.model.findByIdAndUpdate(id, updateObj, { new: true });
+     *   const mongo = await this.repository.updateById(id, updateObj);
      *   return this.mapSingle(mongo);
      * }
      * ```
@@ -145,12 +145,12 @@ export abstract class MongoService<MONGO extends BaseMongo, MODEL extends BaseMo
      * @example
      * ```typescript
      * async findById(id: string): Promise<UserModel | null> {
-     *   const mongo = await this.model.findById(id);
+     *   const mongo = await this.repository.findById(id);
      *   return this.mapSingle(mongo); // Returns null if not found
      * }
      * 
      * async findOne(query: object): Promise<UserModel | null> {
-     *   const mongo = await this.model.findOne(query);
+     *   const mongo = await this.repository.findOne(query);
      *   return this.mapSingle(mongo);
      * }
      * ```
@@ -176,17 +176,17 @@ export abstract class MongoService<MONGO extends BaseMongo, MODEL extends BaseMo
      * @example
      * ```typescript
      * async findAll(): Promise<UserModel[]> {
-     *   const mongos = await this.model.find();
+     *   const mongos = await this.repository.findAll();
      *   return this.mapMany(mongos);
      * }
      * 
      * async findByStatus(status: string): Promise<UserModel[]> {
-     *   const mongos = await this.model.find({ status });
+     *   const mongos = await this.repository.findByStatus(status);
      *   return this.mapMany(mongos);
      * }
      * 
      * async findPaginated(skip: number, limit: number): Promise<UserModel[]> {
-     *   const mongos = await this.model.find().skip(skip).limit(limit);
+     *   const mongos = await this.repository.findPaginated(skip, limit);
      *   return this.mapMany(mongos);
      * }
      * ```
