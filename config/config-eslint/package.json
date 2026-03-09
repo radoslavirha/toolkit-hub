@@ -24,8 +24,8 @@
         "lint:fix": "eslint --fix ."
     },
     "dependencies": {
-        "@stylistic/eslint-plugin": "5.8.0",
-        "typescript-eslint": "8.55.0"
+        "@stylistic/eslint-plugin": "5.10.0",
+        "typescript-eslint": "8.56.1"
     },
     "devDependencies": {
         "eslint": "catalog:"
