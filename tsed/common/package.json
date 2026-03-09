@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/tsed-common",
-    "version": "0.4.2",
+    "version": "0.4.3",
     "description": "Ts.ED common utils",
     "keywords": [
         "tsed",
@@ -40,7 +40,6 @@
     "dependencies": {
         "@radoslavirha/utils": "workspace:*",
         "@swc/helpers": "catalog:",
-
         "ajv": "catalog:tsed"
     },
     "devDependencies": {
