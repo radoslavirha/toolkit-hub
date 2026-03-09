@@ -66,9 +66,7 @@
         "zod": "catalog:"
     },
     "peerDependencies": {
-        "@tsed/core": "catalog:tsed",
         "@tsed/di": "catalog:tsed",
-        "@tsed/json-mapper": "catalog:tsed",
         "@tsed/schema": "catalog:tsed",
         "zod": "catalog:"
     },

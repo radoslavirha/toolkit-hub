@@ -11,7 +11,7 @@ Central configuration provider for Ts.ED microservices. Aggregates configuration
 **Install in pnpm monorepo:**
 ```bash
 # From repository root
-pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-configuration @tsed/core @tsed/di @tsed/json-mapper @tsed/schema zod
+pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-configuration @tsed/di @tsed/schema zod
 ```
 
 **Essential Pattern:**
@@ -70,16 +70,14 @@ pnpm add @radoslavirha/tsed-configuration
 pnpm --filter my-service add @radoslavirha/tsed-configuration
 
 # Install peer dependencies
-pnpm add @tsed/core @tsed/di @tsed/json-mapper @tsed/schema zod
+pnpm add @tsed/di @tsed/schema zod
 ```
 
 See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
 
 **Peer dependencies:**
-- `@tsed/core` — Ts.ED core utilities
 - `@tsed/di` — Dependency injection
-- `@tsed/json-mapper` — JSON deserialization
-- `@tsed/schema` — Ts.ED schema types
+- `@tsed/schema` — Ts.ED schema types (used by `APIInformation` model)
 - `zod` — Schema validation
 
 ## What's Included

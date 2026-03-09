@@ -40,7 +40,7 @@
     "dependencies": {
         "@radoslavirha/utils": "workspace:*",
         "@swc/helpers": "catalog:",
-        "@tsed/ajv": "catalog:tsed",
+
         "ajv": "catalog:tsed"
     },
     "devDependencies": {

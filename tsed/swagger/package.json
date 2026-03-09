@@ -39,6 +39,7 @@
         "test:watch": "vitest"
     },
     "dependencies": {
+        "@radoslavirha/types": "workspace:*",
         "@radoslavirha/utils": "workspace:*",
         "@swc/helpers": "catalog:"
     },
@@ -49,7 +50,6 @@
         "@radoslavirha/config-vitest": "workspace:*",
         "@radoslavirha/tsed-configuration": "workspace:*",
         "@radoslavirha/tsed-platform": "workspace:*",
-        "@radoslavirha/types": "workspace:*",
         "@swc/core": "catalog:",
         "@tsed/di": "catalog:tsed",
         "@tsed/json-mapper": "catalog:tsed",

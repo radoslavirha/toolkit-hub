@@ -89,6 +89,9 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 - `@tsed/schema` - Schema and validation decorators
 - `@tsed/swagger` - Ts.ED's Swagger integration
 
+**Bundled dependencies:**
+- `@radoslavirha/types` - TypeScript utility types (included, no separate install needed)
+
 ## What's Included
 
 ### Core Components
