@@ -4,11 +4,7 @@ const commonConfig: UserConfig = {
     entry: ['src/index.ts'],
     dts: true,
     clean: true,
-    tsconfig: './tsconfig.json',
-    outExtensions: ({ format }) => {
-        if (format === 'es' || format === 'esm') return { js: '.js', dts: '.d.ts' };
-        return undefined;
-    }
+    tsconfig: './tsconfig.json'
 };
 
 export const cjsConfig: UserConfig = {

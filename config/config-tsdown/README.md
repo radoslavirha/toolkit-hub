@@ -30,11 +30,11 @@ export default defineConfig(config);
     "build": "tsdown"
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "import": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+      "import": { "types": "./dist/index.d.mts", "default": "./dist/index.mjs" },
       "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
     }
   }
@@ -128,18 +128,18 @@ Set up proper module exports for dual format:
     "name": "@yourscope/your-library",
     "version": "1.0.0",
     "type": "module",
-    "main": "./dist/cjs/index.js",
-    "module": "./dist/esm/index.js",
-    "types": "./dist/esm/index.d.ts",
+    "main": "./dist/cjs/index.cjs",
+    "module": "./dist/esm/index.mjs",
+    "types": "./dist/esm/index.d.mts",
     "exports": {
         ".": {
             "import": {
-                "types": "./dist/esm/index.d.ts",
-                "default": "./dist/esm/index.js"
+                "types": "./dist/esm/index.d.mts",
+                "default": "./dist/esm/index.mjs"
             },
             "require": {
-                "types": "./dist/cjs/index.d.ts",
-                "default": "./dist/cjs/index.js"
+                "types": "./dist/cjs/index.d.cts",
+                "default": "./dist/cjs/index.cjs"
             }
         }
     },
@@ -176,8 +176,8 @@ CommonJS build configuration.
 ```
 
 **Output:**
-- `dist/cjs/index.js` - CommonJS bundle
-- `dist/cjs/index.d.ts` - TypeScript declarations
+- `dist/cjs/index.cjs` - CommonJS bundle
+- `dist/cjs/index.d.cts` - TypeScript declarations
 
 ---
 
@@ -198,8 +198,8 @@ ES Module build configuration.
 ```
 
 **Output:**
-- `dist/esm/index.js` - ES Module bundle
-- `dist/esm/index.d.ts` - TypeScript declarations
+- `dist/esm/index.mjs` - ES Module bundle
+- `dist/esm/index.d.mts` - TypeScript declarations
 
 ---
 
@@ -220,16 +220,17 @@ Generates both formats in a single build (faster than separate configs).
 ```
 
 **Output:**
-- `dist/index.js` - ES Module (default)
+- `dist/index.mjs` - ES Module (default)
 - `dist/index.cjs` - CommonJS
-- `dist/index.d.ts` - TypeScript declarations
+- `dist/index.d.mts` - TypeScript declarations (ESM)
+- `dist/index.d.cts` - TypeScript declarations (CJS)
 
 **Note:** With combined config, adjust package.json exports accordingly:
 ```json
 {
     "main": "./dist/index.cjs",
-    "module": "./dist/index.js",
-    "types": "./dist/index.d.ts"
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.mts"
 }
 ```
 
@@ -413,21 +414,21 @@ export default defineConfig([
 ```
 dist/
 ├── cjs/
-│   ├── index.js
-│   └── index.d.ts
+│   ├── index.cjs
+│   └── index.d.cts
 └── esm/
-    ├── index.js
-    └── index.d.ts
+    ├── index.mjs
+    └── index.d.mts
 ```
 
 ### Using config (combined)
 
 ```
 dist/
-├── index.js        # ESM
+├── index.mjs       # ESM
 ├── index.cjs       # CJS
-├── index.d.ts      # Shared types
-└── index.d.cts     # CJS types (optional)
+├── index.d.mts     # ESM types
+└── index.d.cts     # CJS types
 ```
 
 ## Integration Examples
