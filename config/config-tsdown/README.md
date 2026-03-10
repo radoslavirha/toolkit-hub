@@ -17,10 +17,10 @@ pnpm --filter YOUR_PACKAGE_NAME add -D tsdown @radoslavirha/config-tsdown
 **Essential Usage:**
 ```typescript
 // tsdown.config.ts
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
 import { defineConfig } from 'tsdown';
-import { config } from '@radoslavirha/config-tsdown';
 
-export default defineConfig(config);
+export default defineConfig([cjsConfig, esmConfig]);
 ```
 
 ```json
@@ -29,20 +29,19 @@ export default defineConfig(config);
   "scripts": {
     "build": "tsdown"
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.mts",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/esm/index.d.mts",
   "exports": {
     ".": {
-      "import": { "types": "./dist/index.d.mts", "default": "./dist/index.mjs" },
-      "require": { "types": "./dist/index.d.cts", "default": "./dist/index.cjs" }
+      "import": { "types": "./dist/esm/index.d.mts", "default": "./dist/esm/index.mjs" },
+      "require": { "types": "./dist/cjs/index.d.cts", "default": "./dist/cjs/index.cjs" }
     }
   }
 }
 ```
 
 **Available Configs:**
-- `config` - Dual ESM + CJS output (recommended)
 - `esmConfig` - ESM only
 - `cjsConfig` - CJS only
 
@@ -73,7 +72,6 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 
 - **`cjsConfig`** - CommonJS build configuration
 - **`esmConfig`** - ES Module build configuration
-- **`config`** - Combined ESM + CJS build (single execution)
 
 ### Key Features
 
@@ -94,17 +92,6 @@ import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
 import { defineConfig } from 'tsdown';
 
 export default defineConfig([cjsConfig, esmConfig]);
-```
-
-### Combined Build (Faster)
-
-For faster builds, use the combined config:
-
-```typescript
-import { config } from '@radoslavirha/config-tsdown';
-import { defineConfig } from 'tsdown';
-
-export default defineConfig(config);
 ```
 
 ### Add Build Script
@@ -203,37 +190,6 @@ ES Module build configuration.
 
 ---
 
-### config (Combined)
-
-Generates both formats in a single build (faster than separate configs).
-
-```typescript
-{
-    name: 'ESM + CJS build',
-    format: ['esm', 'cjs'],
-    outDir: 'dist',
-    entry: ['src/index.ts'],
-    dts: true,
-    clean: true,
-    tsconfig: './tsconfig.json'
-}
-```
-
-**Output:**
-- `dist/index.mjs` - ES Module (default)
-- `dist/index.cjs` - CommonJS
-- `dist/index.d.mts` - TypeScript declarations (ESM)
-- `dist/index.d.cts` - TypeScript declarations (CJS)
-
-**Note:** With combined config, adjust package.json exports accordingly:
-```json
-{
-    "main": "./dist/index.cjs",
-    "module": "./dist/index.mjs",
-    "types": "./dist/index.d.mts"
-}
-```
-
 ## Customization
 
 ### Override Entry Points
@@ -294,14 +250,21 @@ export default defineConfig({
 ### Minification
 
 ```typescript
-import { config } from '@radoslavirha/config-tsdown';
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
 import { defineConfig } from 'tsdown';
 
-export default defineConfig({
-    ...config,
-    minify: true,        // Minify output
-    sourcemap: true      // Generate sourcemaps
-});
+export default defineConfig([
+    {
+        ...cjsConfig,
+        minify: true,
+        sourcemap: true
+    },
+    {
+        ...esmConfig,
+        minify: true,
+        sourcemap: true
+    }
+]);
 ```
 
 ### External Dependencies
@@ -325,13 +288,13 @@ export default defineConfig([
 ### Custom tsconfig Path
 
 ```typescript
-import { config } from '@radoslavirha/config-tsdown';
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
 import { defineConfig } from 'tsdown';
 
-export default defineConfig({
-    ...config,
-    tsconfig: './tsconfig.build.json'
-});
+export default defineConfig([
+    { ...cjsConfig, tsconfig: './tsconfig.build.json' },
+    { ...esmConfig, tsconfig: './tsconfig.build.json' }
+]);
 ```
 
 ## Advanced Patterns
@@ -409,8 +372,6 @@ export default defineConfig([
 
 ## Output Structure
 
-### Using [cjsConfig, esmConfig]
-
 ```
 dist/
 ├── cjs/
@@ -419,16 +380,6 @@ dist/
 └── esm/
     ├── index.mjs
     └── index.d.mts
-```
-
-### Using config (combined)
-
-```
-dist/
-├── index.mjs       # ESM
-├── index.cjs       # CJS
-├── index.d.mts     # ESM types
-└── index.d.cts     # CJS types
 ```
 
 ## Integration Examples

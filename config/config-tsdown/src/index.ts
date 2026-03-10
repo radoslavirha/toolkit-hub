@@ -20,10 +20,3 @@ export const esmConfig: UserConfig = {
     outDir: 'dist/esm',
     ...commonConfig
 };
-
-export const config: UserConfig = {
-    name: 'ESM + CJS build',
-    format: ['esm', 'cjs'],
-    outDir: 'dist',
-    ...commonConfig
-};
