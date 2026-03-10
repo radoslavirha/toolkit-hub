@@ -25,7 +25,8 @@ CommonUtils.isNull(value);               // null check (type guard)
 CommonUtils.notNull(value);              // non-null (type guard)
 CommonUtils.isUndefined(value);          // undefined check (type guard)
 CommonUtils.notUndefined(value);         // defined check (type guard)
-CommonUtils.buildModel(Class, data);     // Type-safe model instantiation
+CommonUtils.buildModelStrict(Class, data);   // All required properties must be provided
+CommonUtils.buildModelPartial(Class, data);  // Omit properties that have class-body defaults
 
 // ObjectUtils - Deep operations
 ObjectUtils.keys(obj);                   // Object keys
@@ -59,8 +60,8 @@ DefaultsUtil.string(value, 'default');       // Returns default if value is nil/
 DefaultsUtil.number(value, 0);               // Returns default if value is nil
 ```
 
-**Complete Method List (ALL 33 methods + 1 type):**
-- **CommonUtils (8):** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel
+**Complete Method List (ALL 35 methods + 1 type):**
+- **CommonUtils (10):** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel *(deprecated)*, buildModelStrict, buildModelPartial
 - **ObjectUtils (5 + 1 type):** keys, values, cloneDeep, mergeDeep, isEnabled — plus `Enabled<T>` type
 - **MappingUtils (7):** mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum
 - **NumberUtils (8):** getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
@@ -126,13 +127,23 @@ CommonUtils.notNull('value');      // true (type guard)
 CommonUtils.isUndefined(undefined); // true
 CommonUtils.notUndefined('value');  // true (type guard)
 
-// Type-safe model instantiation
-class User {
+// Strict model instantiation — all TypeScript-required properties must be provided
+class Model {
   name!: string;
   email!: string;
+  tags?: string[];
 }
-const user = CommonUtils.buildModel(User, { name: 'John', email: 'john@example.com' });
-// Returns a User instance with proper prototype chain
+const model = CommonUtils.buildModelStrict(Model, { name: 'John', email: 'john@example.com' });
+// Returns a Model instance; optional tags can be omitted
+
+// Partial model instantiation — for classes with constructor-level defaults
+class Config {
+  host: string = 'localhost';  // has class-body default
+  port: number = 3000;         // has class-body default
+  debug?: boolean;
+}
+const config = CommonUtils.buildModelPartial(Config, { host: 'prod.example.com' });
+// port retains its constructor default (3000); TypeScript narrows host to string, port to number | undefined
 ```
 
 **API:**
@@ -143,7 +154,9 @@ const user = CommonUtils.buildModel(User, { name: 'John', email: 'john@example.c
 - `notNull<T>(value: T): value is Exclude<T, null>` - Type guard for non-null values
 - `isUndefined<T>(value: T): value is Extract<T, undefined>` - Type guard for undefined
 - `notUndefined<T>(value: T): value is Exclude<T, undefined>` - Type guard for defined values
-- `buildModel<T>(type: { new (): T }, data: Partial<T>): T` - Creates type-safe model instances
+- `buildModel<T>(type: { new (): T }, data: Partial<T>): T` - *(deprecated)* Use `buildModelStrict` or `buildModelPartial`
+- `buildModelStrict<T>(type: { new (): T }, data: T): T` - Strict instantiation; all TypeScript-required properties must be provided
+- `buildModelPartial<T, D extends Partial<T>>(type: { new (): T }, data: D): Pick<T, Extract<keyof D, keyof T>> & Partial<Omit<T, keyof D>>` - Partial instantiation for classes with constructor-level defaults; TypeScript tracks exactly which keys were provided
 
 ---
 
@@ -368,14 +381,14 @@ function paginate(page?: number, pageSize?: number) {
 
 | Utility Class | Methods | Purpose |
 |---------------|---------|---------|
-| CommonUtils | 8 methods | Type checking, null/undefined guards, emptiness checks, model instantiation |
+| CommonUtils | 10 methods (1 deprecated) | Type checking, null/undefined guards, emptiness checks, model instantiation |
 | ObjectUtils | 5 methods + 1 type | Typed object keys, deep clone, deep merge with array concatenation, enabled type guard |
 | MappingUtils | 7 methods | Null-safe mapping for models, arrays, maps, and enums |
 | NumberUtils | 8 methods | Percentages, statistics, rounding, min/max |
 | GeoUtils | 2 methods | Haversine distance calculations, degree conversion |
 | DefaultsUtil | 2 methods | Safe default values for strings/numbers |
 
-**Total: 32 utility methods + 1 type**
+**Total: 34 utility methods (1 deprecated) + 1 type**
 
 ---
 

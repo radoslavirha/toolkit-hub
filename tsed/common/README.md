@@ -78,7 +78,7 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 - `zod` - Required only when using `ZodValidator`
 
 **Recommended:**
-- `@radoslavirha/utils` - For building model instances with `CommonUtils.buildModel()`
+- `@radoslavirha/utils` - For building model instances with `CommonUtils.buildModelStrict()`
 
 ## What's Included
 
@@ -240,8 +240,8 @@ export class UserController {
     @Get('/:id')
     @Returns(200, UserModel)
     async getUser(@PathParams('id') id: string): Promise<UserModel> {
-        // Use CommonUtils.buildModel for clean instance creation
-        return CommonUtils.buildModel(UserModel, {
+        // Use CommonUtils.buildModelStrict for clean instance creation
+        return CommonUtils.buildModelStrict(UserModel, {
             id,
             name: 'John Doe',
             email: 'john@example.com',
@@ -344,7 +344,7 @@ For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS
 
 ## Related Packages
 
-- [@radoslavirha/utils](../../packages/utils/) - Use `CommonUtils.buildModel()` for creating model instances
+- [@radoslavirha/utils](../../packages/utils/) - Use `CommonUtils.buildModelStrict()` for creating model instances
 - [@radoslavirha/tsed-mongoose](../mongoose/) - Mongoose integration with mapping utilities
 - [@radoslavirha/tsed-platform](../platform/) - Base server setup
 - [@radoslavirha/tsed-swagger](../swagger/) - API documentation

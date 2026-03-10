@@ -33,19 +33,19 @@ import { SwaggerUIConfig } from '../models/SwaggerUIConfig.js';
  * const config = injector().get<ConfigService>(ConfigService);
  * 
  * // Create Swagger configuration
- * const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+ * const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
  *     title: config.api.service,
  *     version: config.api.version,
  *     description: config.api.description,
  *     documents: [
- *         CommonUtils.buildModel(SwaggerDocumentConfig, {
+ *         CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
  *             docs: 'v1',
  *             security: [SwaggerSecurityScheme.BEARER_JWT]
  *         })
  *     ],
- *     swaggerUIOptions: {
+ *     swaggerUIOptions: CommonUtils.buildModelStrict(SwaggerUIConfig, {
  *         validatorUrl: null
- *     },
+ *     }),
  *     serverUrl: config.api.publicURL
  * });
  * 
@@ -75,12 +75,12 @@ export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]> {
      * 
      * @example
      * ```typescript
-     * const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+     * const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
      *     title: 'My API',
      *     version: '1.0.0',
      *     description: 'API description',
      *     documents: [
-     *         CommonUtils.buildModel(SwaggerDocumentConfig, {
+     *         CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
      *             docs: 'v1',
      *             security: []
      *         })

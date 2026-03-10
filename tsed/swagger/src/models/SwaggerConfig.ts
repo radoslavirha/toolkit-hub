@@ -21,16 +21,16 @@ import { SwaggerSecurityScheme } from '../enums/SwaggerSecurityScheme.enum.js';
  * import { CommonUtils } from '@radoslavirha/utils';
  * 
  * // Create Swagger configuration
- * const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+ * const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
  *     title: 'My API',
  *     version: '1.0.0',
  *     description: 'My API description',
  *     documents: [
- *         CommonUtils.buildModel(SwaggerDocumentConfig, {
+ *         CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
  *             docs: 'v1',
  *             security: [SwaggerSecurityScheme.BEARER_JWT]
  *         }),
- *         CommonUtils.buildModel(SwaggerDocumentConfig, {
+ *         CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
  *             docs: 'v2',
  *             security: [SwaggerSecurityScheme.BEARER_JWT, SwaggerSecurityScheme.BASIC]
  *         })
@@ -130,11 +130,11 @@ export class SwaggerConfig {
      * @example
      * ```typescript
      * documents: [
-     *     CommonUtils.buildModel(SwaggerDocumentConfig, {
+     *     CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
      *         docs: 'v1',
      *         security: [SwaggerSecurityScheme.BASIC]
      *     }),
-     *     CommonUtils.buildModel(SwaggerDocumentConfig, {
+     *     CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
      *         docs: 'v2',
      *         security: [SwaggerSecurityScheme.BEARER_JWT],
      *         outFile: './api-spec-v2.json'
@@ -148,11 +148,11 @@ export class SwaggerConfig {
     @CollectionOf(SwaggerDocumentConfig)
     @Description(`An array of Swagger documents.`)
     @Example([
-        CommonUtils.buildModel(SwaggerDocumentConfig, {
+        CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
             docs: 'v1',
             security: [SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT]
         }),
-        CommonUtils.buildModel(SwaggerDocumentConfig, {
+        CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
             docs: 'v2',
             security: [SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT]
         })

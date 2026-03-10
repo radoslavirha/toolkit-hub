@@ -23,7 +23,7 @@ class TestModel extends BaseModel {
 const CREATED_AT = new Date('2024-01-15T10:00:00.000Z');
 const UPDATED_AT = new Date('2024-01-15T11:00:00.000Z');
 
-const makeModel = (): TestModel => CommonUtils.buildModel(TestModel, {
+const makeModel = (): TestModel => CommonUtils.buildModelStrict(TestModel, {
     id: '1',
     name: 'Alice',
     age: 30,
@@ -31,7 +31,7 @@ const makeModel = (): TestModel => CommonUtils.buildModel(TestModel, {
     updatedAt: UPDATED_AT
 });
 
-const makeChild = (): ChildModel => CommonUtils.buildModel(ChildModel, {
+const makeChild = (): ChildModel => CommonUtils.buildModelStrict(ChildModel, {
     id: '2',
     tag: 'vip',
     createdAt: CREATED_AT,

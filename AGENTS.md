@@ -112,12 +112,12 @@ import { CommonUtils } from '@radoslavirha/utils';
 
 const config = injector().get<ConfigService>(ConfigService);
 
-const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+const swaggerConfig = CommonUtils.buildModelPartial(SwaggerConfig, {
   title: config.api.service,
   version: config.api.version,
   description: config.api.description,
   documents: [
-    CommonUtils.buildModel(SwaggerDocumentConfig, {
+    CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
       docs: 'v1',
       security: [SwaggerSecurityScheme.BEARER_JWT]
     })
@@ -441,7 +441,7 @@ documents: [{
 ✅ **CORRECT:**
 ```typescript
 documents: [
-  CommonUtils.buildModel(SwaggerDocumentConfig, {
+  CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
     docs: 'v1',
     security: [SwaggerSecurityScheme.BEARER_JWT]
   })
@@ -497,9 +497,9 @@ export class ConfigService extends ConfigProvider<AppConfig> {
 
 ## 🛠️ Utilities Quick Reference
 
-### @radoslavirha/utils - All 36 Methods
+### @radoslavirha/utils - All 38 Methods
 
-**CommonUtils (8 methods):**
+**CommonUtils (10 methods):**
 - `isEmpty<T>(value: T): boolean` - Check if empty (objects, arrays, strings, maps, sets, null/undefined)
 - `isNil<T>(value: T): boolean` - Check if null or undefined (type guard)
 - `notNil<T>(value: T): boolean` - Check if NOT null/undefined (type guard)
@@ -507,7 +507,9 @@ export class ConfigService extends ConfigProvider<AppConfig> {
 - `notNull<T>(value: T): boolean` - Check if NOT null (type guard)
 - `isUndefined<T>(value: T): boolean` - Check if undefined (type guard)
 - `notUndefined<T>(value: T): boolean` - Check if NOT undefined (type guard)
-- `buildModel<T>(type: new() => T, data: Partial<T>): T` - Type-safe model construction
+- `buildModel<T>(type: new() => T, data: Partial<T>): T` - *(deprecated)* Use `buildModelStrict` or `buildModelPartial`
+- `buildModelStrict<T>(type: new() => T, data: T): T` - Strict model construction; all TypeScript-required properties must be provided
+- `buildModelPartial<T, D extends Partial<T>>(type: new() => T, data: D): Pick<T, keyof D & keyof T> & Partial<Omit<T, keyof D>>` - Partial model construction; TypeScript tracks exactly which keys were provided
 
 **ObjectUtils (7 methods + 1 type):**
 - `isObject<T>(value: T): value is Extract<T, object>` - Check if value is any object type (includes arrays, functions, class instances)
@@ -562,8 +564,11 @@ export class ConfigService extends ConfigProvider<AppConfig> {
 ```typescript
 import { CommonUtils, NumberUtils, GeoUtils, ObjectUtils, MappingUtils, ArrayUtils, BooleanUtils, StringUtils, DefaultsUtil } from '@radoslavirha/utils';
 
-// Type-safe model creation
-const config = CommonUtils.buildModel(SwaggerConfig, { title: 'API' });
+// Strict model creation — all required properties must be provided
+const doc = CommonUtils.buildModelStrict(SwaggerDocumentConfig, { docs: 'v1', security: [SwaggerSecurityScheme.BEARER_JWT] });
+
+// Partial model creation — only provide what you have; TypeScript knows exactly which keys are set
+const config = CommonUtils.buildModelPartial(SwaggerConfig, { title: 'API', version: '1.0.0', description: 'desc', documents: [doc] });
 
 // Type guards
 if (CommonUtils.notNil(value)) {

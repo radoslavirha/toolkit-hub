@@ -19,11 +19,11 @@ pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-swagger @radoslavirha/tse
 // 1. Bootstrap configuration (index.ts)
 import { SwaggerConfig, SwaggerProvider } from '@radoslavirha/tsed-swagger';
 
-const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
   title: config.api.service,
   version: config.api.version,
   documents: [
-    CommonUtils.buildModel(SwaggerDocumentConfig, {
+    CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
       docs: 'v1',
       security: [SwaggerSecurityScheme.BEARER_JWT]
     })
@@ -160,14 +160,14 @@ try {
     const config = injector().get<ConfigService>(ConfigService);
 
     // Build Swagger configuration
-    const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+    const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
         title: config.api.service,
         version: config.api.version,
         description: config.api.description,
         serverUrl: config.api.publicURL, // For reverse proxy support
         documents: [
             // v1 API documentation
-            CommonUtils.buildModel(SwaggerDocumentConfig, {
+            CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
                 docs: 'v1',
                 security: [
                     SwaggerSecurityScheme.BASIC,
@@ -176,7 +176,7 @@ try {
                 outFile: './docs/swagger-v1.json' // Optional: export spec
             }),
             // v2 API documentation (JWT only)
-            CommonUtils.buildModel(SwaggerDocumentConfig, {
+            CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
                 docs: 'v2',
                 security: [SwaggerSecurityScheme.BEARER_JWT]
             })
@@ -308,17 +308,17 @@ Main configuration model for the Swagger module. Defines global API metadata, do
 
 **Example:**
 ```typescript
-const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
     title: 'E-Commerce API',
     version: '2.1.0',
     description: 'Comprehensive REST API for e-commerce platform',
     serverUrl: 'https://api.example.com',
     documents: [
-        CommonUtils.buildModel(SwaggerDocumentConfig, {
+        CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
             docs: 'v1',
             security: [SwaggerSecurityScheme.BASIC]
         }),
-        CommonUtils.buildModel(SwaggerDocumentConfig, {
+        CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
             docs: 'v2',
             security: [SwaggerSecurityScheme.BEARER_JWT]
         })
@@ -346,7 +346,7 @@ Configuration model for a single API version/document. Each document represents 
 
 **Example:**
 ```typescript
-const docConfig = CommonUtils.buildModel(SwaggerDocumentConfig, {
+const docConfig = CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
     docs: 'v1',
     security: [
         SwaggerSecurityScheme.BASIC,
@@ -385,7 +385,7 @@ new SwaggerProvider(config: SwaggerConfig)
 
 **Example Usage:**
 ```typescript
-const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, { /* ... */ });
+const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, { /* ... */ });
 const swaggerProvider = new SwaggerProvider(swaggerConfig);
 
 const configuration: ServerConfiguration = {
@@ -460,12 +460,12 @@ export class AdminController {
 When your API is behind a reverse proxy or load balancer, use `serverUrl` to ensure Swagger UI generates correct request URLs:
 
 ```typescript
-const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
     title: 'API',
     version: '1.0.0',
     serverUrl: 'https://api.example.com',  // Public-facing URL
     documents: [
-        CommonUtils.buildModel(SwaggerDocumentConfig, {
+        CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
             docs: 'v1',
             security: [SwaggerSecurityScheme.BEARER_JWT]
         })
@@ -484,16 +484,16 @@ const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
 Export OpenAPI specifications to files for client generation and documentation:
 
 ```typescript
-const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
     title: 'API',
     version: '1.0.0',
     documents: [
-        CommonUtils.buildModel(SwaggerDocumentConfig, {
+        CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
             docs: 'v1',
             security: [SwaggerSecurityScheme.BEARER_JWT],
             outFile: './docs/openapi-v1.json'  // Export spec to file
         }),
-        CommonUtils.buildModel(SwaggerDocumentConfig, {
+        CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
             docs: 'v2',
             security: [SwaggerSecurityScheme.BEARER_JWT],
             outFile: './docs/openapi-v2.json'
@@ -516,5 +516,5 @@ For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS
 
 - [@radoslavirha/tsed-configuration](../configuration/) - Configuration management and API information
 - [@radoslavirha/tsed-platform](../platform/) - Server bootstrapping and platform utilities
-- [@radoslavirha/utils](../../packages/utils/) - Common utilities including `CommonUtils.buildModel()`
+- [@radoslavirha/utils](../../packages/utils/) - Common utilities including `CommonUtils.buildModelStrict()`
 - [@radoslavirha/types](../../packages/types/) - TypeScript utility types including `EnumDictionary`

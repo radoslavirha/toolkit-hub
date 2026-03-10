@@ -13,22 +13,22 @@ describe('SwaggerProvider', () => {
     afterEach(PlatformTest.reset);
 
     it('Should build swagger configuration', async () => {
-        const configuration = CommonUtils.buildModel(SwaggerConfig, {
+        const configuration = CommonUtils.buildModelStrict(SwaggerConfig, {
             title: 'My API',
             version: '1.0.0',
             description: 'This is a description of the application.',
             documents: [
-                CommonUtils.buildModel(SwaggerDocumentConfig, {
+                CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
                     docs: 'v1',
                     security: [SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT],
                     outFile: 'path1'
                 }),
-                CommonUtils.buildModel(SwaggerDocumentConfig, {
+                CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
                     docs: 'v2',
                     security: [SwaggerSecurityScheme.BASIC]
                 })
             ],
-            swaggerUIOptions: CommonUtils.buildModel(SwaggerUIConfig, {})
+            swaggerUIOptions: CommonUtils.buildModelStrict(SwaggerUIConfig, {})
         });
         const provider = new SwaggerProvider(configuration);
 
@@ -88,18 +88,18 @@ describe('SwaggerProvider', () => {
         ]);
     });
     it('Should build swagger configuration with serverUrl', async () => {
-        const configuration = CommonUtils.buildModel(SwaggerConfig, {
+        const configuration = CommonUtils.buildModelStrict(SwaggerConfig, {
             title: 'My API',
             version: '1.0.0',
             description: 'This is a description of the application.',
             documents: [
-                CommonUtils.buildModel(SwaggerDocumentConfig, {
+                CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
                     docs: 'v1',
                     security: [SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT],
                     outFile: 'path1'
                 })
             ],
-            swaggerUIOptions: CommonUtils.buildModel(SwaggerUIConfig, {}),
+            swaggerUIOptions: CommonUtils.buildModelStrict(SwaggerUIConfig, {}),
             serverUrl: 'https://api.example.com/path'
         });
         const provider = new SwaggerProvider(configuration);

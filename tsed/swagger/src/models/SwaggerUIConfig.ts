@@ -22,7 +22,7 @@ import { SwaggerUIOptions } from '@tsed/swagger';
  * ```typescript
  * import { CommonUtils } from '@radoslavirha/utils';
  * 
- * const swaggerConfig = CommonUtils.buildModel(SwaggerConfig, {
+ * const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
  *     title: 'My API',
  *     version: '1.0.0',
  *     description: 'API description',

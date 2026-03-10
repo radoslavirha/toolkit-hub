@@ -19,12 +19,12 @@ import { SwaggerSecurityScheme } from '../enums/SwaggerSecurityScheme.enum.js';
  * import { SwaggerDocumentConfig, SwaggerSecurityScheme } from '@radoslavirha/tsed-swagger';
  * 
  * // Define multiple API versions with different security
- * const v1Config = CommonUtils.buildModel(SwaggerDocumentConfig, {
+ * const v1Config = CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
  *     docs: 'v1',
  *     security: [SwaggerSecurityScheme.BASIC]
  * });
  * 
- * const v2Config = CommonUtils.buildModel(SwaggerDocumentConfig, {
+ * const v2Config = CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
  *     docs: 'v2',
  *     security: [SwaggerSecurityScheme.BEARER_JWT],
  *     outFile: './swagger-v2.json'

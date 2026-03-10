@@ -150,7 +150,7 @@ export class ConfigProvider<T extends BaseConfig> {
         this._packageJson = new PackageJsonProvider().config;
         this._config = new ConfigJsonProvider(options.schema, options.debug).config;
 
-        this._api = CommonUtils.buildModel(APIInformation, {
+        this._api = CommonUtils.buildModelStrict(APIInformation, {
             service: DefaultsUtil.string(this.config.serviceName, this.packageJson.name),
             version: this.packageJson.version,
             description: this.packageJson.description,

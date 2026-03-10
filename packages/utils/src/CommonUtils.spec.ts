@@ -268,4 +268,58 @@ describe('CommonUtils', () => {
             expect(model.property).toEqual('value 1');
         });
     });
+
+    describe('buildModelStrict', () => {
+        class TestModel {
+            public required!: string;
+            public count!: number;
+            public optional?: boolean;
+        }
+
+        it('should build model with all required properties', () => {
+            const model = CommonUtils.buildModelStrict(TestModel, { required: 'value 1', count: 42 });
+
+            expect(model).toBeInstanceOf(TestModel);
+            expect(model.required).toEqual('value 1');
+            expect(model.count).toEqual(42);
+            expect(model.optional).toBeUndefined();
+        });
+
+        it('should build model with required and optional properties', () => {
+            const model = CommonUtils.buildModelStrict(TestModel, { required: 'value 1', count: 42, optional: true });
+
+            expect(model).toBeInstanceOf(TestModel);
+            expect(model.required).toEqual('value 1');
+            expect(model.count).toEqual(42);
+            expect(model.optional).toEqual(true);
+        });
+    });
+
+    describe('buildModelPartial', () => {
+        // count has a class-body default — safe to omit even though TS types it as required
+        class TestModel {
+            public required!: string;
+            public count: number = 0;
+            public optional?: boolean;
+        }
+
+        it('should build model omitting property that has class-body default', () => {
+            const model = CommonUtils.buildModelPartial(TestModel, { required: 'value 1' });
+
+            expect(model).toBeInstanceOf(TestModel);
+            expect(model.required).toEqual('value 1');
+            // constructor default preserved because Object.assign only overwrites provided keys
+            expect(model.count).toEqual(0);
+            expect(model.optional).toBeUndefined();
+        });
+
+        it('should override class-body default when property is provided', () => {
+            const model = CommonUtils.buildModelPartial(TestModel, { required: 'value 1', count: 42, optional: true });
+
+            expect(model).toBeInstanceOf(TestModel);
+            expect(model.required).toEqual('value 1');
+            expect(model.count).toEqual(42);
+            expect(model.optional).toEqual(true);
+        });
+    });
 });

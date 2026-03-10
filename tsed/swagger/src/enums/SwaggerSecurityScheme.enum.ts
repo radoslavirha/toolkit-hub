@@ -8,7 +8,7 @@
  * @example
  * ```typescript
  * // Use in SwaggerDocumentConfig
- * const docConfig = CommonUtils.buildModel(SwaggerDocumentConfig, {
+ * const docConfig = CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
  *     docs: 'v1',
  *     security: [SwaggerSecurityScheme.BEARER_JWT]
  * });
