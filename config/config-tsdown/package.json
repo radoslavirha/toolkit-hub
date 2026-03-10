@@ -29,7 +29,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsdown --config-loader unrun",
+        "build": "tsdown",
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
         "lint:fix": "eslint --fix ."
