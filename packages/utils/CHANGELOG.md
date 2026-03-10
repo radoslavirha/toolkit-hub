@@ -1,5 +1,11 @@
 # @radoslavirha/utils
 
+## 0.6.0
+
+### Minor Changes
+
+- [`fff3c81`](https://github.com/radoslavirha/toolkit-hub/commit/fff3c81c691014fdd2366f40be97e8cd5f9c695e) Thanks [@radoslavirha](https://github.com/radoslavirha)! - New CommonUtils.buildModelStrict
+
 ## 0.5.2
 
 ### Patch Changes

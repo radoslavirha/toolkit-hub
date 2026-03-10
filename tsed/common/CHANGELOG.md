@@ -1,5 +1,12 @@
 # @radoslavirha/tsed-common
 
+## 0.4.5
+
+### Patch Changes
+
+- Updated dependencies [[`fff3c81`](https://github.com/radoslavirha/toolkit-hub/commit/fff3c81c691014fdd2366f40be97e8cd5f9c695e)]:
+  - @radoslavirha/utils@0.6.0
+
 ## 0.4.4
 
 ### Patch Changes
