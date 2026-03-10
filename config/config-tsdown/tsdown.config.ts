@@ -9,7 +9,7 @@ export default defineConfig({
     clean: true,
     tsconfig: './tsconfig.json',
     outExtensions: ({ format }) => {
-        if (format === 'es') return { js: '.js', dts: '.d.ts' };
+        if (format === 'es' || format === 'esm') return { js: '.js', dts: '.d.ts' };
         return undefined;
     }
 });
