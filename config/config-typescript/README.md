@@ -107,7 +107,7 @@ Use TypeScript compiler directly or via build tools:
 # Direct compilation
 pnpm tsc
 
-# With build tool (tsup, swc, etc.)
+# With build tool (tsdown, swc, etc.)
 pnpm build
 ```
 
@@ -163,5 +163,5 @@ For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS
 ## Related Packages
 
 - [@radoslavirha/config-eslint](../config-eslint/) - ESLint rules for TypeScript
-- [@radoslavirha/config-tsup](../config-tsup/) - Build configuration using this tsconfig
+- [@radoslavirha/config-tsdown](../config-tsdown/) - Build configuration using this tsconfig
 - [@radoslavirha/config-vitest](../config-vitest/) - Test configuration with TypeScript support

@@ -123,7 +123,7 @@ export class SwaggerController {
             ? __dirname
             : path.dirname(fileURLToPath(import.meta.url));
 
-        // files are compiled by tsup into single index.ts file
+        // files are compiled by tsdown into single index.ts file
         // we need to keep assets in the same directory as index.ts
         // views are copied by cpx library into dist directory
         return await this.platformViews.render(path.join(_dirname, 'views', 'swagger.ejs'), {

@@ -29,7 +29,7 @@
 |---------|---------|-------------|
 | [@radoslavirha/config-typescript](config/config-typescript/) | Shared TypeScript config | **Always** - Base tsconfig for all packages |
 | [@radoslavirha/config-eslint](config/config-eslint/) | Shared ESLint config | **Always** - Consistent linting rules |
-| [@radoslavirha/config-tsup](config/config-tsup/) | Build configuration with tsup | When building library packages (not apps) |
+| [@radoslavirha/config-tsdown](config/config-tsdown/) | Build configuration with tsdown | When building library packages (not apps) |
 | [@radoslavirha/config-vitest](config/config-vitest/) | Test configuration with Vitest | When writing unit/integration tests |
 
 ---
@@ -660,7 +660,7 @@ What are you building?
 ### Config Packages
 - [config-eslint README](config/config-eslint/README.md#-quick-reference-for-ai-agents) - ESLint rules
 - [config-typescript README](config/config-typescript/README.md#-quick-reference-for-ai-agents) - TypeScript config
-- [config-tsup README](config/config-tsup/README.md#-quick-reference-for-ai-agents) - Build config
+- [config-tsdown README](config/config-tsdown/README.md#-quick-reference-for-ai-agents) - Build config
 - [config-vitest README](config/config-vitest/README.md#-quick-reference-for-ai-agents) - Test config
 
 ---

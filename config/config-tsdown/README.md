@@ -1,6 +1,6 @@
-# @radoslavirha/config-tsup
+# @radoslavirha/config-tsdown
 
-Pre-configured tsup build configurations for TypeScript libraries with dual ESM/CJS output. Simplifies library bundling with TypeScript declaration generation and tree-shaking support.
+Pre-configured tsdown build configurations for TypeScript libraries with dual ESM/CJS output. Simplifies library bundling with TypeScript declaration generation and tree-shaking support.
 
 ---
 
@@ -11,14 +11,14 @@ Pre-configured tsup build configurations for TypeScript libraries with dual ESM/
 **Install in pnpm monorepo:**
 ```bash
 # Install in packages that need building
-pnpm --filter YOUR_PACKAGE_NAME add -D tsup @radoslavirha/config-tsup
+pnpm --filter YOUR_PACKAGE_NAME add -D tsdown @radoslavirha/config-tsdown
 ```
 
 **Essential Usage:**
 ```typescript
-// tsup.config.ts
-import { defineConfig } from 'tsup';
-import { config } from '@radoslavirha/config-tsup';
+// tsdown.config.ts
+import { defineConfig } from 'tsdown';
+import { config } from '@radoslavirha/config-tsdown';
 
 export default defineConfig(config);
 ```
@@ -27,7 +27,7 @@ export default defineConfig(config);
 // package.json
 {
   "scripts": {
-    "build": "tsup"
+    "build": "tsdown"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -56,16 +56,16 @@ export default defineConfig(config);
 
 ```bash
 # Simple repository
-pnpm add -D tsup @radoslavirha/config-tsup
+pnpm add -D tsdown @radoslavirha/config-tsdown
 
 # Monorepo - install at workspace root (shared config)
-pnpm add -D -w tsup @radoslavirha/config-tsup
+pnpm add -D -w tsdown @radoslavirha/config-tsdown
 ```
 
 See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
 
 **Peer dependencies:**
-- `tsup` >= 8.0.0
+- `tsdown` >= 0.14.0
 
 ## What's Included
 
@@ -87,11 +87,11 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 
 ### Basic Setup (Dual Output)
 
-Create `tsup.config.ts`:
+Create `tsdown.config.ts`:
 
 ```typescript
-import { cjsConfig, esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig([cjsConfig, esmConfig]);
 ```
@@ -101,8 +101,8 @@ export default defineConfig([cjsConfig, esmConfig]);
 For faster builds, use the combined config:
 
 ```typescript
-import { config } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { config } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig(config);
 ```
@@ -114,7 +114,7 @@ Add to your `package.json`:
 ```json
 {
     "scripts": {
-        "build": "tsup"
+        "build": "tsdown"
     }
 }
 ```
@@ -238,8 +238,8 @@ Generates both formats in a single build (faster than separate configs).
 ### Override Entry Points
 
 ```typescript
-import { cjsConfig, esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig([
     {
@@ -256,8 +256,8 @@ export default defineConfig([
 ### Multiple Entry Points
 
 ```typescript
-import { cjsConfig, esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig([
     {
@@ -280,8 +280,8 @@ export default defineConfig([
 ### Add Code Splitting
 
 ```typescript
-import { esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig({
     ...esmConfig,
@@ -293,8 +293,8 @@ export default defineConfig({
 ### Minification
 
 ```typescript
-import { config } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { config } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig({
     ...config,
@@ -306,17 +306,17 @@ export default defineConfig({
 ### External Dependencies
 
 ```typescript
-import { cjsConfig, esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig([
     {
         ...cjsConfig,
-        external: ['lodash', '@tsed/core']  // Don't bundle these
+        deps: { neverBundle: ['lodash', '@tsed/core'] }  // Don't bundle these
     },
     {
         ...esmConfig,
-        external: ['lodash', '@tsed/core']
+        deps: { neverBundle: ['lodash', '@tsed/core'] }
     }
 ]);
 ```
@@ -324,8 +324,8 @@ export default defineConfig([
 ### Custom tsconfig Path
 
 ```typescript
-import { config } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { config } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig({
     ...config,
@@ -338,9 +338,9 @@ export default defineConfig({
 ### Separate Dev and Prod Builds
 
 ```typescript
-// tsup.config.ts
-import { cjsConfig, esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+// tsdown.config.ts
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -361,8 +361,8 @@ export default defineConfig([
 ```json
 {
     "scripts": {
-        "build": "NODE_ENV=production tsup",
-        "build:dev": "NODE_ENV=development tsup"
+        "build": "NODE_ENV=production tsdown",
+        "build:dev": "NODE_ENV=development tsdown"
     }
 }
 ```
@@ -370,8 +370,8 @@ export default defineConfig([
 ### Watch Mode for Development
 
 ```typescript
-import { esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig({
     ...esmConfig,
@@ -382,38 +382,26 @@ export default defineConfig({
 ```json
 {
     "scripts": {
-        "build": "tsup",
-        "build:watch": "WATCH=true tsup"
+        "build": "tsdown",
+        "build:watch": "WATCH=true tsdown"
     }
 }
-```
-
-### Bundle Analysis
-
-```typescript
-import { config } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
-
-export default defineConfig({
-    ...config,
-    metafile: true  // Generate meta.json for bundle analysis
-});
 ```
 
 ### Custom Output Extensions
 
 ```typescript
-import { cjsConfig, esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig([
     {
         ...cjsConfig,
-        outExtension: () => ({ js: '.cjs' })
+        outExtensions: () => ({ js: '.cjs' })
     },
     {
         ...esmConfig,
-        outExtension: () => ({ js: '.mjs' })
+        outExtensions: () => ({ js: '.mjs' })
     }
 ]);
 ```
@@ -447,18 +435,18 @@ dist/
 ### Monorepo Package
 
 ```typescript
-// packages/my-library/tsup.config.ts
-import { cjsConfig, esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+// packages/my-library/tsdown.config.ts
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig([
     {
         ...cjsConfig,
-        external: [/@radoslavirha\/.*/]  // Externalize other workspace packages
+        deps: { neverBundle: [/@radoslavirha\/.*/] }  // Externalize other workspace packages
     },
     {
         ...esmConfig,
-        external: [/@radoslavirha\/.*/]
+        deps: { neverBundle: [/@radoslavirha\/.*/] }
     }
 ]);
 ```
@@ -466,8 +454,8 @@ export default defineConfig([
 ### CLI Tool
 
 ```typescript
-import { esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig({
     ...esmConfig,
@@ -485,8 +473,8 @@ export default defineConfig({
 ### Plugin System
 
 ```typescript
-import { cjsConfig, esmConfig } from '@radoslavirha/config-tsup';
-import { defineConfig } from 'tsup';
+import { cjsConfig, esmConfig } from '@radoslavirha/config-tsdown';
+import { defineConfig } from 'tsdown';
 
 export default defineConfig([
     {
@@ -536,16 +524,6 @@ The `clean: true` option is included. If issues persist, manually clean:
 ```bash
 rm -rf dist
 pnpm build
-```
-
-### Circular dependency warnings
-
-Use code splitting for ESM:
-```typescript
-{
-    ...esmConfig,
-    splitting: true
-}
 ```
 
 ---

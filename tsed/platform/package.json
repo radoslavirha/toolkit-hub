@@ -29,7 +29,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsup",
+        "build": "tsdown",
         "cleanup": "rm -rf coverage dist",
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
@@ -48,7 +48,7 @@
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
-        "@radoslavirha/config-tsup": "workspace:*",
+        "@radoslavirha/config-tsdown": "workspace:*",
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
@@ -71,7 +71,7 @@
         "eslint": "catalog:",
         "supertest": "catalog:",
         "tslib": "catalog:",
-        "tsup": "catalog:",
+        "tsdown": "catalog:",
         "typescript": "catalog:",
         "vitest": "catalog:"
     },

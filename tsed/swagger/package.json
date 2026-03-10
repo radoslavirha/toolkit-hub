@@ -30,7 +30,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "pnpm cleanup && tsup && mkdir dist/views && cp src/controllers/views/swagger.ejs dist/views/",
+        "build": "pnpm cleanup && tsdown && mkdir dist/views && cp src/controllers/views/swagger.ejs dist/views/",
         "cleanup": "rm -rf coverage dist",
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
@@ -45,7 +45,7 @@
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
-        "@radoslavirha/config-tsup": "workspace:*",
+        "@radoslavirha/config-tsdown": "workspace:*",
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@radoslavirha/tsed-configuration": "workspace:*",
@@ -66,7 +66,7 @@
         "html-minifier-terser": "7.2.0",
         "supertest": "catalog:",
         "tslib": "catalog:",
-        "tsup": "catalog:",
+        "tsdown": "catalog:",
         "typescript": "catalog:",
         "vitest": "catalog:"
     },
