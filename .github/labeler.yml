@@ -4,10 +4,10 @@
   - any-glob-to-any-file:
     - 'config/config-eslint/*'
 
-'@radoslavirha/config-tsup':
+'@radoslavirha/config-tsdown':
 - changed-files:
   - any-glob-to-any-file:
-    - 'config/config-tsup/*'
+    - 'config/config-tsdown/*'
 
 '@radoslavirha/config-typescript':
 - changed-files:

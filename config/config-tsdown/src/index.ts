@@ -1,29 +1,22 @@
-import type { Options } from 'tsup';
+import type { UserConfig } from 'tsdown';
 
-const commonConfig = {
+const commonConfig: UserConfig = {
     entry: ['src/index.ts'],
     dts: true,
     clean: true,
     tsconfig: './tsconfig.json'
 };
 
-export const cjsConfig: Options = {
+export const cjsConfig: UserConfig = {
     name: 'CJS build',
     format: 'cjs',
     outDir: 'dist/cjs',
     ...commonConfig
 };
 
-export const esmConfig: Options = {
+export const esmConfig: UserConfig = {
     name: 'ESM build',
     format: 'esm',
     outDir: 'dist/esm',
-    ...commonConfig
-};
-
-export const config: Options = {
-    name: 'ESM + CJS build',
-    format: ['esm', 'cjs'],
-    outDir: 'dist',
     ...commonConfig
 };

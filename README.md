@@ -18,7 +18,7 @@ pnpm --filter YOUR_SERVICE add @radoslavirha/tsed-swagger @radoslavirha/tsed-mon
 pnpm --filter YOUR_SERVICE add @radoslavirha/utils @radoslavirha/types
 
 # Development configs (install in packages that need them)
-pnpm --filter YOUR_PACKAGE add -D @radoslavirha/config-eslint @radoslavirha/config-typescript @radoslavirha/config-tsup @radoslavirha/config-vitest
+pnpm --filter YOUR_PACKAGE add -D @radoslavirha/config-eslint @radoslavirha/config-typescript @radoslavirha/config-tsdown @radoslavirha/config-vitest
 ```
 
 **Quick Links to Package Quick References:**
@@ -35,7 +35,7 @@ Utilities:
 - [types](packages/types#-quick-reference-for-ai-agents) - TypeScript utility types
 
 Configs:
-- [config-tsup](config/config-tsup#-quick-reference-for-ai-agents) - Library builds
+- [config-tsdown](config/config-tsdown#-quick-reference-for-ai-agents) - Library builds
 - [config-vitest](config/config-vitest#-quick-reference-for-ai-agents) - Testing
 - [config-eslint](config/config-eslint#-quick-reference-for-ai-agents) - Linting
 - [config-typescript](config/config-typescript#-quick-reference-for-ai-agents) - TypeScript compiler
@@ -55,7 +55,7 @@ Configs:
 |---------|---------|--------------|-------------|
 | [@radoslavirha/config-eslint](config/config-eslint/) | ESLint v9 configuration | TypeScript + stylistic rules | Standardize linting across projects |
 | [@radoslavirha/config-typescript](config/config-typescript/) | Base TypeScript config | Strict Node.js ESNext settings | Shared tsconfig via extends |
-| [@radoslavirha/config-tsup](config/config-tsup/) | Build configurations | Dual ESM/CJS output with tsup | Bundling libraries with TypeScript |
+| [@radoslavirha/config-tsdown](config/config-tsdown/) | Build configurations | Dual ESM/CJS output with tsdown | Bundling libraries with TypeScript |
 | [@radoslavirha/config-vitest](config/config-vitest/) | Vitest test runner config | SWC plugin, coverage thresholds | Fast TypeScript testing |
 
 ### Utility Packages (`packages/`)
@@ -79,7 +79,7 @@ Configs:
 
 ```
 toolkit-hub/
-├── config/          # Shared development configurations (ESLint, TypeScript, tsup, Vitest)
+├── config/          # Shared development configurations (ESLint, TypeScript, tsdown, Vitest)
 ├── packages/        # Core utilities and types (framework-agnostic)
 └── tsed/            # Ts.ED framework extensions (server, configuration, mongoose, swagger)
 ```
