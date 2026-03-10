@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/config-tsdown",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "Base tsdown configurations",
     "keywords": [
         "tsdown"
