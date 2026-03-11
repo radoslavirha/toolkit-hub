@@ -1,5 +1,11 @@
 # @radoslavirha/utils
 
+## 0.7.0
+
+### Minor Changes
+
+- [`0a541ba`](https://github.com/radoslavirha/toolkit-hub/commit/0a541ba997c106955e01146bf59cb37f5d06b0b7) Thanks [@radoslavirha](https://github.com/radoslavirha)! - New CommonUtils.buildModelCore
+
 ## 0.6.1
 
 ### Patch Changes
