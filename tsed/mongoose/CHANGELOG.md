@@ -1,5 +1,19 @@
 # @radoslavirha/tsed-mongoose
 
+## 4.0.0
+
+### Major Changes
+
+- [`9611eb2`](https://github.com/radoslavirha/toolkit-hub/commit/9611eb229ef9b71712c73f5d5cd438744e2739bc) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Refactor mongoose package
+
+### Patch Changes
+
+- [`ed0527e`](https://github.com/radoslavirha/toolkit-hub/commit/ed0527e4a838567136383da8be36d064c84cef5c) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies
+
+- Updated dependencies [[`ed0527e`](https://github.com/radoslavirha/toolkit-hub/commit/ed0527e4a838567136383da8be36d064c84cef5c)]:
+  - @radoslavirha/utils@0.6.1
+  - @radoslavirha/tsed-common@0.4.6
+
 ## 3.1.3
 
 ### Patch Changes
