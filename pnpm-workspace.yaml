@@ -6,35 +6,35 @@ packages:
 catalog:
   '@swc/core': 1.15.18
   '@swc/helpers': 0.5.19
-  '@types/node': 25.3.5
+  '@types/node': 25.4.0
   '@types/supertest': 7.2.0
   '@vitest/coverage-v8': 4.0.18
   eslint: 10.0.3
-  mongoose: 9.2.4
+  mongoose: 9.3.0
   supertest: 7.2.2
+  tsdown: 0.21.2
   tslib: 2.8.1
-  tsdown: 0.21.1
   typescript: 5.9.3
   vitest: 4.0.18
   zod: 4.3.6
 
 catalogs:
   tsed:
-    '@tsed/ajv': 8.25.1
+    '@tsed/ajv': 8.25.2
     '@tsed/common': 8.25.1
-    '@tsed/core': 8.25.1
-    '@tsed/di': 8.25.1
-    '@tsed/json-mapper': 8.25.1
+    '@tsed/core': 8.25.2
+    '@tsed/di': 8.25.2
+    '@tsed/json-mapper': 8.25.2
     '@tsed/logger': 8.0.4
-    '@tsed/mongoose': 8.25.1
-    '@tsed/openspec': 8.25.1
-    '@tsed/platform-express': 8.25.1
-    '@tsed/platform-http': 8.25.1
-    '@tsed/platform-params': 8.25.1
-    '@tsed/platform-views': 8.25.1
-    '@tsed/schema': 8.25.1
-    '@tsed/swagger': 8.25.1
-    '@tsed/testcontainers-mongo': 8.25.1
+    '@tsed/mongoose': 8.25.2
+    '@tsed/openspec': 8.25.2
+    '@tsed/platform-express': 8.25.2
+    '@tsed/platform-http': 8.25.2
+    '@tsed/platform-params': 8.25.2
+    '@tsed/platform-views': 8.25.2
+    '@tsed/schema': 8.25.2
+    '@tsed/swagger': 8.25.2
+    '@tsed/testcontainers-mongo': 8.25.2
     ajv: 8.18.0
 
 onlyBuiltDependencies:
