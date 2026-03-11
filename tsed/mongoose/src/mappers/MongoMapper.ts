@@ -7,6 +7,7 @@ import { BaseMongo } from '../models/BaseMongo.js';
 import { MongoCreate } from '../types/MongoCreate.js';
 import { MongoUpdate } from '../types/MongoUpdate.js';
 
+
 /**
  * Abstract base mapper for converting between Mongoose documents and application models.
  * 
@@ -30,24 +31,10 @@ import { MongoUpdate } from '../types/MongoUpdate.js';
  * 
  * export class ItemMapper extends MongoMapper<Item, ItemModel> {
  *   async mongoToModel(mongo: Item): Promise<ItemModel> {
- *     const model = new ItemModel();
- *     this.mongoToModelBase(model, mongo);
- *     
- *     model.name = mongo.name;
- *     
- *     return model;
- *   }
- *   
- *   async modelToMongoCreateObject(model: ItemModel): Promise<MongoCreate<Item>> {
- *     return {
- *       name: model.name
- *     };
- *   }
- *   
- *   async modelToMongoUpdateObject(model: ItemModel): Promise<MongoUpdate<Item>> {
- *     return {
- *       name: model.name
- *     };
+ *     return CommonUtils.buildModelStrict(ItemModel, {
+ *       ...this.mongoToModelBase(mongo),
+ *       name: mongo.name,
+ *     });
  *   }
  * }
  * ```
@@ -60,74 +47,59 @@ import { MongoUpdate } from '../types/MongoUpdate.js';
  */
 export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseModel> extends MappingUtils {
     /**
-     * Converts a Mongoose document to an application model.
-     * 
-     * @param mongo The Mongoose document to convert
-     * @returns Promise resolving to the converted application model
-     * @abstract
+     * The Mongoose document class constructor.
+     * Used by `buildMongoPayload` and `buildMongoUpdatePayload` to construct typed payloads.
+     *
+     * @example `protected mongo = UserMongo;`
      */
-    public abstract mongoToModel(mongo: MONGO): Promise<MODEL>;
-    
-    /**
-     * Converts an application model to a plain object for Mongoose document creation.
-     * 
-     * Used when creating new documents in the database. Should only include fields
-     * that are allowed to be set during creation (excludes _id, createdAt, updatedAt).
-     * 
-     * @param model The application model to convert
-     * @returns Promise resolving to a plain object suitable for Mongoose create operations
-     * @abstract
-     */
-    public abstract modelToMongoCreateObject(model: MODEL): Promise<MongoCreate<MONGO>>;
-    
-    /**
-     * Converts an application model to a plain object for Mongoose document updates.
-     * 
-     * Used when updating existing documents. Should only include fields that are
-     * allowed to be modified (excludes _id, createdAt).
-     * 
-     * @param model The application model to convert
-     * @returns Promise resolving to a plain object suitable for Mongoose update operations
-     * @abstract
-     */
-    public abstract modelToMongoUpdateObject(model: MODEL): Promise<MongoUpdate<MONGO>>;
+    protected abstract mongo: Type<MONGO>;
 
     /**
-     * Maps base fields from Mongoose document to application model.
-     * 
-     * Handles the conversion of standard BaseMongo fields:
-     * - _id → id (converted to string)
-     * - createdAt → createdAt
-     * - updatedAt → updatedAt
-     * 
-     * Should be called by subclass implementations of mongoToModel().
-     * 
-     * @param model Partial model object to populate (usually a new instance)
+     * The application model class constructor.
+     * Declares the model type associated with this mapper.
+     *
+     * @example `protected model = UserModel;`
+     */
+    protected abstract model: Type<MODEL>;
+
+    /**
+     * Extracts and returns only the base fields from a Mongoose document.
+     *
+     * Returns a `BaseModel` instance typed as `Pick<MODEL, 'id' | 'createdAt' | 'updatedAt'>`,
+     * containing only the three standard BaseMongo fields mapped to their model equivalents:
+     * - `_id` → `id`
+     * - `createdAt` → `createdAt`
+     * - `updatedAt` → `updatedAt`
+     *
+     * **Why this return type?**  Returning only the base fields — not the full `MODEL` —
+     * is intentional. When you spread the result into `CommonUtils.buildModelStrict`, TypeScript
+     * sees that only `id`, `createdAt`, and `updatedAt` are satisfied and requires you to
+     * explicitly provide every remaining domain field. This gives compile-time exhaustiveness
+     * checking: if you add a field to your model and forget to map it, TypeScript errors.
+     *
      * @param mongo The Mongoose document containing source data
-     * @returns The model with base fields populated
-     * @protected
-     * 
+     * @returns Plain object with only the three base fields populated
+     *
      * @example
      * ```typescript
      * async mongoToModel(mongo: Item): Promise<ItemModel> {
-     *   const model = new ItemModel();
-     *   this.mongoToModelBase(model, mongo);
-     *   // ... map custom fields
-     *   return model;
+     *   return CommonUtils.buildModelStrict(ItemModel, {
+     *     ...this.mongoToModelBase(mongo), // provides id, createdAt, updatedAt
+     *     name: mongo.name,               // domain fields must be explicit
+     *     status: mongo.status,           // TypeScript errors if any are missing
+     *   });
      * }
      * ```
      */
-    protected mongoToModelBase(model: Partial<MODEL>, mongo: MONGO): MODEL {
-        model.id = mongo._id;
-        model.createdAt = mongo.createdAt;
-        model.updatedAt = mongo.updatedAt;
-
-        return model as MODEL;
+    public mongoToModelBase(mongo: MONGO): Pick<MODEL, 'id' | 'createdAt' | 'updatedAt'> {
+        return CommonUtils.buildModelStrict(this.model, {
+            id: mongo._id,
+            createdAt: mongo.createdAt,
+            updatedAt: mongo.updatedAt
+        });
     }
 
     /**
-     * Extracts the ID from a Mongoose reference that may or may not be populated.
-     * 
      * Mongoose references can exist in two states:
      * - Unpopulated: Just the ObjectID string
      * - Populated: Full document object with all fields
@@ -211,6 +183,56 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
     }
 
     /**
+     * Builds a typed Mongoose create payload using `buildModelPartial`, with TypeScript
+     * enforcing that `data` cannot include base fields (`id`, `_id`, `createdAt`, `updatedAt`).
+     *
+     * The `as` cast is encapsulated here once so concrete mapper implementations
+     * remain cast-free. Call sites are protected at compile time by
+     * `D extends MongoCreate<MONGO>`.
+     *
+     * @param type The Mongoose document class constructor
+     * @param data The create payload — base fields are forbidden by the type constraint
+     * @returns A typed `MongoCreate<MONGO>` payload
+     *
+     * @example
+     * ```typescript
+     * buildMongoCreate(model: ItemModel): MongoCreate<Item> {
+     *   return this.buildMongoPayload(Item, {
+     *     name: this.getModelValue(model, 'name'),
+     *   });
+     * }
+     * ```
+     */
+    protected buildMongoPayload<D extends MongoCreate<MONGO>>(data: D): MongoCreate<MONGO> {
+        return CommonUtils.buildModelPartial(this.mongo, data as unknown as Partial<MONGO>) as MongoCreate<MONGO>;
+    }
+
+    /**
+     * Builds a typed Mongoose update payload using `buildModelPartial`, with TypeScript
+     * enforcing that `data` cannot include base fields (`id`, `_id`, `createdAt`, `updatedAt`).
+     *
+     * The `as` cast is encapsulated here once so concrete mapper implementations
+     * remain cast-free. Call sites are protected at compile time by
+     * `D extends MongoUpdate<MONGO>`.
+     *
+     * @param type The Mongoose document class constructor
+     * @param data The update payload — base fields are forbidden by the type constraint
+     * @returns A typed `MongoUpdate<MONGO>` payload
+     *
+     * @example
+     * ```typescript
+     * buildMongoUpdate(model: ItemModel): MongoUpdate<Item> {
+     *   return this.buildMongoUpdatePayload(Item, {
+     *     name: this.getModelValue(model, 'name', true),
+     *   });
+     * }
+     * ```
+     */
+    protected buildMongoUpdatePayload<D extends MongoUpdate<MONGO>>(data: D): MongoUpdate<MONGO> {
+        return CommonUtils.buildModelPartial(this.mongo, data as unknown as Partial<MONGO>) as MongoUpdate<MONGO>;
+    }
+
+    /**
      * Gets a model property value with fallback to default value from schema.
      * 
      * Retrieves the value of a property from the model. If the value is undefined,
@@ -243,7 +265,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * }
      * ```
      */
-    protected getModelValue<PROPERTY extends keyof MODEL>(
+    public getModelValue<PROPERTY extends keyof MODEL>(
         model: MODEL,
         property: PROPERTY,
         patch: boolean = false

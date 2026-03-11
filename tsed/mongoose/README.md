@@ -16,53 +16,95 @@ pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-mongoose @radoslavirha/ts
 
 **Essential Pattern:**
 ```typescript
-// 1. Mongoose Schema
-@Model() class EntityMongo extends BaseMongo { @Property() name: string; }
+import { CommonUtils } from '@radoslavirha/utils';
 
-// 2. API Model  
+// 1. Mongoose Schema
+@Model({ collection: 'entities', timestamps: true })
+class EntityMongo extends BaseMongo { @Property() name: string; }
+
+// 2. API Model
 class Entity extends BaseModel { @Property() name: string; }
 
-// 3. Mapper
-@Injectable() class EntityMapper extends MongoMapper<EntityMongo, Entity> {
-  async mongoToModel(mongo: EntityMongo): Promise<Entity> {
-    const model = new Entity();
-    this.mongoToModelBase(model, mongo);
-    model.name = mongo.name;
-    return model;
+// 3. Mapper  — declare protected mongo + model, use new helpers
+@Injectable()
+class EntityMapper extends MongoMapper<EntityMongo, Entity> {
+  protected mongo = EntityMongo;
+  protected model = Entity;
+
+  public mongoToModel(mongo: EntityMongo): Entity {
+    return CommonUtils.buildModelStrict(Entity, {
+      ...this.mongoToModelBase(mongo),   // spreads id, createdAt, updatedAt
+      name: mongo.name,
+    });
   }
-  async modelToMongoCreateObject(model: Entity): Promise<MongoCreate<EntityMongo>> {
-    return { name: model.name };
+
+  public buildMongoCreate(model: Entity): MongoCreate<EntityMongo> {
+    return this.buildMongoPayload({
+      name: this.getModelValue(model, 'name'),  // falls back to @Default if undefined
+    });
   }
-  async modelToMongoUpdateObject(model: Entity): Promise<MongoUpdate<EntityMongo>> {
-    return { name: model.name };
+
+  public buildMongoUpdate(model: Entity): MongoUpdate<EntityMongo> {
+    return this.buildMongoUpdatePayload({
+      name: this.getModelValue(model, 'name', true),  // patch=true → skip default
+    });
   }
 }
 
-// 4. Repository
-@Injectable() class EntityRepository extends MongoRepository<EntityMongo> {
+// 4. Repository  — declare protected mongo (not type)
+@Injectable()
+class EntityRepository extends MongoRepository<EntityMongo> {
   @Inject(EntityMongo) protected model!: MongooseModel<EntityMongo>;
-  protected type = EntityMongo;
+  protected mongo = EntityMongo;  // ← formerly called 'type'
+
+  async findById(id: string): Promise<EntityMongo | null> {
+    return this.deserialize(await this.model.findById(id).lean<EntityMongo>());
+  }
+  async find(): Promise<EntityMongo[]> {
+    return this.deserializeArray(await this.model.find().lean<EntityMongo[]>());
+  }
+  async create(data: MongoCreate<EntityMongo>): Promise<EntityMongo> {
+    const doc = await this.model.create(data);
+    return this.deserialize(this.convertHydratedDocumentToObject(doc))!;
+  }
 }
 
-// 5. Service
-@Injectable() class EntityService extends MongoService<EntityMongo, Entity> {
-  @Inject(EntityRepository) protected repository!: EntityRepository;
-  @Inject() protected mapper!: EntityMapper;
+// 5. Service  — plain @Injectable(), wire repository + mapper manually
+@Injectable()
+class EntityService {
+  @Inject(EntityRepository) private repository!: EntityRepository;
+  @Inject(EntityMapper) private mapper!: EntityMapper;
+
+  async findAll(): Promise<Entity[]> {
+    return (await this.repository.find()).map(m => this.mapper.mongoToModel(m));
+  }
+  async findById(id: string): Promise<Entity | null> {
+    const mongo = await this.repository.findById(id);
+    return mongo ? this.mapper.mongoToModel(mongo) : null;
+  }
+  async create(model: Entity): Promise<Entity> {
+    const mongo = await this.repository.create(this.mapper.buildMongoCreate(model));
+    return this.mapper.mongoToModel(mongo);
+  }
+  async update(id: string, model: Entity): Promise<Entity | null> {
+    const mongo = await this.repository.findByIdAndUpdate(id, this.mapper.buildMongoUpdate(model));
+    return mongo ? this.mapper.mongoToModel(mongo) : null;
+  }
 }
 
-// 5. Controller
-@Controller('/entities') class EntityController {
+// 6. Controller
+@Controller('/entities')
+class EntityController {
   constructor(private service: EntityService) {}
-  @Get('/') getAll() { return this.service.find(); }
-  @Post('/') create(@BodyParams() data) { return this.service.create(data); }
+  @Get('/') getAll() { return this.service.findAll(); }
+  @Post('/') create(@BodyParams() data: Entity) { return this.service.create(data); }
 }
 ```
 
 **Key Classes:**
-- `BaseMongo` - Base schema (_id, createdAt, updatedAt)
-- `MongoMapper<MONGO, MODEL>` - Abstract bidirectional mapper
+- `BaseMongo` - Base schema (`_id`, `createdAt`, `updatedAt`)
+- `MongoMapper<MONGO, MODEL>` - Abstract bidirectional mapper with helpers
 - `MongoRepository<MONGO>` - Abstract repository for DB operations
-- `MongoService<MONGO, MODEL>` - Abstract service with CRUD + mapping
 
 **Full documentation below** ↓
 
@@ -95,14 +137,13 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 ### Core Classes
 
 - **`BaseMongo`** - Base Mongoose schema with `_id`, `createdAt`, `updatedAt`
-- **`MongoMapper<MONGO, MODEL>`** - Abstract mapper for bidirectional conversions
+- **`MongoMapper<MONGO, MODEL>`** - Abstract mapper for bidirectional conversions with payload-building helpers
 - **`MongoRepository<MONGO>`** - Abstract base repository for DB operations
-- **`MongoService<MONGO, MODEL>`** - Abstract service with mapping helpers
 
 ### Type Utilities
 
-- **`MongoCreate<T>`** - Strictly-typed create payload (strictly forbids `_id`, `createdAt`, `updatedAt`)
-- **`MongoUpdate<T>`** - Strictly-typed update payload (strictly forbids `_id`, `createdAt`, `updatedAt`)
+- **`MongoCreate<T>`** - Strictly-typed create payload (strictly forbids `id`, `_id`, `createdAt`, `updatedAt`)
+- **`MongoUpdate<T>`** - Strictly-typed update payload (strictly forbids `id`, `_id`, `createdAt`, `updatedAt`)
 - **`MongoFilter<T>`** - Filter type for repository queries
 - **`MongoDeleteResult`** - Typed result from delete operations
 - **`MongoUpdateResult`** - Typed result from count-based update operations
@@ -126,14 +167,14 @@ API Model       Mongoose Model (Data Layer)
 ```
 
 **Data Flow:**
-- **Inbound:** Database → Mongoose Document → Mapper → API Model → Controller → Response
-- **Outbound:** Request → Controller → API Model → Mapper → Plain Object → Mongoose → Database
+- **Inbound:** Database → Mongoose Document → `mapper.mongoToModel()` → API Model → Controller → Response
+- **Outbound:** Request → Controller → API Model → `mapper.buildMongoCreate/Update()` → Repository → MongoDB
 
 **Benefits:**
 - ✅ **Separation of Concerns:** API models are independent from database schemas
 - ✅ **Type Safety:** Compile-time type checking for all transformations
 - ✅ **Reusability:** Abstract base classes eliminate boilerplate
-- ✅ **Testability:** Easy to mock mappers and services
+- ✅ **Testability:** Easy to mock mappers and repositories
 - ✅ **Population Handling:** Automatic handling of Mongoose populated references
 - ✅ **Immutability Protection:** Create/update types prevent modification of system-managed fields
 
@@ -198,74 +239,93 @@ export class UserModel extends BaseModel {
 
 ### 3. Implement Mapper (Transformation Layer)
 
-Create a mapper to handle bidirectional conversion between Mongoose documents and API models. The mapper must implement three methods: one for reading data and two for writing data.
+Create a mapper to handle bidirectional conversion between Mongoose documents and API models. You must:
+- Declare `protected mongo` and `protected model` pointing to the class constructors
+- Implement `mongoToModel` using `mongoToModelBase` spread pattern
+- Add `buildMongoCreate` and `buildMongoUpdate` methods using the `buildMongoPayload` / `buildMongoUpdatePayload` helpers
 
 ```typescript
 import { Injectable } from '@tsed/di';
 import { MongoMapper, MongoCreate, MongoUpdate } from '@radoslavirha/tsed-mongoose';
+import { CommonUtils } from '@radoslavirha/utils';
 import { UserMongo } from './UserMongo';
 import { UserModel } from './UserModel';
 
 @Injectable()
 export class UserMapper extends MongoMapper<UserMongo, UserModel> {
+    // Required: declare class constructors so MapperBase can resolve defaults & types
+    protected mongo = UserMongo;
+    protected model = UserModel;
+
     /**
-     * Convert Mongoose document to API model (for reads)
+     * Convert Mongoose document → API model (reads).
+     *
+     * Use mongoToModelBase() to spread id/createdAt/updatedAt, then add every
+     * domain field explicitly. buildModelStrict gives compile-time exhaustiveness:
+     * TypeScript errors if you forget a required field.
      */
-    public async mongoToModel(mongo: UserMongo): Promise<UserModel> {
-        const model = new UserModel();
-        
-        // Map base fields (id, createdAt, updatedAt)
-        this.mongoToModelBase(model, mongo);
-        
-        // Map custom fields
-        model.name = mongo.name;
-        model.email = mongo.email;
-        model.role = mongo.role;
-        
-        return model;
+    public mongoToModel(mongo: UserMongo): UserModel {
+        return CommonUtils.buildModelStrict(UserModel, {
+            ...this.mongoToModelBase(mongo),  // id, createdAt, updatedAt
+            name: mongo.name,
+            email: mongo.email,
+            role: mongo.role,
+        });
     }
 
     /**
-     * Convert API model to plain object for creation (for inserts)
-     * Omits _id, createdAt, updatedAt (auto-managed by MongoDB)
+     * Build a create payload (POST / inserts).
+     *
+     * buildMongoPayload wraps buildModelPartial and enforces MongoCreate<UserMongo>
+     * at the type level, so base fields (id, _id, createdAt, updatedAt) are
+     * compile-time forbidden.
+     *
+     * getModelValue(model, 'field') returns the field value, or falls back to the
+     * @Default() schema decorator value when the field is undefined.
      */
-    public async modelToMongoCreateObject(model: UserModel): Promise<MongoCreate<UserMongo>> {
-        return {
-            name: model.name,
-            email: model.email,
-            role: model.role,
-        };
+    public buildMongoCreate(model: UserModel): MongoCreate<UserMongo> {
+        return this.buildMongoPayload({
+            name: this.getModelValue(model, 'name'),
+            email: this.getModelValue(model, 'email'),
+            role: this.getModelValue(model, 'role'),  // uses @Default if undefined
+        });
     }
 
     /**
-     * Convert API model to plain object for updates (for updates)
-     * Omits _id, createdAt (immutable), allows updatedAt auto-update
+     * Build an update payload (PATCH / partial updates).
+     *
+     * Pass patch=true as the third argument to getModelValue so that undefined
+     * fields are left out of the payload completely instead of being replaced
+     * with the schema default.
      */
-    public async modelToMongoUpdateObject(model: UserModel): Promise<MongoUpdate<UserMongo>> {
-        return {
-            name: model.name,
-            email: model.email,
-            role: model.role,
-        };
+    public buildMongoUpdate(model: UserModel): MongoUpdate<UserMongo> {
+        return this.buildMongoUpdatePayload({
+            name: this.getModelValue(model, 'name', true),
+            email: this.getModelValue(model, 'email', true),
+            role: this.getModelValue(model, 'role', true),
+        });
     }
 }
 ```
 
 **Key Points:**
-- Use `@Injectable()` for dependency injection
-- Always call `mongoToModelBase()` to map standard fields
-- Return type-safe plain objects for create/update operations
-- Create and update objects automatically exclude system-managed fields
+- Declare `protected mongo = YourMongoClass` and `protected model = YourModelClass` — used internally for typing and default resolution
+- `mongoToModelBase(mongo)` **returns** the base fields; spread it into `buildModelStrict` — TypeScript errors if any required domain field is missing
+- `buildMongoPayload` / `buildMongoUpdatePayload` wrap `buildModelPartial` and return a correctly typed `MongoCreate<MONGO>` / `MongoUpdate<MONGO>` without unsafe casts in your code
+- `getModelValue(model, 'field')` — returns the value or falls back to `@Default()` from the schema (for POST)
+- `getModelValue(model, 'field', true)` — returns the value or `undefined` (no default fallback, for PATCH)
 
 ### 4. Implement Repository (Data Access Layer)
 
-Create a repository that owns all direct Mongoose queries. The repository must inject the Mongoose model, declare the document type, and expose only the data-access methods your domain needs. Use `.lean()` for performance and call the built-in `deserialize()`/`deserializeArray()` helpers to get typed class instances back.
+Create a repository that owns all direct Mongoose queries. The repository must inject the Mongoose model, declare the document type via `protected mongo`, and expose only the data-access methods your domain needs. Use `.lean()` for performance and call the built-in `deserialize()`/`deserializeArray()` helpers to get typed class instances back.
 
 ```typescript
 import { Injectable, Inject } from '@tsed/di';
 import type { MongooseModel } from '@tsed/mongoose';
-import { Type } from '@tsed/core';
-import { MongoRepository, MongoCreate, MongoUpdate, MongoFilter, MongoDeleteResult } from '@radoslavirha/tsed-mongoose';
+import {
+    MongoRepository, MongoCreate, MongoUpdate, MongoFilter,
+    MongoDeleteResult, MongoUpdateResult
+} from '@radoslavirha/tsed-mongoose';
 import { UserMongo } from './UserMongo';
 
 @Injectable()
@@ -273,7 +333,8 @@ export class UserRepository extends MongoRepository<UserMongo> {
     @Inject(UserMongo)
     protected model!: MongooseModel<UserMongo>;
 
-    protected type: Type<UserMongo> = UserMongo;
+    // Declares the class constructor for deserialization  (formerly named 'type')
+    protected mongo = UserMongo;
 
     async findById(id: string): Promise<UserMongo | null> {
         const result = await this.model.findById(id).lean<UserMongo>();
@@ -286,11 +347,12 @@ export class UserRepository extends MongoRepository<UserMongo> {
     }
 
     async create(data: MongoCreate<UserMongo>): Promise<UserMongo> {
+        // model.create() does not support .lean() — use the helper
         const doc = await this.model.create(data);
         return this.deserialize(this.convertHydratedDocumentToObject(doc))!;
     }
 
-    async updateById(id: string, data: MongoUpdate<UserMongo>): Promise<UserMongo | null> {
+    async findByIdAndUpdate(id: string, data: MongoUpdate<UserMongo>): Promise<UserMongo | null> {
         const result = await this.model
             .findByIdAndUpdate(id, { $set: data }, { new: true })
             .lean<UserMongo>();
@@ -305,68 +367,70 @@ export class UserRepository extends MongoRepository<UserMongo> {
 ```
 
 **Key Points:**
-- Inject the Mongoose model with `@Inject(UserMongo)` and declare `protected type`
+- Inject the Mongoose model with `@Inject(UserMongo)` and declare `protected mongo` (not `type`) pointing to the class constructor
 - Use `.lean()` on all read queries for performance — results are plain objects
 - Call `deserialize()` / `deserializeArray()` to reconstruct typed class instances
 - Call `convertHydratedDocumentToObject()` after `model.create()` (which doesn't support `.lean()`)
-- Business logic does NOT belong here — keep queries data-access only
+- Business/mapping logic does NOT belong here — keep queries data-access only
 
 ### 5. Implement Service (Business Logic Layer)
 
-Create a service that implements your business logic using the repository (for DB access) and the mapper (for transformations). The service provides helper methods for common operations.
+Create a plain `@Injectable()` service that injects the repository and mapper. There is no base class — you compose repository and mapper calls directly to implement your business logic.
 
 ```typescript
 import { Injectable, Inject } from '@tsed/di';
-import { MongoService, MongoDeleteResult } from '@radoslavirha/tsed-mongoose';
+import { MongoDeleteResult } from '@radoslavirha/tsed-mongoose';
 import { UserMongo } from './UserMongo';
 import { UserModel } from './UserModel';
 import { UserMapper } from './UserMapper';
 import { UserRepository } from './UserRepository';
 
 @Injectable()
-export class UserService extends MongoService<UserMongo, UserModel> {
+export class UserService {
     @Inject(UserRepository)
-    protected repository: UserRepository;
+    private repository!: UserRepository;
 
-    @Inject()
-    protected mapper: UserMapper;
+    @Inject(UserMapper)
+    private mapper!: UserMapper;
 
     /**
-     * Find user by ID
+     * Find user by ID — returns null when not found.
      */
     async findById(id: string): Promise<UserModel | null> {
         const mongo = await this.repository.findById(id);
-        return this.mapSingle(mongo); // Handles null gracefully
+        return mongo ? this.mapper.mongoToModel(mongo) : null;
     }
 
     /**
-     * Find all users
+     * Find all users.
      */
     async findAll(): Promise<UserModel[]> {
         const mongos = await this.repository.findAll();
-        return this.mapMany(mongos); // Maps array in parallel
+        return mongos.map(m => this.mapper.mongoToModel(m));
     }
 
     /**
-     * Create new user
+     * Create a new user.
+     * mapper.buildMongoCreate builds the payload, enforcing MongoCreate<UserMongo>.
      */
     async create(model: UserModel): Promise<UserModel> {
-        const createObject = await this.getCreateObject(model);
-        const mongo = await this.repository.create(createObject);
+        const payload = this.mapper.buildMongoCreate(model);
+        const mongo = await this.repository.create(payload);
         return this.mapper.mongoToModel(mongo);
     }
 
     /**
-     * Update existing user
+     * Update an existing user.
+     * mapper.buildMongoUpdate builds the partial payload, enforcing MongoUpdate<UserMongo>.
      */
     async update(id: string, model: UserModel): Promise<UserModel | null> {
-        const updateObject = await this.getUpdateObject(model);
-        const mongo = await this.repository.updateById(id, updateObject);
-        return this.mapSingle(mongo);
+        const payload = this.mapper.buildMongoUpdate(model);
+        const mongo = await this.repository.findByIdAndUpdate(id, payload);
+        return mongo ? this.mapper.mongoToModel(mongo) : null;
     }
 
     /**
-     * Delete user
+     * Delete user by ID.
      */
     async delete(id: string): Promise<MongoDeleteResult> {
         return this.repository.deleteById(id);
@@ -375,10 +439,11 @@ export class UserService extends MongoService<UserMongo, UserModel> {
 ```
 
 **Key Points:**
-- Use `@Injectable()` and inject dependencies with `@Inject()`
-- Inject the repository (for DB) and mapper (for transformations) as protected properties
-- Use helper methods: `getCreateObject()`, `getUpdateObject()`, `mapSingle()`, `mapMany()`
-- Delegate all Mongoose queries to the repository — never call `this.model` directly in a service
+- Annotate with `@Injectable()` — no base class to extend
+- Inject `@Inject(UserRepository)` and `@Inject(UserMapper)` as private fields
+- Call `mapper.buildMongoCreate(model)` / `mapper.buildMongoUpdate(model)` to get typed payloads
+- Call `mapper.mongoToModel(mongo)` to convert results to API models
+- The service owns all null-handling and orchestration logic
 
 ### 6. Use in Controller (HTTP Layer)
 
@@ -465,94 +530,108 @@ export class ItemMongo extends BaseMongo {
 
 ### MongoMapper<MONGO, MODEL>
 
-Abstract class for bidirectional mapping between Mongoose documents and API models. Must be extended and implement three abstract methods.
+Abstract class for bidirectional mapping between Mongoose documents and API models. Extends `MappingUtils` from `@radoslavirha/utils`.
 
 **Type Parameters:**
 - `MONGO extends BaseMongo` - Your Mongoose schema class
-- `MODEL extends BaseModel` - Your API model class (from @radoslavirha/tsed-common)
+- `MODEL extends BaseModel` - Your API model class (from `@radoslavirha/tsed-common`)
 
-**Abstract Methods (must implement):**
+**Abstract Properties (must declare):**
 
-#### `mongoToModel(mongo: MONGO): Promise<MODEL>`
-Converts a Mongoose document to an API model (used for read operations).
+#### `protected abstract mongo: Type<MONGO>`
+The Mongoose document class constructor. Used internally by `buildMongoPayload` / `buildMongoUpdatePayload` and default resolution.
 
 ```typescript
-public async mongoToModel(mongo: UserMongo): Promise<UserModel> {
-    const model = new UserModel();
-    this.mongoToModelBase(model, mongo);
-    model.name = mongo.name;
-    return model;
-}
+protected mongo = UserMongo;
 ```
 
-#### `modelToMongoCreateObject(model: MODEL): Promise<MongoCreate<MONGO>>`
-Converts an API model to a plain object for document creation. The return type strictly forbids `_id`, `createdAt`, and `updatedAt`.
+#### `protected abstract model: Type<MODEL>`
+The application model class constructor. Used internally by `mongoToModelBase` for result typing.
 
 ```typescript
-public async modelToMongoCreateObject(model: UserModel): Promise<MongoCreate<UserMongo>> {
-    return {
-        name: model.name,
-        email: model.email
-    };
-}
+protected model = UserModel;
 ```
 
-#### `modelToMongoUpdateObject(model: MODEL): Promise<MongoUpdate<MONGO>>`
-Converts an API model to a plain object for document updates. The return type strictly forbids `_id` and `createdAt`.
+**Method to implement:**
+
+#### `mongoToModel(mongo: MONGO): MODEL`
+Converts a Mongoose document to an API model (used for read operations). Use `mongoToModelBase` spread + `CommonUtils.buildModelStrict` for compile-time exhaustiveness checking.
 
 ```typescript
-public async modelToMongoUpdateObject(model: UserModel): Promise<MongoUpdate<UserMongo>> {
-    return {
-        name: model.name,
-        email: model.email
-    };
+public mongoToModel(mongo: UserMongo): UserModel {
+    return CommonUtils.buildModelStrict(UserModel, {
+        ...this.mongoToModelBase(mongo),  // id, createdAt, updatedAt
+        name: mongo.name,
+        email: mongo.email,
+    });
 }
 ```
 
 **Helper Methods:**
 
-#### `mongoToModelBase(model: Partial<MODEL>, mongo: MONGO): MODEL`
-Maps base fields (`id`, `createdAt`, `updatedAt`) from Mongoose document to API model.
+#### `public mongoToModelBase(mongo: MONGO): Pick<MODEL, 'id' | 'createdAt' | 'updatedAt'>`
+Maps the three base fields (`id`, `createdAt`, `updatedAt`) from a Mongoose document and returns them as a plain object. Designed to be **spread** into `CommonUtils.buildModelStrict`.
 
-**Usage:** Always call this at the start of your `mongoToModel` implementation.
+**Why this return type?** Returning only the three base fields — not the full `MODEL` — is intentional. When spread into `buildModelStrict`, TypeScript still requires you to supply every remaining domain field. If you add a field to your model and forget to map it, TypeScript will error at compile time.
 
 ```typescript
-public async mongoToModel(mongo: UserMongo): Promise<UserModel> {
-    const model = new UserModel();
-    this.mongoToModelBase(model, mongo); // Maps id, createdAt, updatedAt
-    // ... map your custom fields
-    return model;
+public mongoToModel(mongo: UserMongo): UserModel {
+    return CommonUtils.buildModelStrict(UserModel, {
+        ...this.mongoToModelBase(mongo),  // satisfies id, createdAt, updatedAt
+        name: mongo.name,                 // you must provide all remaining fields
+    });
 }
 ```
 
-#### `getIdFromPotentiallyPopulated<T>(value: Ref<T>): string`
-Extracts the ID string from a Mongoose reference, handling both populated documents and ObjectId references.
-
-**Usage:** When you need the ID regardless of whether the reference is populated.
+#### `protected buildMongoPayload<D extends MongoCreate<MONGO>>(data: D): MongoCreate<MONGO>`
+Builds a typed Mongoose **create** payload. Wraps `CommonUtils.buildModelPartial` with the correct cast, so your mapper code stays cast-free. Base fields (`id`, `_id`, `createdAt`, `updatedAt`) are forbidden at compile time via `MongoCreate<MONGO>`.
 
 ```typescript
-// Works with both scenarios:
-const orgId = this.getIdFromPotentiallyPopulated(mongo.organization); // string
-// If populated: extracts mongo.organization._id
-// If not populated: converts mongo.organization (ObjectId) to string
-```
-
-#### `getPopulated<T>(value: Ref<T>): T`
-Gets the populated document from a Mongoose reference. Assumes the reference is populated.
-
-**Usage:** When you know the reference is populated and need the full document.
-
-```typescript
-if (this.canBePopulated(mongo.organization)) {
-    const org = this.getPopulated(mongo.organization);
-    model.organizationName = org.name;
+public buildMongoCreate(model: UserModel): MongoCreate<UserMongo> {
+    return this.buildMongoPayload({
+        name: this.getModelValue(model, 'name'),
+        role: this.getModelValue(model, 'role'),  // falls back to @Default value
+    });
 }
 ```
 
-#### `canBePopulated<T>(value: Ref<T>): boolean`
-Checks whether a Mongoose reference is populated (is a document) or not (is an ObjectId).
+#### `protected buildMongoUpdatePayload<D extends MongoUpdate<MONGO>>(data: D): MongoUpdate<MONGO>`
+Builds a typed Mongoose **update** payload. Same cast encapsulation as `buildMongoPayload`, but for partial updates. Use `getModelValue(model, 'field', true)` (patch mode) to leave undefined fields out of the payload.
 
-**Usage:** Conditionally handle populated vs non-populated references.
+```typescript
+public buildMongoUpdate(model: UserModel): MongoUpdate<UserMongo> {
+    return this.buildMongoUpdatePayload({
+        name: this.getModelValue(model, 'name', true),  // undefined → field omitted
+    });
+}
+```
+
+#### `public getModelValue<PROPERTY>(model: MODEL, property: PROPERTY, patch?: boolean): MODEL[PROPERTY] | undefined`
+Gets a property value from the model with schema-default fallback.
+
+- `patch = false` (default — POST/create): returns the value, or the `@Default()` from the JSON Schema if the value is `undefined`
+- `patch = true` (PATCH/update): returns the value if set; returns `undefined` if not set — **does NOT fall back to the schema default**
+
+```typescript
+// POST — use schema default when field is undefined
+name: this.getModelValue(model, 'name')
+
+// PATCH — omit from payload when field is undefined
+name: this.getModelValue(model, 'name', true)
+```
+
+#### `protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T>): string`
+Extracts the ID string from a Mongoose reference regardless of whether it is populated (full document) or unpopulated (raw ObjectId).
+
+```typescript
+child_id: this.getIdFromPotentiallyPopulated(mongo.child_id)
+```
+
+#### `protected getPopulated<T>(value: Ref<T>): T`
+Returns the populated document from a Mongoose reference. Assumes the reference is populated — use `canBePopulated()` first.
+
+#### `protected canBePopulated<T>(value: Ref<T>): boolean`
+Returns `true` if the Mongoose reference is a populated document; `false` if it is a raw ObjectId.
 
 ```typescript
 if (this.canBePopulated(mongo.author)) {
@@ -563,34 +642,18 @@ if (this.canBePopulated(mongo.author)) {
 }
 ```
 
-#### `getModelValue<PROPERTY>(model: MODEL, property: PROPERTY, patch?: boolean): MODEL[PROPERTY] | undefined`
-Gets a property value from the model, with fallback to schema defaults if undefined.
-
-**Usage:** Safely access model properties with default value support.
-
-```typescript
-public async modelToMongoCreateObject(model: UserModel): Promise<MongoCreate<UserMongo>> {
-    return {
-        name: this.getModelValue(model, 'name'), // Falls back to schema default
-        role: this.getModelValue(model, 'role') ?? 'user' // Custom fallback
-    };
-}
-```
-
-**Note:** For more advanced default value handling, consider using `DefaultsUtil` from `@radoslavirha/utils` which provides utilities for setting default values on objects with type safety.
-
 ---
 
 ### MongoRepository<MONGO>
 
-Abstract base repository for raw database operations. Owns all direct Mongoose queries. Subclasses inject the Mongoose model, declare the document type, and implement only the queries their domain needs.
+Abstract base repository for raw database operations. Owns all direct Mongoose queries. Subclasses inject the Mongoose model, declare the document type via `protected mongo`, and implement only the queries their domain needs.
 
 **All queries should use `.lean()` for performance.** Results are deserialized using the built-in helpers.
 
 **Type Parameters:**
 - `MONGO extends BaseMongo` - Your Mongoose schema class
 
-**Abstract Properties (must inject):**
+**Abstract Properties (must declare):**
 
 #### `protected model: MongooseModel<MONGO>`
 The Mongoose model for database operations. Inject using `@Inject(YourMongoClass)`.
@@ -600,11 +663,11 @@ The Mongoose model for database operations. Inject using `@Inject(YourMongoClass
 protected model!: MongooseModel<UserMongo>;
 ```
 
-#### `protected type: Type<MONGO>`
-The class constructor of your Mongoose document type. Used by `deserialize()` to reconstruct typed instances.
+#### `protected mongo: Type<MONGO>`
+The class constructor of your Mongoose document type. Used by `deserialize()` to reconstruct typed instances. (Previously named `type` — renamed to `mongo` for consistency with `MongoMapper`.)
 
 ```typescript
-protected type: Type<UserMongo> = UserMongo;
+protected mongo = UserMongo;
 ```
 
 **Helper Methods:**
@@ -617,86 +680,6 @@ Deserializes an array of lean/plain query results into typed `MONGO` instances.
 
 #### `protected convertHydratedDocumentToObject(document: HydratedDocument<MONGO>): MONGO`
 Converts a Mongoose `HydratedDocument` (returned by `model.create()`) to a plain object. Use this when `.lean()` is not available.
-
----
-
-### MongoService<MONGO, MODEL>
-
-Abstract base class for services providing CRUD operations and mapping helpers. Reduces boilerplate in service implementations.
-
-**Type Parameters:**
-- `MONGO extends BaseMongo` - Your Mongoose schema class
-- `MODEL extends BaseModel` - Your API model class
-
-**Abstract Properties (must inject):**
-
-#### `protected repository: MongoRepository<MONGO>`
-The repository for database operations. Inject using `@Inject(YourRepository)`.
-
-```typescript
-@Inject(UserRepository)
-protected repository: UserRepository;
-```
-
-#### `protected mapper: MongoMapper<MONGO, MODEL>`
-The mapper instance for transformations. Inject using `@Inject()`.
-
-```typescript
-@Inject()
-protected mapper: UserMapper;
-```
-
-**Helper Methods:**
-
-#### `protected getCreateObject(model: MODEL): Promise<MongoCreate<MONGO>>`
-Convenience wrapper that calls `mapper.modelToMongoCreateObject(model)`. Returns a strictly-typed create payload.
-
-**Usage:** In service create operations.
-
-```typescript
-async create(model: UserModel): Promise<UserModel> {
-    const createObj = await this.getCreateObject(model);
-    const mongo = await this.repository.create(createObj);
-    return this.mapper.mongoToModel(mongo);
-}
-```
-
-#### `protected getUpdateObject(model: MODEL): Promise<MongoUpdate<MONGO>>`
-Convenience wrapper that calls `mapper.modelToMongoUpdateObject(model)`. Returns a strictly-typed update payload.
-
-**Usage:** In service update operations.
-
-```typescript
-async update(id: string, model: UserModel): Promise<UserModel | null> {
-    const updateObj = await this.getUpdateObject(model);
-    const mongo = await this.repository.updateById(id, updateObj);
-    return this.mapSingle(mongo);
-}
-```
-
-#### `protected async mapSingle(mongo: MONGO | null | undefined): Promise<MODEL | null>`
-Maps a single Mongoose document to an API model. Returns `null` if input is null/undefined.
-
-**Usage:** When mapping single document results (findById, findOne, findOneAndUpdate).
-
-```typescript
-async findById(id: string): Promise<UserModel | null> {
-    const mongo = await this.repository.findById(id);
-    return this.mapSingle(mongo); // Returns null if not found
-}
-```
-
-#### `protected async mapMany(mongo: MONGO[]): Promise<MODEL[]>`
-Maps an array of Mongoose documents to API models. Processes all documents in parallel for optimal performance.
-
-**Usage:** When mapping arrays of documents (find queries).
-
-```typescript
-async findAll(): Promise<UserModel[]> {
-    const mongos = await this.repository.findAll();
-    return this.mapMany(mongos); // Parallel mapping
-}
-```
 
 ---
 
@@ -796,59 +779,61 @@ export class PostModel extends BaseModel {
 
 @Injectable()
 export class PostMapper extends MongoMapper<PostMongo, PostModel> {
-    public async mongoToModel(mongo: PostMongo): Promise<PostModel> {
-        const model = new PostModel();
-        this.mongoToModelBase(model, mongo);
-        
-        model.title = mongo.title;
-        
-        // Handle potentially populated reference
-        if (this.canBePopulated(mongo.author)) {
-            // Reference is populated - full document available
-            const author = this.getPopulated(mongo.author);
-            model.authorName = author.name;
-            model.authorEmail = author.email;
-        } else {
-            // Reference is not populated - only ID available
-            model.authorId = this.getIdFromPotentiallyPopulated(mongo.author);
-        }
-        
-        return model;
+    protected mongo = PostMongo;
+    protected model = PostModel;
+
+    public mongoToModel(mongo: PostMongo): PostModel {
+        return CommonUtils.buildModelStrict(PostModel, {
+            ...this.mongoToModelBase(mongo),
+            title: mongo.title,
+            // Handle potentially populated reference
+            authorId: this.canBePopulated(mongo.author)
+                ? this.getPopulated(mongo.author)._id
+                : this.getIdFromPotentiallyPopulated(mongo.author),
+            authorName: this.canBePopulated(mongo.author)
+                ? this.getPopulated(mongo.author).name
+                : undefined,
+        });
     }
 
-    public async modelToMongoCreateObject(model: PostModel): Promise<MongoCreate<PostMongo>> {
-        return {
-            title: model.title,
-            author: model.authorId as any // Store as ObjectId reference
-        };
+    public buildMongoCreate(model: PostModel): MongoCreate<PostMongo> {
+        return this.buildMongoPayload({
+            title: this.getModelValue(model, 'title'),
+            author: this.getModelValue(model, 'authorId') as unknown as PostMongo['author'],
+        });
     }
 
-    public async modelToMongoUpdateObject(model: PostModel): Promise<MongoUpdate<PostMongo>> {
-        return {
-            title: model.title,
-            author: model.authorId as any
-        };
+    public buildMongoUpdate(model: PostModel): MongoUpdate<PostMongo> {
+        return this.buildMongoUpdatePayload({
+            title: this.getModelValue(model, 'title', true),
+        });
     }
 }
 ```
 
 ### Using Schema Defaults
 
-Leverage Mongoose schema defaults with the `getModelValue` helper or use `DefaultsUtil` from `@radoslavirha/utils`:
+`getModelValue` automatically falls back to the `@Default()` schema decorator value when the field is `undefined`. Use `patch=true` in PATCH endpoints to leave fields out when the caller omits them:
 
 ```typescript
-import { DefaultsUtil } from '@radoslavirha/utils';
-
 @Injectable()
 export class UserMapper extends MongoMapper<UserMongo, UserModel> {
-    public async modelToMongoCreateObject(model: UserModel): Promise<MongoCreate<UserMongo>> {
-        // Option 1: Using getModelValue with custom fallback
-        return {
-            name: this.getModelValue(model, 'name') ?? 'Anonymous',
-            email: this.getModelValue(model, 'email'),
-            role: this.getModelValue(model, 'role'), // Falls back to schema default if undefined
-            status: 'active' // Fixed default value
-        };
+    protected mongo = UserMongo;
+    protected model = UserModel;
+
+    public buildMongoCreate(model: UserModel): MongoCreate<UserMongo> {
+        return this.buildMongoPayload({
+            name: this.getModelValue(model, 'name'),          // required — no default
+            role: this.getModelValue(model, 'role'),          // @Default('user') applies if undefined
+            status: this.getModelValue(model, 'status'),      // @Default('active') applies if undefined
+        });
+    }
+
+    public buildMongoUpdate(model: UserModel): MongoUpdate<UserMongo> {
+        return this.buildMongoUpdatePayload({
+            name: this.getModelValue(model, 'name', true),    // undefined → omitted from $set
+            role: this.getModelValue(model, 'role', true),    // undefined → omitted from $set
+        });
     }
 }
 ```
@@ -864,7 +849,7 @@ export class UserRepository extends MongoRepository<UserMongo> {
     @Inject(UserMongo)
     protected model!: MongooseModel<UserMongo>;
 
-    protected type: Type<UserMongo> = UserMongo;
+    protected mongo = UserMongo;
 
     async findByRolePaginated(role: string, skip: number, limit: number): Promise<UserMongo[]> {
         const results = await this.model
@@ -876,45 +861,23 @@ export class UserRepository extends MongoRepository<UserMongo> {
         return this.deserializeArray(results);
     }
 
-    async findByName(query: string): Promise<UserMongo[]> {
-        const results = await this.model
-            .find({ name: { $regex: query, $options: 'i' } } satisfies MongoFilter<UserMongo>)
-            .lean<UserMongo[]>();
-        return this.deserializeArray(results);
-    }
-
     async countByRole(role: string): Promise<number> {
         return this.model.countDocuments({ role });
     }
-
-    async updateManyByRole(role: string, data: MongoUpdate<UserMongo>): Promise<MongoUpdateResult> {
-        const result = await this.model.updateMany({ role }, { $set: data });
-        return {
-            matched: result.matchedCount,
-            modified: result.modifiedCount,
-            upserted: result.upsertedCount > 0,
-            upsertedId: result.upsertedId ? String(result.upsertedId) : null
-        };
-    }
 }
 
-// Service applies business logic and mapping
+// Service applies business logic and mapping — no base class
 @Injectable()
-export class UserService extends MongoService<UserMongo, UserModel> {
+export class UserService {
     @Inject(UserRepository)
-    protected repository: UserRepository;
+    private repository!: UserRepository;
 
-    @Inject()
-    protected mapper: UserMapper;
+    @Inject(UserMapper)
+    private mapper!: UserMapper;
 
     async findByRolePaginated(role: string, page: number = 1, limit: number = 10): Promise<UserModel[]> {
         const mongos = await this.repository.findByRolePaginated(role, (page - 1) * limit, limit);
-        return this.mapMany(mongos);
-    }
-
-    async searchByName(query: string): Promise<UserModel[]> {
-        const mongos = await this.repository.findByName(query);
-        return this.mapMany(mongos);
+        return mongos.map(m => this.mapper.mongoToModel(m));
     }
 
     async countByRole(role: string): Promise<number> {
@@ -931,15 +894,14 @@ Handle MongoDB transactions by passing a session through the repository:
 import { ClientSession } from 'mongoose';
 import { Inject, Injectable } from '@tsed/di';
 import type { MongooseModel } from '@tsed/mongoose';
-import { Type } from '@tsed/core';
-import { MongoRepository, MongoCreate, MongoFilter } from '@radoslavirha/tsed-mongoose';
+import { MongoRepository, MongoCreate } from '@radoslavirha/tsed-mongoose';
 
 @Injectable()
 export class OrderRepository extends MongoRepository<OrderMongo> {
     @Inject(OrderMongo)
     protected model!: MongooseModel<OrderMongo>;
 
-    protected type: Type<OrderMongo> = OrderMongo;
+    protected mongo = OrderMongo;
 
     async createWithSession(data: MongoCreate<OrderMongo>, session: ClientSession): Promise<OrderMongo> {
         const [doc] = await this.model.create([data], { session });
@@ -948,21 +910,21 @@ export class OrderRepository extends MongoRepository<OrderMongo> {
 }
 
 @Injectable()
-export class OrderService extends MongoService<OrderMongo, OrderModel> {
+export class OrderService {
     @Inject(OrderRepository)
-    protected repository: OrderRepository;
+    private repository!: OrderRepository;
 
-    @Inject()
-    protected mapper: OrderMapper;
+    @Inject(OrderMapper)
+    private mapper!: OrderMapper;
 
     async createWithTransaction(order: OrderModel): Promise<OrderModel> {
-        const session: ClientSession = await this.repository['model'].db.startSession();
+        const session: ClientSession = await (this.repository as unknown as { model: { db: { startSession(): Promise<ClientSession> } } }).model.db.startSession();
 
         try {
             session.startTransaction();
 
-            const createObj = await this.getCreateObject(order);
-            const orderMongo = await this.repository.createWithSession(createObj, session);
+            const payload = this.mapper.buildMongoCreate(order);
+            const orderMongo = await this.repository.createWithSession(payload, session);
 
             await session.commitTransaction();
 

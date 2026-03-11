@@ -51,7 +51,6 @@
         "@swc/core": "catalog:",
         "@tsed/core": "catalog:tsed",
         "@tsed/di": "catalog:tsed",
-        "@tsed/json-mapper": "catalog:tsed",
         "@tsed/mongoose": "catalog:tsed",
         "@tsed/platform-http": "catalog:tsed",
         "@tsed/schema": "catalog:tsed",
@@ -60,8 +59,8 @@
         "eslint": "catalog:",
         "mongoose": "catalog:",
         "supertest": "catalog:",
-        "tslib": "catalog:",
         "tsdown": "catalog:",
+        "tslib": "catalog:",
         "typescript": "catalog:",
         "vitest": "catalog:",
         "zod": "catalog:"

@@ -21,7 +21,7 @@ import { BaseMongo } from '../models/BaseMongo.js';
  * provided by the package and available to every subclass.
  *
  * Mapper / business logic does NOT belong in this layer — it lives in
- * `MongoMapper` and `MongoService`.
+ * `MongoMapper`.
  *
  * @template MONGO - Mongoose document type extending BaseMongo
  *
@@ -95,9 +95,9 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
      * The class constructor of the Mongoose document type.
      * Used by `deserialize()` to reconstruct typed instances from lean results.
      *
-     * @example `protected type = User;`
+     * @example `protected mongo = User;`
      */
-    protected abstract type: Type<MONGO>;
+    protected abstract mongo: Type<MONGO>;
 
     /**
      * Converts a Mongoose `HydratedDocument` to a plain object via `.toObject()`.
@@ -120,7 +120,7 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
             return null;
         }
 
-        return Serializer.deserialize<MONGO>(data, this.type, {
+        return Serializer.deserialize<MONGO>(data, this.mongo, {
             useAlias: false,
             additionalProperties: true,
             disabledUnsecureConstructor: false,

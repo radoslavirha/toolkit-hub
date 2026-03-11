@@ -60,14 +60,24 @@ Mongoose Models (Data Layer)
 })
 export class Server extends BaseServer {}
 
-// 2. Inject via constructor
+// 2. Inject via constructor (no base class — plain @Injectable)
 @Injectable()
-export class Service extends MongoService<MongoModel, Model> {
+export class Service {
   @Inject(Repository)
-  protected repository!: Repository;
+  private repository!: Repository;
 
   @Inject(Mapper)
-  protected mapper!: Mapper;
+  private mapper!: Mapper;
+
+  async findById(id: string): Promise<Model | null> {
+    const mongo = await this.repository.findById(id);
+    return mongo ? this.mapper.mongoToModel(mongo) : null;
+  }
+
+  async create(model: Model): Promise<Model> {
+    const mongo = await this.repository.create(this.mapper.buildMongoCreate(model));
+    return this.mapper.mongoToModel(mongo);
+  }
 }
 
 // 3. Controllers inject services
@@ -152,54 +162,71 @@ export class Model extends BaseModel {
 
 // 5. Mapper (tsed-mongoose + utils)
 import { MongoMapper, MongoCreate, MongoUpdate } from '@radoslavirha/tsed-mongoose';
+import { CommonUtils } from '@radoslavirha/utils';
 
 @Injectable()
 export class Mapper extends MongoMapper<MongoModel, Model> {
-  async mongoToModel(mongo: MongoModel): Promise<Model> {
-    const model = new Model();
-    this.mongoToModelBase(model, mongo);
-    model.name = mongo.name;
-    model.email = mongo.email;
-    return model;
+  // Required: declare class constructors
+  protected mongo = MongoModel;
+  protected model = Model;
+
+  public mongoToModel(mongo: MongoModel): Model {
+    return CommonUtils.buildModelStrict(Model, {
+      ...this.mongoToModelBase(mongo),   // spreads id, createdAt, updatedAt
+      name: mongo.name,
+      email: mongo.email,
+    });
   }
-  
-  async modelToMongoCreateObject(model: Model): Promise<MongoCreate<MongoModel>> {
-    return {
+
+  // POST / create — getModelValue falls back to @Default() when undefined
+  public buildMongoCreate(model: Model): MongoCreate<MongoModel> {
+    return this.buildMongoPayload({
       name: this.getModelValue(model, 'name'),
       email: this.getModelValue(model, 'email'),
-    };
+    });
   }
-  
-  async modelToMongoUpdateObject(model: Model): Promise<MongoUpdate<MongoModel>> {
-    return {
+
+  // PATCH / update — patch=true skips default fallback, omits undefined fields
+  public buildMongoUpdate(model: Model): MongoUpdate<MongoModel> {
+    return this.buildMongoUpdatePayload({
       name: this.getModelValue(model, 'name', true),
-      email: this.getModelValue(model, 'email', true),
-    };
+    });
   }
 }
 
 // 6. Repository (tsed-mongoose)
 import { MongoRepository } from '@radoslavirha/tsed-mongoose';
-import { Type } from '@tsed/core';
 
 @Injectable()
 export class Repository extends MongoRepository<MongoModel> {
   @Inject(MongoModel)
   protected model!: MongooseModel<MongoModel>;
 
-  protected type: Type<MongoModel> = MongoModel;
+  protected mongo = MongoModel;  // ← formerly called 'type'
 }
 
-// 7. Service (tsed-mongoose)
-import { MongoService } from '@radoslavirha/tsed-mongoose';
-
+// 7. Service — plain @Injectable(), no base class
 @Injectable()
-export class Service extends MongoService<MongoModel, Model> {
+export class Service {
   @Inject(Repository)
-  protected repository!: Repository;
+  private repository!: Repository;
 
   @Inject(Mapper)
-  protected mapper!: Mapper;
+  private mapper!: Mapper;
+
+  async findAll(): Promise<Model[]> {
+    return (await this.repository.find()).map(m => this.mapper.mongoToModel(m));
+  }
+
+  async create(model: Model): Promise<Model> {
+    const mongo = await this.repository.create(this.mapper.buildMongoCreate(model));
+    return this.mapper.mongoToModel(mongo);
+  }
+
+  async update(id: string, model: Model): Promise<Model | null> {
+    const mongo = await this.repository.findByIdAndUpdate(id, this.mapper.buildMongoUpdate(model));
+    return mongo ? this.mapper.mongoToModel(mongo) : null;
+  }
 }
 
 // 8. Controller (tsed-swagger)
@@ -398,20 +425,63 @@ import * as controllers from './controllers/index.js';
 
 ### 4. Mapper Methods
 
-❌ **WRONG:**
+❌ **WRONG — old mutation pattern:**
 ```typescript
+@Injectable()
 class Mapper extends MongoMapper<MongoModel, Model> {
-  toModel(doc) { ... } // Wrong method name
-  toMongo(model) { ... } // Wrong method name
+  async mongoToModel(mongo: MongoModel): Promise<Model> {
+    const model = new Model();
+    this.mongoToModelBase(model, mongo); // ❌ old mutating signature is gone
+    model.name = mongo.name;
+    return model;
+  }
+  // ❌ modelToMongoCreateObject / modelToMongoUpdateObject no longer exist
+  async modelToMongoCreateObject(model: Model) { return { name: model.name }; }
+}
+```
+
+✅ **CORRECT — declare mongo+model, use spread + helpers:**
+```typescript
+import { CommonUtils } from '@radoslavirha/utils';
+import { MongoCreate, MongoUpdate } from '@radoslavirha/tsed-mongoose';
+
+@Injectable()
+class Mapper extends MongoMapper<MongoModel, Model> {
+  protected mongo = MongoModel;   // required
+  protected model = Model;        // required
+
+  public mongoToModel(mongo: MongoModel): Model {
+    return CommonUtils.buildModelStrict(Model, {
+      ...this.mongoToModelBase(mongo),  // returns {id, createdAt, updatedAt} — spread it
+      name: mongo.name,
+    });
+  }
+
+  public buildMongoCreate(model: Model): MongoCreate<MongoModel> {
+    return this.buildMongoPayload({
+      name: this.getModelValue(model, 'name'),         // POST — uses @Default if undefined
+    });
+  }
+
+  public buildMongoUpdate(model: Model): MongoUpdate<MongoModel> {
+    return this.buildMongoUpdatePayload({
+      name: this.getModelValue(model, 'name', true),  // PATCH — omits undefined fields
+    });
+  }
+}
+```
+
+❌ **WRONG — repository still using old `type` property:**
+```typescript
+class Repository extends MongoRepository<MongoModel> {
+  protected type: Type<MongoModel> = MongoModel;  // ❌ renamed to 'mongo'
 }
 ```
 
 ✅ **CORRECT:**
 ```typescript
-class Mapper extends MongoMapper<MongoModel, Model> {
-  async mongoToModel(mongo: MongoModel): Promise<Model> { ... }
-  async modelToMongoCreateObject(model: Model): Promise<MongoCreate<MongoModel>> { ... }
-  async modelToMongoUpdateObject(model: Model): Promise<MongoUpdate<MongoModel>> { ... }
+class Repository extends MongoRepository<MongoModel> {
+  protected mongo = MongoModel;  // ✅
 }
 ```
 

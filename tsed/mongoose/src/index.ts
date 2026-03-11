@@ -2,7 +2,6 @@ export * from './mappers/MongoMapper.js';
 export * from './models/BaseMongo.js';
 export * from './models/ConfigSchema.js';
 export * from './repositories/MongoRepository.js';
-export * from './services/MongoService.js';
 export * from './types/MongoCreate.js';
 export * from './types/MongoDeleteResult.js';
 export * from './types/MongoFilter.js';

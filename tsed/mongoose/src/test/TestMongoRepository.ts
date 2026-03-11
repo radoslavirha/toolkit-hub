@@ -1,7 +1,5 @@
 import { Injectable, Inject } from '@tsed/di';
 import type { MongooseModel } from '@tsed/mongoose';
-import { Type } from '@tsed/core';
-
 import { MongoRepository } from '../repositories/MongoRepository.js';
 import { MongoCreate } from '../types/MongoCreate.js';
 import { MongoFilter } from '../types/MongoFilter.js';
@@ -15,7 +13,7 @@ export class TestMongoRepository extends MongoRepository<TestModelMongo> {
     @Inject(TestModelMongo)
     protected model!: MongooseModel<TestModelMongo>;
 
-    protected type: Type<TestModelMongo> = TestModelMongo;
+    protected mongo = TestModelMongo;
 
     async findById(id: string): Promise<TestModelMongo | null> {
         const result = await this.model.findById(id).lean<TestModelMongo>();

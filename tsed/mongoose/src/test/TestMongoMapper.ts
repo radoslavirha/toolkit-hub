@@ -1,38 +1,38 @@
 import { Service } from '@tsed/di';
-import { serialize } from '@tsed/json-mapper';
 import { MongoMapper } from '../mappers/MongoMapper.js';
 import { TestModel } from './TestModel.js';
 import { TestModelMongo } from './TestMongoModel.js';
+import { CommonUtils } from '@radoslavirha/utils';
 import { MongoCreate } from '../types/MongoCreate.js';
 import { MongoUpdate } from '../types/MongoUpdate.js';
 
 @Service()
 export class TestMongoMapper extends MongoMapper<TestModelMongo, TestModel> {
-    public async mongoToModel(mongo: TestModelMongo): Promise<TestModel> {
-        const model = new TestModel();
-        model.label = mongo.label;
-        model.child_id = this.getIdFromPotentiallyPopulated(model.child_id);
+    protected mongo = TestModelMongo;
+    protected model = TestModel;
 
-        this.mongoToModelBase(model, mongo);
-
-        return model;
+    public mongoToModel(mongo: TestModelMongo): TestModel {
+        return CommonUtils.buildModelStrict(TestModel, {
+            ...this.mongoToModelBase(mongo),
+            label: mongo.label,
+            child_id: this.getIdFromPotentiallyPopulated(mongo.child_id)
+        });
     }
 
-    public async modelToMongoCreateObject(model: TestModel): Promise<MongoCreate<TestModelMongo>> {
-        const mongo = new TestModelMongo() as Partial<TestModelMongo>;
-
-        mongo.label = this.getModelValue(model, 'label');
-        mongo.child_id = this.getModelValue(model, 'child_id');
-
-        return serialize(mongo);
+    public mapMany(mongos: TestModelMongo[]): TestModel[] {
+        return mongos.map(m => this.mongoToModel(m));
     }
 
-    public async modelToMongoUpdateObject(model: TestModel): Promise<MongoUpdate<TestModelMongo>> {
-        const mongo = new TestModelMongo() as Partial<TestModelMongo>;
+    public buildMongoCreate(model: TestModel): MongoCreate<TestModelMongo> {
+        return this.buildMongoPayload({
+            label: this.getModelValue(model, 'label'),
+            child_id: this.getModelValue(model, 'child_id')
+        });
+    }
 
-        mongo.label = this.getModelValue(model, 'label', true);
-        mongo.child_id = this.getModelValue(model, 'child_id', true);
-
-        return serialize(mongo);
+    public buildMongoUpdate(model: TestModel): MongoUpdate<TestModelMongo> {
+        return this.buildMongoUpdatePayload({
+            label: this.getModelValue(model, 'label', true)
+        });
     }
 }
