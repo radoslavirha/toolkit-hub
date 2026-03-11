@@ -427,9 +427,6 @@ importers:
       '@tsed/di':
         specifier: catalog:tsed
         version: 8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/logger@8.0.4)
-      '@tsed/json-mapper':
-        specifier: catalog:tsed
-        version: 8.25.1(@tsed/core@8.25.1)(@tsed/schema@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/openspec@8.25.1))
       '@tsed/mongoose':
         specifier: catalog:tsed
         version: 8.25.1(@tsed/ajv@8.25.1(@tsed/core@8.25.1)(@tsed/di@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/logger@8.0.4))(@tsed/exceptions@8.25.1(@tsed/core@8.25.1))(@tsed/schema@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/openspec@8.25.1))(ajv-errors@3.0.0(ajv@8.18.0))(ajv@8.18.0))(@tsed/core@8.25.1)(@tsed/di@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/logger@8.0.4))(@tsed/json-mapper@8.25.1(@tsed/core@8.25.1)(@tsed/schema@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/openspec@8.25.1)))(@tsed/logger@8.0.4)(@tsed/schema@8.25.1(@tsed/core@8.25.1)(@tsed/hooks@8.25.1)(@tsed/openspec@8.25.1))(mongoose@9.2.4)
