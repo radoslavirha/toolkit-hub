@@ -27,6 +27,7 @@ CommonUtils.isUndefined(value);          // undefined check (type guard)
 CommonUtils.notUndefined(value);         // defined check (type guard)
 CommonUtils.buildModelStrict(Class, data);   // All required properties must be provided
 CommonUtils.buildModelPartial(Class, data);  // Omit properties that have class-body defaults
+CommonUtils.buildModelCore(Class, data);     // Like buildModelPartial but id/_id/createdAt/updatedAt are excluded from required props
 
 // ObjectUtils - Deep operations
 ObjectUtils.keys(obj);                   // Object keys
@@ -61,7 +62,7 @@ DefaultsUtil.number(value, 0);               // Returns default if value is nil
 ```
 
 **Complete Method List (ALL 35 methods + 1 type):**
-- **CommonUtils (10):** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel *(deprecated)*, buildModelStrict, buildModelPartial
+- **CommonUtils (11):** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel *(deprecated)*, buildModelStrict, buildModelPartial, buildModelCore
 - **ObjectUtils (5 + 1 type):** keys, values, cloneDeep, mergeDeep, isEnabled — plus `Enabled<T>` type
 - **MappingUtils (7):** mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum
 - **NumberUtils (8):** getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
@@ -144,6 +145,18 @@ class Config {
 }
 const config = CommonUtils.buildModelPartial(Config, { host: 'prod.example.com' });
 // port retains its constructor default (3000); TypeScript narrows host to string, port to number | undefined
+
+// Core model instantiation — for entities with auto-generated database fields
+class UserModel {
+  id!: string;
+  createdAt!: Date;
+  updatedAt!: Date;
+  name!: string;
+  email!: string;
+}
+// TypeScript requires name + email but forbids passing id/createdAt/updatedAt
+const core = CommonUtils.buildModelCore(UserModel, { name: 'Alice', email: 'alice@example.com' });
+// Returns instance with name/email set; id/createdAt/updatedAt are absent
 ```
 
 **API:**
@@ -157,6 +170,7 @@ const config = CommonUtils.buildModelPartial(Config, { host: 'prod.example.com' 
 - `buildModel<T>(type: { new (): T }, data: Partial<T>): T` - *(deprecated)* Use `buildModelStrict` or `buildModelPartial`
 - `buildModelStrict<T>(type: { new (): T }, data: T): T` - Strict instantiation; all TypeScript-required properties must be provided
 - `buildModelPartial<T, D extends Partial<T>>(type: { new (): T }, data: D): Pick<T, Extract<keyof D, keyof T>> & Partial<Omit<T, keyof D>>` - Partial instantiation for classes with constructor-level defaults; TypeScript tracks exactly which keys were provided
+- `buildModelCore<T, D extends Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'>>(type: { new (): T }, data: D): Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'>` - Like `buildModelPartial` but auto-generated DB fields (`id`, `_id`, `createdAt`, `updatedAt`) are excluded from the required data; useful for building create payloads
 
 ---
 

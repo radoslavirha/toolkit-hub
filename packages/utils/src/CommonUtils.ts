@@ -130,4 +130,45 @@ export class CommonUtils {
         const instance = new type();
         return Object.assign(instance, data) as Pick<T, Extract<keyof D, keyof T>> & Partial<Omit<T, keyof D>>;
     }
+
+    /**
+     * Builds a model instance that excludes auto-generated database fields.
+     * Intended for constructing the "core" payload of a model before it is persisted —
+     * i.e. when `id`, `_id`, `createdAt`, and `updatedAt` are not yet known or not relevant.
+     *
+     * The type parameter `D` must cover all properties of `T` **except** the four excluded
+     * fields (`id`, `_id`, `createdAt`, `updatedAt`), so TypeScript enforces that every
+     * domain-owned field is supplied.
+     *
+     * Under the hood this delegates to {@link buildModelPartial}, so the constructor runs
+     * first (preserving class-body defaults) and `Object.assign` overlays only the provided keys.
+     *
+     * @template T The full model type (e.g. a class with `id`, `createdAt`, domain fields …).
+     * @template D The data shape: `T` minus the four auto-generated fields.
+     * @param type The constructor of the model class.
+     * @param data All domain-owned properties of the model (excluding `id`, `_id`, `createdAt`, `updatedAt`).
+     * @returns A new instance of the model with only the provided properties assigned;
+     *          the four auto-generated fields are absent / carry their constructor defaults.
+     *
+     * @example
+     * class Model {
+     *   id!: string;
+     *   createdAt!: Date;
+     *   updatedAt!: Date;
+     *   name!: string;
+     *   email!: string;
+     * }
+     *
+     * // TypeScript requires name + email but forbids passing id/createdAt/updatedAt
+     * const core = CommonUtils.buildModelCore(Model, { name: 'Alice', email: 'alice@example.com' });
+     * // core.name  === 'Alice'
+     * // core.email === 'alice@example.com'
+     * // core has no id / createdAt / updatedAt
+     */
+    public static buildModelCore<T extends object, D extends Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'>>(
+        type: { new (): T },
+        data: D
+    ): Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'> {
+        return CommonUtils.buildModelPartial(type, data as unknown as Partial<T>);
+    }
 }

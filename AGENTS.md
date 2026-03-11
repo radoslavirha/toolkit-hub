@@ -567,9 +567,9 @@ export class ConfigService extends ConfigProvider<AppConfig> {
 
 ## 🛠️ Utilities Quick Reference
 
-### @radoslavirha/utils - All 38 Methods
+### @radoslavirha/utils - All 39 Methods
 
-**CommonUtils (10 methods):**
+**CommonUtils (11 methods):**
 - `isEmpty<T>(value: T): boolean` - Check if empty (objects, arrays, strings, maps, sets, null/undefined)
 - `isNil<T>(value: T): boolean` - Check if null or undefined (type guard)
 - `notNil<T>(value: T): boolean` - Check if NOT null/undefined (type guard)
@@ -580,6 +580,7 @@ export class ConfigService extends ConfigProvider<AppConfig> {
 - `buildModel<T>(type: new() => T, data: Partial<T>): T` - *(deprecated)* Use `buildModelStrict` or `buildModelPartial`
 - `buildModelStrict<T>(type: new() => T, data: T): T` - Strict model construction; all TypeScript-required properties must be provided
 - `buildModelPartial<T, D extends Partial<T>>(type: new() => T, data: D): Pick<T, keyof D & keyof T> & Partial<Omit<T, keyof D>>` - Partial model construction; TypeScript tracks exactly which keys were provided
+- `buildModelCore<T, D extends Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'>>(type: new() => T, data: D): Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'>` - Like `buildModelPartial` but auto-generated DB fields (`id`, `_id`, `createdAt`, `updatedAt`) are excluded from required data; ideal for building pre-persist payloads
 
 **ObjectUtils (7 methods + 1 type):**
 - `isObject<T>(value: T): value is Extract<T, object>` - Check if value is any object type (includes arrays, functions, class instances)
@@ -639,6 +640,10 @@ const doc = CommonUtils.buildModelStrict(SwaggerDocumentConfig, { docs: 'v1', se
 
 // Partial model creation — only provide what you have; TypeScript knows exactly which keys are set
 const config = CommonUtils.buildModelPartial(SwaggerConfig, { title: 'API', version: '1.0.0', description: 'desc', documents: [doc] });
+
+// Core model creation — required domain fields only; id/_id/createdAt/updatedAt are excluded from the required type
+const core = CommonUtils.buildModelCore(UserModel, { name: 'Alice', email: 'alice@example.com' });
+// core.name === 'Alice'; id/createdAt/updatedAt are absent until persisted
 
 // Type guards
 if (CommonUtils.notNil(value)) {

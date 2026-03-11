@@ -322,4 +322,79 @@ describe('CommonUtils', () => {
             expect(model.optional).toEqual(true);
         });
     });
+
+    describe('buildModelCore', () => {
+        class TestModel {
+            // auto-generated database fields
+            public id!: string;
+            public _id!: string;
+            public createdAt!: Date;
+            public updatedAt!: Date;
+            // domain-owned fields
+            public name!: string;
+            public email!: string;
+            public optional?: boolean;
+            // field with class-body default
+            public count: number = 0;
+        }
+
+        it('should return an instance of the model class', () => {
+            const model = CommonUtils.buildModelCore(TestModel, { name: 'Alice', email: 'alice@example.com', count: 5 });
+
+            expect(model).toBeInstanceOf(TestModel);
+        });
+
+        it('should assign provided domain properties', () => {
+            const model = CommonUtils.buildModelCore(TestModel, { name: 'Alice', email: 'alice@example.com', count: 5 });
+
+            expect(model.name).toEqual('Alice');
+            expect(model.email).toEqual('alice@example.com');
+            expect(model.count).toEqual(5);
+        });
+
+        it('should not include auto-generated fields when they are not provided', () => {
+            const model = CommonUtils.buildModelCore(TestModel, { name: 'Alice', email: 'alice@example.com', count: 5 });
+
+            expect((model as TestModel).id).toBeUndefined();
+            expect((model as TestModel)._id).toBeUndefined();
+            expect((model as TestModel).createdAt).toBeUndefined();
+            expect((model as TestModel).updatedAt).toBeUndefined();
+        });
+
+        it('should support optional domain properties', () => {
+            const modelWithout = CommonUtils.buildModelCore(TestModel, { name: 'Alice', email: 'alice@example.com', count: 1 });
+            const modelWith    = CommonUtils.buildModelCore(TestModel, { name: 'Bob', email: 'bob@example.com', count: 2, optional: true });
+
+            expect(modelWithout.optional).toBeUndefined();
+            expect(modelWith.optional).toEqual(true);
+        });
+
+        it('should preserve class-body default when property is omitted', () => {
+            class ModelWithDefault {
+                public id!: string;
+                public createdAt!: Date;
+                public updatedAt!: Date;
+                public name!: string;
+                public count: number = 99;
+            }
+
+            const model = CommonUtils.buildModelCore(ModelWithDefault, { name: 'Test' });
+
+            expect(model.count).toEqual(99);
+        });
+
+        it('should override class-body default when property is provided', () => {
+            class ModelWithDefault {
+                public id!: string;
+                public createdAt!: Date;
+                public updatedAt!: Date;
+                public name!: string;
+                public count: number = 99;
+            }
+
+            const model = CommonUtils.buildModelCore(ModelWithDefault, { name: 'Test', count: 42 });
+
+            expect(model.count).toEqual(42);
+        });
+    });
 });
