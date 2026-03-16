@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/tsed-mongoose",
-    "version": "4.0.1",
+    "version": "4.0.2",
     "description": "Ts.ED mongoose utils",
     "keywords": [
         "tsed",

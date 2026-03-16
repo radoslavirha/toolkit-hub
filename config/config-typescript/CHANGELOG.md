@@ -1,5 +1,11 @@
 # @radoslavirha/config-typescript
 
+## 0.3.4
+
+### Patch Changes
+
+- [`e995c4d`](https://github.com/radoslavirha/toolkit-hub/commit/e995c4d30781c53a4cd98914082c2a2e60e4d4b0) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies
+
 ## 0.3.3
 
 ### Patch Changes
