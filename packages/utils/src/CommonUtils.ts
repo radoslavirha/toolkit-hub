@@ -138,7 +138,8 @@ export class CommonUtils {
      *
      * The type parameter `D` must cover all properties of `T` **except** the four excluded
      * fields (`id`, `_id`, `createdAt`, `updatedAt`), so TypeScript enforces that every
-     * domain-owned field is supplied.
+     * domain-owned field is supplied. Use {@link buildModelPartial} when only a subset of
+     * domain fields is available.
      *
      * Under the hood this delegates to {@link buildModelPartial}, so the constructor runs
      * first (preserving class-body defaults) and `Object.assign` overlays only the provided keys.

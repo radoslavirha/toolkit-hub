@@ -30,7 +30,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "tsdown",
+        "build": "tsc --noEmit && tsdown",
         "cleanup": "rm -rf coverage dist",
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",

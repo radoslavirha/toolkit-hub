@@ -30,7 +30,7 @@
         "README.md"
     ],
     "scripts": {
-        "build": "pnpm cleanup && tsdown && mkdir dist/views && cp src/controllers/views/swagger.ejs dist/views/",
+        "build": "tsc --noEmit && pnpm cleanup && tsdown && mkdir dist/views && cp src/controllers/views/swagger.ejs dist/views/",
         "cleanup": "rm -rf coverage dist",
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
@@ -65,8 +65,8 @@
         "eslint": "catalog:",
         "html-minifier-terser": "7.2.0",
         "supertest": "catalog:",
-        "tslib": "catalog:",
         "tsdown": "catalog:",
+        "tslib": "catalog:",
         "typescript": "catalog:",
         "vitest": "catalog:"
     },

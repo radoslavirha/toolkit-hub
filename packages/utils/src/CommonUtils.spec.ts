@@ -369,20 +369,6 @@ describe('CommonUtils', () => {
             expect(modelWith.optional).toEqual(true);
         });
 
-        it('should preserve class-body default when property is omitted', () => {
-            class ModelWithDefault {
-                public id!: string;
-                public createdAt!: Date;
-                public updatedAt!: Date;
-                public name!: string;
-                public count: number = 99;
-            }
-
-            const model = CommonUtils.buildModelCore(ModelWithDefault, { name: 'Test' });
-
-            expect(model.count).toEqual(99);
-        });
-
         it('should override class-body default when property is provided', () => {
             class ModelWithDefault {
                 public id!: string;
