@@ -1,5 +1,15 @@
 # @radoslavirha/tsed-mongoose
 
+## 4.0.3
+
+### Patch Changes
+
+- [`25c009f`](https://github.com/radoslavirha/toolkit-hub/commit/25c009f103ddb8b1745b52294e94704c45ae5aab) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix vitest config
+
+- Updated dependencies [[`25c009f`](https://github.com/radoslavirha/toolkit-hub/commit/25c009f103ddb8b1745b52294e94704c45ae5aab)]:
+  - @radoslavirha/utils@0.7.2
+  - @radoslavirha/tsed-common@0.4.9
+
 ## 4.0.2
 
 ### Patch Changes
