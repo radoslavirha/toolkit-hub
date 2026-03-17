@@ -1,8 +1,7 @@
 import swc from 'unplugin-swc';
-import { Plugin } from 'vitest/config';
 
-export const pluginSWC: Plugin = swc.vite({
-    sourceMaps: 'inline',
+export const pluginSWC = swc.vite({
+    sourceMaps: true,
     jsc: {
         target: 'esnext',
         externalHelpers: true,
@@ -25,5 +24,6 @@ export const pluginSWC: Plugin = swc.vite({
         lazy: false,
         noInterop: false
     },
-    isModule: true
+    isModule: true,
+    minify: true
 });

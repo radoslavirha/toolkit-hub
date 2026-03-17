@@ -1,8 +1,8 @@
-import { coverageConfigDefaults, ViteUserConfig } from 'vitest/config';
+import { coverageConfigDefaults, type ViteUserConfig } from 'vitest/config';
 import { Coverage95 } from './coverage.js';
 import { pluginSWC } from './pluginSWC.js';
 
-export const defaultConfig: ViteUserConfig = {
+export const defaultConfig = {
     test: {
         globals: true,
         root: '.',
@@ -20,4 +20,4 @@ export const defaultConfig: ViteUserConfig = {
     plugins: [
         pluginSWC
     ]
-};
+} satisfies ViteUserConfig;

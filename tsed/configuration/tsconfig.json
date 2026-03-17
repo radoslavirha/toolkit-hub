@@ -3,6 +3,6 @@
     "compilerOptions": {
         "rootDir": "./src",
         "composite": false,
-        "types": ["@tsed/di"]
+        "types": ["@tsed/di", "vitest/globals"]
     }
 }
