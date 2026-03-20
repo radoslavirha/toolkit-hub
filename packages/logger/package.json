@@ -1,0 +1,71 @@
+{
+    "name": "@radoslavirha/logger",
+    "version": "0.1.0",
+    "description": "OTEL-compliant Winston logger",
+    "keywords": [
+        "logger",
+        "winston",
+        "otel"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com:radoslavirha/toolkit-hub.git"
+    },
+    "type": "module",
+    "exports": {
+        "import": {
+            "types": "./dist/esm/index.d.mts",
+            "import": "./dist/esm/index.mjs"
+        },
+        "require": {
+            "types": "./dist/cjs/index.d.cts",
+            "require": "./dist/cjs/index.cjs"
+        }
+    },
+    "main": "./dist/cjs/index.cjs",
+    "module": "./dist/esm/index.mjs",
+    "types": "./dist/esm/index.d.mts",
+    "files": [
+        "dist",
+        "package.json",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsc --noEmit && tsdown",
+        "cleanup": "rm -rf coverage dist",
+        "cleanup:modules": "rm -rf node_modules",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix .",
+        "test": "vitest run",
+        "test:watch": "vitest"
+    },
+    "dependencies": {
+        "winston": "catalog:"
+    },
+    "devDependencies": {
+        "@radoslavirha/config-eslint": "workspace:*",
+        "@radoslavirha/config-tsdown": "workspace:*",
+        "@radoslavirha/config-typescript": "workspace:*",
+        "@radoslavirha/config-vitest": "workspace:*",
+        "@swc/core": "catalog:",
+        "@types/node": "catalog:",
+        "@vitest/coverage-v8": "catalog:",
+        "eslint": "catalog:",
+        "tsdown": "catalog:",
+        "tslib": "catalog:",
+        "typescript": "catalog:",
+        "vitest": "catalog:"
+    },
+    "engines": {
+        "node": ">= 24",
+        "pnpm": ">= 10"
+    },
+    "os": [
+        "darwin",
+        "linux"
+    ],
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "README": "README.md"
+}
