@@ -1,5 +1,14 @@
 # @radoslavirha/utils
 
+## 0.7.3
+
+### Patch Changes
+
+- [`da99054`](https://github.com/radoslavirha/toolkit-hub/commit/da9905404fc64f0216d4de8c3042ececbddfa0c7) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies
+
+- Updated dependencies [[`da99054`](https://github.com/radoslavirha/toolkit-hub/commit/da9905404fc64f0216d4de8c3042ececbddfa0c7)]:
+  - @radoslavirha/types@0.3.5
+
 ## 0.7.2
 
 ### Patch Changes
