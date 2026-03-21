@@ -5,6 +5,7 @@ packages:
 
 catalog:
   '@swc/core': 1.15.18
+  winston: 3.17.0
   '@swc/helpers': 0.5.19
   '@types/node': 25.5.0
   '@types/supertest': 7.2.0

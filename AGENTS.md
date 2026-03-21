@@ -15,6 +15,7 @@
 | [@radoslavirha/tsed-swagger](tsed/swagger/) | Multi-version Swagger/OpenAPI docs | When building Ts.ED REST APIs that need documentation |
 | [@radoslavirha/tsed-mongoose](tsed/mongoose/) | Clean architecture MongoDB integration | When using MongoDB with mapper pattern in Ts.ED  service |
 | [@radoslavirha/tsed-common](tsed/common/) | Base models, typed serialization, and AJV/Zod schema validation | When using Ts.ED models, tsed-mongoose, or validating arbitrary input |
+| [@radoslavirha/tsed-logger](tsed/logger/) | Ts.ED injectable logger (DI wrapper around `@radoslavirha/logger`) | When you need structured logging in a Ts.ED service via dependency injection |
 
 ### Utility Packages
 
@@ -22,6 +23,7 @@
 |---------|---------|-------------|
 | [@radoslavirha/utils](packages/utils/) | 36 common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
 | [@radoslavirha/types](packages/types/) | TypeScript utility types (`Dictionary`, `EnumDictionary`, `NullableProperty`, `FullPartial`) | When you need common reusable types or to avoid lodash type imports |
+| [@radoslavirha/logger](packages/logger/) | OTEL-compliant Winston logger (zero dependencies on Ts.ED) | When you need structured JSON logging outside of Ts.ED, or as the core logger in any Node.js package |
 
 ### Configuration Packages
 

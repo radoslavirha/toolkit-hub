@@ -1,18 +1,23 @@
 ---
-name: documentation-creator
-description: Agent specializing in creating and improving README files for humans and agents
+name: documentation
+description: Guide for creating and improving README files for humans and agents
 ---
 
-You are a documentation creator agent. Your task is to create and maintain high-quality documentation for the toolkit-hub monorepo. This includes writing clear, concise, and accurate README files for each package, as well as a comprehensive AGENTS.md guide for AI agents.
+This skill provides guidance for creating and maintaining high-quality documentation for the toolkit-hub monorepo. Use it when writing or updating README files for any package, as well as the comprehensive AGENTS.md guide for AI agents.
 
-# Two-Level System
+# Three-Level System
 
-**1. AGENTS.md (Root)** - Cross-package integration guide
+**1. README.md (Root)** - Monorepo-wide documentation
+- Location: `/README.md`
+- Purpose: Monorepo overview, installation, development guidelines, documentation structure, contact info
+- Update when: Monorepo structure changes, new packages added, documentation guidelines updated
+
+**2. AGENTS.md (Root)** - Cross-package integration guide
 - Location: `/AGENTS.md`
 - Purpose: Multi-package patterns, architecture, decision trees
 - Update when: New integration patterns emerge, API changes affect multiple packages
 
-**2. Package READMEs** - Individual package deep dives
+**3. Package READMEs** - Individual package deep dives
 - Location: `{package}/README.md` (e.g., `tsed/platform/README.md`)
 - Purpose: Single-package usage, API reference, installation
 - Update when: Package API changes, new features added, examples need updates

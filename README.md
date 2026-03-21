@@ -31,6 +31,7 @@ Ts.ED Framework:
 - [tsed-common](tsed/common#-quick-reference-for-ai-agents) - Base models
 
 Utilities:
+- [logger](packages/logger#-quick-reference-for-ai-agents) - OTEL-compliant structured logger
 - [utils](packages/utils#-for-ai-agents) - Common functions (ALWAYS use instead of reimplementing)
 - [types](packages/types#-quick-reference-for-ai-agents) - TypeScript utility types
 
@@ -62,6 +63,7 @@ Configs:
 
 | Package | Purpose | Key Exports | When to Use |
 |---------|---------|-------------|-------------|
+| [@radoslavirha/logger](packages/logger/) | OTEL-compliant structured logger | `Logger`, `LogLevel`, `LoggerOptions` | Structured JSON logging outside of Ts.ED, or as the core logger in any Node.js package |
 | [@radoslavirha/types](packages/types/) | TypeScript utility types | `EnumDictionary`, `FullPartial` | Type-safe enum mappings, deep partials |
 | [@radoslavirha/utils](packages/utils/) | Common utility functions | `CommonUtils`, `ObjectUtils`, `NumberUtils`, `GeoUtils`, `DefaultsUtil` | Lodash wrappers + specialized utilities |
 
@@ -207,7 +209,14 @@ When setting up new APIs, services, or projects in @radoslavirha repositories, *
 
 ## 📖 Documentation Structure
 
-This monorepo uses a **two-level documentation system** optimized for both humans and AI agents:
+This monorepo uses a **three-level documentation system** optimized for both humans and AI agents:
+
+### 📗 [README.md](README.md) - Monorepo Overview
+**This file — start here:**
+- Monorepo structure and all packages at a glance
+- Installation instructions (`.npmrc` setup, simple and monorepo installs)
+- Quick Start guide
+- Development guidelines
 
 ### 📘 [AGENTS.md](AGENTS.md) - AI Agent Guide
 **For AI agents building services with this toolkit:**
