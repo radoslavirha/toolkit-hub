@@ -145,7 +145,15 @@ export class Logger<T extends object = object> {
             new winston.transports.Console({
                 format: winston.format.combine(
                     winston.format.timestamp(),
-                    winston.format.json()
+                    winston.format((info) => {
+                        const {
+                            timestamp, level, message, ...rest
+                        } = info;
+                        return {
+                            timestamp, level, message, ...rest
+                        };
+                    })(),
+                    winston.format.json({ deterministic: false })
                 ),
                 stderrLevels: [LogLevel.ERROR, LogLevel.FATAL]
             })
