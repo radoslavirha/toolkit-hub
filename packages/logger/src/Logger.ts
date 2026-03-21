@@ -34,6 +34,7 @@ interface ChildConfig {
     readonly enabled: boolean;
     readonly logger: winston.Logger;
     readonly scope: string;
+    readonly metaProvider?: () => Partial<object>;
 }
 
 /**
@@ -49,19 +50,22 @@ interface ChildConfig {
  * log.info('User created', { userId: 'abc' });
  * ```
  */
-export class Logger<T extends object> {
+export class Logger<T extends object = object> {
     private readonly logger: winston.Logger;
     private readonly enabled: boolean;
+    private readonly metaProvider?: () => Partial<T>;
 
-    public constructor(options?: LoggerOptions);
+    public constructor(options?: LoggerOptions<T>);
     public constructor(childConfig: ChildConfig);
-    constructor(optionsOrChild?: LoggerOptions | ChildConfig) {
+    constructor(optionsOrChild?: LoggerOptions<T> | ChildConfig) {
         if (optionsOrChild !== undefined && CHILD_LOGGER in optionsOrChild) {
             this.enabled = optionsOrChild.enabled;
             this.logger = optionsOrChild.logger;
+            this.metaProvider = optionsOrChild.metaProvider as (() => Partial<T>) | undefined;
         } else {
             this.enabled = optionsOrChild?.enabled ?? true;
             this.logger = Logger.buildLogger(optionsOrChild ?? {});
+            this.metaProvider = optionsOrChild?.metaProvider;
         }
     }
 
@@ -76,45 +80,51 @@ export class Logger<T extends object> {
             [CHILD_LOGGER]: true,
             enabled: this.enabled,
             logger: this.logger.child({ scope }),
-            scope
+            scope,
+            metaProvider: this.metaProvider as (() => Partial<object>) | undefined
         };
         return new Logger<K>(config);
     }
 
     /** Log at FATAL level (OTEL severityNumber 21). */
-    public fatal(body: string, attributes?: T): void {
-        this.log(LogLevel.FATAL, body, attributes);
+    public fatal(body: string, meta?: T): void {
+        this.log(LogLevel.FATAL, body, meta);
     }
 
     /** Log at ERROR level (OTEL severityNumber 17). */
-    public error(body: string, attributes?: T): void {
-        this.log(LogLevel.ERROR, body, attributes);
+    public error(body: string, meta?: T): void {
+        this.log(LogLevel.ERROR, body, meta);
     }
 
     /** Log at WARN level (OTEL severityNumber 13). */
-    public warn(body: string, attributes?: T): void {
-        this.log(LogLevel.WARN, body, attributes);
+    public warn(body: string, meta?: T): void {
+        this.log(LogLevel.WARN, body, meta);
     }
 
     /** Log at INFO level (OTEL severityNumber 9). */
-    public info(body: string, attributes?: T): void {
-        this.log(LogLevel.INFO, body, attributes);
+    public info(body: string, meta?: T): void {
+        this.log(LogLevel.INFO, body, meta);
     }
 
     /** Log at DEBUG level (OTEL severityNumber 5). */
-    public debug(body: string, attributes?: T): void {
-        this.log(LogLevel.DEBUG, body, attributes);
+    public debug(body: string, meta?: T): void {
+        this.log(LogLevel.DEBUG, body, meta);
     }
 
     /** Log at TRACE level (OTEL severityNumber 1). */
-    public trace(body: string, attributes?: T): void {
-        this.log(LogLevel.TRACE, body, attributes);
+    public trace(body: string, meta?: T): void {
+        this.log(LogLevel.TRACE, body, meta);
     }
 
-    private log(level: LogLevel, body: string, attributes?: T): void {
+    private log(level: LogLevel, body: string, meta?: T): void {
         if (!this.enabled) {
             return;
         }
+
+        const baseMeta = this.metaProvider?.();
+        const attributes = baseMeta !== undefined || meta !== undefined
+            ? { ...baseMeta, ...meta }
+            : undefined;
 
         if (attributes !== undefined) {
             this.logger.log(level, body, { attributes });
