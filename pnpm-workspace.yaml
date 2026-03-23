@@ -22,7 +22,7 @@ catalog:
 catalogs:
   tsed:
     '@tsed/ajv': 8.25.4
-    '@tsed/common': 8.25.2
+    '@tsed/common': 8.25.4
     '@tsed/core': 8.25.4
     '@tsed/di': 8.25.4
     '@tsed/json-mapper': 8.25.4
