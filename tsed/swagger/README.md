@@ -142,7 +142,7 @@ Create your Swagger configuration in your application's bootstrap file (usually 
 
 ```typescript
 // src/index.ts
-import { $log } from '@tsed/common';
+import { Logger } from '@radoslavirha/tsed-logger';
 import { injector } from '@tsed/di';
 import { Platform, ServerConfiguration } from '@radoslavirha/tsed-platform';
 import { 
@@ -154,6 +154,8 @@ import {
 import { CommonUtils } from '@radoslavirha/utils';
 import { Server } from './Server';
 import { ConfigService } from './config/ConfigService';
+
+const logger = injector().get<Logger>(Logger);
 
 try {
     // Load application configuration
@@ -201,7 +203,7 @@ try {
     const platform = await Platform.bootstrap(Server, configuration);
     await platform.listen();
 } catch (error) {
-    $log.error('Bootstrap failed:', error);
+    logger.error('Bootstrap failed.', { error: error });
     process.exit(1);
 }
 ```

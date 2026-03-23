@@ -1,4 +1,5 @@
-import { $log } from '@tsed/logger';
+import { Inject } from '@tsed/di';
+import { Logger } from '@radoslavirha/tsed-logger';
 
 /**
  * Abstract base handler with performance tracking and error handling.
@@ -88,6 +89,9 @@ import { $log } from '@tsed/logger';
  * @see Error logs include handler name for easy debugging: `HandlerName.execute() threw the following error: ...`
  */
 export abstract class BaseHandler<IRequest, IResponse> {
+    @Inject(Logger)
+    private logger?: Logger;
+
     /**
      * Execute the handler operation with performance tracking and error handling.
      * 
@@ -134,11 +138,12 @@ export abstract class BaseHandler<IRequest, IResponse> {
 
             const useCaseExecutionTime = endTime - startTime;
 
-            $log.debug(`${ this.constructor.name }.execute() took +${ useCaseExecutionTime } ms to execute!`);
+            this.logger?.child(this.constructor.name).debug(`execute() took +${ useCaseExecutionTime } ms to execute!`);
 
             return response;
         } catch (error) {
-            $log.error(`${ this.constructor.name }.execute() threw the following error: ${ error }`);
+            this.logger?.child(this.constructor.name).error(`execute() threw the following error: ${ error }`);
+
             throw error;
         }
     }

@@ -227,11 +227,13 @@ export class ConfigService extends ConfigProvider<AppConfig> {
 
 ```typescript
 // index.ts
-import { $log } from '@tsed/logger';
+import { Logger } from '@radoslavirha/tsed-logger';
 import { Platform, ServerConfiguration } from '@radoslavirha/tsed-platform';
 import { injector } from '@tsed/di';
 import { Server } from './Server.js';
 import { ConfigService } from './ConfigService.js';
+
+const logger = injector().get<Logger>(Logger);
 
 try {
     const config = injector().get<ConfigService>(ConfigService);
@@ -249,9 +251,8 @@ try {
     const platform = await Platform.bootstrap(Server, configuration);
 
     await platform.listen();
-    $log.info(`Server listening on port ${server.httpPort}`);
 } catch (error) {
-    $log.error('Bootstrap failed:', error);
+    logger.error('Bootstrap failed.', { error: error });
     process.exit(1);
 }
 ```

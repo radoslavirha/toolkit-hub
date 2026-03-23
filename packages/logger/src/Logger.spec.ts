@@ -69,6 +69,19 @@ describe('Logger', () => {
             const line = getLine();
             expect(line['attributes']).toEqual({ parent: { child: 'data' }, count: 3 });
         });
+
+        it('emits fields in the order: timestamp, level, message, attributes', () => {
+            const logger = new Logger();
+            logger.info('hello', { key: 'value' });
+            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message', 'attributes']);
+        });
+
+        it('emits fields in the order: timestamp, level, message, scope, attributes for child logger', () => {
+            const logger = new Logger();
+            const child = logger.child('SomeService');
+            child.info('hello', { key: 'value' });
+            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message', 'scope', 'attributes']);
+        });
     });
 
     describe('log level output', () => {

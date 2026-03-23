@@ -49,8 +49,8 @@ class Handler extends BaseHandler<Request, Response> {
 
 **Key Components:**
 - `Platform.bootstrap()` - Bootstrap Ts.ED application
-- `BaseServer` - Pre-configured Express server with middleware (CORS, compression, body-parser)
-- `BaseHandler<IRequest, IResponse>` - Performance-tracked handler with logging
+- `BaseServer` - Pre-configured Express server with middleware (CORS, compression, body-parser) + structured JSON logging via injected `@radoslavirha/tsed-logger`
+- `BaseHandler<IRequest, IResponse>` - Performance-tracked handler with structured JSON logging
 - `ServerConfiguration` - Type for Ts.ED config with API metadata
 
 **Full documentation below** ↓
@@ -61,13 +61,13 @@ class Handler extends BaseHandler<Request, Response> {
 
 ```bash
 # Install with required peer dependencies
-pnpm add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration \
-  @tsed/di @tsed/platform-express @tsed/platform-http @tsed/ajv @tsed/logger \
+pnpm add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration @radoslavirha/tsed-logger \
+  @tsed/di @tsed/platform-express @tsed/platform-http @tsed/ajv \
   body-parser compression cookie-parser cors method-override
 
 # Monorepo - install in specific workspace package
-pnpm --filter my-service add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration \
-  @tsed/di @tsed/platform-express @tsed/platform-http @tsed/ajv @tsed/logger \
+pnpm --filter my-service add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration @radoslavirha/tsed-logger \
+  @tsed/di @tsed/platform-express @tsed/platform-http @tsed/ajv \
   body-parser compression cookie-parser cors method-override
 ```
 
@@ -136,11 +136,13 @@ Use `Platform.bootstrap()` with your server and configuration:
 
 ```typescript
 // src/index.ts
-import { $log } from '@tsed/common';
+import { Logger } from '@radoslavirha/tsed-logger';
 import { injector } from '@tsed/di';
 import { Platform, ServerConfiguration } from '@radoslavirha/tsed-platform';
 import { Server } from './Server';
 import { ConfigService } from './config/ConfigService';
+
+const logger = injector().get<Logger>(Logger);
 
 try {
     // Load configuration
@@ -158,7 +160,7 @@ try {
     // Start listening
     await platform.listen();
 } catch (error) {
-    $log.error('Bootstrap failed:', error);
+    logger.error('Bootstrap failed:', { error });
     process.exit(1);
 }
 ```
@@ -212,8 +214,8 @@ export class Controller {
 ```
 
 **Performance Logging:**
-```
-DEBUG Handler.execute() took +45.23 ms to execute!
+```json
+{"timestamp":"...","level":"debug","message":"execute() took +45.23 ms to execute!","scope":"Handler"}
 ```
 
 ## API Reference
@@ -283,6 +285,12 @@ Pre-configured Express server class with standard middleware stack.
 | `app` | `Express.Application` | Express app instance for custom middleware |
 | `settings` | `Configuration` | Ts.ED configuration (use `settings.get<T>(key)`) |
 
+**Private Properties (injected):**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `logger` | `Logger` | Injected `@radoslavirha/tsed-logger` instance; used automatically in lifecycle hooks |
+
 **Methods:**
 
 | Method | Access | Description |
@@ -337,17 +345,18 @@ Abstract handler class providing performance tracking and error handling wrapper
 - ✅ Centralized error logging with handler name context
 - ✅ Type-safe request/response handling
 - ✅ Optional ID parameter for resource operations or request tracing
+- ✅ Structured JSON logging via injected `@radoslavirha/tsed-logger`
 
 **Logging Output:**
 
 *Success (debug level):*
-```
-DEBUG Handler.execute() took +123.45 ms to execute!
+```json
+{"timestamp":"...","level":"debug","message":"execute() took +123.45 ms to execute!","scope":"Handler"}
 ```
 
 *Error:*
-```
-ERROR Handler.execute() threw the following error: ValidationError: Invalid input
+```json
+{"timestamp":"...","level":"error","message":"execute() threw the following error: ValidationError: Invalid input","scope":"Handler"}
 ```
 
 **Example without request (query pattern):**
@@ -398,4 +407,5 @@ For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS
 ## Related Packages
 
 - [@radoslavirha/tsed-configuration](../configuration/) - Provides configuration and APIInformation
+- [@radoslavirha/tsed-logger](../logger/) - Structured JSON logging
 - [@radoslavirha/tsed-swagger](../swagger/) - API documentation

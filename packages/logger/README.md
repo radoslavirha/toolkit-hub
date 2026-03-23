@@ -204,7 +204,7 @@ Every log line is a single JSON object:
 | `level` | Always | Severity as lowercase string |
 | `message` | Always | Log body string |
 | `scope` | Child loggers only | Instrumentation scope (class/module name) |
-| `attributes` | `metaProvider` or per-call `meta` provided | Merged attributes object. Trace/span context is injected when Winston is instrumented via OpenTelemetry. |
+| `attributes` | `metaProvider` or per-call `meta` provided | Merged attributes object |
 
 `fatal` and `error` levels write to **stderr**; all other levels write to **stdout**.
 
@@ -215,3 +215,9 @@ Every log line is a single JSON object:
 - [AGENTS.md](../../AGENTS.md) — cross-package integration patterns and architecture guide
 
 ---
+
+## Related Packages
+
+| Package | Description |
+|---------|-------------|
+| [`@radoslavirha/tsed-logger`](../../tsed/logger/README.md) | Ts.ED injectable wrapper for this logger with HTTP request/response logging |

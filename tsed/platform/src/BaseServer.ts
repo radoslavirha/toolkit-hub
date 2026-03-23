@@ -1,9 +1,9 @@
-import { configuration, Configuration } from '@tsed/di';
+import { configuration, Configuration, Inject } from '@tsed/di';
 import { application } from '@tsed/platform-http';
 import '@tsed/platform-express';
 import '@tsed/ajv';
-import { $log } from '@tsed/logger';
 import { APIInformation, getServerDefaultConfig } from '@radoslavirha/tsed-configuration';
+import { Logger } from '@radoslavirha/tsed-logger';
 import bodyParser from 'body-parser';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
@@ -101,6 +101,9 @@ export class BaseServer {
      */
     private settings = configuration();
 
+    @Inject(Logger)
+    private logger!: Logger;
+
     /**
      * Lifecycle hook called when the server is fully initialized and ready.
      * 
@@ -125,8 +128,7 @@ export class BaseServer {
      */
     $onReady(): void {
         const api = this.settings.get<APIInformation>('api');
-        
-        $log.info(`${ api?.service } ${ api?.version } is ready!`);
+        this.logger.info(`${ api?.service } ${ api?.version } is ready!`);
     }
 
     /**
@@ -168,7 +170,7 @@ export class BaseServer {
      * ```
      */
     protected registerMiddlewares(): void {
-        $log.info('Registering common middlewares...');
+        this.logger.info('Registering common middlewares...');
 
         this.app
             .use(

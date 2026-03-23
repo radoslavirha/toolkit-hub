@@ -41,21 +41,28 @@
         "test:watch": "vitest"
     },
     "dependencies": {
-        "@radoslavirha/logger": "workspace:*"
+        "@radoslavirha/logger": "workspace:*",
+        "@radoslavirha/utils": "workspace:*",
+        "@tsed/platform-http": "catalog:tsed",
+        "zod": "catalog:"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
         "@radoslavirha/config-tsdown": "workspace:*",
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
+        "@tsed/platform-express": "catalog:tsed",
         "@swc/core": "catalog:",
         "@swc/helpers": "catalog:",
         "@tsed/di": "catalog:tsed",
+        "@tsed/schema": "catalog:tsed",
         "@types/node": "catalog:",
+        "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "eslint": "catalog:",
-        "tslib": "catalog:",
+        "supertest": "catalog:",
         "tsdown": "catalog:",
+        "tslib": "catalog:",
         "typescript": "catalog:",
         "vitest": "catalog:"
     },
