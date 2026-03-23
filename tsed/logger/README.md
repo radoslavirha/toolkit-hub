@@ -189,7 +189,7 @@ Control what is included in request log entries via in configuration JSON file:
 {
     "logger": {
         "enabled": true,
-        "logLevel": "info",
+        "level": "info",
         "requests": {
             "enabled": true,
             "headers": { "enabled": false },   // omit raw headers
@@ -256,7 +256,7 @@ Input type for `LoggerOptionsSchema`. All fields are optional — defaults are a
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
 | `enabled` | `boolean` | `true` | Enable or disable all logging |
-| `logLevel` | `LogLevel` | `LogLevel.INFO` | Minimum severity to emit |
+| `level` | `LogLevel` | `LogLevel.INFO` | Minimum severity to emit |
 | `requests.enabled` | `boolean` | `true` | Enable HTTP request/response logging |
 | `requests.headers.enabled` | `boolean` | `true` | Include raw request headers |
 | `requests.query.enabled` | `boolean` | `true` | Include query-string parameters |

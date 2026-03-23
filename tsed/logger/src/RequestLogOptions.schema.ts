@@ -23,7 +23,7 @@ export const LoggerOptionsSchema = z.object({
     /** Enable or disable all logging. Default: `true`. */
     enabled: z.boolean().default(true),
     /** Minimum log level to emit. Default: `INFO`. */
-    logLevel: z.enum(LogLevel).default(LogLevel.INFO).describe('Logging level.'),
+    level: z.enum(LogLevel).default(LogLevel.INFO).describe('Logging level.'),
     /** HTTP request/response logging configuration. */
     requests: z.object({
         /** Enable or disable HTTP request/response logging entirely. Default: `true`. */

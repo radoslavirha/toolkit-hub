@@ -9,7 +9,7 @@ describe('LoggerOptionsSchema', () => {
         const result = LoggerOptionsSchema.parse({});
         expect(result).toStrictEqual({
             enabled: true,
-            logLevel: LogLevel.INFO,
+            level: LogLevel.INFO,
             requests: {
                 enabled: true,
                 headers: { enabled: true },
@@ -21,13 +21,13 @@ describe('LoggerOptionsSchema', () => {
         });
     });
 
-    it('accepts a valid logLevel', () => {
-        const result = LoggerOptionsSchema.parse({ logLevel: LogLevel.DEBUG });
-        expect(result.logLevel).toBe(LogLevel.DEBUG);
+    it('accepts a valid level', () => {
+        const result = LoggerOptionsSchema.parse({ level: LogLevel.DEBUG });
+        expect(result.level).toBe(LogLevel.DEBUG);
     });
 
-    it('rejects an unknown logLevel string', () => {
-        expect(() => LoggerOptionsSchema.parse({ logLevel: 'VERBOSE' })).toThrow();
+    it('rejects an unknown level string', () => {
+        expect(() => LoggerOptionsSchema.parse({ level: 'VERBOSE' })).toThrow();
     });
 
     it('preserves explicit enabled: false', () => {
@@ -78,7 +78,7 @@ describe('LoggerOptionsSchema', () => {
     });
 
     it('produces a type-safe parsed object matching LoggerOptionsParsed inferred type', () => {
-        const result = LoggerOptionsSchema.parse({ logLevel: LogLevel.WARN });
+        const result = LoggerOptionsSchema.parse({ level: LogLevel.WARN });
         const _check: { enabled: boolean; requests: { enabled: boolean } } = result;
         expect(_check.enabled).toBe(true);
     });

@@ -9,7 +9,7 @@ export interface LoggerOptions<T extends object = object> {
     /** Whether to enable logging. Defaults to `true`. */
     readonly enabled?: boolean;
     /** Minimum log level to emit. Defaults to `INFO`. */
-    readonly logLevel?: LogLevel;
+    readonly level?: LogLevel;
     /**
      * Optional callback invoked on every log call to supply base attributes
      * (e.g. request-id, trace-id, tenant-id) that are merged with any

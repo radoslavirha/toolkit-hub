@@ -93,7 +93,7 @@ describe('Logger', () => {
             ['debug', 'debug'],
             ['trace', 'trace']
         ])('%s() emits level="%s"', (method, expectedLevel) => {
-            const logger = new Logger({ logLevel: LogLevel.TRACE });
+            const logger = new Logger({ level: LogLevel.TRACE });
             (logger[method as keyof Logger<object>] as (body: string) => void)('test message');
             expect(getLine()['level']).toBe(expectedLevel);
         });
@@ -141,14 +141,14 @@ describe('Logger', () => {
 
     describe('log level filtering', () => {
         it('suppresses logs below configured level', () => {
-            const logger = new Logger({ logLevel: LogLevel.WARN });
+            const logger = new Logger({ level: LogLevel.WARN });
             logger.info('should be suppressed');
             logger.debug('also suppressed');
             expect(capturedLines).toHaveLength(0);
         });
 
         it('emits logs at or above configured level', () => {
-            const logger = new Logger({ logLevel: LogLevel.WARN });
+            const logger = new Logger({ level: LogLevel.WARN });
             logger.warn('emitted');
             logger.error('also emitted');
             expect(capturedLines).toHaveLength(2);

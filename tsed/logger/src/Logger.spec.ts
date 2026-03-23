@@ -24,29 +24,29 @@ const getOptions = (opts: LoggerOptions = {}) => LoggerOptionsSchema.parse(opts)
  */
 describe('Logger (tsed-logger)', () => {
     it('is an instance of BaseLogger', () => {
-        const logger = new Logger(getOptions({ logLevel: LogLevel.INFO }));
+        const logger = new Logger(getOptions({ level: LogLevel.INFO }));
         expect(logger).toBeInstanceOf(BaseLogger);
     });
 
     it('is an instance of Logger (tsed subclass)', () => {
-        const logger = new Logger(getOptions({ logLevel: LogLevel.INFO }));
+        const logger = new Logger(getOptions({ level: LogLevel.INFO }));
         expect(logger).toBeInstanceOf(Logger);
     });
 
     it('child() returns a BaseLogger instance', () => {
-        const logger = new Logger(getOptions({ logLevel: LogLevel.INFO }));
+        const logger = new Logger(getOptions({ level: LogLevel.INFO }));
         const child = logger.child('UserService');
         expect(child).toBeInstanceOf(BaseLogger);
     });
 
-    it('accepts logLevel option without throwing', () => {
+    it('accepts level option without throwing', () => {
         expect(() => {
-            new Logger(getOptions({ logLevel: LogLevel.DEBUG }));
+            new Logger(getOptions({ level: LogLevel.DEBUG }));
         }).not.toThrow();
     });
 
     it('all log-level methods are callable without throwing', () => {
-        const logger = new Logger(getOptions({ logLevel: LogLevel.TRACE }));
+        const logger = new Logger(getOptions({ level: LogLevel.TRACE }));
         expect(() => {
             logger.fatal('m');
             logger.error('m');
@@ -58,7 +58,7 @@ describe('Logger (tsed-logger)', () => {
     });
 
     it('log methods accept optional attributes without throwing', () => {
-        const logger = new Logger(getOptions({ logLevel: LogLevel.INFO }));
+        const logger = new Logger(getOptions({ level: LogLevel.INFO }));
         expect(() => {
             logger.info('with attrs', { userId: 'abc', nested: { x: 1 } });
         }).not.toThrow();

@@ -44,7 +44,7 @@ pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/logger
 | Export | Type | Description |
 |--------|------|-------------|
 | `Logger<T>` | Class | Structured Winston logger with OTEL-aligned output |
-| `LoggerOptions<T>` | Interface | Constructor options (enabled, logLevel, metaProvider) |
+| `LoggerOptions<T>` | Interface | Constructor options (enabled, level, metaProvider) |
 | `LogLevel` | Enum | OTEL-aligned severity levels (FATAL → TRACE) |
 
 ---
@@ -101,7 +101,7 @@ log.info('Payment initiated', { amount: 100 });
 ```typescript
 import { Logger, LogLevel } from '@radoslavirha/logger';
 
-const logger = new Logger({ logLevel: LogLevel.WARN });
+const logger = new Logger({ level: LogLevel.WARN });
 
 logger.info('ignored');  // below WARN threshold
 logger.warn('emitted');  // emitted
@@ -138,7 +138,7 @@ class Logger<T extends object = object> {
 
 | Method | Description |
 |--------|-------------|
-| `child(scope)` | Creates a child logger with `scope` pinned on every line. Inherits `enabled`, `logLevel`, and `metaProvider` from parent. |
+| `child(scope)` | Creates a child logger with `scope` pinned on every line. Inherits `enabled`, `level`, and `metaProvider` from parent. |
 | `fatal(body, meta?)` | Log at FATAL level. Writes to **stderr**. |
 | `error(body, meta?)` | Log at ERROR level. Writes to **stderr**. |
 | `warn(body, meta?)` | Log at WARN level. Writes to **stdout**. |
@@ -153,7 +153,7 @@ class Logger<T extends object = object> {
 ```typescript
 interface LoggerOptions<T extends object = object> {
     readonly enabled?: boolean;
-    readonly logLevel?: LogLevel;
+    readonly level?: LogLevel;
     readonly metaProvider?: () => Partial<T>;
 }
 ```
@@ -161,7 +161,7 @@ interface LoggerOptions<T extends object = object> {
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `enabled` | `boolean` | `true` | Set to `false` to suppress all output. `metaProvider` is not called when disabled. |
-| `logLevel` | `LogLevel` | `LogLevel.INFO` | Minimum severity to emit. Messages below this level are silently dropped. |
+| `level` | `LogLevel` | `LogLevel.INFO` | Minimum severity to emit. Messages below this level are silently dropped. |
 | `metaProvider` | `() => Partial<T>` | `undefined` | Called on every log call. Return value is merged with per-call `meta` (per-call wins on key conflicts). |
 
 ---

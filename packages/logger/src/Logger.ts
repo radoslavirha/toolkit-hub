@@ -136,7 +136,7 @@ export class Logger<T extends object = object> {
     private static buildLogger(options: LoggerOptions): winston.Logger {
         const logger = winston.createLogger({
             levels: WINSTON_LEVELS,
-            level: options.logLevel ?? LogLevel.INFO
+            level: options.level ?? LogLevel.INFO
         });
 
         winston.addColors(WINSTON_COLORS);

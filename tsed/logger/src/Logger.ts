@@ -74,7 +74,7 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         const resolved: LoggerOptions = options ?? {};
         super({
             enabled: resolved.enabled,
-            logLevel: resolved.logLevel,
+            level: resolved.level,
             metaProvider
         });
         this.httpLog = this.child('HTTP_REQUEST');
