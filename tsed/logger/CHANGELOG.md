@@ -1,5 +1,16 @@
 # @radoslavirha/tsed-logger
 
+## 0.3.0
+
+### Minor Changes
+
+- [`8d9b7b5`](https://github.com/radoslavirha/toolkit-hub/commit/8d9b7b5f39ec183afa10a734b6d7d27e3deb9b40) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Logger implementation
+
+### Patch Changes
+
+- Updated dependencies [[`8d9b7b5`](https://github.com/radoslavirha/toolkit-hub/commit/8d9b7b5f39ec183afa10a734b6d7d27e3deb9b40)]:
+  - @radoslavirha/logger@0.2.0
+
 ## 0.2.1
 
 ### Patch Changes

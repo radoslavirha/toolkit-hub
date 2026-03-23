@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-configuration
 
+## 0.6.0
+
+### Minor Changes
+
+- [`8d9b7b5`](https://github.com/radoslavirha/toolkit-hub/commit/8d9b7b5f39ec183afa10a734b6d7d27e3deb9b40) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Logger implementation
+
 ## 0.5.9
 
 ### Patch Changes
