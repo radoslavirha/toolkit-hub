@@ -1,5 +1,12 @@
 # @radoslavirha/tsed-swagger
 
+## 5.0.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @radoslavirha/tsed-platform@1.0.1
+
 ## 5.0.0
 
 ### Minor Changes
