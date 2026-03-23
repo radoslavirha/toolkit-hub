@@ -1,5 +1,11 @@
 # @radoslavirha/logger
 
+## 0.2.1
+
+### Patch Changes
+
+- [`245878e`](https://github.com/radoslavirha/toolkit-hub/commit/245878e2265ae8d186bc5d341e430884ebcf4e43) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Rename logLevel to level
+
 ## 0.2.0
 
 ### Minor Changes

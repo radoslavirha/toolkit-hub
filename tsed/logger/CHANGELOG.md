@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-logger
 
+## 0.3.1
+
+### Patch Changes
+
+- [`245878e`](https://github.com/radoslavirha/toolkit-hub/commit/245878e2265ae8d186bc5d341e430884ebcf4e43) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Rename logLevel to level
+
+- Updated dependencies [[`245878e`](https://github.com/radoslavirha/toolkit-hub/commit/245878e2265ae8d186bc5d341e430884ebcf4e43)]:
+  - @radoslavirha/logger@0.2.1
+
 ## 0.3.0
 
 ### Minor Changes
