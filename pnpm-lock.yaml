@@ -25,8 +25,8 @@ catalogs:
       specifier: 10.1.0
       version: 10.1.0
     mongoose:
-      specifier: 9.3.1
-      version: 9.3.1
+      specifier: 9.3.2
+      version: 9.3.2
     supertest:
       specifier: 7.2.2
       version: 7.2.2
@@ -37,8 +37,8 @@ catalogs:
       specifier: 2.8.1
       version: 2.8.1
     typescript:
-      specifier: 5.9.3
-      version: 5.9.3
+      specifier: 6.0.2
+      version: 6.0.2
     vitest:
       specifier: 4.1.1
       version: 4.1.1
@@ -116,8 +116,8 @@ importers:
         specifier: 5.10.0
         version: 5.10.0(eslint@10.1.0)
       typescript-eslint:
-        specifier: 8.57.1
-        version: 8.57.1(eslint@10.1.0)(typescript@5.9.3)
+        specifier: 8.57.2
+        version: 8.57.2(eslint@10.1.0)(typescript@6.0.2)
     devDependencies:
       eslint:
         specifier: 'catalog:'
@@ -136,13 +136,13 @@ importers:
         version: 10.1.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
 
   config/config-typescript:
     devDependencies:
@@ -151,7 +151,7 @@ importers:
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
 
   config/config-vitest:
     dependencies:
@@ -179,13 +179,13 @@ importers:
         version: 10.1.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3))
@@ -222,13 +222,13 @@ importers:
         version: 10.1.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3))
@@ -249,7 +249,7 @@ importers:
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
 
   packages/utils:
     dependencies:
@@ -289,13 +289,13 @@ importers:
         version: 10.1.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3))
@@ -353,13 +353,13 @@ importers:
         version: 7.2.2
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3))
@@ -426,13 +426,13 @@ importers:
         version: 10.1.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3))
@@ -499,13 +499,13 @@ importers:
         version: 7.2.2
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3))
@@ -545,7 +545,7 @@ importers:
         version: 8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5)
       '@tsed/mongoose':
         specifier: catalog:tsed
-        version: 8.25.4(@tsed/ajv@8.25.4(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/exceptions@8.25.4(@tsed/core@8.25.4))(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4))(ajv-errors@3.0.0(ajv@8.18.0))(ajv@8.18.0))(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/json-mapper@8.25.4(@tsed/core@8.25.4)(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4)))(@tsed/logger@8.0.5)(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4))(mongoose@9.3.1)
+        version: 8.25.4(@tsed/ajv@8.25.4(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/exceptions@8.25.4(@tsed/core@8.25.4))(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4))(ajv-errors@3.0.0(ajv@8.18.0))(ajv@8.18.0))(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/json-mapper@8.25.4(@tsed/core@8.25.4)(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4)))(@tsed/logger@8.0.5)(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4))(mongoose@9.3.2)
       '@tsed/platform-http':
         specifier: catalog:tsed
         version: 8.25.4(@tsed/engines@8.5.0)(@tsed/logger@8.0.5)(@tsed/openspec@8.25.4)(@types/multer@1.4.12)
@@ -554,7 +554,7 @@ importers:
         version: 8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4)
       '@tsed/testcontainers-mongo':
         specifier: catalog:tsed
-        version: 8.25.4(@testcontainers/mongodb@10.18.0)(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/platform-http@8.25.4(@tsed/engines@8.5.0)(@tsed/logger@8.0.5)(@tsed/openspec@8.25.4)(@types/multer@1.4.12))(mongodb@7.1.0)(testcontainers@10.18.0)
+        version: 8.25.4(@testcontainers/mongodb@10.18.0)(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/platform-http@8.25.4(@tsed/engines@8.5.0)(@tsed/logger@8.0.5)(@tsed/openspec@8.25.4)(@types/multer@1.4.12))(mongodb@7.1.1)(testcontainers@10.18.0)
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.1(vitest@4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3)))
@@ -563,19 +563,19 @@ importers:
         version: 10.1.0
       mongoose:
         specifier: 'catalog:'
-        version: 9.3.1
+        version: 9.3.2
       supertest:
         specifier: 'catalog:'
         version: 7.2.2
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3))
@@ -681,13 +681,13 @@ importers:
         version: 7.2.2
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3))
@@ -772,13 +772,13 @@ importers:
         version: 7.2.2
       tsdown:
         specifier: 'catalog:'
-        version: 0.21.4(typescript@5.9.3)
+        version: 0.21.4(typescript@6.0.2)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
       typescript:
         specifier: 'catalog:'
-        version: 5.9.3
+        version: 6.0.2
       vitest:
         specifier: 'catalog:'
         version: 4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3))
@@ -1547,8 +1547,8 @@ packages:
   '@swc/helpers@0.5.19':
     resolution: {integrity: sha512-QamiFeIK3txNjgUTNppE6MiG3p7TdninpZu0E0PbqVh1a9FNLT2FRhisaa4NcaX52XVhA5l7Pk58Ft7Sqi/2sA==}
 
-  '@swc/types@0.1.25':
-    resolution: {integrity: sha512-iAoY/qRhNH8a/hBvm3zKj9qQ4oc2+3w1unPJa2XvTK3XjeLXtzcCingVPw/9e5mn1+0yPqxcBGp9Jf0pkfMb1g==}
+  '@swc/types@0.1.26':
+    resolution: {integrity: sha512-lyMwd7WGgG79RS7EERZV3T8wMdmPq3xwyg+1nmAM64kIhx5yl+juO2PYIHb7vTiPgPCj8LYjsNV2T5wiQHUEaw==}
 
   '@testcontainers/mongodb@10.18.0':
     resolution: {integrity: sha512-KpcGo6r4vu+2zoYQE4rii9aj8Sv/lVyGnoSyvFtQjcpjOvQgF2U0BqwgpmyScJ5VqKHdY++ekLVAzPN5p6RYXg==}
@@ -1875,63 +1875,63 @@ packages:
   '@types/whatwg-url@13.0.0':
     resolution: {integrity: sha512-N8WXpbE6Wgri7KUSvrmQcqrMllKZ9uxkYWMt+mCSGwNc0Hsw9VQTW7ApqI4XNrx6/SaM2QQJCzMPDEXE058s+Q==}
 
-  '@typescript-eslint/eslint-plugin@8.57.1':
-    resolution: {integrity: sha512-Gn3aqnvNl4NGc6x3/Bqk1AOn0thyTU9bqDRhiRnUWezgvr2OnhYCWCgC8zXXRVqBsIL1pSDt7T9nJUe0oM0kDQ==}
+  '@typescript-eslint/eslint-plugin@8.57.2':
+    resolution: {integrity: sha512-NZZgp0Fm2IkD+La5PR81sd+g+8oS6JwJje+aRWsDocxHkjyRw0J5L5ZTlN3LI1LlOcGL7ph3eaIUmTXMIjLk0w==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      '@typescript-eslint/parser': ^8.57.1
+      '@typescript-eslint/parser': ^8.57.2
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/parser@8.57.1':
-    resolution: {integrity: sha512-k4eNDan0EIMTT/dUKc/g+rsJ6wcHYhNPdY19VoX/EOtaAG8DLtKCykhrUnuHPYvinn5jhAPgD2Qw9hXBwrahsw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-      typescript: '>=4.8.4 <6.0.0'
-
-  '@typescript-eslint/project-service@8.57.1':
-    resolution: {integrity: sha512-vx1F37BRO1OftsYlmG9xay1TqnjNVlqALymwWVuYTdo18XuKxtBpCj1QlzNIEHlvlB27osvXFWptYiEWsVdYsg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
-
-  '@typescript-eslint/scope-manager@8.57.1':
-    resolution: {integrity: sha512-hs/QcpCwlwT2L5S+3fT6gp0PabyGk4Q0Rv2doJXA0435/OpnSR3VRgvrp8Xdoc3UAYSg9cyUjTeFXZEPg/3OKg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript-eslint/tsconfig-utils@8.57.1':
-    resolution: {integrity: sha512-0lgOZB8cl19fHO4eI46YUx2EceQqhgkPSuCGLlGi79L2jwYY1cxeYc1Nae8Aw1xjgW3PKVDLlr3YJ6Bxx8HkWg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.0.0'
-
-  '@typescript-eslint/type-utils@8.57.1':
-    resolution: {integrity: sha512-+Bwwm0ScukFdyoJsh2u6pp4S9ktegF98pYUU0hkphOOqdMB+1sNQhIz8y5E9+4pOioZijrkfNO/HUJVAFFfPKA==}
+  '@typescript-eslint/parser@8.57.2':
+    resolution: {integrity: sha512-30ScMRHIAD33JJQkgfGW1t8CURZtjc2JpTrq5n2HFhOefbAhb7ucc7xJwdWcrEtqUIYJ73Nybpsggii6GtAHjA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/types@8.57.1':
-    resolution: {integrity: sha512-S29BOBPJSFUiblEl6RzPPjJt6w25A6XsBqRVDt53tA/tlL8q7ceQNZHTjPeONt/3S7KRI4quk+yP9jK2WjBiPQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript-eslint/typescript-estree@8.57.1':
-    resolution: {integrity: sha512-ybe2hS9G6pXpqGtPli9Gx9quNV0TWLOmh58ADlmZe9DguLq0tiAKVjirSbtM1szG6+QH6rVXyU6GTLQbWnMY+g==}
+  '@typescript-eslint/project-service@8.57.2':
+    resolution: {integrity: sha512-FuH0wipFywXRTHf+bTTjNyuNQQsQC3qh/dYzaM4I4W0jrCqjCVuUh99+xd9KamUfmCGPvbO8NDngo/vsnNVqgw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/utils@8.57.1':
-    resolution: {integrity: sha512-XUNSJ/lEVFttPMMoDVA2r2bwrl8/oPx8cURtczkSEswY5T3AeLmCy+EKWQNdL4u0MmAHOjcWrqJp2cdvgjn8dQ==}
+  '@typescript-eslint/scope-manager@8.57.2':
+    resolution: {integrity: sha512-snZKH+W4WbWkrBqj4gUNRIGb/jipDW3qMqVJ4C9rzdFc+wLwruxk+2a5D+uoFcKPAqyqEnSb4l2ULuZf95eSkw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@typescript-eslint/tsconfig-utils@8.57.2':
+    resolution: {integrity: sha512-3Lm5DSM+DCowsUOJC+YqHHnKEfFh5CoGkj5Z31NQSNF4l5wdOwqGn99wmwN/LImhfY3KJnmordBq/4+VDe2eKw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      typescript: '>=4.8.4 <6.0.0'
+
+  '@typescript-eslint/type-utils@8.57.2':
+    resolution: {integrity: sha512-Co6ZCShm6kIbAM/s+oYVpKFfW7LBc6FXoPXjTRQ449PPNBY8U0KZXuevz5IFuuUj2H9ss40atTaf9dlGLzbWZg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  '@typescript-eslint/visitor-keys@8.57.1':
-    resolution: {integrity: sha512-YWnmJkXbofiz9KbnbbwuA2rpGkFPLbAIetcCNO6mJ8gdhdZ/v7WDXsoGFAJuM6ikUFKTlSQnjWnVO4ux+UzS6A==}
+  '@typescript-eslint/types@8.57.2':
+    resolution: {integrity: sha512-/iZM6FnM4tnx9csuTxspMW4BOSegshwX5oBDznJ7S4WggL7Vczz5d2W11ecc4vRrQMQHXRSxzrCsyG5EsPPTbA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@typescript-eslint/typescript-estree@8.57.2':
+    resolution: {integrity: sha512-2MKM+I6g8tJxfSmFKOnHv2t8Sk3T6rF20A1Puk0svLK+uVapDZB/4pfAeB7nE83uAZrU6OxW+HmOd5wHVdXwXA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      typescript: '>=4.8.4 <6.0.0'
+
+  '@typescript-eslint/utils@8.57.2':
+    resolution: {integrity: sha512-krRIbvPK1ju1WBKIefiX+bngPs+odIQUtR7kymzPfo1POVw3jlF+nLkmexdSSd4UCbDcQn+wMBATOOmpBbqgKg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
+      typescript: '>=4.8.4 <6.0.0'
+
+  '@typescript-eslint/visitor-keys@8.57.2':
+    resolution: {integrity: sha512-zhahknjobV2FiD6Ee9iLbS7OV9zi10rG26odsQdfBO/hjSzUQbkIYgda+iNKK1zNiW2ey+Lf8MU5btN17V3dUw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@vitest/coverage-v8@4.1.1':
@@ -3090,8 +3090,8 @@ packages:
     resolution: {integrity: sha512-h0AZ9A7IDVwwHyMxmdMXKy+9oNlF0zFoahHiX3vQ8e3KFcSP3VmsmfvtRSuLPxmyv2vjIDxqty8smTgie/SNRQ==}
     engines: {node: '>=20.19.0'}
 
-  mongodb@7.1.0:
-    resolution: {integrity: sha512-kMfnKunbolQYwCIyrkxNJFB4Ypy91pYqua5NargS/f8ODNSJxT03ZU3n1JqL4mCzbSih8tvmMEMLpKTT7x5gCg==}
+  mongodb@7.1.1:
+    resolution: {integrity: sha512-067DXiMjcpYQl6bGjWQoTUEE9UoRViTtKFcoqX7z08I+iDZv/emH1g8XEFiO3qiDfXAheT5ozl1VffDTKhIW/w==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       '@aws-sdk/credential-providers': ^3.806.0
@@ -3117,8 +3117,8 @@ packages:
       socks:
         optional: true
 
-  mongoose@9.3.1:
-    resolution: {integrity: sha512-58DuQti+LlRS74/UfWN4F3wZsC0Yr1dgTWZ2Wd3/TuSvm6rIdyAjDWbx2xGyuBooqJYdAWotVv4mQgVdivh+3Q==}
+  mongoose@9.3.2:
+    resolution: {integrity: sha512-4hMJA4vLAeNG6LnDwJImPYM+uJMVw+sFs7jtS/91OKOT7rzv19ytAAeswtAdWoinVBUVrzmClL/ZoPhcU5RL8w==}
     engines: {node: '>=20.19.0'}
 
   mpath@0.9.0:
@@ -3287,16 +3287,16 @@ packages:
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
-  picomatch@2.3.1:
-    resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
+  picomatch@2.3.2:
+    resolution: {integrity: sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA==}
     engines: {node: '>=8.6'}
 
   picomatch@4.0.2:
     resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
     engines: {node: '>=12'}
 
-  picomatch@4.0.3:
-    resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
+  picomatch@4.0.4:
+    resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
   pify@4.0.1:
@@ -3773,15 +3773,15 @@ packages:
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
 
-  typescript-eslint@8.57.1:
-    resolution: {integrity: sha512-fLvZWf+cAGw3tqMCYzGIU6yR8K+Y9NT2z23RwOjlNFF2HwSB3KhdEFI5lSBv8tNmFkkBShSjsCjzx1vahZfISA==}
+  typescript-eslint@8.57.2:
+    resolution: {integrity: sha512-VEPQ0iPgWO/sBaZOU1xo4nuNdODVOajPnTIbog2GKYr31nIlZ0fWPoCQgGfF3ETyBl1vn63F/p50Um9Z4J8O8A==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.0.0'
 
-  typescript@5.9.3:
-    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+  typescript@6.0.2:
+    resolution: {integrity: sha512-bGdAIrZ0wiGDo5l8c++HWtbaNCWTS4UTv7RaTH/ThVIgjkveJt83m74bBHMJkuCbslY8ixgLBVZJIOiQlQTjfQ==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -4490,7 +4490,7 @@ snapshots:
     dependencies:
       '@types/estree': 1.0.8
       estree-walker: 2.0.2
-      picomatch: 4.0.3
+      picomatch: 4.0.4
     optionalDependencies:
       rollup: 4.60.0
 
@@ -4581,12 +4581,12 @@ snapshots:
   '@stylistic/eslint-plugin@5.10.0(eslint@10.1.0)':
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.1.0)
-      '@typescript-eslint/types': 8.57.1
+      '@typescript-eslint/types': 8.57.2
       eslint: 10.1.0
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
       estraverse: 5.3.0
-      picomatch: 4.0.3
+      picomatch: 4.0.4
 
   '@swc/core-darwin-arm64@1.15.21':
     optional: true
@@ -4627,7 +4627,7 @@ snapshots:
   '@swc/core@1.15.21(@swc/helpers@0.5.19)':
     dependencies:
       '@swc/counter': 0.1.3
-      '@swc/types': 0.1.25
+      '@swc/types': 0.1.26
     optionalDependencies:
       '@swc/core-darwin-arm64': 1.15.21
       '@swc/core-darwin-x64': 1.15.21
@@ -4649,7 +4649,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@swc/types@0.1.25':
+  '@swc/types@0.1.26':
     dependencies:
       '@swc/counter': 0.1.3
 
@@ -4722,7 +4722,7 @@ snapshots:
       semver: 7.7.4
       tslib: 2.8.1
 
-  '@tsed/mongoose@8.25.4(@tsed/ajv@8.25.4(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/exceptions@8.25.4(@tsed/core@8.25.4))(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4))(ajv-errors@3.0.0(ajv@8.18.0))(ajv@8.18.0))(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/json-mapper@8.25.4(@tsed/core@8.25.4)(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4)))(@tsed/logger@8.0.5)(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4))(mongoose@9.3.1)':
+  '@tsed/mongoose@8.25.4(@tsed/ajv@8.25.4(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/exceptions@8.25.4(@tsed/core@8.25.4))(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4))(ajv-errors@3.0.0(ajv@8.18.0))(ajv@8.18.0))(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/json-mapper@8.25.4(@tsed/core@8.25.4)(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4)))(@tsed/logger@8.0.5)(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4))(mongoose@9.3.2)':
     dependencies:
       '@tsed/ajv': 8.25.4(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/exceptions@8.25.4(@tsed/core@8.25.4))(@tsed/schema@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4))(ajv-errors@3.0.0(ajv@8.18.0))(ajv@8.18.0)
       '@tsed/core': 8.25.4
@@ -4731,7 +4731,7 @@ snapshots:
       '@tsed/logger': 8.0.5
       '@tsed/schema': 8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/openspec@8.25.4)
       change-case: 5.4.4
-      mongoose: 9.3.1
+      mongoose: 9.3.2
       tslib: 2.7.0
 
   '@tsed/normalize-path@8.25.4':
@@ -4887,13 +4887,13 @@ snapshots:
       swagger-ui-dist: 5.32.1
       tslib: 2.7.0
 
-  '@tsed/testcontainers-mongo@8.25.4(@testcontainers/mongodb@10.18.0)(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/platform-http@8.25.4(@tsed/engines@8.5.0)(@tsed/logger@8.0.5)(@tsed/openspec@8.25.4)(@types/multer@1.4.12))(mongodb@7.1.0)(testcontainers@10.18.0)':
+  '@tsed/testcontainers-mongo@8.25.4(@testcontainers/mongodb@10.18.0)(@tsed/core@8.25.4)(@tsed/di@8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5))(@tsed/platform-http@8.25.4(@tsed/engines@8.5.0)(@tsed/logger@8.0.5)(@tsed/openspec@8.25.4)(@types/multer@1.4.12))(mongodb@7.1.1)(testcontainers@10.18.0)':
     dependencies:
       '@testcontainers/mongodb': 10.18.0
       '@tsed/core': 8.25.4
       '@tsed/di': 8.25.4(@tsed/core@8.25.4)(@tsed/hooks@8.25.4)(@tsed/logger@8.0.5)
       '@tsed/platform-http': 8.25.4(@tsed/engines@8.5.0)(@tsed/logger@8.0.5)(@tsed/openspec@8.25.4)(@types/multer@1.4.12)
-      mongodb: 7.1.0
+      mongodb: 7.1.1
       semver: 7.7.4
       testcontainers: 10.18.0
       tslib: 2.7.0
@@ -5044,95 +5044,95 @@ snapshots:
     dependencies:
       '@types/webidl-conversions': 7.0.3
 
-  '@typescript-eslint/eslint-plugin@8.57.1(@typescript-eslint/parser@8.57.1(eslint@10.1.0)(typescript@5.9.3))(eslint@10.1.0)(typescript@5.9.3)':
+  '@typescript-eslint/eslint-plugin@8.57.2(@typescript-eslint/parser@8.57.2(eslint@10.1.0)(typescript@6.0.2))(eslint@10.1.0)(typescript@6.0.2)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.57.1(eslint@10.1.0)(typescript@5.9.3)
-      '@typescript-eslint/scope-manager': 8.57.1
-      '@typescript-eslint/type-utils': 8.57.1(eslint@10.1.0)(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.57.1(eslint@10.1.0)(typescript@5.9.3)
-      '@typescript-eslint/visitor-keys': 8.57.1
+      '@typescript-eslint/parser': 8.57.2(eslint@10.1.0)(typescript@6.0.2)
+      '@typescript-eslint/scope-manager': 8.57.2
+      '@typescript-eslint/type-utils': 8.57.2(eslint@10.1.0)(typescript@6.0.2)
+      '@typescript-eslint/utils': 8.57.2(eslint@10.1.0)(typescript@6.0.2)
+      '@typescript-eslint/visitor-keys': 8.57.2
       eslint: 10.1.0
       ignore: 7.0.5
       natural-compare: 1.4.0
-      ts-api-utils: 2.5.0(typescript@5.9.3)
-      typescript: 5.9.3
+      ts-api-utils: 2.5.0(typescript@6.0.2)
+      typescript: 6.0.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.57.1(eslint@10.1.0)(typescript@5.9.3)':
+  '@typescript-eslint/parser@8.57.2(eslint@10.1.0)(typescript@6.0.2)':
     dependencies:
-      '@typescript-eslint/scope-manager': 8.57.1
-      '@typescript-eslint/types': 8.57.1
-      '@typescript-eslint/typescript-estree': 8.57.1(typescript@5.9.3)
-      '@typescript-eslint/visitor-keys': 8.57.1
+      '@typescript-eslint/scope-manager': 8.57.2
+      '@typescript-eslint/types': 8.57.2
+      '@typescript-eslint/typescript-estree': 8.57.2(typescript@6.0.2)
+      '@typescript-eslint/visitor-keys': 8.57.2
       debug: 4.4.3
       eslint: 10.1.0
-      typescript: 5.9.3
+      typescript: 6.0.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.57.1(typescript@5.9.3)':
+  '@typescript-eslint/project-service@8.57.2(typescript@6.0.2)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.57.1(typescript@5.9.3)
-      '@typescript-eslint/types': 8.57.1
+      '@typescript-eslint/tsconfig-utils': 8.57.2(typescript@6.0.2)
+      '@typescript-eslint/types': 8.57.2
       debug: 4.4.3
-      typescript: 5.9.3
+      typescript: 6.0.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/scope-manager@8.57.1':
+  '@typescript-eslint/scope-manager@8.57.2':
     dependencies:
-      '@typescript-eslint/types': 8.57.1
-      '@typescript-eslint/visitor-keys': 8.57.1
+      '@typescript-eslint/types': 8.57.2
+      '@typescript-eslint/visitor-keys': 8.57.2
 
-  '@typescript-eslint/tsconfig-utils@8.57.1(typescript@5.9.3)':
+  '@typescript-eslint/tsconfig-utils@8.57.2(typescript@6.0.2)':
     dependencies:
-      typescript: 5.9.3
+      typescript: 6.0.2
 
-  '@typescript-eslint/type-utils@8.57.1(eslint@10.1.0)(typescript@5.9.3)':
+  '@typescript-eslint/type-utils@8.57.2(eslint@10.1.0)(typescript@6.0.2)':
     dependencies:
-      '@typescript-eslint/types': 8.57.1
-      '@typescript-eslint/typescript-estree': 8.57.1(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.57.1(eslint@10.1.0)(typescript@5.9.3)
+      '@typescript-eslint/types': 8.57.2
+      '@typescript-eslint/typescript-estree': 8.57.2(typescript@6.0.2)
+      '@typescript-eslint/utils': 8.57.2(eslint@10.1.0)(typescript@6.0.2)
       debug: 4.4.3
       eslint: 10.1.0
-      ts-api-utils: 2.5.0(typescript@5.9.3)
-      typescript: 5.9.3
+      ts-api-utils: 2.5.0(typescript@6.0.2)
+      typescript: 6.0.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/types@8.57.1': {}
+  '@typescript-eslint/types@8.57.2': {}
 
-  '@typescript-eslint/typescript-estree@8.57.1(typescript@5.9.3)':
+  '@typescript-eslint/typescript-estree@8.57.2(typescript@6.0.2)':
     dependencies:
-      '@typescript-eslint/project-service': 8.57.1(typescript@5.9.3)
-      '@typescript-eslint/tsconfig-utils': 8.57.1(typescript@5.9.3)
-      '@typescript-eslint/types': 8.57.1
-      '@typescript-eslint/visitor-keys': 8.57.1
+      '@typescript-eslint/project-service': 8.57.2(typescript@6.0.2)
+      '@typescript-eslint/tsconfig-utils': 8.57.2(typescript@6.0.2)
+      '@typescript-eslint/types': 8.57.2
+      '@typescript-eslint/visitor-keys': 8.57.2
       debug: 4.4.3
       minimatch: 10.2.4
       semver: 7.7.4
       tinyglobby: 0.2.15
-      ts-api-utils: 2.5.0(typescript@5.9.3)
-      typescript: 5.9.3
+      ts-api-utils: 2.5.0(typescript@6.0.2)
+      typescript: 6.0.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.57.1(eslint@10.1.0)(typescript@5.9.3)':
+  '@typescript-eslint/utils@8.57.2(eslint@10.1.0)(typescript@6.0.2)':
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.1.0)
-      '@typescript-eslint/scope-manager': 8.57.1
-      '@typescript-eslint/types': 8.57.1
-      '@typescript-eslint/typescript-estree': 8.57.1(typescript@5.9.3)
+      '@typescript-eslint/scope-manager': 8.57.2
+      '@typescript-eslint/types': 8.57.2
+      '@typescript-eslint/typescript-estree': 8.57.2(typescript@6.0.2)
       eslint: 10.1.0
-      typescript: 5.9.3
+      typescript: 6.0.2
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/visitor-keys@8.57.1':
+  '@typescript-eslint/visitor-keys@8.57.2':
     dependencies:
-      '@typescript-eslint/types': 8.57.1
+      '@typescript-eslint/types': 8.57.2
       eslint-visitor-keys: 5.0.1
 
   '@vitest/coverage-v8@4.1.1(vitest@4.1.1(@types/node@25.5.0)(vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3)))':
@@ -5888,9 +5888,9 @@ snapshots:
     dependencies:
       reusify: 1.1.0
 
-  fdir@6.5.0(picomatch@4.0.3):
+  fdir@6.5.0(picomatch@4.0.4):
     optionalDependencies:
-      picomatch: 4.0.3
+      picomatch: 4.0.4
 
   fecha@4.2.3: {}
 
@@ -6273,7 +6273,7 @@ snapshots:
   micromatch@4.0.8:
     dependencies:
       braces: 3.0.3
-      picomatch: 2.3.1
+      picomatch: 2.3.2
 
   mime-db@1.52.0: {}
 
@@ -6314,16 +6314,16 @@ snapshots:
       '@types/whatwg-url': 13.0.0
       whatwg-url: 14.2.0
 
-  mongodb@7.1.0:
+  mongodb@7.1.1:
     dependencies:
       '@mongodb-js/saslprep': 1.4.6
       bson: 7.2.0
       mongodb-connection-string-url: 7.0.1
 
-  mongoose@9.3.1:
+  mongoose@9.3.2:
     dependencies:
       kareem: 3.2.0
-      mongodb: 7.1.0
+      mongodb: 7.1.1
       mpath: 0.9.0
       mquery: 6.0.0
       ms: 2.1.3
@@ -6478,11 +6478,11 @@ snapshots:
 
   picocolors@1.1.1: {}
 
-  picomatch@2.3.1: {}
+  picomatch@2.3.2: {}
 
   picomatch@4.0.2: {}
 
-  picomatch@4.0.3: {}
+  picomatch@4.0.4: {}
 
   pify@4.0.1: {}
 
@@ -6609,7 +6609,7 @@ snapshots:
 
   reusify@1.1.0: {}
 
-  rolldown-plugin-dts@0.22.5(rolldown@1.0.0-rc.9)(typescript@5.9.3):
+  rolldown-plugin-dts@0.22.5(rolldown@1.0.0-rc.9)(typescript@6.0.2):
     dependencies:
       '@babel/generator': 8.0.0-rc.2
       '@babel/helper-validator-identifier': 8.0.0-rc.2
@@ -6622,7 +6622,7 @@ snapshots:
       obug: 2.1.1
       rolldown: 1.0.0-rc.9
     optionalDependencies:
-      typescript: 5.9.3
+      typescript: 6.0.2
     transitivePeerDependencies:
       - oxc-resolver
 
@@ -6988,8 +6988,8 @@ snapshots:
 
   tinyglobby@0.2.15:
     dependencies:
-      fdir: 6.5.0(picomatch@4.0.3)
-      picomatch: 4.0.3
+      fdir: 6.5.0(picomatch@4.0.4)
+      picomatch: 4.0.4
 
   tinyrainbow@3.1.0: {}
 
@@ -7011,11 +7011,11 @@ snapshots:
 
   triple-beam@1.4.1: {}
 
-  ts-api-utils@2.5.0(typescript@5.9.3):
+  ts-api-utils@2.5.0(typescript@6.0.2):
     dependencies:
-      typescript: 5.9.3
+      typescript: 6.0.2
 
-  tsdown@0.21.4(typescript@5.9.3):
+  tsdown@0.21.4(typescript@6.0.2):
     dependencies:
       ansis: 4.2.0
       cac: 7.0.0
@@ -7024,9 +7024,9 @@ snapshots:
       hookable: 6.1.0
       import-without-cache: 0.2.5
       obug: 2.1.1
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       rolldown: 1.0.0-rc.9
-      rolldown-plugin-dts: 0.22.5(rolldown@1.0.0-rc.9)(typescript@5.9.3)
+      rolldown-plugin-dts: 0.22.5(rolldown@1.0.0-rc.9)(typescript@6.0.2)
       semver: 7.7.4
       tinyexec: 1.0.4
       tinyglobby: 0.2.15
@@ -7034,7 +7034,7 @@ snapshots:
       unconfig-core: 7.5.0
       unrun: 0.2.32
     optionalDependencies:
-      typescript: 5.9.3
+      typescript: 6.0.2
     transitivePeerDependencies:
       - '@ts-macro/tsc'
       - '@typescript/native-preview'
@@ -7071,18 +7071,18 @@ snapshots:
 
   typedarray@0.0.6: {}
 
-  typescript-eslint@8.57.1(eslint@10.1.0)(typescript@5.9.3):
+  typescript-eslint@8.57.2(eslint@10.1.0)(typescript@6.0.2):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.57.1(@typescript-eslint/parser@8.57.1(eslint@10.1.0)(typescript@5.9.3))(eslint@10.1.0)(typescript@5.9.3)
-      '@typescript-eslint/parser': 8.57.1(eslint@10.1.0)(typescript@5.9.3)
-      '@typescript-eslint/typescript-estree': 8.57.1(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.57.1(eslint@10.1.0)(typescript@5.9.3)
+      '@typescript-eslint/eslint-plugin': 8.57.2(@typescript-eslint/parser@8.57.2(eslint@10.1.0)(typescript@6.0.2))(eslint@10.1.0)(typescript@6.0.2)
+      '@typescript-eslint/parser': 8.57.2(eslint@10.1.0)(typescript@6.0.2)
+      '@typescript-eslint/typescript-estree': 8.57.2(typescript@6.0.2)
+      '@typescript-eslint/utils': 8.57.2(eslint@10.1.0)(typescript@6.0.2)
       eslint: 10.1.0
-      typescript: 5.9.3
+      typescript: 6.0.2
     transitivePeerDependencies:
       - supports-color
 
-  typescript@5.9.3: {}
+  typescript@6.0.2: {}
 
   unconfig-core@7.5.0:
     dependencies:
@@ -7116,7 +7116,7 @@ snapshots:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       acorn: 8.16.0
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       webpack-virtual-modules: 0.6.2
 
   unrun@0.2.32:
@@ -7143,8 +7143,8 @@ snapshots:
   vite@7.3.1(@types/node@25.5.0)(terser@5.46.1)(yaml@2.8.3):
     dependencies:
       esbuild: 0.27.4
-      fdir: 6.5.0(picomatch@4.0.3)
-      picomatch: 4.0.3
+      fdir: 6.5.0(picomatch@4.0.4)
+      picomatch: 4.0.4
       postcss: 8.5.8
       rollup: 4.60.0
       tinyglobby: 0.2.15
@@ -7168,7 +7168,7 @@ snapshots:
       magic-string: 0.30.21
       obug: 2.1.1
       pathe: 2.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       std-env: 4.0.0
       tinybench: 2.9.0
       tinyexec: 1.0.4
