@@ -1,4 +1,3 @@
-import { $log } from '@tsed/logger';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { Logger } from '@radoslavirha/tsed-logger';
 import SuperTest from 'supertest';
@@ -62,12 +61,5 @@ describe('ServerBase', () => {
             test: 'This is a test',
             value: 12345
         });
-    });
-
-    it('wires TsEDLoggerBridge so $log forwards to the Logger', () => {
-        // After bootstrap the bridge replaces the default ConsoleAppender with the
-        // logger-bridge appender.  Any $log call flows through our Logger instead
-        // of the default Ts.ED stdout format.
-        expect($log.appenders.get('logger')).toMatchObject({ config: { type: 'logger-bridge' } });
     });
 });

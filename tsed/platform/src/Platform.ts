@@ -1,6 +1,8 @@
 import { Type } from '@tsed/core';
 import { PlatformExpress } from '@tsed/platform-express';
 import { ServerConfiguration } from './ServerConfiguration.js';
+import { injector } from '@tsed/di';
+import { TsEDLoggerBridge } from './TsEDLoggerBridge.js';
 
 /**
  * Express-based Ts.ED platform adapter.
@@ -63,6 +65,8 @@ export class Platform extends PlatformExpress {
      * @throws {Error} If server initialization fails or configuration is invalid
      */
     static bootstrap(module: Type, settings: ServerConfiguration): ReturnType<typeof PlatformExpress.bootstrap> {
+        const loggerBridge = injector().get<TsEDLoggerBridge>(TsEDLoggerBridge);
+        settings.logger = loggerBridge.getTsEDLoggerConfig(settings.logger);
         return PlatformExpress.bootstrap(module, settings);
     }
 }

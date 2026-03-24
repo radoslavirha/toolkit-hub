@@ -134,7 +134,7 @@ export class Logger<T extends object = object> {
         this.log(LogLevel.TRACE, body, meta);
     }
 
-    private log(level: LogLevel, body: string, meta?: T): void {
+    public log(level: LogLevel, body: string, meta?: T): void {
         if (!this.enabled) {
             return;
         }
