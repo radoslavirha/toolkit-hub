@@ -1,5 +1,11 @@
 # @radoslavirha/config-vitest
 
+## 0.3.7
+
+### Patch Changes
+
+- [`a4b7c85`](https://github.com/radoslavirha/toolkit-hub/commit/a4b7c8525fa3d877ef3b6b43703ce34a7eeff962) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies
+
 ## 0.3.6
 
 ### Patch Changes

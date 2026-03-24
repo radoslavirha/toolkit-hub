@@ -1,5 +1,13 @@
 # @radoslavirha/logger
 
+## 0.2.2
+
+### Patch Changes
+
+- [`a4b7c85`](https://github.com/radoslavirha/toolkit-hub/commit/a4b7c8525fa3d877ef3b6b43703ce34a7eeff962) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies
+
+- [`6cc8552`](https://github.com/radoslavirha/toolkit-hub/commit/6cc85522c56030ceb55c03bb29e378143e0f836c) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Logger improvements
+
 ## 0.2.1
 
 ### Patch Changes
