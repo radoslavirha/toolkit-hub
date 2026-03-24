@@ -1,5 +1,15 @@
 # @radoslavirha/tsed-mongoose
 
+## 4.0.6
+
+### Patch Changes
+
+- [`6c97cf1`](https://github.com/radoslavirha/toolkit-hub/commit/6c97cf184920104cd9587a5a006ef30e3653292e) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Improve logger
+
+- Updated dependencies [[`6c97cf1`](https://github.com/radoslavirha/toolkit-hub/commit/6c97cf184920104cd9587a5a006ef30e3653292e)]:
+  - @radoslavirha/utils@0.7.5
+  - @radoslavirha/tsed-common@0.4.12
+
 ## 4.0.5
 
 ### Patch Changes
