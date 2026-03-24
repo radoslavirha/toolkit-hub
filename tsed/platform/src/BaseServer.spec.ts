@@ -1,3 +1,4 @@
+import { $log } from '@tsed/logger';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { Logger } from '@radoslavirha/tsed-logger';
 import SuperTest from 'supertest';
@@ -5,12 +6,16 @@ import { describe, beforeEach, afterEach, expect, vi, it, MockInstance } from 'v
 import { TestController } from './test/TestController.js';
 import { BaseServer } from './BaseServer.js';
 
+const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream; _stderr: NodeJS.WriteStream };
+
 describe('ServerBase', () => {
     let server: BaseServer;
     let loggerInfoSpy: MockInstance;
 
     // Must run BEFORE bootstrap so the $onReady lifecycle hook doesn't produce real output
     beforeEach(() => {
+        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
         loggerInfoSpy = vi.spyOn(Logger.prototype, 'info').mockImplementation(vi.fn());
     });
 
@@ -57,5 +62,12 @@ describe('ServerBase', () => {
             test: 'This is a test',
             value: 12345
         });
+    });
+
+    it('wires TsEDLoggerBridge so $log forwards to the Logger', () => {
+        // After bootstrap the bridge replaces the default ConsoleAppender with the
+        // logger-bridge appender.  Any $log call flows through our Logger instead
+        // of the default Ts.ED stdout format.
+        expect($log.appenders.get('logger')).toMatchObject({ config: { type: 'logger-bridge' } });
     });
 });

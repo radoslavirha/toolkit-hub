@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, beforeEach, afterEach, expect, it, vi } from 'vitest';
 import { Logger as BaseLogger, LogLevel } from '@radoslavirha/logger';
 
 import { LoggerOptionsSchema } from './RequestLogOptions.schema.js';
@@ -22,7 +22,17 @@ const getOptions = (opts: LoggerOptions = {}) => LoggerOptionsSchema.parse(opts)
  *   - child() returns a Logger instance (not just BaseLogger)
  *   - The @OverrideProvider(Logger) pattern is the intended API-side setup
  */
+const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream; _stderr: NodeJS.WriteStream };
+
 describe('Logger (tsed-logger)', () => {
+    beforeEach(() => {
+        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+    });
+
+    afterEach(() => {
+        vi.restoreAllMocks();
+    });
     it('is an instance of BaseLogger', () => {
         const logger = new Logger(getOptions({ level: LogLevel.INFO }));
         expect(logger).toBeInstanceOf(BaseLogger);

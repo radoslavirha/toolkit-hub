@@ -1,4 +1,4 @@
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, afterEach, describe, expect, it, vi, MockInstance } from 'vitest';
 import { Injectable, OverrideProvider, Scope, ProviderScope } from '@tsed/di';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import SuperTest from 'supertest';
@@ -73,10 +73,12 @@ describe('Logger (integration)', () => {
 
     describe('with all request logging options enabled', () => {
         let request: SuperTest.Agent;
-        let stdoutSpy: { mock: { calls: unknown[][] } };
-        let stderrSpy: { mock: { calls: unknown[][] } };
+        let stdoutSpy: MockInstance;
+        let stderrSpy: MockInstance;
 
         beforeEach(async () => {
+            stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+            stderrSpy = vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
             TestLogger.configure({
                 enabled: true,
                 requests: {
@@ -90,8 +92,8 @@ describe('Logger (integration)', () => {
             });
             await PlatformTest.bootstrap(TestServer, { imports: [TestLogger] })();
             request = SuperTest(PlatformTest.callback());
-            stdoutSpy = vi.spyOn(consoleLike._stdout, 'write');
-            stderrSpy = vi.spyOn(consoleLike._stderr, 'write');
+            stdoutSpy.mockClear();
+            stderrSpy.mockClear();
         });
 
         afterEach(async () => {
@@ -183,19 +185,43 @@ describe('Logger (integration)', () => {
             expect(entry?.['attributes']).not.toHaveProperty('error_name');
             expect(entry?.['attributes']).not.toHaveProperty('error_message');
         });
+
+        it('logs [[ BINARY ]] as responseBody when Content-Type is application/octet-stream', async () => {
+            await request.get('/test/binary');
+
+            const logs = parseLogs(stdoutSpy);
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+
+            expect(entry?.['attributes']).toMatchObject({
+                responseBody: '[[ BINARY ]]'
+            });
+        });
+
+        it('logs actual responseBody when Content-Type is application/json', async () => {
+            await request.get('/test/success');
+
+            const logs = parseLogs(stdoutSpy);
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+
+            expect(entry?.['attributes']).toMatchObject({
+                responseBody: expect.objectContaining({ ok: true })
+            });
+        });
     });
 
     describe('with request logging disabled', () => {
         let request: SuperTest.Agent;
-        let stdoutSpy: { mock: { calls: unknown[][] } };
-        let stderrSpy: { mock: { calls: unknown[][] } };
+        let stdoutSpy: MockInstance;
+        let stderrSpy: MockInstance;
 
         beforeEach(async () => {
+            stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+            stderrSpy = vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
             TestLogger.configure({ requests: { enabled: false } });
             await PlatformTest.bootstrap(TestServer, { imports: [TestLogger] })();
             request = SuperTest(PlatformTest.callback());
-            stdoutSpy = vi.spyOn(consoleLike._stdout, 'write');
-            stderrSpy = vi.spyOn(consoleLike._stderr, 'write');
+            stdoutSpy.mockClear();
+            stderrSpy.mockClear();
         });
 
         afterEach(async () => {
@@ -216,10 +242,12 @@ describe('Logger (integration)', () => {
 
     describe('with all sub-options disabled', () => {
         let request: SuperTest.Agent;
-        let stdoutSpy: { mock: { calls: unknown[][] } };
-        let stderrSpy: { mock: { calls: unknown[][] } };
+        let stdoutSpy: MockInstance;
+        let stderrSpy: MockInstance;
 
         beforeEach(async () => {
+            stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+            stderrSpy = vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
             TestLogger.configure({
                 requests: {
                     enabled: true,
@@ -232,8 +260,8 @@ describe('Logger (integration)', () => {
             });
             await PlatformTest.bootstrap(TestServer, { imports: [TestLogger] })();
             request = SuperTest(PlatformTest.callback());
-            stdoutSpy = vi.spyOn(consoleLike._stdout, 'write');
-            stderrSpy = vi.spyOn(consoleLike._stderr, 'write');
+            stdoutSpy.mockClear();
+            stderrSpy.mockClear();
         });
 
         afterEach(async () => {

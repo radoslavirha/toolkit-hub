@@ -188,6 +188,27 @@ describe('Logger', () => {
             expect(getLine()['attributes']).toEqual({ tenantId: 'tenant-x' });
         });
 
+        it('child logger uses its own metaProvider when parent has none', () => {
+            const logger = new Logger();
+            const child = logger.child<Record<string, unknown>>('Service', { metaProvider: () => ({ childKey: 'child-value' }) });
+            child.info('from child');
+            expect(getLine()['attributes']).toEqual({ childKey: 'child-value' });
+        });
+
+        it('child metaProvider merges on top of parent metaProvider', () => {
+            const logger = new Logger({ metaProvider: () => ({ tenantId: 'tenant-x', source: 'parent' }) });
+            const child = logger.child<Record<string, unknown>>('Service', { metaProvider: () => ({ childKey: 'child-value', source: 'child' }) });
+            child.info('from child');
+            expect(getLine()['attributes']).toEqual({ tenantId: 'tenant-x', source: 'child', childKey: 'child-value' });
+        });
+
+        it('child metaProvider keys take precedence over parent metaProvider keys', () => {
+            const logger = new Logger({ metaProvider: () => ({ shared: 'from-parent' }) });
+            const child = logger.child<Record<string, unknown>>('Service', { metaProvider: () => ({ shared: 'from-child' }) });
+            child.info('conflict');
+            expect((getLine()['attributes'] as Record<string, unknown>)['shared']).toBe('from-child');
+        });
+
         it('provider is called on each log call independently', () => {
             let counter = 0;
             const logger = new Logger({ metaProvider: () => ({ seq: ++counter }) });

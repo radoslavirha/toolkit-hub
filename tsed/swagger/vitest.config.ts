@@ -3,9 +3,13 @@ import { defineConfig, mergeConfig } from 'vitest/config';
 
 export default defineConfig(mergeConfig(defaultConfig, {
     test: {
+        env: {
+            SUPPRESS_NO_CONFIG_WARNING: '1'
+        },
         coverage: {
             exclude: [
-                'src/models'
+                'src/models',
+                'src/test'
             ],
             thresholds: {
                 branches: 78.57

@@ -40,6 +40,7 @@
     "dependencies": {
         "@radoslavirha/tsed-configuration": "workspace:*",
         "@radoslavirha/utils": "workspace:*",
+        "@tsed/logger": "catalog:tsed",
         "body-parser": "2.2.2",
         "compression": "1.8.1",
         "cookie-parser": "1.4.7",

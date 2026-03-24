@@ -2,14 +2,22 @@ import { BaseServer, ServerConfiguration } from '@radoslavirha/tsed-platform';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { minify } from 'html-minifier-terser';
 import SuperTest from 'supertest';
-import { describe, afterEach, expect, it } from 'vitest';
+import { describe, beforeEach, afterEach, expect, it, vi } from 'vitest';
 import { SwaggerController } from './SwaggerController.js';
 import { APIInformation } from '@radoslavirha/tsed-configuration';
+
+const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream; _stderr: NodeJS.WriteStream };
 
 describe('SwaggerController', () => {
     let request: SuperTest.Agent;
 
+    beforeEach(() => {
+        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+    });
+
     afterEach(PlatformTest.reset);
+    afterEach(() => vi.restoreAllMocks());
 
     it('Should call GET /', async () => {
         await PlatformTest.bootstrap(BaseServer, <ServerConfiguration>{

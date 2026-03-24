@@ -10,6 +10,7 @@ import { Get, Returns } from '@tsed/schema';
  * - GET /test/error          — throws an Error, resulting in a 500 response
  * - GET /test/handled-error  — sets status 400 without throwing, so $ctx.error stays null
  * - GET /test/code-error     — throws an error whose name is undefined but code is set (e.g. Node.js ENOENT-style)
+ * - GET /test/binary         — returns 200 with Content-Type: application/octet-stream (binary path)
  */
 @Controller('/test')
 export class TestController {
@@ -39,5 +40,12 @@ export class TestController {
     public getHandledError(@Response() res: PlatformResponse): { message: string } {
         res.status(400);
         return { message: 'handled' };
+    }
+
+    @Get('/binary')
+    @Returns(200)
+    public getBinary(@Response() res: PlatformResponse): Buffer {
+        res.contentType('application/octet-stream');
+        return Buffer.from([0x01, 0x02, 0x03]);
     }
 }

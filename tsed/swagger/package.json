@@ -49,6 +49,7 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@radoslavirha/tsed-configuration": "workspace:*",
+        "@radoslavirha/tsed-logger": "workspace:*",
         "@radoslavirha/tsed-platform": "workspace:*",
         "@swc/core": "catalog:",
         "@tsed/di": "catalog:tsed",
@@ -72,6 +73,7 @@
     },
     "peerDependencies": {
         "@radoslavirha/tsed-configuration": "workspace:*",
+        "@radoslavirha/tsed-logger": "workspace:*",
         "@radoslavirha/tsed-platform": "workspace:*",
         "@tsed/di": "catalog:tsed",
         "@tsed/json-mapper": "catalog:tsed",

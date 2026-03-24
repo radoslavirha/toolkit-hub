@@ -48,7 +48,7 @@ export interface ENVS<TValue = string | undefined> {
 export class EnvironmentVariablesProvider extends BaseConfigProvider<ENVS> {
     constructor() {
         // Load .env file first (if exists)
-        const dotenvConfig = config().parsed ?? {};
+        const dotenvConfig = config({ quiet: true }).parsed ?? {};
         
         // Merge with precedence: process.env overrides .env file
         super({

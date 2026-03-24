@@ -4,6 +4,7 @@ import '@tsed/platform-express';
 import '@tsed/ajv';
 import { APIInformation, getServerDefaultConfig } from '@radoslavirha/tsed-configuration';
 import { Logger } from '@radoslavirha/tsed-logger';
+import { TsEDLoggerBridge } from './TsEDLoggerBridge.js';
 import bodyParser from 'body-parser';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
@@ -103,6 +104,10 @@ export class BaseServer {
 
     @Inject(Logger)
     private logger!: Logger;
+
+    /** Injected to ensure the Ts.ED $log bridge is bootstrapped with the DI Logger. */
+    @Inject(TsEDLoggerBridge)
+    private tsedLoggerBridge!: TsEDLoggerBridge;
 
     /**
      * Lifecycle hook called when the server is fully initialized and ready.

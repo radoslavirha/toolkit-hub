@@ -109,7 +109,9 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         }
 
         if (ObjectUtils.isEnabled(this.options.requests.responseBody)) {
-            meta.responseBody = $ctx.data;
+            const contentType = String($ctx.response.getHeaders()['content-type'] ?? '');
+            const isTextSafe = !contentType || /^(text\/|application\/(json|xml|ld\+json|graphql|javascript|x-www-form-urlencoded))/i.test(contentType);
+            meta.responseBody = isTextSafe ? $ctx.data : '[[ BINARY ]]';
         }
 
         if (status >= 400) {
