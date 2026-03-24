@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-logger
 
+## 0.3.2
+
+### Patch Changes
+
+- [`a4b7c85`](https://github.com/radoslavirha/toolkit-hub/commit/a4b7c8525fa3d877ef3b6b43703ce34a7eeff962) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies
+
+- [`6cc8552`](https://github.com/radoslavirha/toolkit-hub/commit/6cc85522c56030ceb55c03bb29e378143e0f836c) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Logger improvements
+
+- Updated dependencies [[`a4b7c85`](https://github.com/radoslavirha/toolkit-hub/commit/a4b7c8525fa3d877ef3b6b43703ce34a7eeff962), [`6cc8552`](https://github.com/radoslavirha/toolkit-hub/commit/6cc85522c56030ceb55c03bb29e378143e0f836c)]:
+  - @radoslavirha/logger@0.2.2
+  - @radoslavirha/utils@0.7.4
+
 ## 0.3.1
 
 ### Patch Changes
