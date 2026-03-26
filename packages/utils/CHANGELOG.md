@@ -1,5 +1,14 @@
 # @radoslavirha/utils
 
+## 0.7.6
+
+### Patch Changes
+
+- [`b6c768d`](https://github.com/radoslavirha/toolkit-hub/commit/b6c768defea2cce2fcb6b0b9de11d5f17a5cc7c0) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies
+
+- Updated dependencies [[`b6c768d`](https://github.com/radoslavirha/toolkit-hub/commit/b6c768defea2cce2fcb6b0b9de11d5f17a5cc7c0)]:
+  - @radoslavirha/types@0.3.8
+
 ## 0.7.5
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/logger",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "description": "OTEL-compliant Winston logger",
     "keywords": [
         "logger",
