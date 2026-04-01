@@ -23,7 +23,7 @@ catalogs:
   tsed:
     '@tsed/ajv': 8.25.4
     '@tsed/core': 8.25.4
-    '@tsed/di': 8.25.4
+    '@tsed/di': 8.25.5
     '@tsed/json-mapper': 8.25.4
     '@tsed/logger': 8.0.5
     '@tsed/mongoose': 8.25.4
