@@ -1,5 +1,11 @@
 # @radoslavirha/logger
 
+## 0.2.5
+
+### Patch Changes
+
+- [`80e0748`](https://github.com/radoslavirha/toolkit-hub/commit/80e07488b956d95194f79567dcb80e804792ca2b) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Typescript config
+
 ## 0.2.4
 
 ### Patch Changes
