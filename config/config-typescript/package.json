@@ -11,6 +11,11 @@
     },
     "files": [
         "tsconfig.json",
+        "tsconfig.base.json",
+        "tsconfig.node.json",
+        "tsconfig.tsed.json",
+        "tsconfig.react.json",
+        "tsconfig.react-app.json",
         "package.json",
         "README.md"
     ],

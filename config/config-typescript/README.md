@@ -1,48 +1,42 @@
 # @radoslavirha/config-typescript
 
-Base TypeScript compiler configuration for strict, modern Node.js applications. Provides sensible defaults for ESNext + Node.js projects with support for decorators and optimal type checking.
+Base TypeScript compiler configurations for strict, modern projects. Provides targeted presets for Ts.ED services, pure Node.js packages, React libraries, and React Vite apps.
 
 ---
 
 ## 🤖 Quick Reference for AI Agents
 
-**Purpose:** Base TypeScript compiler configuration with strict settings.
+**Purpose:** Shared TypeScript compiler configurations — pick the preset that matches your package type.
 
 **Install in pnpm monorepo:**
 ```bash
-# Install in packages that need TypeScript compilation
 pnpm --filter YOUR_PACKAGE_NAME add -D @radoslavirha/config-typescript typescript tslib
 ```
 
-**Essential Usage:**
-```json
-// tsconfig.json
-{
-  "extends": "@radoslavirha/config-typescript",
-  "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src"
-  },
-  "include": ["src/**/*"]
-}
-```
+**Available presets:**
 
-**Included Settings:**
-- Strict mode enabled
-- ESNext target + NodeNext module resolution
-- Decorator support (experimentalDecorators, emitDecoratorMetadata)
-- JSON module imports
-- Skip lib check for faster compilation
+| Config | Use for |
+|--------|---------|
+| `tsconfig.tsed.json` | Ts.ED services & framework packages (decorators, NodeNext) |
+| `tsconfig.node.json` | Pure Node.js library packages (no decorators, full strict) |
+| `tsconfig.react.json` | Shareable React component/library packages (buildable) |
+| `tsconfig.react-app.json` | React Vite apps (extends react, adds `noEmit` + stricter checks) |
+| `tsconfig.base.json` | Shared base only — extend for custom presets |
+| `tsconfig.json` | Backward-compat alias → `tsconfig.tsed.json` |
 
-**Override if needed:**
+**Usage:**
 ```json
-{
-  "extends": "@radoslavirha/config-typescript",
-  "compilerOptions": {
-    "target": "ES2020",  // Override specific options
-    "outDir": "./build"
-  }
-}
+// Ts.ED service or framework package
+{ "extends": "@radoslavirha/config-typescript/tsconfig.tsed.json" }
+
+// Pure Node.js library (utils, logger, types, build/test tooling)
+{ "extends": "@radoslavirha/config-typescript/tsconfig.node.json" }
+
+// Shareable React package
+{ "extends": "@radoslavirha/config-typescript/tsconfig.react.json" }
+
+// React Vite app
+{ "extends": "@radoslavirha/config-typescript/tsconfig.react-app.json" }
 ```
 
 **Full documentation below** ↓
@@ -65,33 +59,17 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 - `typescript` >= 5.0.0
 - `tslib` >= 2.0.0
 
-## What's Included
+## Presets
 
-### Compiler Settings
+### `tsconfig.tsed.json` — Ts.ED packages
 
-✅ **Strict Mode** - All strict type checking options enabled  
-✅ **ESNext Target** - Modern JavaScript features  
-✅ **Node.js Module Resolution** - NodeNext for modern Node.js  
-✅ **Decorator Support** - Experimental decorators (for Ts.ED)  
-✅ **JSON Modules** - Import JSON files as modules  
-✅ **Skip Lib Check** - Faster compilation by skipping type checks in `.d.ts` files
+For Ts.ED services and framework packages that use decorators and DI.
 
-### Key Features
-
-- **Zero Configuration** - Works out of the box
-- **Ts.ED Compatible** - Decorator settings for Ts.ED framework
-- **Monorepo Ready** - Supports TypeScript project references
-- **Production Optimized** - No incremental builds or diagnostics
-
-## Usage
-
-### Basic Setup
-
-Create `tsconfig.json` in your project root:
+**Key settings:** `experimentalDecorators`, `strictPropertyInitialization: false`, `useDefineForClassFields: false`, NodeNext modules.
 
 ```json
 {
-    "extends": "@radoslavirha/config-typescript/tsconfig.json",
+    "extends": "@radoslavirha/config-typescript/tsconfig.tsed.json",
     "compilerOptions": {
         "rootDir": "./src",
         "composite": false
@@ -99,58 +77,51 @@ Create `tsconfig.json` in your project root:
 }
 ```
 
-### Compilation
+### `tsconfig.node.json` — Node.js library packages
 
-Use TypeScript compiler directly or via build tools:
+For pure Node.js packages with no Ts.ED dependency (`utils`, `logger`, `types`, build/test tooling).
 
-```bash
-# Direct compilation
-pnpm tsc
-
-# With build tool (tsdown, swc, etc.)
-pnpm build
-```
-
-## Customization
-
-### Override Compiler Options
+**Key settings:** NodeNext modules, full strict mode, standard class fields.
 
 ```json
 {
-    "extends": "@radoslavirha/config-typescript/tsconfig.json",
+    "extends": "@radoslavirha/config-typescript/tsconfig.node.json",
     "compilerOptions": {
-        "composite": false,
-        "outDir": "./dist",
-        "baseUrl": "./src",
-        "paths": {
-            "@/*": ["*"]
-        }
+        "rootDir": "./src",
+        "composite": false
     }
 }
 ```
 
-### Change Source Directory
+### `tsconfig.react.json` — Shareable React packages
+
+For published React component libraries or shared UI packages that need build output.
+
+**Key settings:** `Bundler` module resolution, `react-jsx`, DOM libs, `isolatedModules`, no `noEmit`.
 
 ```json
 {
-    "extends": "@radoslavirha/config-typescript/tsconfig.json",
+    "extends": "@radoslavirha/config-typescript/tsconfig.react.json",
     "compilerOptions": {
-        "rootDir": "./lib",
-        "composite": false
+        "rootDir": "./src",
+        "outDir": "./dist"
+    }
+}
+```
+
+### `tsconfig.react-app.json` — React Vite apps
+
+For React apps bundled by Vite. Extends `tsconfig.react.json` with stricter checks and `noEmit: true`.
+
+**Key settings:** everything from `tsconfig.react.json` plus `noEmit`, `noUnusedLocals`, `noUnusedParameters`, `noFallthroughCasesInSwitch`, `noUncheckedSideEffectImports`.
+
+```json
+{
+    "extends": "@radoslavirha/config-typescript/tsconfig.react-app.json",
+    "compilerOptions": {
+        "types": ["vitest/globals", "node"]
     },
-    "include": ["lib/**/*"]
-}
-```
-
-### Add Type Definitions
-
-```json
-{
-    "extends": "@radoslavirha/config-typescript/tsconfig.json",
-    "compilerOptions": {
-        "types": ["node", "jest"],
-        "composite": false
-    }
+    "include": ["src", "vite.config.ts", "vitest.config.ts"]
 }
 ```
 

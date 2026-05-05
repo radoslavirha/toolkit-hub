@@ -1,0 +1,21 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "rootDir": "${configDir}/src",
+        "module": "NodeNext",
+        "target": "ESNext",
+        "moduleResolution": "NodeNext",
+        "incremental": false,
+        "diagnostics": false,
+        "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
+        "useDefineForClassFields": false
+    },
+    "include": [
+        "${configDir}/src/**/*"
+    ],
+    "exclude": [
+        "${configDir}/node_modules",
+        "${configDir}/coverage"
+    ]
+}
