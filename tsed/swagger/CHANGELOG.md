@@ -1,5 +1,18 @@
 # @radoslavirha/tsed-swagger
 
+## 5.0.5
+
+### Patch Changes
+
+- [`80e0748`](https://github.com/radoslavirha/toolkit-hub/commit/80e07488b956d95194f79567dcb80e804792ca2b) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Typescript config
+
+- Updated dependencies [[`80e0748`](https://github.com/radoslavirha/toolkit-hub/commit/80e07488b956d95194f79567dcb80e804792ca2b)]:
+  - @radoslavirha/types@0.3.9
+  - @radoslavirha/utils@0.7.7
+  - @radoslavirha/tsed-configuration@0.6.4
+  - @radoslavirha/tsed-logger@0.3.5
+  - @radoslavirha/tsed-platform@1.0.5
+
 ## 5.0.4
 
 ### Patch Changes
