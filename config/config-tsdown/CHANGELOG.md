@@ -1,5 +1,11 @@
 # @radoslavirha/config-tsdown
 
+## 0.1.8
+
+### Patch Changes
+
+- [`f28bff1`](https://github.com/radoslavirha/toolkit-hub/commit/f28bff1f0d07877dde6cef04ef115f1dfe0f6599) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Build fixes
+
 ## 0.1.7
 
 ### Patch Changes

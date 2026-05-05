@@ -1,5 +1,13 @@
 # @radoslavirha/tsed-mongoose
 
+## 4.0.9
+
+### Patch Changes
+
+- Updated dependencies [[`f28bff1`](https://github.com/radoslavirha/toolkit-hub/commit/f28bff1f0d07877dde6cef04ef115f1dfe0f6599)]:
+  - @radoslavirha/tsed-common@0.4.15
+  - @radoslavirha/utils@0.7.7
+
 ## 4.0.8
 
 ### Patch Changes
