@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-common
 
+## 0.4.15
+
+### Patch Changes
+
+- [`f28bff1`](https://github.com/radoslavirha/toolkit-hub/commit/f28bff1f0d07877dde6cef04ef115f1dfe0f6599) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Build fixes
+
+- Updated dependencies []:
+  - @radoslavirha/utils@0.7.7
+
 ## 0.4.14
 
 ### Patch Changes
