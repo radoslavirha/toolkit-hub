@@ -33,8 +33,8 @@
         "husky": "^9.1.7"
     },
     "devDependencies": {
-        "@changesets/changelog-github": "0.6.0",
-        "@changesets/cli": "2.30.0"
+        "@changesets/changelog-github": "0.7.0",
+        "@changesets/cli": "2.31.0"
     },
     "engines": {
         "node": ">= 24",
