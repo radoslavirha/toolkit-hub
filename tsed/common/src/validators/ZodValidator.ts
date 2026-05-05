@@ -30,7 +30,8 @@ export class ZodValidator {
      * ZodValidator.validate(MqttConfigSchema, { enabled: true, url: 'mqtt://host' });
      * ```
      */
-    public static validate<T extends object>(schema: ZodType<T>, input: unknown, debug = false): T {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public static validate<T extends object>(schema: ZodType<any>, input: unknown, debug = false): T {
         if (debug) {
             console.log('Raw data:', JSON.stringify(input, null, 2));
         }

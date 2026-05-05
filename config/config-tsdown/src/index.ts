@@ -4,7 +4,10 @@ const commonConfig: UserConfig = {
     entry: ['src/index.ts'],
     dts: true,
     clean: true,
-    tsconfig: './tsconfig.json'
+    tsconfig: './tsconfig.json',
+    deps: {
+        skipNodeModulesBundle: true
+    }
 };
 
 export const cjsConfig: UserConfig = {

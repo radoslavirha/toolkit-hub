@@ -50,7 +50,7 @@ export class ConfigJsonProvider<T extends BaseConfig> extends BaseConfigProvider
      */
     static validateConfigFile<T extends BaseConfig>(schema: ZodType<T>, debug = false): T {
         try {
-            return ZodValidator.validate(schema, cfg, debug);
+            return ZodValidator.validate<T>(schema, cfg, debug);
         } catch (error) {
             console.error(`Configuration validation failed: ${error}`);
             throw new Error(`Invalid configuration! ${error}`);
