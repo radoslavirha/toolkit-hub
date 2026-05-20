@@ -1,5 +1,11 @@
 # @radoslavirha/logger
 
+## 0.3.1
+
+### Patch Changes
+
+- [`193bfc1`](https://github.com/radoslavirha/toolkit-hub/commit/193bfc1670ecc59cf7617d0b6603fe54a0d9529c) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages [#2](https://github.com/radoslavirha/toolkit-hub/issues/2)
+
 ## 0.3.0
 
 ### Minor Changes
