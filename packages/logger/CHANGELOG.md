@@ -1,5 +1,11 @@
 # @radoslavirha/logger
 
+## 0.3.0
+
+### Minor Changes
+
+- [`c3c8c2a`](https://github.com/radoslavirha/toolkit-hub/commit/c3c8c2a22065c352f2bead2cff09635bb1ad4677) Thanks [@radoslavirha](https://github.com/radoslavirha)! - pnpm update to v11
+
 ## 0.2.5
 
 ### Patch Changes

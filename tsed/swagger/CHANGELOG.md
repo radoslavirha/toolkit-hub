@@ -1,5 +1,20 @@
 # @radoslavirha/tsed-swagger
 
+## 6.0.0
+
+### Minor Changes
+
+- [`c3c8c2a`](https://github.com/radoslavirha/toolkit-hub/commit/c3c8c2a22065c352f2bead2cff09635bb1ad4677) Thanks [@radoslavirha](https://github.com/radoslavirha)! - pnpm update to v11
+
+### Patch Changes
+
+- Updated dependencies [[`c3c8c2a`](https://github.com/radoslavirha/toolkit-hub/commit/c3c8c2a22065c352f2bead2cff09635bb1ad4677)]:
+  - @radoslavirha/tsed-configuration@0.7.0
+  - @radoslavirha/types@0.4.0
+  - @radoslavirha/utils@0.8.0
+  - @radoslavirha/tsed-platform@2.0.0
+  - @radoslavirha/tsed-logger@0.4.0
+
 ## 5.0.6
 
 ### Patch Changes
