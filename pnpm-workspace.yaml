@@ -3,6 +3,13 @@ packages:
   - packages/*
   - tsed/*
 
+allowBuilds:
+  '@scarf/scarf': true
+  '@swc/core': true
+  cpu-features: false
+  esbuild: true
+  ssh2: false
+
 catalog:
   '@swc/core': 1.15.33
   '@swc/helpers': 0.5.21
@@ -36,6 +43,3 @@ catalogs:
     '@tsed/swagger': 8.28.0
     '@tsed/testcontainers-mongo': 8.28.0
     ajv: 8.20.0
-
-onlyBuiltDependencies:
-  - '@swc/core'

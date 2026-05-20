@@ -14,10 +14,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - name: Use pnpm 10
+      - name: Use pnpm 11
         uses: pnpm/action-setup@v6
         with:
-          version: 10
+          version: 11
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
@@ -36,10 +36,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - name: Use pnpm 10
+      - name: Use pnpm 11
         uses: pnpm/action-setup@v6
         with:
-          version: 10
+          version: 11
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
