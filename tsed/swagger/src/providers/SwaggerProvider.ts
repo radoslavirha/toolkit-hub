@@ -181,7 +181,11 @@ export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]> {
         const schemes: OpenSpecHash<OS3Security> = {};
 
         for (const scheme of security) {
-            schemes[scheme] = SWAGGER_SECURITY_SCHEMES[scheme];
+            const definition = SWAGGER_SECURITY_SCHEMES[scheme];
+            if (!definition) {
+                throw new Error(`Unknown Swagger security scheme "${ String(scheme) }". Use a value from SwaggerSecurityScheme.`);
+            }
+            schemes[scheme] = definition;
         }
 
         return schemes;

@@ -61,16 +61,19 @@ DefaultsUtil.string(value, 'default');       // Returns default if value is nil/
 DefaultsUtil.number(value, 0);               // Returns default if value is nil
 ```
 
-**Complete Method List (ALL 35 methods + 1 type):**
+**Complete Method List (ALL 41 methods + 1 type):**
 - **CommonUtils (11):** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel *(deprecated)*, buildModelStrict, buildModelPartial, buildModelCore
-- **ObjectUtils (5 + 1 type):** keys, values, cloneDeep, mergeDeep, isEnabled — plus `Enabled<T>` type
+- **ObjectUtils (7 + 1 type):** isObject, isPlainObject, keys, values, cloneDeep, mergeDeep, isEnabled — plus `Enabled<T>` type
+- **ArrayUtils (2):** isArray, toArray
+- **BooleanUtils (1):** isBoolean
+- **StringUtils (1):** isString
 - **MappingUtils (7):** mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum
 - **NumberUtils (8):** getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
 - **GeoUtils (2):** calculateKmBetweenCoordinates, degToRad
 - **DefaultsUtil (2):** string, number
 
 **❌ DON'T reimplement:** Type checks, null checks, deep clone/merge, percentage calculations, rounding, distance calculations, default values  
-**✅ DO use:** All 31 provided utilities - they're tested, optimized, and maintain consistency
+**✅ DO use:** All 41 provided utilities - they're tested, optimized, and maintain consistency
 
 **Full documentation below** ↓
 
@@ -98,7 +101,10 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 ## What's Included
 
 - **CommonUtils** - General purpose utilities (isEmpty, isNil, type checks)
-- **ObjectUtils** - Object keys, deep cloning, and merging with array concatenation
+- **ObjectUtils** - Object type guards, keys/values, deep cloning, and merging with array concatenation
+- **ArrayUtils** - Array type guard and safe `toArray` coercion
+- **BooleanUtils** - Boolean primitive type guard
+- **StringUtils** - String primitive type guard
 - **MappingUtils** - Null-safe async mapping for models, arrays, maps, and enums
 - **NumberUtils** - Percentage calculations, rounding, statistical operations
 - **GeoUtils** - Geographic distance calculations (Haversine formula)

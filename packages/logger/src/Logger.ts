@@ -163,6 +163,8 @@ export class Logger<T extends object = object> {
             new winston.transports.Console({
                 format: winston.format.combine(
                     winston.format.timestamp(),
+                    // Reorder keys so each JSON line starts with timestamp, level, message;
+                    // json({ deterministic: false }) preserves this insertion order instead of sorting.
                     winston.format((info) => {
                         const {
                             timestamp, level, message, ...rest

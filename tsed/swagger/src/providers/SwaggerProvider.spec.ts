@@ -143,4 +143,20 @@ describe('SwaggerProvider', () => {
             }
         ]);
     });
+    it('Should throw for an unknown security scheme', async () => {
+        const configuration = CommonUtils.buildModelStrict(SwaggerConfig, {
+            title: 'My API',
+            version: '1.0.0',
+            description: 'This is a description of the application.',
+            documents: [
+                CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
+                    docs: 'v1',
+                    security: ['UNKNOWN_SCHEME' as SwaggerSecurityScheme]
+                })
+            ],
+            swaggerUIOptions: CommonUtils.buildModelStrict(SwaggerUIConfig, {})
+        });
+
+        expect(() => new SwaggerProvider(configuration)).toThrow('Unknown Swagger security scheme "UNKNOWN_SCHEME"');
+    });
 });

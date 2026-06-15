@@ -21,7 +21,7 @@
 
 | Package | Purpose | When to use |
 |---------|---------|-------------|
-| [@radoslavirha/utils](packages/utils/) | 36 common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
+| [@radoslavirha/utils](packages/utils/) | 41 common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
 | [@radoslavirha/types](packages/types/) | TypeScript utility types (`Dictionary`, `EnumDictionary`, `NullableProperty`, `FullPartial`) | When you need common reusable types or to avoid lodash type imports |
 | [@radoslavirha/logger](packages/logger/) | OTEL-compliant Winston logger (zero dependencies on Ts.ED) | When you need structured JSON logging outside of Ts.ED, or as the core logger in any Node.js package |
 
@@ -569,7 +569,7 @@ export class ConfigService extends ConfigProvider<AppConfig> {
 
 ## 🛠️ Utilities Quick Reference
 
-### @radoslavirha/utils - All 39 Methods
+### @radoslavirha/utils - All 41 Methods
 
 **CommonUtils (11 methods):**
 - `isEmpty<T>(value: T): boolean` - Check if empty (objects, arrays, strings, maps, sets, null/undefined)
