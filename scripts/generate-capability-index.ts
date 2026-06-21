@@ -108,6 +108,8 @@ function findMatchingBrace(content: string, openingBraceIndex: number): number {
 
 function extractClassMembers(classBody: string): string[] {
     const members = new Set<string>();
+    // Intentionally limited to explicit public members declared on the class body.
+    // This is used only for drift-checking agent docs against public API references.
     const lines = classBody.split('\n');
 
     for (const line of lines) {
@@ -120,13 +122,13 @@ function extractClassMembers(classBody: string): string[] {
             continue;
         }
 
-        const methodMatch = /^public\s+(?:static\s+)?(?:readonly\s+)?(?:async\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*(?:<.*>)?\s*\(/.exec(trimmed);
+        const methodMatch = /^public\s+(?:static\s+)?(?:readonly\s+)?(?:override\s+)?(?:async\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*(?:<.*?>)?\s*\(/.exec(trimmed);
         if (methodMatch) {
             members.add(methodMatch[1]);
             continue;
         }
 
-        const propertyMatch = /^public\s+(?:static\s+)?(?:readonly\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*[:=]/.exec(trimmed);
+        const propertyMatch = /^public\s+(?:static\s+)?(?:readonly\s+)?(?:override\s+)?([A-Za-z_][A-Za-z0-9_]*)\??\s*[:=]/.exec(trimmed);
         if (propertyMatch) {
             members.add(propertyMatch[1]);
         }
@@ -145,7 +147,7 @@ function resolveModuleFile(moduleSpecifier: string, fromFile: string): string | 
         return null;
     }
 
-    const normalized = basePath.replace(/\.js$/, '');
+    const normalized = basePath.replace(/\.(?:[mc]?js)$/, '');
     const candidates = [
         `${normalized}.ts`,
         `${normalized}.mts`,
@@ -179,7 +181,7 @@ function parseModuleExports(modulePath: string, cache: Map<string, ParseResult>,
     const content = fs.readFileSync(modulePath, 'utf8');
     const localExports = new Map<string, ExportEntry>();
 
-    const declarationRegex = /export\s+(?:declare\s+)?(?:abstract\s+)?(class|function|interface|type|enum|const|let|var)\s+([A-Za-z_][A-Za-z0-9_]*)/g;
+    const declarationRegex = /export\s+(?:declare\s+)?(?:abstract\s+)?(?:async\s+)?(class|function|interface|type|enum|const|let|var)\s+([A-Za-z_][A-Za-z0-9_]*)/g;
 
     for (const match of content.matchAll(declarationRegex)) {
         const [matchedText, rawKind, name] = match;
@@ -230,7 +232,7 @@ function parseModuleExports(modulePath: string, cache: Map<string, ParseResult>,
     const defaultExportRegex = /export\s+default\s+([^\n;{(]+)?/g;
     for (const match of content.matchAll(defaultExportRegex)) {
         const declarationIndex = match.index ?? 0;
-        const declarationLine = content.slice(declarationIndex).split('\n')[0] ?? 'export default';
+        const declarationLine = content.slice(declarationIndex).split('\n')[0] ?? '(default export)';
         const purpose = extractJsDocSummary(findJsDocBefore(content, declarationIndex));
 
         localExports.set('default', {
@@ -495,7 +497,9 @@ function validateAgentReferences(index: CapabilityIndex): string[] {
 
         for (const rawSnippet of inlineCodeMatches) {
             const snippet = rawSnippet.slice(1, -1).trim();
-            const memberMatch = /^([A-Z][A-Za-z0-9_]*)\.([A-Za-z_][A-Za-z0-9_]*)$/.exec(snippet);
+            // Keep this strict on two-part `Owner.member` references to avoid noisy false positives
+            // from general prose and non-API markdown snippets.
+            const memberMatch = /^([A-Za-z_][A-Za-z0-9_]*)\.([A-Za-z_][A-Za-z0-9_]*)$/.exec(snippet);
             if (!memberMatch) {
                 continue;
             }
@@ -508,7 +512,12 @@ function validateAgentReferences(index: CapabilityIndex): string[] {
                 continue;
             }
 
-            const hasMember = ownerEntries.some((entry) => entry.members.includes(member));
+            const classEntries = ownerEntries.filter((entry) => entry.kind === 'class');
+            if (classEntries.length === 0) {
+                continue;
+            }
+
+            const hasMember = classEntries.some((entry) => entry.members.includes(member));
             if (!hasMember) {
                 const relativeFile = path.relative(repositoryRoot, file).replaceAll(path.sep, '/');
                 issues.push(`${relativeFile}: reference \`${snippet}\` points to missing member \`${member}\` on exported symbol \`${owner}\`.`);

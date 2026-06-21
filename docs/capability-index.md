@@ -78,7 +78,7 @@ _No exported symbols discovered from an entrypoint._
 | Export | Signature | Purpose |
 | --- | --- | --- |
 | `APIInformation` | `export class APIInformation` | - |
-|  | members: `service, version` |  |
+|  | members: `description, publicURL, service, version` |  |
 | `AppConfig` | `export type AppConfig = z.infer<typeof AppConfigSchema>` | - |
 | `AppConfigSchema` | `export const AppConfigSchema = BaseConfigSchema.extend(` | - |
 | `BaseConfig` | `export type BaseConfig = z.infer<typeof BaseConfig>;` | TypeScript type for the base configuration. |
@@ -152,10 +152,10 @@ _No exported symbols discovered from an entrypoint._
 | --- | --- | --- |
 | `Server` | `export class Server extends BaseServer` | - |
 | `SwaggerConfig` | `export class SwaggerConfig` | - |
-|  | members: `description, documents, swaggerUIOptions, title, version` |  |
+|  | members: `description, documents, serverUrl, swaggerUIOptions, title, version` |  |
 | `SwaggerController` | `export class SwaggerController` | - |
 | `SwaggerDocumentConfig` | `export class SwaggerDocumentConfig` | - |
-|  | members: `docs, security` |  |
+|  | members: `docs, outFile, security` |  |
 | `SwaggerProvider` | `export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]>` | Provider that converts {@link SwaggerConfig} into Ts.ED's `SwaggerSettings[]` format. |
 | `SwaggerSecurityScheme` | `export enum SwaggerSecurityScheme` | Enumeration of supported Swagger security schemes for API authentication. |
 | `SwaggerUIConfig` | `export class SwaggerUIConfig implements SwaggerUIOptions` | - |

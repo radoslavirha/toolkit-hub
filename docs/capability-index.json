@@ -202,6 +202,8 @@
           "purpose": "",
           "source": "tsed/configuration/src/models/APIInformation.ts",
           "members": [
+            "description",
+            "publicURL",
             "service",
             "version"
           ]
@@ -542,6 +544,7 @@
           "members": [
             "description",
             "documents",
+            "serverUrl",
             "swaggerUIOptions",
             "title",
             "version"
@@ -563,6 +566,7 @@
           "source": "tsed/swagger/src/models/SwaggerDocumentConfig.ts",
           "members": [
             "docs",
+            "outFile",
             "security"
           ]
         },
