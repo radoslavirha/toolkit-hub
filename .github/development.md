@@ -5,7 +5,7 @@ This document describes the process for running this application on your local c
 ## Prerequisites
 
 - node.js >= 24
-- pnpm >= 11
+- pnpm >= 11.8
 
 ## Installation
 
