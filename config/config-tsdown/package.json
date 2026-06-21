@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/config-tsdown",
-    "version": "0.2.2",
+    "version": "0.2.0",
     "description": "Base tsdown configurations",
     "keywords": [
         "tsdown"
@@ -47,7 +47,7 @@
     },
     "engines": {
         "node": ">= 24",
-        "pnpm": ">= 11"
+        "pnpm": ">= 11.8"
     },
     "os": [
         "darwin",
