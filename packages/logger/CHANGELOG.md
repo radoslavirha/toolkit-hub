@@ -1,5 +1,13 @@
 # @radoslavirha/logger
 
+## 0.3.2
+
+### Patch Changes
+
+- [`58dd739`](https://github.com/radoslavirha/toolkit-hub/commit/58dd739ff2b17064148ccd82826d779957603dc7) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update pnpm to 11.8
+
+- [`b4e3cfd`](https://github.com/radoslavirha/toolkit-hub/commit/b4e3cfd8476df7e8d0b6f6e8e6a60a9851485255) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies
+
 ## 0.3.1
 
 ### Patch Changes
