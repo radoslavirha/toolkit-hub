@@ -24,6 +24,8 @@
         "build": "pnpm --stream --recursive run build",
         "cleanup": "pnpm --stream --recursive run cleanup",
         "cleanup:modules": "pnpm --stream --recursive run cleanup:modules && rm -rf node_modules",
+        "generate:capability-index": "node --experimental-strip-types scripts/generate-capability-index.ts",
+        "check:capability-index": "pnpm generate:capability-index && git diff --exit-code -- docs/capability-index.json docs/capability-index.md",
         "lint": "pnpm --stream --recursive run lint",
         "lint:fix": "pnpm --stream --recursive run lint:fix",
         "prepare": "husky",
