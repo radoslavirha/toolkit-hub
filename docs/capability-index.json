@@ -1,0 +1,816 @@
+{
+  "packages": [
+    {
+      "name": "@radoslavirha/config-eslint",
+      "location": "config/config-eslint",
+      "entrypoint": "config/config-eslint/src/index.mjs",
+      "exports": [
+        {
+          "name": "default",
+          "kind": "unknown",
+          "signature": "export default defineConfig(",
+          "purpose": "",
+          "source": "config/config-eslint/src/index.mjs",
+          "members": []
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/config-tsdown",
+      "location": "config/config-tsdown",
+      "entrypoint": "config/config-tsdown/src/index.ts",
+      "exports": [
+        {
+          "name": "cjsConfig",
+          "kind": "const",
+          "signature": "export const cjsConfig: UserConfig =",
+          "purpose": "",
+          "source": "config/config-tsdown/src/index.ts",
+          "members": []
+        },
+        {
+          "name": "esmConfig",
+          "kind": "const",
+          "signature": "export const esmConfig: UserConfig =",
+          "purpose": "",
+          "source": "config/config-tsdown/src/index.ts",
+          "members": []
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/config-typescript",
+      "location": "config/config-typescript",
+      "entrypoint": null,
+      "exports": []
+    },
+    {
+      "name": "@radoslavirha/config-vitest",
+      "location": "config/config-vitest",
+      "entrypoint": "config/config-vitest/src/index.ts",
+      "exports": [
+        {
+          "name": "Coverage100",
+          "kind": "const",
+          "signature": "export const Coverage100 =",
+          "purpose": "",
+          "source": "config/config-vitest/src/coverage.ts",
+          "members": []
+        },
+        {
+          "name": "Coverage90",
+          "kind": "const",
+          "signature": "export const Coverage90 =",
+          "purpose": "",
+          "source": "config/config-vitest/src/coverage.ts",
+          "members": []
+        },
+        {
+          "name": "Coverage95",
+          "kind": "const",
+          "signature": "export const Coverage95 =",
+          "purpose": "",
+          "source": "config/config-vitest/src/coverage.ts",
+          "members": []
+        },
+        {
+          "name": "defaultConfig",
+          "kind": "const",
+          "signature": "export const defaultConfig =",
+          "purpose": "",
+          "source": "config/config-vitest/src/config.ts",
+          "members": []
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/logger",
+      "location": "packages/logger",
+      "entrypoint": "packages/logger/src/index.ts",
+      "exports": [
+        {
+          "name": "Logger",
+          "kind": "class",
+          "signature": "export class Logger<T extends object = object>",
+          "purpose": "Structured logger backed by Winston.",
+          "source": "packages/logger/src/Logger.ts",
+          "members": [
+            "child",
+            "debug",
+            "error",
+            "fatal",
+            "info",
+            "log",
+            "trace",
+            "warn"
+          ]
+        },
+        {
+          "name": "LoggerOptions",
+          "kind": "interface",
+          "signature": "export interface LoggerOptions<T extends object = object>",
+          "purpose": "Options for creating a Logger instance.",
+          "source": "packages/logger/src/LoggerOptions.ts",
+          "members": []
+        },
+        {
+          "name": "LogLevel",
+          "kind": "enum",
+          "signature": "export enum LogLevel",
+          "purpose": "OTEL-aligned log severity levels.",
+          "source": "packages/logger/src/LogLevel.enum.ts",
+          "members": []
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/tsed-common",
+      "location": "tsed/common",
+      "entrypoint": "tsed/common/src/index.ts",
+      "exports": [
+        {
+          "name": "BaseModel",
+          "kind": "class",
+          "signature": "export class BaseModel",
+          "purpose": "",
+          "source": "tsed/common/src/models/BaseModel.ts",
+          "members": [
+            "createdAt",
+            "id",
+            "updatedAt"
+          ]
+        },
+        {
+          "name": "DeserializeOptions",
+          "kind": "type",
+          "signature": "export type DeserializeOptions = Omit<JsonDeserializerOptions, 'type'>",
+          "purpose": "Options for {@link Serializer.deserialize} and {@link Serializer.deserializeArray},",
+          "source": "tsed/common/src/serializer/Serializer.ts",
+          "members": []
+        },
+        {
+          "name": "JSONSchemaValidator",
+          "kind": "class",
+          "signature": "export class JSONSchemaValidator",
+          "purpose": "",
+          "source": "tsed/common/src/validators/JSONSchemaValidator.ts",
+          "members": [
+            "validate"
+          ]
+        },
+        {
+          "name": "SerializeOptions",
+          "kind": "type",
+          "signature": "export type SerializeOptions = Omit<JsonSerializerOptions, 'type'>",
+          "purpose": "Options for {@link Serializer.serialize}, extending all native `JsonSerializerOptions`",
+          "source": "tsed/common/src/serializer/Serializer.ts",
+          "members": []
+        },
+        {
+          "name": "Serializer",
+          "kind": "class",
+          "signature": "export class Serializer",
+          "purpose": "Utility class wrapping `@tsed/json-mapper`'s `serialize` and `deserialize`",
+          "source": "tsed/common/src/serializer/Serializer.ts",
+          "members": [
+            "deserialize",
+            "deserializeArray",
+            "serialize"
+          ]
+        },
+        {
+          "name": "ZodValidator",
+          "kind": "class",
+          "signature": "export class ZodValidator",
+          "purpose": "",
+          "source": "tsed/common/src/validators/ZodValidator.ts",
+          "members": [
+            "validate"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/tsed-configuration",
+      "location": "tsed/configuration",
+      "entrypoint": "tsed/configuration/src/index.ts",
+      "exports": [
+        {
+          "name": "APIInformation",
+          "kind": "class",
+          "signature": "export class APIInformation",
+          "purpose": "",
+          "source": "tsed/configuration/src/models/APIInformation.ts",
+          "members": [
+            "description",
+            "publicURL",
+            "service",
+            "version"
+          ]
+        },
+        {
+          "name": "AppConfig",
+          "kind": "type",
+          "signature": "export type AppConfig = z.infer<typeof AppConfigSchema>",
+          "purpose": "",
+          "source": "tsed/configuration/src/ConfigProvider.ts",
+          "members": []
+        },
+        {
+          "name": "AppConfigSchema",
+          "kind": "const",
+          "signature": "export const AppConfigSchema = BaseConfigSchema.extend(",
+          "purpose": "",
+          "source": "tsed/configuration/src/ConfigProvider.ts",
+          "members": []
+        },
+        {
+          "name": "BaseConfig",
+          "kind": "type",
+          "signature": "export type BaseConfig = z.infer<typeof BaseConfig>;",
+          "purpose": "TypeScript type for the base configuration.",
+          "source": "tsed/configuration/src/models/BaseConfig.ts",
+          "members": []
+        },
+        {
+          "name": "BaseConfigProvider",
+          "kind": "class",
+          "signature": "export class BaseConfigProvider<T extends object>",
+          "purpose": "Base class for configuration providers with immutable configuration access.",
+          "source": "tsed/configuration/src/BaseConfigProvider.ts",
+          "members": []
+        },
+        {
+          "name": "ConfigProvider",
+          "kind": "class",
+          "signature": "export class ConfigProvider<T extends BaseConfig>",
+          "purpose": "",
+          "source": "tsed/configuration/src/ConfigProvider.ts",
+          "members": []
+        },
+        {
+          "name": "ConfigProviderOptions",
+          "kind": "type",
+          "signature": "export type ConfigProviderOptions<T extends BaseConfig> =",
+          "purpose": "Configuration options for ConfigProvider.",
+          "source": "tsed/configuration/src/ConfigProvider.ts",
+          "members": []
+        },
+        {
+          "name": "ConfigService",
+          "kind": "class",
+          "signature": "export class ConfigService extends ConfigProvider<AppConfig>",
+          "purpose": "",
+          "source": "tsed/configuration/src/ConfigProvider.ts",
+          "members": []
+        },
+        {
+          "name": "getHelmetDefaultDirectives",
+          "kind": "const",
+          "signature": "export const getHelmetDefaultDirectives = () => (",
+          "purpose": "Returns helmet directives to allow swagger-ui to work.",
+          "source": "tsed/configuration/src/helpers/HelmetDefaultDirectives.ts",
+          "members": []
+        },
+        {
+          "name": "getServerDefaultConfig",
+          "kind": "const",
+          "signature": "export const getServerDefaultConfig = (): Partial<TsED.Configuration> => (",
+          "purpose": "Returns default server configuration.",
+          "source": "tsed/configuration/src/helpers/ServerDefaultConfig.ts",
+          "members": []
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/tsed-logger",
+      "location": "tsed/logger",
+      "entrypoint": "tsed/logger/src/index.ts",
+      "exports": [
+        {
+          "name": "Logger",
+          "kind": "class",
+          "signature": "export class Logger<T extends object = object> extends BaseLogger<T>",
+          "purpose": "",
+          "source": "tsed/logger/src/Logger.ts",
+          "members": []
+        },
+        {
+          "name": "LoggerOptions",
+          "kind": "type",
+          "signature": "export type LoggerOptions = z.input<typeof LoggerOptionsSchema>;",
+          "purpose": "Input type for {@link LoggerOptionsSchema} — all fields optional (defaults applied on parse).",
+          "source": "tsed/logger/src/RequestLogOptions.schema.ts",
+          "members": []
+        },
+        {
+          "name": "LoggerOptionsSchema",
+          "kind": "const",
+          "signature": "export const LoggerOptionsSchema = z.object(",
+          "purpose": "Zod schema for {@link LoggerOptions} — the full Logger constructor options.",
+          "source": "tsed/logger/src/RequestLogOptions.schema.ts",
+          "members": []
+        },
+        {
+          "name": "LoggerService",
+          "kind": "class",
+          "signature": "export class LoggerService extends Logger",
+          "purpose": "",
+          "source": "tsed/logger/src/Logger.ts",
+          "members": []
+        },
+        {
+          "name": "SomeService",
+          "kind": "class",
+          "signature": "export class SomeService",
+          "purpose": "",
+          "source": "tsed/logger/src/Logger.ts",
+          "members": []
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/tsed-mongoose",
+      "location": "tsed/mongoose",
+      "entrypoint": "tsed/mongoose/src/index.ts",
+      "exports": [
+        {
+          "name": "BaseMongo",
+          "kind": "class",
+          "signature": "export class BaseMongo",
+          "purpose": "Base model class for Mongoose models in Ts.ED applications.",
+          "source": "tsed/mongoose/src/models/BaseMongo.ts",
+          "members": [
+            "_id",
+            "createdAt",
+            "updatedAt"
+          ]
+        },
+        {
+          "name": "ItemMapper",
+          "kind": "class",
+          "signature": "export class ItemMapper extends MongoMapper<Item, ItemModel>",
+          "purpose": "",
+          "source": "tsed/mongoose/src/mappers/MongoMapper.ts",
+          "members": []
+        },
+        {
+          "name": "ItemRepository",
+          "kind": "class",
+          "signature": "export class ItemRepository extends MongoRepository<Item>",
+          "purpose": "",
+          "source": "tsed/mongoose/src/repositories/MongoRepository.ts",
+          "members": []
+        },
+        {
+          "name": "MongoConfig",
+          "kind": "type",
+          "signature": "export type MongoConfig = z.infer<typeof MongoConfigSchema>;",
+          "purpose": "",
+          "source": "tsed/mongoose/src/models/ConfigSchema.ts",
+          "members": []
+        },
+        {
+          "name": "MongoConfigSchema",
+          "kind": "const",
+          "signature": "export const MongoConfigSchema = z.union([MongoEnabledSchema, MongoDisabledSchema]);",
+          "purpose": "",
+          "source": "tsed/mongoose/src/models/ConfigSchema.ts",
+          "members": []
+        },
+        {
+          "name": "MongoCreate",
+          "kind": "type",
+          "signature": "export type MongoCreate<T> = Omit<Partial<T>, 'id' | '_id' | 'createdAt' | 'updatedAt'> &",
+          "purpose": "Strictly-typed payload for creating a new Mongoose document.",
+          "source": "tsed/mongoose/src/types/MongoCreate.ts",
+          "members": []
+        },
+        {
+          "name": "MongoDeleteResult",
+          "kind": "interface",
+          "signature": "export interface MongoDeleteResult",
+          "purpose": "Typed result returned from MongoDB delete operations.",
+          "source": "tsed/mongoose/src/types/MongoDeleteResult.ts",
+          "members": []
+        },
+        {
+          "name": "MongoFilter",
+          "kind": "type",
+          "signature": "export type MongoFilter<T extends BaseMongo> = Omit<QueryFilter<T>, '_id'> &",
+          "purpose": "Filter type for MongoRepository queries.",
+          "source": "tsed/mongoose/src/types/MongoFilter.ts",
+          "members": []
+        },
+        {
+          "name": "MongoMapper",
+          "kind": "class",
+          "signature": "export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseModel> extends MappingUtils",
+          "purpose": "Abstract base mapper for converting between Mongoose documents and application models.",
+          "source": "tsed/mongoose/src/mappers/MongoMapper.ts",
+          "members": [
+            "getModelValue",
+            "mongoToModelBase"
+          ]
+        },
+        {
+          "name": "MongoRepository",
+          "kind": "class",
+          "signature": "export abstract class MongoRepository<MONGO extends BaseMongo>",
+          "purpose": "Abstract base repository for MongoDB operations in Ts.ED applications.",
+          "source": "tsed/mongoose/src/repositories/MongoRepository.ts",
+          "members": []
+        },
+        {
+          "name": "MongoUpdate",
+          "kind": "type",
+          "signature": "export type MongoUpdate<T> = Omit<Partial<T>, 'id' | '_id' | 'createdAt' | 'updatedAt'> &",
+          "purpose": "Strictly-typed payload for updating an existing Mongoose document.",
+          "source": "tsed/mongoose/src/types/MongoUpdate.ts",
+          "members": []
+        },
+        {
+          "name": "MongoUpdateResult",
+          "kind": "interface",
+          "signature": "export interface MongoUpdateResult",
+          "purpose": "Typed result returned from MongoDB count-based update operations.",
+          "source": "tsed/mongoose/src/types/MongoUpdateResult.ts",
+          "members": []
+        },
+        {
+          "name": "User",
+          "kind": "class",
+          "signature": "export class User extends BaseMongo",
+          "purpose": "",
+          "source": "tsed/mongoose/src/models/BaseMongo.ts",
+          "members": []
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/tsed-platform",
+      "location": "tsed/platform",
+      "entrypoint": "tsed/platform/src/index.ts",
+      "exports": [
+        {
+          "name": "BaseHandler",
+          "kind": "class",
+          "signature": "export abstract class BaseHandler<IRequest, IResponse>",
+          "purpose": "Abstract base handler with performance tracking and error handling.",
+          "source": "tsed/platform/src/BaseHandler.ts",
+          "members": [
+            "execute"
+          ]
+        },
+        {
+          "name": "BaseServer",
+          "kind": "class",
+          "signature": "export class BaseServer",
+          "purpose": "",
+          "source": "tsed/platform/src/BaseServer.ts",
+          "members": []
+        },
+        {
+          "name": "Controller",
+          "kind": "class",
+          "signature": "export class Controller",
+          "purpose": "",
+          "source": "tsed/platform/src/BaseHandler.ts",
+          "members": []
+        },
+        {
+          "name": "Handler",
+          "kind": "class",
+          "signature": "export class Handler extends BaseHandler<Request, Response>",
+          "purpose": "",
+          "source": "tsed/platform/src/BaseHandler.ts",
+          "members": []
+        },
+        {
+          "name": "Platform",
+          "kind": "class",
+          "signature": "export class Platform extends PlatformExpress",
+          "purpose": "Express-based Ts.ED platform adapter.",
+          "source": "tsed/platform/src/Platform.ts",
+          "members": []
+        },
+        {
+          "name": "Server",
+          "kind": "class",
+          "signature": "export class Server extends BaseServer",
+          "purpose": "",
+          "source": "tsed/platform/src/BaseServer.ts",
+          "members": []
+        },
+        {
+          "name": "ServerConfiguration",
+          "kind": "type",
+          "signature": "export type ServerConfiguration<T extends object =",
+          "purpose": "",
+          "source": "tsed/platform/src/ServerConfiguration.ts",
+          "members": []
+        },
+        {
+          "name": "TsEDLoggerBridge",
+          "kind": "class",
+          "signature": "export class TsEDLoggerBridge",
+          "purpose": "",
+          "source": "tsed/platform/src/TsEDLoggerBridge.ts",
+          "members": [
+            "getTsEDLoggerConfig"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/tsed-swagger",
+      "location": "tsed/swagger",
+      "entrypoint": "tsed/swagger/src/index.ts",
+      "exports": [
+        {
+          "name": "Server",
+          "kind": "class",
+          "signature": "export class Server extends BaseServer",
+          "purpose": "",
+          "source": "tsed/swagger/src/controllers/SwaggerController.ts",
+          "members": []
+        },
+        {
+          "name": "SwaggerConfig",
+          "kind": "class",
+          "signature": "export class SwaggerConfig",
+          "purpose": "",
+          "source": "tsed/swagger/src/models/SwaggerConfig.ts",
+          "members": [
+            "description",
+            "documents",
+            "serverUrl",
+            "swaggerUIOptions",
+            "title",
+            "version"
+          ]
+        },
+        {
+          "name": "SwaggerController",
+          "kind": "class",
+          "signature": "export class SwaggerController",
+          "purpose": "",
+          "source": "tsed/swagger/src/controllers/SwaggerController.ts",
+          "members": []
+        },
+        {
+          "name": "SwaggerDocumentConfig",
+          "kind": "class",
+          "signature": "export class SwaggerDocumentConfig",
+          "purpose": "",
+          "source": "tsed/swagger/src/models/SwaggerDocumentConfig.ts",
+          "members": [
+            "docs",
+            "outFile",
+            "security"
+          ]
+        },
+        {
+          "name": "SwaggerProvider",
+          "kind": "class",
+          "signature": "export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]>",
+          "purpose": "Provider that converts {@link SwaggerConfig} into Ts.ED's `SwaggerSettings[]` format.",
+          "source": "tsed/swagger/src/providers/SwaggerProvider.ts",
+          "members": []
+        },
+        {
+          "name": "SwaggerSecurityScheme",
+          "kind": "enum",
+          "signature": "export enum SwaggerSecurityScheme",
+          "purpose": "Enumeration of supported Swagger security schemes for API authentication.",
+          "source": "tsed/swagger/src/enums/SwaggerSecurityScheme.enum.ts",
+          "members": []
+        },
+        {
+          "name": "SwaggerUIConfig",
+          "kind": "class",
+          "signature": "export class SwaggerUIConfig implements SwaggerUIOptions",
+          "purpose": "",
+          "source": "tsed/swagger/src/models/SwaggerUIConfig.ts",
+          "members": []
+        },
+        {
+          "name": "UserControllerV1",
+          "kind": "class",
+          "signature": "export class UserControllerV1",
+          "purpose": "",
+          "source": "tsed/swagger/src/models/SwaggerDocumentConfig.ts",
+          "members": []
+        },
+        {
+          "name": "UserControllerV2",
+          "kind": "class",
+          "signature": "export class UserControllerV2",
+          "purpose": "",
+          "source": "tsed/swagger/src/models/SwaggerDocumentConfig.ts",
+          "members": []
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/types",
+      "location": "packages/types",
+      "entrypoint": "packages/types/src/index.ts",
+      "exports": [
+        {
+          "name": "Dictionary",
+          "kind": "type",
+          "signature": "export type Dictionary<T> =",
+          "purpose": "A generic dictionary type mapping string keys to values of type `T`.",
+          "source": "packages/types/src/Dictionary.ts",
+          "members": []
+        },
+        {
+          "name": "EnumDictionary",
+          "kind": "type",
+          "signature": "export type EnumDictionary<TKey extends string | symbol | number, TType> =",
+          "purpose": "",
+          "source": "packages/types/src/EnumDictionary.ts",
+          "members": []
+        },
+        {
+          "name": "FullPartial",
+          "kind": "type",
+          "signature": "export type FullPartial<T> =",
+          "purpose": "A utility type that makes all properties of T optional, including nested objects.",
+          "source": "packages/types/src/FullPartial.ts",
+          "members": []
+        },
+        {
+          "name": "NullableProperty",
+          "kind": "type",
+          "signature": "export type NullableProperty<T> = T | null;",
+          "purpose": "A utility type that represents a property that can be either a value of type `T` or `null`.",
+          "source": "packages/types/src/NullableProperty.ts",
+          "members": []
+        }
+      ]
+    },
+    {
+      "name": "@radoslavirha/utils",
+      "location": "packages/utils",
+      "entrypoint": "packages/utils/src/index.ts",
+      "exports": [
+        {
+          "name": "ArrayElement",
+          "kind": "type",
+          "signature": "export type ArrayElement<T> = T extends readonly (infer E)[] ? E : never",
+          "purpose": "Extracts the element type from an array type.",
+          "source": "packages/utils/src/MappingUtils.ts",
+          "members": []
+        },
+        {
+          "name": "ArrayUtils",
+          "kind": "class",
+          "signature": "export class ArrayUtils",
+          "purpose": "Utility class for array operations.",
+          "source": "packages/utils/src/ArrayUtils.ts",
+          "members": [
+            "isArray",
+            "toArray"
+          ]
+        },
+        {
+          "name": "BooleanUtils",
+          "kind": "class",
+          "signature": "export class BooleanUtils",
+          "purpose": "Utility class for boolean operations.",
+          "source": "packages/utils/src/BooleanUtils.ts",
+          "members": [
+            "isBoolean"
+          ]
+        },
+        {
+          "name": "CommonUtils",
+          "kind": "class",
+          "signature": "export class CommonUtils",
+          "purpose": "Utility class for common operations.",
+          "source": "packages/utils/src/CommonUtils.ts",
+          "members": [
+            "buildModel",
+            "buildModelCore",
+            "buildModelPartial",
+            "buildModelStrict",
+            "isEmpty",
+            "isNil",
+            "isNull",
+            "isUndefined",
+            "notNil",
+            "notNull",
+            "notUndefined"
+          ]
+        },
+        {
+          "name": "DefaultsUtil",
+          "kind": "class",
+          "signature": "export class DefaultsUtil",
+          "purpose": "Utility class for setting default values.",
+          "source": "packages/utils/src/DefaultsUtil.ts",
+          "members": [
+            "number",
+            "string"
+          ]
+        },
+        {
+          "name": "Enabled",
+          "kind": "type",
+          "signature": "export type Enabled<T extends",
+          "purpose": "Represents T with the `enabled` property narrowed to the literal `true`.",
+          "source": "packages/utils/src/ObjectUtils.ts",
+          "members": []
+        },
+        {
+          "name": "GeoUtils",
+          "kind": "class",
+          "signature": "export class GeoUtils",
+          "purpose": "Utility class for geographic calculations.",
+          "source": "packages/utils/src/GeoUtils.ts",
+          "members": [
+            "calculateKmBetweenCoordinates",
+            "degToRad"
+          ]
+        },
+        {
+          "name": "MapKey",
+          "kind": "type",
+          "signature": "export type MapKey<T> = T extends Map<infer K, unknown> ? K : never",
+          "purpose": "Extracts the key type from a Map type.",
+          "source": "packages/utils/src/MappingUtils.ts",
+          "members": []
+        },
+        {
+          "name": "MappingUtils",
+          "kind": "class",
+          "signature": "export class MappingUtils",
+          "purpose": "",
+          "source": "packages/utils/src/MappingUtils.ts",
+          "members": []
+        },
+        {
+          "name": "MapValue",
+          "kind": "type",
+          "signature": "export type MapValue<T> = T extends Map<unknown, infer V> ? V : never",
+          "purpose": "Extracts the value type from a Map type.",
+          "source": "packages/utils/src/MappingUtils.ts",
+          "members": []
+        },
+        {
+          "name": "NumberUtils",
+          "kind": "class",
+          "signature": "export class NumberUtils",
+          "purpose": "Utility class for number operations.",
+          "source": "packages/utils/src/NumberUtils.ts",
+          "members": [
+            "ceil",
+            "floor",
+            "getPercentFromValue",
+            "getValueFromPercent",
+            "max",
+            "mean",
+            "min",
+            "round"
+          ]
+        },
+        {
+          "name": "ObjectUtils",
+          "kind": "class",
+          "signature": "export class ObjectUtils",
+          "purpose": "Utility class for object operations.",
+          "source": "packages/utils/src/ObjectUtils.ts",
+          "members": [
+            "cloneDeep",
+            "isEnabled",
+            "isObject",
+            "isPlainObject",
+            "keys",
+            "mergeDeep",
+            "values"
+          ]
+        },
+        {
+          "name": "Result",
+          "kind": "type",
+          "signature": "export type Result<TValue, TTarget> = (null extends TValue ? null : never) | (undefined extends TValue ? undefined : never) | (TValue extends null | undefined ? never : TTarget)",
+          "purpose": "Maps values while preserving nullability from the input type.",
+          "source": "packages/utils/src/MappingUtils.ts",
+          "members": []
+        },
+        {
+          "name": "StringUtils",
+          "kind": "class",
+          "signature": "export class StringUtils",
+          "purpose": "Utility class for string operations.",
+          "source": "packages/utils/src/StringUtils.ts",
+          "members": [
+            "isString"
+          ]
+        }
+      ]
+    }
+  ]
+}
