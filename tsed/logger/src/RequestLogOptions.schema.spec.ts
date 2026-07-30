@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { LogLevel } from '@radoslavirha/logger';
 
 import { LoggerOptionsSchema } from './RequestLogOptions.schema.js';
+import type { LoggerOptions } from './RequestLogOptions.schema.js';
 
 describe('LoggerOptionsSchema', () => {
     it('defaults all fields when empty object is parsed', () => {
@@ -14,8 +15,8 @@ describe('LoggerOptionsSchema', () => {
                 enabled: true,
                 headers: { enabled: true },
                 query: { enabled: true },
-                payload: { enabled: true },
-                responseBody: { enabled: true },
+                request: { enabled: true },
+                response: { enabled: true },
                 stack: true
             }
         });
@@ -50,14 +51,14 @@ describe('LoggerOptionsSchema', () => {
         expect(result.requests.query.enabled).toBe(false);
     });
 
-    it('preserves explicit requests.payload.enabled: false', () => {
-        const result = LoggerOptionsSchema.parse({ requests: { payload: { enabled: false } } });
-        expect(result.requests.payload.enabled).toBe(false);
+    it('preserves explicit requests.request.enabled: false', () => {
+        const result = LoggerOptionsSchema.parse({ requests: { request: { enabled: false } } });
+        expect(result.requests.request.enabled).toBe(false);
     });
 
-    it('preserves explicit requests.responseBody.enabled: false', () => {
-        const result = LoggerOptionsSchema.parse({ requests: { responseBody: { enabled: false } } });
-        expect(result.requests.responseBody.enabled).toBe(false);
+    it('preserves explicit requests.response.enabled: false', () => {
+        const result = LoggerOptionsSchema.parse({ requests: { response: { enabled: false } } });
+        expect(result.requests.response.enabled).toBe(false);
     });
 
     it('preserves explicit requests.stack: false', () => {
@@ -77,9 +78,9 @@ describe('LoggerOptionsSchema', () => {
         expect(() => LoggerOptionsSchema.parse({ requests: { headers: { enabled: 'yes' } } })).toThrow();
     });
 
-    it('produces a type-safe parsed object matching LoggerOptionsParsed inferred type', () => {
+    it('produces a type-safe parsed object matching LoggerOptions output type', () => {
         const result = LoggerOptionsSchema.parse({ level: LogLevel.WARN });
-        const _check: { enabled: boolean; requests: { enabled: boolean } } = result;
+        const _check: LoggerOptions = result;
         expect(_check.enabled).toBe(true);
     });
 });

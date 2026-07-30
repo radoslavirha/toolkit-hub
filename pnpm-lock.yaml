@@ -48,6 +48,37 @@ catalogs:
     zod:
       specifier: 4.4.3
       version: 4.4.3
+  express:
+    '@types/body-parser':
+      specifier: 1.19.6
+      version: 1.19.6
+    '@types/compression':
+      specifier: 1.8.1
+      version: 1.8.1
+    '@types/cookie-parser':
+      specifier: 1.4.10
+      version: 1.4.10
+    '@types/cors':
+      specifier: 2.8.19
+      version: 2.8.19
+    '@types/method-override':
+      specifier: 3.0.0
+      version: 3.0.0
+    body-parser:
+      specifier: 2.3.0
+      version: 2.3.0
+    compression:
+      specifier: 1.8.1
+      version: 1.8.1
+    cookie-parser:
+      specifier: 1.4.7
+      version: 1.4.7
+    cors:
+      specifier: 2.8.6
+      version: 2.8.6
+    method-override:
+      specifier: 3.0.0
+      version: 3.0.0
   tsed:
     '@tsed/ajv':
       specifier: 8.31.1
@@ -448,9 +479,6 @@ importers:
       '@radoslavirha/utils':
         specifier: workspace:*
         version: link:../../packages/utils
-      '@tsed/platform-http':
-        specifier: catalog:tsed
-        version: 8.31.1(@tsed/engines@8.5.0)(@tsed/logger@8.0.5)(@tsed/openspec@8.31.1)(@types/multer@1.4.12)
       zod:
         specifier: 'catalog:'
         version: 4.4.3
@@ -479,9 +507,21 @@ importers:
       '@tsed/platform-express':
         specifier: catalog:tsed
         version: 8.31.1(@tsed/core@8.31.1)(@tsed/di@8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/logger@8.0.5))(@tsed/json-mapper@8.31.1(@tsed/core@8.31.1)(@tsed/schema@8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/openspec@8.31.1)))(@tsed/logger@8.0.5)(@tsed/openspec@8.31.1)(@tsed/platform-http@8.31.1(@tsed/engines@8.5.0)(@tsed/logger@8.0.5)(@tsed/openspec@8.31.1)(@types/multer@1.4.12))(@tsed/platform-views@8.31.1(@tsed/core@8.31.1)(@tsed/di@8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/logger@8.0.5))(@tsed/engines@8.5.0)(@tsed/exceptions@8.31.1(@tsed/core@8.31.1))(@tsed/schema@8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/openspec@8.31.1)))(@tsed/schema@8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/openspec@8.31.1))(body-parser@2.3.0)(express@4.21.2)(multer@2.2.0)
+      '@tsed/platform-http':
+        specifier: catalog:tsed
+        version: 8.31.1(@tsed/engines@8.5.0)(@tsed/logger@8.0.5)(@tsed/openspec@8.31.1)(@types/multer@1.4.12)
+      '@tsed/platform-params':
+        specifier: catalog:tsed
+        version: 8.31.1(@tsed/core@8.31.1)(@tsed/di@8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/logger@8.0.5))(@tsed/exceptions@8.31.1(@tsed/core@8.31.1))(@tsed/json-mapper@8.31.1(@tsed/core@8.31.1)(@tsed/schema@8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/openspec@8.31.1)))(@tsed/schema@8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/openspec@8.31.1))
       '@tsed/schema':
         specifier: catalog:tsed
         version: 8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/openspec@8.31.1)
+      '@types/body-parser':
+        specifier: catalog:express
+        version: 1.19.6
+      '@types/cors':
+        specifier: catalog:express
+        version: 2.8.19
       '@types/node':
         specifier: 'catalog:'
         version: 26.0.0
@@ -491,6 +531,12 @@ importers:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
         version: 4.1.9(vitest@4.1.9)
+      body-parser:
+        specifier: catalog:express
+        version: 2.3.0
+      cors:
+        specifier: catalog:express
+        version: 2.8.6
       eslint:
         specifier: 'catalog:'
         version: 10.5.0
@@ -598,19 +644,19 @@ importers:
         specifier: 8.0.5
         version: 8.0.5(@tsed/logger@8.0.5)
       body-parser:
-        specifier: 2.3.0
+        specifier: catalog:express
         version: 2.3.0
       compression:
-        specifier: 1.8.1
+        specifier: catalog:express
         version: 1.8.1
       cookie-parser:
-        specifier: 1.4.7
+        specifier: catalog:express
         version: 1.4.7
       cors:
-        specifier: 2.8.6
+        specifier: catalog:express
         version: 2.8.6
       method-override:
-        specifier: 3.0.0
+        specifier: catalog:express
         version: 3.0.0
     devDependencies:
       '@radoslavirha/config-eslint':
@@ -653,19 +699,19 @@ importers:
         specifier: catalog:tsed
         version: 8.31.1(@tsed/core@8.31.1)(@tsed/hooks@8.31.1)(@tsed/openspec@8.31.1)
       '@types/body-parser':
-        specifier: 1.19.6
+        specifier: catalog:express
         version: 1.19.6
       '@types/compression':
-        specifier: 1.8.1
+        specifier: catalog:express
         version: 1.8.1
       '@types/cookie-parser':
-        specifier: 1.4.10
+        specifier: catalog:express
         version: 1.4.10(@types/express@5.0.6)
       '@types/cors':
-        specifier: 2.8.19
+        specifier: catalog:express
         version: 2.8.19
       '@types/method-override':
-        specifier: 3.0.0
+        specifier: catalog:express
         version: 3.0.0(@types/express@5.0.6)
       '@types/supertest':
         specifier: 'catalog:'

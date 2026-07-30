@@ -1,9 +1,10 @@
 import { beforeEach, afterEach, describe, expect, it, vi, MockInstance } from 'vitest';
-import { Injectable, OverrideProvider, Scope, ProviderScope } from '@tsed/di';
+import { OverrideProvider } from '@tsed/di';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import SuperTest from 'supertest';
 
-import type { LoggerOptions } from './RequestLogOptions.schema.js';
+import { LoggerOptionsSchema } from './RequestLogOptions.schema.js';
+import type { LoggerOptions, LoggerOptionsInput } from './RequestLogOptions.schema.js';
 import { Logger } from './Logger.js';
 import { TestServer } from './test/TestServer.js';
 
@@ -56,14 +57,17 @@ describe('Logger (integration)', () => {
     // method in each inner `beforeEach` BEFORE bootstrapping the platform, so
     // there is no shared mutable state that could leak between test suites.
     // ---------------------------------------------------------------------------
-    @Injectable()
     @OverrideProvider(Logger)
-    @Scope(ProviderScope.SINGLETON)
     class TestLogger extends Logger {
-        private static _options: LoggerOptions = {};
+        private static _options: LoggerOptions = LoggerOptionsSchema.parse({
+            enabled: false,
+            requests: {
+                enabled: false
+            }
+        });
 
-        public static configure(opts: LoggerOptions): void {
-            TestLogger._options = opts;
+        public static configure(opts: LoggerOptionsInput): void {
+            TestLogger._options = LoggerOptionsSchema.parse(opts);
         }
 
         public constructor() {
@@ -85,12 +89,12 @@ describe('Logger (integration)', () => {
                     enabled: true,
                     headers: { enabled: true },
                     query: { enabled: true },
-                    payload: { enabled: true },
-                    responseBody: { enabled: true },
+                    request: { enabled: true },
+                    response: { enabled: true },
                     stack: true
                 }
             });
-            await PlatformTest.bootstrap(TestServer, { imports: [TestLogger] })();
+            await PlatformTest.bootstrap(TestServer)();
             request = SuperTest(PlatformTest.callback());
             stdoutSpy.mockClear();
             stderrSpy.mockClear();
@@ -105,12 +109,25 @@ describe('Logger (integration)', () => {
             await request.get('/test/success');
 
             const logs = parseLogs(stdoutSpy);
+            const entry = logs.find((l: unknown) => {
+                return (l as Record<string, unknown>)?.['message'] === 'Request completed'
+                    && (l as Record<string, unknown>)?.['scope'] === 'HTTP_REQUEST';
+            }) as Record<string, unknown> | undefined;
 
-            expect(logs).toContainEqual(expect.objectContaining({
-                level: 'info',
-                message: 'Request completed',
-                scope: 'HTTP_REQUEST'
-            }));
+            expect(entry).toBeDefined();
+            expect(entry?.['level']).toBe('info');
+        });
+
+        it('emits one Request completed log per successful request', async () => {
+            await request.get('/test/success');
+
+            const logs = parseLogs(stdoutSpy);
+            const completed = logs.filter((l: unknown) => {
+                return (l as Record<string, unknown>)?.['message'] === 'Request completed'
+                    && (l as Record<string, unknown>)?.['scope'] === 'HTTP_REQUEST';
+            });
+
+            expect(completed).toHaveLength(1);
         });
 
         it('includes method, url, status, and duration in the completed log', async () => {
@@ -121,22 +138,86 @@ describe('Logger (integration)', () => {
 
             expect(entry?.['attributes']).toMatchObject({
                 method: 'GET',
-                url: expect.stringContaining('/test/success'),
-                status: 200,
-                duration: expect.any(Number)
+                url: '/test/success',
+                status: 200
             });
+            expect(typeof entry?.['attributes']?.['duration']).toBe('number');
+            expect(Number(entry?.['attributes']?.['duration'])).toBeGreaterThanOrEqual(0);
         });
 
-        it('includes headers, query, requestBody, and responseBody in the completed log', async () => {
+        it('includes stringified headers, query, request, and response in the completed log', async () => {
             await request.get('/test/success').query({ page: '1' }).set('x-api-key', 'token');
 
             const logs = parseLogs(stdoutSpy);
             const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+            const attributes = entry?.['attributes'] ?? {};
 
-            expect(entry?.['attributes']).toMatchObject({
-                headers: expect.objectContaining({ 'x-api-key': 'token' }),
-                query: expect.objectContaining({ page: '1' }),
-                responseBody: expect.objectContaining({ ok: true })
+            expect(typeof attributes['headers']).toBe('string');
+            expect(typeof attributes['query']).toBe('string');
+            expect(typeof attributes['response']).toBe('string');
+
+            expect(JSON.parse(String(attributes['headers']))).toMatchObject({ 'x-api-key': 'token' });
+            expect(JSON.parse(String(attributes['query']))).toMatchObject({ page: '1' });
+            expect(JSON.parse(String(attributes['response']))).toMatchObject({ ok: true });
+        });
+
+        it('logs parsed POST payload and response body for JSON requests', async () => {
+            const payload: Record<string, unknown> = {
+                user: { id: 'u-1' },
+                enabled: true
+            };
+            const response = await request
+                .post('/test/echo')
+                .query({ source: 'post' })
+                .set('x-api-key', 'token')
+                .send(payload);
+
+            expect(response.status).toBe(200);
+            expect(response.body).toMatchObject({
+                ok: true,
+                method: 'POST',
+                body: payload
+            });
+
+            const logs = parseLogs(stdoutSpy);
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+            const attributes = entry?.['attributes'] ?? {};
+
+            expect(JSON.parse(String(attributes['query']))).toMatchObject({ source: 'post' });
+            expect(JSON.parse(String(attributes['request']))).toMatchObject(payload);
+            expect(JSON.parse(String(attributes['response']))).toMatchObject({
+                ok: true,
+                method: 'POST',
+                body: payload
+            });
+        });
+
+        it('logs parsed PATCH payload and response body for JSON requests', async () => {
+            const payload: Record<string, unknown> = {
+                status: 'active'
+            };
+            const response = await request
+                .patch('/test/echo')
+                .query({ source: 'patch' })
+                .send(payload);
+
+            expect(response.status).toBe(200);
+            expect(response.body).toMatchObject({
+                ok: true,
+                method: 'PATCH',
+                body: payload
+            });
+
+            const logs = parseLogs(stdoutSpy);
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+            const attributes = entry?.['attributes'] ?? {};
+
+            expect(JSON.parse(String(attributes['query']))).toMatchObject({ source: 'patch' });
+            expect(JSON.parse(String(attributes['request']))).toMatchObject(payload);
+            expect(JSON.parse(String(attributes['response']))).toMatchObject({
+                ok: true,
+                method: 'PATCH',
+                body: payload
             });
         });
 
@@ -144,12 +225,13 @@ describe('Logger (integration)', () => {
             await request.get('/test/error');
 
             const logs = parseLogs(stderrSpy);
+            const entry = logs.find((l: unknown) => {
+                return (l as Record<string, unknown>)?.['message'] === 'Request failed'
+                    && (l as Record<string, unknown>)?.['scope'] === 'HTTP_REQUEST';
+            }) as Record<string, unknown> | undefined;
 
-            expect(logs).toContainEqual(expect.objectContaining({
-                level: 'error',
-                message: 'Request failed',
-                scope: 'HTTP_REQUEST'
-            }));
+            expect(entry).toBeDefined();
+            expect(entry?.['level']).toBe('error');
         });
 
         it('includes error_name, error_message, and error_stack in the failed request log', async () => {
@@ -157,12 +239,14 @@ describe('Logger (integration)', () => {
 
             const logs = parseLogs(stderrSpy);
             const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, Record<string, unknown>>;
+            const errorStack = entry?.['attributes']?.['error_stack'];
 
             expect(entry?.['attributes']).toMatchObject({
                 error_name: 'Error',
-                error_message: 'Something went wrong',
-                error_stack: expect.stringContaining('Error: Something went wrong')
+                error_message: 'Something went wrong'
             });
+            expect(typeof errorStack).toBe('string');
+            expect(String(errorStack).startsWith('Error: Something went wrong')).toBe(true);
         });
 
         it('uses error.code as error_name when error.name is undefined', async () => {
@@ -186,26 +270,26 @@ describe('Logger (integration)', () => {
             expect(entry?.['attributes']).not.toHaveProperty('error_message');
         });
 
-        it('logs [[ BINARY ]] as responseBody when Content-Type is application/octet-stream', async () => {
+        it('logs [[ BINARY ]] as response when Content-Type is application/octet-stream', async () => {
             await request.get('/test/binary');
 
             const logs = parseLogs(stdoutSpy);
             const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
 
             expect(entry?.['attributes']).toMatchObject({
-                responseBody: '[[ BINARY ]]'
+                response: '[[ BINARY ]]'
             });
         });
 
-        it('logs actual responseBody when Content-Type is application/json', async () => {
+        it('logs stringified response when Content-Type is application/json', async () => {
             await request.get('/test/success');
 
             const logs = parseLogs(stdoutSpy);
             const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+            const responseBody = entry?.['attributes']?.['response'];
 
-            expect(entry?.['attributes']).toMatchObject({
-                responseBody: expect.objectContaining({ ok: true })
-            });
+            expect(typeof responseBody).toBe('string');
+            expect(JSON.parse(String(responseBody))).toMatchObject({ ok: true });
         });
     });
 
@@ -218,7 +302,7 @@ describe('Logger (integration)', () => {
             stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
             stderrSpy = vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
             TestLogger.configure({ requests: { enabled: false } });
-            await PlatformTest.bootstrap(TestServer, { imports: [TestLogger] })();
+            await PlatformTest.bootstrap(TestServer)();
             request = SuperTest(PlatformTest.callback());
             stdoutSpy.mockClear();
             stderrSpy.mockClear();
@@ -253,12 +337,12 @@ describe('Logger (integration)', () => {
                     enabled: true,
                     headers: { enabled: false },
                     query: { enabled: false },
-                    payload: { enabled: false },
-                    responseBody: { enabled: false },
+                    request: { enabled: false },
+                    response: { enabled: false },
                     stack: false
                 }
             });
-            await PlatformTest.bootstrap(TestServer, { imports: [TestLogger] })();
+            await PlatformTest.bootstrap(TestServer)();
             request = SuperTest(PlatformTest.callback());
             stdoutSpy.mockClear();
             stderrSpy.mockClear();
@@ -269,7 +353,7 @@ describe('Logger (integration)', () => {
             await PlatformTest.reset();
         });
 
-        it('omits headers, query, requestBody, and responseBody from the completed log', async () => {
+        it('omits headers, query, request, and response from the completed log', async () => {
             await request.get('/test/success').query({ page: '1' });
 
             const logs = parseLogs(stdoutSpy);
@@ -278,8 +362,8 @@ describe('Logger (integration)', () => {
             expect(entry).toBeDefined();
             expect(entry?.['attributes']).not.toHaveProperty('headers');
             expect(entry?.['attributes']).not.toHaveProperty('query');
-            expect(entry?.['attributes']).not.toHaveProperty('requestBody');
-            expect(entry?.['attributes']).not.toHaveProperty('responseBody');
+            expect(entry?.['attributes']).not.toHaveProperty('request');
+            expect(entry?.['attributes']).not.toHaveProperty('response');
         });
 
         it('omits error_stack from the failed request log', async () => {

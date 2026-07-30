@@ -27,6 +27,17 @@ catalog:
   zod: 4.4.3
 
 catalogs:
+  express:
+    '@types/body-parser': 1.19.6
+    '@types/compression': 1.8.1
+    '@types/cookie-parser': 1.4.10
+    '@types/cors': 2.8.19
+    '@types/method-override': 3.0.0
+    body-parser: 2.3.0
+    compression: 1.8.1
+    cookie-parser: 1.4.7
+    cors: 2.8.6
+    method-override: 3.0.0
   tsed:
     '@tsed/ajv': 8.31.1
     '@tsed/core': 8.31.1

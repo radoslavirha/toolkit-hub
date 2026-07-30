@@ -18,10 +18,9 @@ pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-logger
 **Essential Pattern:**
 ```typescript
 // 1. API-side — override Logger with your own LoggerProvider
-import { Injectable, OverrideProvider, Scope, ProviderScope } from '@tsed/di';
+import { OverrideProvider, Scope, ProviderScope } from '@tsed/di';
 import { Logger } from '@radoslavirha/tsed-logger';
 
-@Injectable()
 @OverrideProvider(Logger)
 @Scope(ProviderScope.SINGLETON)
 export class LoggerProvider extends Logger {
@@ -48,9 +47,11 @@ export class Service {
 }
 ```
 
+> Do not add `@Injectable()` on the override class. `@OverrideProvider(Logger)` already replaces the Logger provider token; registering the override as a second injectable provider also registers lifecycle hooks twice.
+
 > **HTTP request logging is automatic.** Ts.ED calls `$onResponse` on every `@Injectable()` provider that declares it — no manual wiring in `Server` is needed.
 
-**Key exports:** `Logger`, `LoggerOptions`, `LoggerOptionsSchema`, `LogLevel`
+**Key exports:** `Logger`, `LoggerOptionsInput`, `LoggerOptions`, `LoggerOptionsSchema`, `LogLevel`
 
 **Full documentation below** ↓
 
@@ -72,7 +73,8 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 |--------|------|-------------|
 | `Logger<T>` | Class | Injectable Ts.ED singleton logger extending `@radoslavirha/logger` |
 | `LoggerOptionsSchema` | Zod schema | Parses raw config with defaults for all logging options |
-| `LoggerOptions` | Type | Input type for `LoggerOptionsSchema` (all fields optional) |
+| `LoggerOptionsInput` | Type | Raw input type for `LoggerOptionsSchema` (all fields optional) |
+| `LoggerOptions` | Type | Parsed output type from `LoggerOptionsSchema` (defaults applied) |
 | `LogLevel` | Enum | Re-exported from `@radoslavirha/logger` — OTEL severity levels |
 
 ---
@@ -153,10 +155,10 @@ Request log output (success):
     "url": "/api/items",
     "status": 200,
     "duration": 42,
-    "headers": { "content-type": "application/json" },
-    "query": { "page": "1" },
-    "requestBody": { "key": "value" },
-    "responseBody": { "id": 1 }
+    "headers": "{\"content-type\":\"application/json\"}",
+    "query": "{\"page\":\"1\"}",
+    "request": "{\"key\":\"value\"}",
+    "response": "{\"id\":1}"
   }
 }
 ```
@@ -194,8 +196,8 @@ Control what is included in request log entries via in configuration JSON file:
             "enabled": true,
             "headers": { "enabled": false },   // omit raw headers
             "query": { "enabled": true },
-            "payload": { "enabled": false },   // omit request body
-            "responseBody": { "enabled": false }, // omit response body
+            "request": { "enabled": false },   // omit request body
+            "response": { "enabled": false }, // omit response body
             "stack": false                   // omit error stack traces
         }
 }
@@ -249,9 +251,13 @@ export type ConfigModel = z.infer<typeof ConfigSchema>;
 
 ---
 
-### `LoggerOptions`
+### `LoggerOptionsInput`
 
 Input type for `LoggerOptionsSchema`. All fields are optional — defaults are applied on `.parse()`.
+
+### `LoggerOptions`
+
+Parsed output type from `LoggerOptionsSchema` with defaults already applied.
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
@@ -260,8 +266,8 @@ Input type for `LoggerOptionsSchema`. All fields are optional — defaults are a
 | `requests.enabled` | `boolean` | `true` | Enable HTTP request/response logging |
 | `requests.headers.enabled` | `boolean` | `true` | Include raw request headers |
 | `requests.query.enabled` | `boolean` | `true` | Include query-string parameters |
-| `requests.payload.enabled` | `boolean` | `true` | Include parsed request body |
-| `requests.responseBody.enabled` | `boolean` | `true` | Include endpoint return value |
+| `requests.request.enabled` | `boolean` | `true` | Include parsed request body |
+| `requests.response.enabled` | `boolean` | `true` | Include endpoint return value |
 | `requests.stack` | `boolean` | `true` | Include error stack trace in error log entries |
 
 ---

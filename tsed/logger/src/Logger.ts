@@ -1,9 +1,9 @@
 import { Injectable, ProviderScope, Scope } from '@tsed/di';
 import { PlatformContext } from '@tsed/platform-http';
 import { Logger as BaseLogger } from '@radoslavirha/logger';
-
-import type { LoggerOptions } from './RequestLogOptions.schema.js';
 import { ObjectUtils } from '@radoslavirha/utils';
+
+import { LoggerOptionsDefaults, type LoggerOptions } from './RequestLogOptions.schema.js';
 
 /**
  * Ts.ED injectable singleton logger.
@@ -24,13 +24,10 @@ import { ObjectUtils } from '@radoslavirha/utils';
  *
  * ```typescript
  * // API — LoggerService.ts
- * import { Injectable, OverrideProvider, Scope } from '@tsed/di';
- * import { ProviderScope } from '@tsed/di';
+ * import { OverrideProvider } from '@tsed/di';
  * import { Logger } from '@radoslavirha/tsed-logger';
  *
- * \@Injectable()
  * \@OverrideProvider(Logger)
- * \@Scope(ProviderScope.SINGLETON)
  * export class LoggerService extends Logger {
  *   constructor(readonly configService: ConfigService) {
  *     // metaProvider is passed as the second argument; options come from JSON config
@@ -38,6 +35,10 @@ import { ObjectUtils } from '@radoslavirha/utils';
  *   }
  * }
  * ```
+ *
+ * Do not also decorate `LoggerService` with `@Injectable()`: `@OverrideProvider(Logger)`
+ * already replaces the Logger provider token, and registering the override as a second
+ * injectable provider registers lifecycle hooks twice.
  *
  * ## Shared library packages
  *
@@ -64,14 +65,12 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
      * @param options - Logger configuration, already parsed and defaulted via
      *   {@link LoggerOptionsSchema}. APIs should call `LoggerOptionsSchema.parse(rawConfig)`
      *   when loading JSON configuration, then pass the result here.
-     *   When omitted (e.g. in DI without explicit configuration), the logger operates
-     *   with all features disabled — no HTTP request logging, no output.
      * @param metaProvider - Optional callback invoked on every log call to
      *   supply base attributes (e.g. request-id, trace-id).  Not serialisable,
      *   so it must be passed here rather than included in `options`.
      */
-    public constructor(options?: LoggerOptions, metaProvider?: () => Partial<T>) {
-        const resolved: LoggerOptions = options ?? {};
+    public constructor(options: LoggerOptions = LoggerOptionsDefaults, metaProvider?: () => Partial<T>) {
+        const resolved: LoggerOptions = options;
         super({
             enabled: resolved.enabled,
             level: resolved.level,
@@ -97,21 +96,21 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         };
 
         if (ObjectUtils.isEnabled(this.options.requests.headers)) {
-            meta.headers = $ctx.request.headers;
+            meta.headers = Logger.stringifyForLog($ctx.request.headers);
         }
 
         if (ObjectUtils.isEnabled(this.options.requests.query)) {
-            meta.query = $ctx.request.query;
+            meta.query = Logger.stringifyForLog($ctx.request.query);
         }
 
-        if (ObjectUtils.isEnabled(this.options.requests.payload)) {
-            meta.requestBody = $ctx.request.body;
+        if (ObjectUtils.isEnabled(this.options.requests.request)) {
+            meta.request = Logger.stringifyForLog($ctx.request.body);
         }
 
-        if (ObjectUtils.isEnabled(this.options.requests.responseBody)) {
+        if (ObjectUtils.isEnabled(this.options.requests.response)) {
             const contentType = String($ctx.response.getHeaders()['content-type'] ?? '');
             const isTextSafe = !contentType || /^(text\/|application\/(json|xml|ld\+json|graphql|javascript|x-www-form-urlencoded))/i.test(contentType);
-            meta.responseBody = isTextSafe ? $ctx.data : '[[ BINARY ]]';
+            meta.response = isTextSafe ? Logger.stringifyForLog($ctx.data) : '[[ BINARY ]]';
         }
 
         if (status >= 400) {
@@ -130,5 +129,25 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         } else {
             this.httpLog.info('Request completed', meta);
         }
+    }
+
+    private static stringifyForLog(value: unknown): string {
+        if (typeof value === 'string') {
+            return value;
+        }
+        if (typeof value === 'undefined') {
+            return 'undefined';
+        }
+
+        try {
+            const serialized = JSON.stringify(value);
+            if (typeof serialized === 'string') {
+                return serialized;
+            }
+        } catch {
+            return '[[ UNSERIALIZABLE ]]';
+        }
+
+        return String(value);
     }
 }

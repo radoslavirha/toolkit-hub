@@ -43,7 +43,6 @@
     "dependencies": {
         "@radoslavirha/logger": "workspace:*",
         "@radoslavirha/utils": "workspace:*",
-        "@tsed/platform-http": "catalog:tsed",
         "zod": "catalog:"
     },
     "devDependencies": {
@@ -52,13 +51,19 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@tsed/platform-express": "catalog:tsed",
+        "@tsed/platform-http": "catalog:tsed",
+        "@tsed/platform-params": "catalog:tsed",
         "@swc/core": "catalog:",
         "@swc/helpers": "catalog:",
         "@tsed/di": "catalog:tsed",
         "@tsed/schema": "catalog:tsed",
         "@types/node": "catalog:",
+        "@types/body-parser": "catalog:express",
+        "@types/cors": "catalog:express",
         "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
+        "body-parser": "catalog:express",
+        "cors": "catalog:express",
         "eslint": "catalog:",
         "supertest": "catalog:",
         "tsdown": "catalog:",
@@ -67,7 +72,8 @@
         "vitest": "catalog:"
     },
     "peerDependencies": {
-        "@tsed/di": "catalog:tsed"
+        "@tsed/di": "catalog:tsed",
+        "@tsed/platform-http": "catalog:tsed"
     },
     "engines": {
         "node": ">= 24",

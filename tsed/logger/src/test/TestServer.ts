@@ -1,5 +1,8 @@
 import { Configuration } from '@tsed/di';
+import { application } from '@tsed/platform-http';
 import '@tsed/platform-express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 import { TestController } from './TestController.js';
 
@@ -18,5 +21,23 @@ import { TestController } from './TestController.js';
         '/': [TestController]
     }
 })
-export class TestServer {}
+export class TestServer {
+    protected app = application();
+
+    public $beforeRoutesInit(): void {
+        this.registerMiddlewares();
+    }
+
+    protected registerMiddlewares(): void {
+        this.app
+            .use(cors({
+                origin: true,
+                credentials: true
+            }))
+            .use(bodyParser.json())
+            .use(bodyParser.urlencoded({
+                extended: true
+            }));
+    }
+}
 

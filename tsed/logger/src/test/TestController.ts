@@ -1,6 +1,10 @@
 import { Controller } from '@tsed/di';
 import { Response, PlatformResponse } from '@tsed/platform-http';
-import { Get, Returns } from '@tsed/schema';
+import { BodyParams } from '@tsed/platform-params';
+import { Get, Patch, Post, Returns } from '@tsed/schema';
+import { CommonUtils } from '@radoslavirha/utils';
+
+import { EchoPayload, EchoResponse } from './models/index.js';
 
 /**
  * Minimal controller for Logger integration tests.
@@ -11,6 +15,8 @@ import { Get, Returns } from '@tsed/schema';
  * - GET /test/handled-error  — sets status 400 without throwing, so $ctx.error stays null
  * - GET /test/code-error     — throws an error whose name is undefined but code is set (e.g. Node.js ENOENT-style)
  * - GET /test/binary         — returns 200 with Content-Type: application/octet-stream (binary path)
+ * - POST /test/echo          — returns 200 with echo body
+ * - PATCH /test/echo         — returns 200 with echo body
  */
 @Controller('/test')
 export class TestController {
@@ -47,5 +53,25 @@ export class TestController {
     public getBinary(@Response() res: PlatformResponse): Buffer {
         res.contentType('application/octet-stream');
         return Buffer.from([0x01, 0x02, 0x03]);
+    }
+
+    @Post('/echo')
+    @Returns(200, EchoResponse)
+    public postEcho(@BodyParams(EchoPayload) body: EchoPayload): EchoResponse {
+        return CommonUtils.buildModelStrict(EchoResponse, {
+            ok: true,
+            method: 'POST',
+            body
+        });
+    }
+
+    @Patch('/echo')
+    @Returns(200, EchoResponse)
+    public patchEcho(@BodyParams(EchoPayload) body: EchoPayload): EchoResponse {
+        return CommonUtils.buildModelStrict(EchoResponse, {
+            ok: true,
+            method: 'PATCH',
+            body
+        });
     }
 }
