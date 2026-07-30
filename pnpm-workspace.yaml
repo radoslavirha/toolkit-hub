@@ -11,12 +11,14 @@ allowBuilds:
   ssh2: false
 
 catalog:
+  '@types/fast-redact': 3.0.4
   '@swc/core': 1.15.41
   '@swc/helpers': 0.5.23
   '@types/node': 26.0.0
   '@types/supertest': 7.2.0
   '@vitest/coverage-v8': 4.1.9
   eslint: 10.5.0
+  fast-redact: 3.5.0
   mongoose: 9.7.1
   supertest: 7.2.2
   tsdown: 0.22.3

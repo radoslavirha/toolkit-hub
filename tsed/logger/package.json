@@ -43,6 +43,7 @@
     "dependencies": {
         "@radoslavirha/logger": "workspace:*",
         "@radoslavirha/utils": "workspace:*",
+        "fast-redact": "catalog:",
         "zod": "catalog:"
     },
     "devDependencies": {
@@ -57,6 +58,7 @@
         "@swc/helpers": "catalog:",
         "@tsed/di": "catalog:tsed",
         "@tsed/schema": "catalog:tsed",
+        "@types/fast-redact": "catalog:",
         "@types/node": "catalog:",
         "@types/body-parser": "catalog:express",
         "@types/cors": "catalog:express",

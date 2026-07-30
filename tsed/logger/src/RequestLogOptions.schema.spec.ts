@@ -13,10 +13,10 @@ describe('LoggerOptionsSchema', () => {
             level: LogLevel.INFO,
             requests: {
                 enabled: true,
-                headers: { enabled: true },
-                query: { enabled: true },
-                request: { enabled: true },
-                response: { enabled: true },
+                headers: { enabled: true, redactPaths: [] },
+                query: { enabled: true, redactPaths: [] },
+                request: { enabled: true, redactPaths: [] },
+                response: { enabled: true, redactPaths: [] },
                 stack: true
             }
         });
@@ -44,6 +44,11 @@ describe('LoggerOptionsSchema', () => {
     it('preserves explicit requests.headers.enabled: false', () => {
         const result = LoggerOptionsSchema.parse({ requests: { headers: { enabled: false } } });
         expect(result.requests.headers.enabled).toBe(false);
+    });
+
+    it('preserves explicit requests.headers.redactPaths selectors', () => {
+        const result = LoggerOptionsSchema.parse({ requests: { headers: { redactPaths: ['authorization', 'x-api-key'] } } });
+        expect(result.requests.headers.redactPaths).toStrictEqual(['authorization', 'x-api-key']);
     });
 
     it('preserves explicit requests.query.enabled: false', () => {
@@ -76,6 +81,10 @@ describe('LoggerOptionsSchema', () => {
 
     it('rejects a non-boolean requests.headers.enabled value', () => {
         expect(() => LoggerOptionsSchema.parse({ requests: { headers: { enabled: 'yes' } } })).toThrow();
+    });
+
+    it('rejects non-array requests.headers.redactPaths', () => {
+        expect(() => LoggerOptionsSchema.parse({ requests: { headers: { redactPaths: 'authorization' } } })).toThrow();
     });
 
     it('produces a type-safe parsed object matching LoggerOptions output type', () => {

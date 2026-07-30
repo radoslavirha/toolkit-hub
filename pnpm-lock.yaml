@@ -12,6 +12,9 @@ catalogs:
     '@swc/helpers':
       specifier: 0.5.23
       version: 0.5.23
+    '@types/fast-redact':
+      specifier: 3.0.4
+      version: 3.0.4
     '@types/node':
       specifier: 26.0.0
       version: 26.0.0
@@ -24,6 +27,9 @@ catalogs:
     eslint:
       specifier: 10.5.0
       version: 10.5.0
+    fast-redact:
+      specifier: 3.5.0
+      version: 3.5.0
     mongoose:
       specifier: 9.7.1
       version: 9.7.1
@@ -479,6 +485,9 @@ importers:
       '@radoslavirha/utils':
         specifier: workspace:*
         version: link:../../packages/utils
+      fast-redact:
+        specifier: 'catalog:'
+        version: 3.5.0
       zod:
         specifier: 'catalog:'
         version: 4.4.3
@@ -522,6 +531,9 @@ importers:
       '@types/cors':
         specifier: catalog:express
         version: 2.8.19
+      '@types/fast-redact':
+        specifier: 'catalog:'
+        version: 3.0.4
       '@types/node':
         specifier: 'catalog:'
         version: 26.0.0
@@ -1862,6 +1874,9 @@ packages:
   '@types/express@5.0.6':
     resolution: {integrity: sha512-sKYVuV7Sv9fbPIt/442koC7+IIwK5olP1KWeD88e/idgoJqDm3JV/YUiPwkoKK92ylff2MGxSz1CSjsXelx0YA==}
 
+  '@types/fast-redact@3.0.4':
+    resolution: {integrity: sha512-tgGJaXucrCH4Yx2l/AI6e/JQksZhKGIQsVwBMTh+nxUhQDv5tXScTs5DHTw+qSKDXnHL2dTAh1e2rd5pcFQyNQ==}
+
   '@types/html-minifier-terser@7.0.2':
     resolution: {integrity: sha512-mm2HqV22l8lFQh4r2oSsOEVea+m0qqxEmwpc9kC1p/XzmjLWrReR9D/GRs8Pex2NX/imyEH9c5IU/7tMBQCHOA==}
 
@@ -2695,6 +2710,10 @@ packages:
 
   fast-levenshtein@2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
+
+  fast-redact@3.5.0:
+    resolution: {integrity: sha512-dwsoQlS7h9hMeYUq1W++23NDcBLV4KqONnITDV9DjfS3q1SgDGVrBdvvTLUotWtPSD7asWDV9/CmsZPy8Hf70A==}
+    engines: {node: '>=6'}
 
   fast-safe-stringify@2.1.1:
     resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
@@ -5050,6 +5069,8 @@ snapshots:
       '@types/express-serve-static-core': 5.1.1
       '@types/serve-static': 2.2.0
 
+  '@types/fast-redact@3.0.4': {}
+
   '@types/html-minifier-terser@7.0.2': {}
 
   '@types/http-errors@2.0.5': {}
@@ -5965,6 +5986,8 @@ snapshots:
   fast-json-stable-stringify@2.1.0: {}
 
   fast-levenshtein@2.0.6: {}
+
+  fast-redact@3.5.0: {}
 
   fast-safe-stringify@2.1.1: {}
 

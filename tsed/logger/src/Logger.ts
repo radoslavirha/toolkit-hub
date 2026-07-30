@@ -1,9 +1,15 @@
 import { Injectable, ProviderScope, Scope } from '@tsed/di';
 import { PlatformContext } from '@tsed/platform-http';
+import fastRedact from 'fast-redact';
 import { Logger as BaseLogger } from '@radoslavirha/logger';
 import { ObjectUtils } from '@radoslavirha/utils';
 
 import { LoggerOptionsDefaults, type LoggerOptions } from './RequestLogOptions.schema.js';
+
+type RedactorFunction = (value: unknown) => string;
+
+type RequestLogSource = 'headers' | 'query' | 'request' | 'response';
+type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
 
 /**
  * Ts.ED injectable singleton logger.
@@ -58,8 +64,11 @@ import { LoggerOptionsDefaults, type LoggerOptions } from './RequestLogOptions.s
 @Injectable()
 @Scope(ProviderScope.SINGLETON)
 export class Logger<T extends object = object> extends BaseLogger<T> {
+    private static readonly REDACTED_VALUE = '***';
+
     private readonly httpLog: BaseLogger;
     private readonly options: LoggerOptions;
+    private readonly redactors: RequestSourceRedactors;
 
     /**
      * @param options - Logger configuration, already parsed and defaulted via
@@ -78,6 +87,12 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         });
         this.httpLog = this.child('HTTP_REQUEST');
         this.options = resolved;
+        this.redactors = {
+            headers: Logger.compileRedactor(resolved.requests.headers.redactPaths),
+            query: Logger.compileRedactor(resolved.requests.query.redactPaths),
+            request: Logger.compileRedactor(resolved.requests.request.redactPaths),
+            response: Logger.compileRedactor(resolved.requests.response.redactPaths)
+        };
     }
 
     private $onResponse($ctx: PlatformContext): void {
@@ -96,21 +111,21 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         };
 
         if (ObjectUtils.isEnabled(this.options.requests.headers)) {
-            meta.headers = Logger.stringifyForLog($ctx.request.headers);
+            meta.headers = Logger.prepareSourceValue($ctx.request.headers, this.redactors.headers);
         }
 
         if (ObjectUtils.isEnabled(this.options.requests.query)) {
-            meta.query = Logger.stringifyForLog($ctx.request.query);
+            meta.query = Logger.prepareSourceValue($ctx.request.query, this.redactors.query);
         }
 
         if (ObjectUtils.isEnabled(this.options.requests.request)) {
-            meta.request = Logger.stringifyForLog($ctx.request.body);
+            meta.request = Logger.prepareSourceValue($ctx.request.body, this.redactors.request);
         }
 
         if (ObjectUtils.isEnabled(this.options.requests.response)) {
             const contentType = String($ctx.response.getHeaders()['content-type'] ?? '');
             const isTextSafe = !contentType || /^(text\/|application\/(json|xml|ld\+json|graphql|javascript|x-www-form-urlencoded))/i.test(contentType);
-            meta.response = isTextSafe ? Logger.stringifyForLog($ctx.data) : '[[ BINARY ]]';
+            meta.response = isTextSafe ? Logger.prepareSourceValue($ctx.data, this.redactors.response) : '[[ BINARY ]]';
         }
 
         if (status >= 400) {
@@ -129,6 +144,21 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         } else {
             this.httpLog.info('Request completed', meta);
         }
+    }
+
+    private static prepareSourceValue(value: unknown, redactor: RedactorFunction): string {
+        return redactor(value);
+    }
+
+    private static compileRedactor(redactPaths: string[]): RedactorFunction {
+        const redactor = fastRedact({
+            paths: redactPaths,
+            censor: Logger.REDACTED_VALUE,
+            serialize: Logger.stringifyForLog,
+            strict: false
+        }) as RedactorFunction;
+
+        return redactor;
     }
 
     private static stringifyForLog(value: unknown): string {

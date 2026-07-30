@@ -293,6 +293,80 @@ describe('Logger (integration)', () => {
         });
     });
 
+    describe('with per-source redaction selectors', () => {
+        let request: SuperTest.Agent;
+        let stdoutSpy: MockInstance;
+        let stderrSpy: MockInstance;
+
+        beforeEach(async () => {
+            stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+            stderrSpy = vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+            TestLogger.configure({
+                enabled: true,
+                requests: {
+                    enabled: true,
+                    headers: { enabled: true, redactPaths: ['authorization'] },
+                    query: { enabled: true, redactPaths: ['token'] },
+                    request: { enabled: true, redactPaths: ['user.id', 'status'] },
+                    response: { enabled: true, redactPaths: ['body.user.id', 'body.status'] },
+                    stack: true
+                }
+            });
+            await PlatformTest.bootstrap(TestServer)();
+            request = SuperTest(PlatformTest.callback());
+            stdoutSpy.mockClear();
+            stderrSpy.mockClear();
+        });
+
+        afterEach(async () => {
+            vi.restoreAllMocks();
+            await PlatformTest.reset();
+        });
+
+        it('redacts only selectors configured for each source', async () => {
+            const payload: Record<string, unknown> = {
+                user: { id: 'u-1' },
+                status: 'active',
+                enabled: true
+            };
+
+            const response = await request
+                .post('/test/echo')
+                .query({ token: 'sensitive', page: '1' })
+                .set('authorization', 'Bearer secret')
+                .set('x-api-key', 'visible')
+                .send(payload);
+
+            expect(response.status).toBe(200);
+
+            const logs = parseLogs(stdoutSpy);
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+            const attributes = entry?.['attributes'] ?? {};
+
+            const headers = JSON.parse(String(attributes['headers'])) as Record<string, unknown>;
+            const query = JSON.parse(String(attributes['query'])) as Record<string, unknown>;
+            const requestBody = JSON.parse(String(attributes['request'])) as Record<string, unknown>;
+            const responseBody = JSON.parse(String(attributes['response'])) as Record<string, unknown>;
+
+            expect(headers['authorization']).toBe('***');
+            expect(headers['x-api-key']).toBe('visible');
+
+            expect(query['token']).toBe('***');
+            expect(query['page']).toBe('1');
+
+            const requestUser = requestBody['user'] as Record<string, unknown>;
+            expect(requestUser['id']).toBe('***');
+            expect(requestBody['status']).toBe('***');
+            expect(requestBody['enabled']).toBe(true);
+
+            const responsePayload = responseBody['body'] as Record<string, unknown>;
+            const responseUser = responsePayload['user'] as Record<string, unknown>;
+            expect(responseUser['id']).toBe('***');
+            expect(responsePayload['status']).toBe('***');
+            expect(responsePayload['enabled']).toBe(true);
+        });
+    });
+
     describe('with request logging disabled', () => {
         let request: SuperTest.Agent;
         let stdoutSpy: MockInstance;

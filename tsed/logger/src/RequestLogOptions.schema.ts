@@ -2,11 +2,25 @@ import { z } from 'zod';
 
 import { LogLevel } from '@radoslavirha/logger';
 
+const RedactionSelectorSchema = z.string().trim().min(1);
+
 const RequestFieldOptionsSchema = z.object({
-    enabled: z.boolean().default(true)
+    enabled: z.boolean().default(true),
+    /**
+     * Per-source redaction path selectors.
+     *
+     * Selector semantics:
+     * - `authorization` → redact only the root-level `authorization` property.
+     * - `user.password` → redact an exact nested path.
+     * - `items.*.token` → redact wildcard paths.
+     */
+    redactPaths: z.array(RedactionSelectorSchema).default(() => [])
 });
 
-const RequestFieldOptionsDefaultSchema = RequestFieldOptionsSchema.default(() => ({ enabled: true }));
+const RequestFieldOptionsDefaultSchema = RequestFieldOptionsSchema.default(() => ({
+    enabled: true,
+    redactPaths: []
+}));
 
 const LoggerRequestOptionsSchema = z.object({
     /** Enable or disable HTTP request/response logging entirely. Default: `true`. */
@@ -23,10 +37,10 @@ const LoggerRequestOptionsSchema = z.object({
     stack: z.boolean().default(true)
 }).default(() => ({
     enabled: true,
-    headers: { enabled: true },
-    query: { enabled: true },
-    request: { enabled: true },
-    response: { enabled: true },
+    headers: { enabled: true, redactPaths: [] },
+    query: { enabled: true, redactPaths: [] },
+    request: { enabled: true, redactPaths: [] },
+    response: { enabled: true, redactPaths: [] },
     stack: true
 }));
 
@@ -69,6 +83,11 @@ export type LoggerOptionsInput = z.input<typeof LoggerOptionsSchema>;
  * Use as constructor input for {@link Logger} after parsing raw configuration.
  */
 export type LoggerOptions = z.output<typeof LoggerOptionsSchema>;
+
+/**
+ * Parsed type for per-source request logging options.
+ */
+export type LoggerRequestFieldOptions = z.output<typeof RequestFieldOptionsSchema>;
 
 /**
  * Runtime defaults used when Logger is instantiated by DI without explicit options.

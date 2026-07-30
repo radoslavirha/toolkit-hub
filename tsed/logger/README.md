@@ -194,14 +194,19 @@ Control what is included in request log entries via in configuration JSON file:
         "level": "info",
         "requests": {
             "enabled": true,
-            "headers": { "enabled": false },   // omit raw headers
-            "query": { "enabled": true },
-            "request": { "enabled": false },   // omit request body
-            "response": { "enabled": false }, // omit response body
+          "headers": { "enabled": false, "redactPaths": ["authorization", "cookie"] },
+          "query": { "enabled": true, "redactPaths": ["token"] },
+          "request": { "enabled": false, "redactPaths": ["password", "user.secret"] },
+          "response": { "enabled": false, "redactPaths": ["body.password"] },
             "stack": false                   // omit error stack traces
         }
 }
 ```
+
+    `redactPaths` selectors are path-based per source:
+    - `authorization` redacts only root-level `authorization` for that source.
+    - `user.password` redacts an exact nested path.
+    - `items.*.token` redacts wildcard path matches.
 
 Set `requests.enabled: false` to disable HTTP request logging entirely.
 
@@ -265,9 +270,13 @@ Parsed output type from `LoggerOptionsSchema` with defaults already applied.
 | `level` | `LogLevel` | `LogLevel.INFO` | Minimum severity to emit |
 | `requests.enabled` | `boolean` | `true` | Enable HTTP request/response logging |
 | `requests.headers.enabled` | `boolean` | `true` | Include raw request headers |
+| `requests.headers.redactPaths` | `string[]` | `[]` | Path selectors for header redaction |
 | `requests.query.enabled` | `boolean` | `true` | Include query-string parameters |
+| `requests.query.redactPaths` | `string[]` | `[]` | Path selectors for query redaction |
 | `requests.request.enabled` | `boolean` | `true` | Include parsed request body |
+| `requests.request.redactPaths` | `string[]` | `[]` | Path selectors for request payload redaction |
 | `requests.response.enabled` | `boolean` | `true` | Include endpoint return value |
+| `requests.response.redactPaths` | `string[]` | `[]` | Path selectors for response payload redaction |
 | `requests.stack` | `boolean` | `true` | Include error stack trace in error log entries |
 
 ---
