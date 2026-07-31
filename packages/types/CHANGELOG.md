@@ -1,5 +1,11 @@
 # @radoslavirha/types
 
+## 0.4.3
+
+### Patch Changes
+
+- [`b5b6441`](https://github.com/radoslavirha/toolkit-hub/commit/b5b64411b7f366c10ef0412ed4819784208b0316) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+
 ## 0.4.2
 
 ### Patch Changes
