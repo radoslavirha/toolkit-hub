@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-logger
 
+## 0.5.3
+
+### Patch Changes
+
+- [`decb000`](https://github.com/radoslavirha/toolkit-hub/commit/decb0009c75cbb02b4ca3aca18b28a037bb19ca5) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Improve logger
+
 ## 0.5.2
 
 ### Patch Changes
