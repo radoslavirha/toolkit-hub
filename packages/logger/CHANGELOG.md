@@ -1,5 +1,11 @@
 # @radoslavirha/logger
 
+## 0.4.0
+
+### Minor Changes
+
+- [`9b1d46d`](https://github.com/radoslavirha/toolkit-hub/commit/9b1d46d4ef780917a346ac5d55aa8b59c685c083) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Flat metadata, redaction
+
 ## 0.3.2
 
 ### Patch Changes
