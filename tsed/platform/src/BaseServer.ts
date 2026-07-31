@@ -2,6 +2,7 @@ import { configuration, Configuration, Inject } from '@tsed/di';
 import { application } from '@tsed/platform-http';
 import '@tsed/platform-express';
 import '@tsed/ajv';
+import '@tsed/platform-log-request';
 import { APIInformation, getServerDefaultConfig } from '@radoslavirha/tsed-configuration';
 import { Logger } from '@radoslavirha/tsed-logger';
 import { TsEDLoggerBridge } from './TsEDLoggerBridge.js';

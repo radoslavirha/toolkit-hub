@@ -9,7 +9,12 @@ export default defineConfig(mergeConfig(defaultConfig, {
         coverage: {
             exclude: [
                 'src/test'
-            ]
+            ],
+            thresholds: {
+                statements: 94.87,
+                lines: 94.87,
+                branches: 85.71
+            }
         }
     }
 }));

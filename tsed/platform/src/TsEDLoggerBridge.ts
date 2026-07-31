@@ -37,7 +37,6 @@ export class TsEDLoggerBridge {
         };
     }
 
-    /* v8 ignore start */
     private processLogEvent(level: LogLevel, event: Record<string, unknown>): void {
         let message: string;
 
@@ -76,5 +75,4 @@ export class TsEDLoggerBridge {
     private sanitizeString(str: string): string {
         return str.replace(/\x1B(?:\[[0-9;]*[A-Za-z])?/g, '').trim();
     }
-    /* v8 ignore stop */
 }

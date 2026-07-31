@@ -61,6 +61,7 @@
         "@tsed/di": "catalog:tsed",
         "@tsed/platform-express": "catalog:tsed",
         "@tsed/platform-http": "catalog:tsed",
+        "@tsed/platform-log-request": "catalog:tsed",
         "@tsed/schema": "catalog:tsed",
         "@types/body-parser": "catalog:express",
         "@types/compression": "catalog:express",
@@ -84,6 +85,7 @@
         "@tsed/di": "catalog:tsed",
         "@tsed/platform-express": "catalog:tsed",
         "@tsed/platform-http": "catalog:tsed",
+        "@tsed/platform-log-request": "catalog:tsed",
         "ajv": "catalog:tsed"
     },
     "engines": {

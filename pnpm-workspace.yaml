@@ -50,6 +50,7 @@ catalogs:
     '@tsed/openspec': 8.31.1
     '@tsed/platform-express': 8.31.1
     '@tsed/platform-http': 8.31.1
+    '@tsed/platform-log-request': 8.31.1
     '@tsed/platform-params': 8.31.1
     '@tsed/platform-views': 8.31.1
     '@tsed/schema': 8.31.1
