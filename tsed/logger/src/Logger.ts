@@ -1,12 +1,10 @@
 import { Injectable, ProviderScope, Scope } from '@tsed/di';
 import { PlatformContext } from '@tsed/platform-http';
-import fastRedact from 'fast-redact';
 import { Logger as BaseLogger } from '@radoslavirha/logger';
 import { ObjectUtils } from '@radoslavirha/utils';
 
+import { RedactionUtils, type RedactorFunction } from './RedactionUtils.js';
 import { LoggerOptionsDefaults, type LoggerOptions } from './RequestLogOptions.schema.js';
-
-type RedactorFunction = (value: unknown) => string;
 
 type RequestLogSource = 'headers' | 'query' | 'request' | 'response';
 type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
@@ -64,8 +62,6 @@ type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
 @Injectable()
 @Scope(ProviderScope.SINGLETON)
 export class Logger<T extends object = object> extends BaseLogger<T> {
-    private static readonly REDACTED_VALUE = '***';
-
     private readonly httpLog: BaseLogger;
     private readonly options: LoggerOptions;
     private readonly redactors: RequestSourceRedactors;
@@ -88,10 +84,10 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         this.httpLog = this.child('HTTP_REQUEST');
         this.options = resolved;
         this.redactors = {
-            headers: Logger.compileRedactor(resolved.requests.headers.redactPaths),
-            query: Logger.compileRedactor(resolved.requests.query.redactPaths),
-            request: Logger.compileRedactor(resolved.requests.request.redactPaths),
-            response: Logger.compileRedactor(resolved.requests.response.redactPaths)
+            headers: RedactionUtils.compileRedactor(resolved.requests.headers.redactPaths),
+            query: RedactionUtils.compileRedactor(resolved.requests.query.redactPaths),
+            request: RedactionUtils.compileRedactor(resolved.requests.request.redactPaths),
+            response: RedactionUtils.compileRedactor(resolved.requests.response.redactPaths)
         };
     }
 
@@ -111,21 +107,21 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         };
 
         if (ObjectUtils.isEnabled(this.options.requests.headers)) {
-            meta.headers = Logger.prepareSourceValue($ctx.request.headers, this.redactors.headers);
+            meta.headers = this.redactors.headers($ctx.request.headers);
         }
 
         if (ObjectUtils.isEnabled(this.options.requests.query)) {
-            meta.query = Logger.prepareSourceValue($ctx.request.query, this.redactors.query);
+            meta.query = this.redactors.query($ctx.request.query);
         }
 
         if (ObjectUtils.isEnabled(this.options.requests.request)) {
-            meta.request = Logger.prepareSourceValue($ctx.request.body, this.redactors.request);
+            meta.request = this.redactors.request($ctx.request.body);
         }
 
         if (ObjectUtils.isEnabled(this.options.requests.response)) {
             const contentType = String($ctx.response.getHeaders()['content-type'] ?? '');
             const isTextSafe = !contentType || /^(text\/|application\/(json|xml|ld\+json|graphql|javascript|x-www-form-urlencoded))/i.test(contentType);
-            meta.response = isTextSafe ? Logger.prepareSourceValue($ctx.data, this.redactors.response) : '[[ BINARY ]]';
+            meta.response = isTextSafe ? this.redactors.response($ctx.data) : '[[ BINARY ]]';
         }
 
         if (status >= 400) {
@@ -144,40 +140,5 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
         } else {
             this.httpLog.info('Request completed', meta);
         }
-    }
-
-    private static prepareSourceValue(value: unknown, redactor: RedactorFunction): string {
-        return redactor(value);
-    }
-
-    private static compileRedactor(redactPaths: string[]): RedactorFunction {
-        const redactor = fastRedact({
-            paths: redactPaths,
-            censor: Logger.REDACTED_VALUE,
-            serialize: Logger.stringifyForLog,
-            strict: false
-        }) as RedactorFunction;
-
-        return redactor;
-    }
-
-    private static stringifyForLog(value: unknown): string {
-        if (typeof value === 'string') {
-            return value;
-        }
-        if (typeof value === 'undefined') {
-            return 'undefined';
-        }
-
-        try {
-            const serialized = JSON.stringify(value);
-            if (typeof serialized === 'string') {
-                return serialized;
-            }
-        } catch {
-            return '[[ UNSERIALIZABLE ]]';
-        }
-
-        return String(value);
     }
 }
