@@ -2,7 +2,7 @@ import { Inject, Injectable, ProviderScope, Scope } from '@tsed/di';
 import { $log } from '@tsed/logger';
 import { BaseLogger, Logger, LogLevel } from '@radoslavirha/tsed-logger';
 import '@tsed/logger-connect';
-import { CommonUtils, ArrayUtils } from '@radoslavirha/utils';
+import { ArrayUtils } from '@radoslavirha/utils';
 
 @Injectable()
 @Scope(ProviderScope.SINGLETON)
@@ -38,9 +38,9 @@ export class TsEDLoggerBridge {
     }
 
     private processLogEvent(level: LogLevel, event: Record<string, unknown>): void {
-        let message: string = 'Ts.ED Log Event';
         /* v8 ignore start */
-        if (CommonUtils.notNil(event.data) && ArrayUtils.isArray(event.data )) {
+        let message: string = event.message ? this.sanitizeString(event.message as string) : 'Ts.ED Log Event';
+        if (ArrayUtils.isArray(event.data ) && event.data.length > 0) {
             message = (event.data as string[])
                 .map(item => this.sanitizeString(item))
                 .join(' ');
