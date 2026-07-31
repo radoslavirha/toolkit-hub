@@ -149,17 +149,15 @@ Request log output (success):
   "level": "info",
   "message": "Request completed",
   "scope": "HTTP_REQUEST",
-  "attributes": {
-    "reqId": "req-abc",
-    "method": "GET",
-    "url": "/api/items",
-    "status": 200,
-    "duration": 42,
-    "headers": "{\"content-type\":\"application/json\"}",
-    "query": "{\"page\":\"1\"}",
-    "request": "{\"key\":\"value\"}",
-    "response": "{\"id\":1}"
-  }
+  "reqId": "req-abc",
+  "method": "GET",
+  "url": "/api/items",
+  "status": 200,
+  "duration": 42,
+  "headers": "{\"content-type\":\"application/json\"}",
+  "query": "{\"page\":\"1\"}",
+  "request": "{\"key\":\"value\"}",
+  "response": "{\"id\":1}"
 }
 ```
 
@@ -170,16 +168,14 @@ Request log output (error, status ≥ 400):
   "level": "error",
   "message": "Request failed",
   "scope": "HTTP_REQUEST",
-  "attributes": {
-    "reqId": "req-abc",
-    "method": "POST",
-    "url": "/api/items",
-    "status": 422,
-    "duration": 15,
-    "error_name": "BadRequest",
-    "error_message": "Validation failed",
-    "error_stack": "Error: Validation failed\n    at ..."
-  }
+  "reqId": "req-abc",
+  "method": "POST",
+  "url": "/api/items",
+  "status": 422,
+  "duration": 15,
+  "error_name": "BadRequest",
+  "error_message": "Validation failed",
+  "error_stack": "Error: Validation failed\n    at ..."
 }
 ```
 

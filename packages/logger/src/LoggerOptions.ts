@@ -3,7 +3,7 @@ import type { LogLevel } from './LogLevel.enum.js';
 /**
  * Options for creating a Logger instance.
  *
- * @typeParam T - Shape of the `attributes` object passed to each log method.
+ * @typeParam T - Shape of metadata merged into each emitted log object.
  */
 export interface LoggerOptions<T extends object = object> {
     /** Whether to enable logging. Defaults to `true`. */
@@ -11,14 +11,14 @@ export interface LoggerOptions<T extends object = object> {
     /** Minimum log level to emit. Defaults to `INFO`. */
     readonly level?: LogLevel;
     /**
-     * Optional callback invoked on every log call to supply base attributes
+     * Optional callback invoked on every log call to supply base metadata fields
      * (e.g. request-id, trace-id, tenant-id) that are merged with any
      * per-call `meta` argument. Per-call values take precedence.
      *
      * @example
      * ```typescript
      * const logger = new Logger({ metaProvider: () => ({ requestId: getRequestId() }) });
-     * logger.info('request received'); // attributes includes requestId automatically
+     * logger.info('request received'); // emitted line includes requestId automatically
      * ```
      */
     readonly metaProvider?: () => Partial<T>;

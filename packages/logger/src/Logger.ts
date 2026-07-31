@@ -73,15 +73,15 @@ export class Logger<T extends object = object> {
      * Creates a child logger with the `scope` field pinned on every log line.
      * Child loggers share the same Winston transport as the parent.
      *
-     * An optional `metaProvider` can be supplied to add or override base attributes
+    * An optional `metaProvider` can be supplied to add or override base metadata fields
      * specific to this child scope. When both parent and child define a `metaProvider`,
      * their results are merged on every log call — child properties take precedence
      * over parent properties with the same key.
      *
      * @param scope - Class or module name to attach as OTEL InstrumentationScope (e.g. "UserService").
      * @param options - Optional per-child configuration.
-     * @param options.metaProvider - Callback invoked on every log call to supply child-scoped
-     *   base attributes. Merged on top of the parent provider; child keys win on conflict.
+    * @param options.metaProvider - Callback invoked on every log call to supply child-scoped
+    *   base metadata fields. Merged on top of the parent provider; child keys win on conflict.
      */
     public child<K extends object>(scope: string, options?: { readonly metaProvider?: () => Partial<K> }): Logger<K> {
         const parentProvider = this.metaProvider as (() => Partial<object>) | undefined;
@@ -140,12 +140,12 @@ export class Logger<T extends object = object> {
         }
 
         const baseMeta = this.metaProvider?.();
-        const attributes = baseMeta !== undefined || meta !== undefined
+        const metadata = baseMeta !== undefined || meta !== undefined
             ? { ...baseMeta, ...meta }
             : undefined;
 
-        if (attributes !== undefined) {
-            this.logger.log(level, body, { attributes });
+        if (metadata !== undefined) {
+            this.logger.log(level, body, metadata);
         } else {
             this.logger.log(level, body);
         }

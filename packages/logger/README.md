@@ -15,19 +15,19 @@ const logger = new Logger();
 // Scoped child logger — pins `scope` on every line
 const log = logger.child('UserService');
 log.info('User created', { userId: 'abc' });
-// → { "timestamp":"...","level":"info","message":"User created","scope":"UserService","attributes":{"userId":"abc"} }
+// → { "timestamp":"...","level":"info","message":"User created","scope":"UserService","userId":"abc" }
 
-// With metaProvider — base attributes on every call
+// With metaProvider — base metadata fields on every call
 const appLogger = new Logger({
     metaProvider: () => ({ requestId: getRequestId() })
 });
 appLogger.info('Request received');
-// → { ..., "attributes": { "requestId": "req-xyz" } }
+// → { ..., "requestId": "req-xyz" }
 ```
 
 **Key exports:** `Logger`, `LoggerOptions`, `LogLevel`
 
-**Output format:** `{ timestamp, level, message, scope?, attributes? }`
+**Output format:** `{ timestamp, level, message, scope?, ...meta }`
 
 ---
 
@@ -72,12 +72,12 @@ const logger = new Logger();
 const log = logger.child('Service');
 
 log.info('Order placed', { id: '1' });
-// → { ..., "scope": "Service", "attributes": { "id": "1" } }
+// → { ..., "scope": "Service", "id": "1" }
 ```
 
-### metaProvider — base attributes callback
+### metaProvider — base metadata callback
 
-Pass `metaProvider` to inject base attributes on every log call without repeating them. Useful for request-id / trace-id propagation. Per-call `meta` is merged on top and takes precedence.
+Pass `metaProvider` to inject base metadata fields on every log call without repeating them. Useful for request-id / trace-id propagation. Per-call `meta` is merged on top and takes precedence.
 
 ```typescript
 import { Logger } from '@radoslavirha/logger';
@@ -91,7 +91,7 @@ const logger = new Logger({
 const log = logger.child('PaymentService');
 
 log.info('Payment initiated', { amount: 100 });
-// → { ..., "scope": "PaymentService", "attributes": { "requestId": "req-abc", "amount": 100 } }
+// → { ..., "scope": "PaymentService", "requestId": "req-abc", "amount": 100 }
 ```
 
 `metaProvider` is inherited by all children created from the parent.
@@ -191,10 +191,8 @@ Every log line is a single JSON object:
     "level": "info",
     "message": "User created",
     "scope": "UserService",
-    "attributes": {
-        "requestId": "req-abc",
-        "userId": "usr-123"
-    }
+    "requestId": "req-abc",
+    "userId": "usr-123"
 }
 ```
 
@@ -204,7 +202,7 @@ Every log line is a single JSON object:
 | `level` | Always | Severity as lowercase string |
 | `message` | Always | Log body string |
 | `scope` | Child loggers only | Instrumentation scope (class/module name) |
-| `attributes` | `metaProvider` or per-call `meta` provided | Merged attributes object |
+| Additional keys | `metaProvider` or per-call `meta` provided | Merged metadata fields |
 
 `fatal` and `error` levels write to **stderr**; all other levels write to **stdout**.
 

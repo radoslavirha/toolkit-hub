@@ -63,24 +63,31 @@ describe('Logger', () => {
             expect(getLine()).not.toHaveProperty('attributes');
         });
 
-        it('nests attributes under a single attributes key', () => {
+        it('emits per-call meta fields at top level', () => {
             const logger = new Logger();
             logger.info('with attrs', { parent: { child: 'data' }, count: 3 });
             const line = getLine();
-            expect(line['attributes']).toEqual({ parent: { child: 'data' }, count: 3 });
+            expect(line['parent']).toEqual({ child: 'data' });
+            expect(line['count']).toBe(3);
         });
 
-        it('emits fields in the order: timestamp, level, message, attributes', () => {
+        it('emits fields in the order: timestamp, level, message, and merged meta fields', () => {
             const logger = new Logger();
             logger.info('hello', { key: 'value' });
-            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message', 'attributes']);
+            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message', 'key']);
         });
 
-        it('emits fields in the order: timestamp, level, message, scope, attributes for child logger', () => {
+        it('emits fields in the order: timestamp, level, message, scope, and merged meta fields for child logger', () => {
             const logger = new Logger();
             const child = logger.child('SomeService');
             child.info('hello', { key: 'value' });
-            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message', 'scope', 'attributes']);
+            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message', 'scope', 'key']);
+        });
+
+        it('allows callers to choose nested metadata shape explicitly', () => {
+            const logger = new Logger();
+            logger.info('with custom nesting', { attributes: { parent: 'chosen-by-caller' } });
+            expect(getLine()['attributes']).toEqual({ parent: 'chosen-by-caller' });
         });
     });
 
@@ -156,57 +163,62 @@ describe('Logger', () => {
     });
 
     describe('metaProvider', () => {
-        it('merges provider fields into attributes on every call', () => {
+        it('merges provider fields into the emitted log object on every call', () => {
             const logger = new Logger({ metaProvider: () => ({ requestId: 'req-1' }) });
             logger.info('with provider');
-            expect(getLine()['attributes']).toEqual({ requestId: 'req-1' });
+            expect(getLine()['requestId']).toBe('req-1');
         });
 
         it('per-call meta overrides provider fields with same key', () => {
             const logger = new Logger<Record<string, unknown>>({ metaProvider: () => ({ requestId: 'base', source: 'provider' }) });
             logger.info('override', { requestId: 'override', extra: 'value' });
-            expect(getLine()['attributes']).toEqual({ requestId: 'override', source: 'provider', extra: 'value' });
+            const line = getLine();
+            expect(line['requestId']).toBe('override');
+            expect(line['source']).toBe('provider');
+            expect(line['extra']).toBe('value');
         });
 
         it('provider fields appear even when no per-call meta is passed', () => {
             const logger = new Logger({ metaProvider: () => ({ id: 'abc' }) });
             logger.info('no meta');
-            expect(getLine()['attributes']).toEqual({ id: 'abc' });
+            expect(getLine()['id']).toBe('abc');
         });
 
-        it('attributes key is absent when provider returns empty object and no per-call meta', () => {
+        it('emits no additional fields when provider returns empty object and no per-call meta', () => {
             const logger = new Logger({ metaProvider: () => ({}) });
             logger.info('empty provider');
-            // empty spread produces {} which is still truthy — attributes key is present but empty
-            expect(getLine()['attributes']).toEqual({});
+            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message']);
         });
 
         it('child logger inherits metaProvider from parent', () => {
             const logger = new Logger({ metaProvider: () => ({ tenantId: 'tenant-x' }) });
             const child = logger.child('Service');
             child.info('from child');
-            expect(getLine()['attributes']).toEqual({ tenantId: 'tenant-x' });
+            expect(getLine()['tenantId']).toBe('tenant-x');
         });
 
         it('child logger uses its own metaProvider when parent has none', () => {
             const logger = new Logger();
             const child = logger.child<Record<string, unknown>>('Service', { metaProvider: () => ({ childKey: 'child-value' }) });
             child.info('from child');
-            expect(getLine()['attributes']).toEqual({ childKey: 'child-value' });
+            expect(getLine()['childKey']).toBe('child-value');
         });
 
         it('child metaProvider merges on top of parent metaProvider', () => {
             const logger = new Logger({ metaProvider: () => ({ tenantId: 'tenant-x', source: 'parent' }) });
             const child = logger.child<Record<string, unknown>>('Service', { metaProvider: () => ({ childKey: 'child-value', source: 'child' }) });
             child.info('from child');
-            expect(getLine()['attributes']).toEqual({ tenantId: 'tenant-x', source: 'child', childKey: 'child-value' });
+            const line = getLine();
+            expect(line['tenantId']).toBe('tenant-x');
+            expect(line['source']).toBe('child');
+            expect(line['childKey']).toBe('child-value');
         });
 
         it('child metaProvider keys take precedence over parent metaProvider keys', () => {
             const logger = new Logger({ metaProvider: () => ({ shared: 'from-parent' }) });
             const child = logger.child<Record<string, unknown>>('Service', { metaProvider: () => ({ shared: 'from-child' }) });
             child.info('conflict');
-            expect((getLine()['attributes'] as Record<string, unknown>)['shared']).toBe('from-child');
+            expect(getLine()['shared']).toBe('from-child');
         });
 
         it('provider is called on each log call independently', () => {
@@ -214,8 +226,8 @@ describe('Logger', () => {
             const logger = new Logger({ metaProvider: () => ({ seq: ++counter }) });
             logger.info('first');
             logger.info('second');
-            expect((getLine(0)['attributes'] as Record<string, unknown>)['seq']).toBe(1);
-            expect((getLine(1)['attributes'] as Record<string, unknown>)['seq']).toBe(2);
+            expect(getLine(0)['seq']).toBe(1);
+            expect(getLine(1)['seq']).toBe(2);
         });
 
         it('provider is not called when logging is disabled', () => {

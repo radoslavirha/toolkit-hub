@@ -134,31 +134,30 @@ describe('Logger (integration)', () => {
             await request.get('/test/success');
 
             const logs = parseLogs(stdoutSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
 
-            expect(entry?.['attributes']).toMatchObject({
+            expect(entry).toMatchObject({
                 method: 'GET',
                 url: '/test/success',
                 status: 200
             });
-            expect(typeof entry?.['attributes']?.['duration']).toBe('number');
-            expect(Number(entry?.['attributes']?.['duration'])).toBeGreaterThanOrEqual(0);
+            expect(typeof entry['duration']).toBe('number');
+            expect(Number(entry['duration'])).toBeGreaterThanOrEqual(0);
         });
 
         it('includes stringified headers, query, request, and response in the completed log', async () => {
             await request.get('/test/success').query({ page: '1' }).set('x-api-key', 'token');
 
             const logs = parseLogs(stdoutSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
-            const attributes = entry?.['attributes'] ?? {};
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
 
-            expect(typeof attributes['headers']).toBe('string');
-            expect(typeof attributes['query']).toBe('string');
-            expect(typeof attributes['response']).toBe('string');
+            expect(typeof entry['headers']).toBe('string');
+            expect(typeof entry['query']).toBe('string');
+            expect(typeof entry['response']).toBe('string');
 
-            expect(JSON.parse(String(attributes['headers']))).toMatchObject({ 'x-api-key': 'token' });
-            expect(JSON.parse(String(attributes['query']))).toMatchObject({ page: '1' });
-            expect(JSON.parse(String(attributes['response']))).toMatchObject({ ok: true });
+            expect(JSON.parse(String(entry['headers']))).toMatchObject({ 'x-api-key': 'token' });
+            expect(JSON.parse(String(entry['query']))).toMatchObject({ page: '1' });
+            expect(JSON.parse(String(entry['response']))).toMatchObject({ ok: true });
         });
 
         it('logs parsed POST payload and response body for JSON requests', async () => {
@@ -180,12 +179,11 @@ describe('Logger (integration)', () => {
             });
 
             const logs = parseLogs(stdoutSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
-            const attributes = entry?.['attributes'] ?? {};
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
 
-            expect(JSON.parse(String(attributes['query']))).toMatchObject({ source: 'post' });
-            expect(JSON.parse(String(attributes['request']))).toMatchObject(payload);
-            expect(JSON.parse(String(attributes['response']))).toMatchObject({
+            expect(JSON.parse(String(entry['query']))).toMatchObject({ source: 'post' });
+            expect(JSON.parse(String(entry['request']))).toMatchObject(payload);
+            expect(JSON.parse(String(entry['response']))).toMatchObject({
                 ok: true,
                 method: 'POST',
                 body: payload
@@ -209,12 +207,11 @@ describe('Logger (integration)', () => {
             });
 
             const logs = parseLogs(stdoutSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
-            const attributes = entry?.['attributes'] ?? {};
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
 
-            expect(JSON.parse(String(attributes['query']))).toMatchObject({ source: 'patch' });
-            expect(JSON.parse(String(attributes['request']))).toMatchObject(payload);
-            expect(JSON.parse(String(attributes['response']))).toMatchObject({
+            expect(JSON.parse(String(entry['query']))).toMatchObject({ source: 'patch' });
+            expect(JSON.parse(String(entry['request']))).toMatchObject(payload);
+            expect(JSON.parse(String(entry['response']))).toMatchObject({
                 ok: true,
                 method: 'PATCH',
                 body: payload
@@ -238,10 +235,10 @@ describe('Logger (integration)', () => {
             await request.get('/test/error');
 
             const logs = parseLogs(stderrSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, Record<string, unknown>>;
-            const errorStack = entry?.['attributes']?.['error_stack'];
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, unknown>;
+            const errorStack = entry['error_stack'];
 
-            expect(entry?.['attributes']).toMatchObject({
+            expect(entry).toMatchObject({
                 error_name: 'Error',
                 error_message: 'Something went wrong'
             });
@@ -253,9 +250,9 @@ describe('Logger (integration)', () => {
             await request.get('/test/code-error');
 
             const logs = parseLogs(stderrSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, Record<string, unknown>>;
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, unknown>;
 
-            expect(entry?.['attributes']?.['error_name']).toBe('ENOENT');
+            expect(entry['error_name']).toBe('ENOENT');
         });
 
         it('logs a 4xx response without error fields when $ctx.error is null', async () => {
@@ -263,20 +260,20 @@ describe('Logger (integration)', () => {
             expect(res.status).toBe(400);
 
             const logs = parseLogs(stderrSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, Record<string, unknown>>;
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, unknown>;
 
             expect(entry).toBeDefined();
-            expect(entry?.['attributes']).not.toHaveProperty('error_name');
-            expect(entry?.['attributes']).not.toHaveProperty('error_message');
+            expect(entry).not.toHaveProperty('error_name');
+            expect(entry).not.toHaveProperty('error_message');
         });
 
         it('logs [[ BINARY ]] as response when Content-Type is application/octet-stream', async () => {
             await request.get('/test/binary');
 
             const logs = parseLogs(stdoutSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
 
-            expect(entry?.['attributes']).toMatchObject({
+            expect(entry).toMatchObject({
                 response: '[[ BINARY ]]'
             });
         });
@@ -285,8 +282,8 @@ describe('Logger (integration)', () => {
             await request.get('/test/success');
 
             const logs = parseLogs(stdoutSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
-            const responseBody = entry?.['attributes']?.['response'];
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
+            const responseBody = entry['response'];
 
             expect(typeof responseBody).toBe('string');
             expect(JSON.parse(String(responseBody))).toMatchObject({ ok: true });
@@ -340,13 +337,12 @@ describe('Logger (integration)', () => {
             expect(response.status).toBe(200);
 
             const logs = parseLogs(stdoutSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
-            const attributes = entry?.['attributes'] ?? {};
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
 
-            const headers = JSON.parse(String(attributes['headers'])) as Record<string, unknown>;
-            const query = JSON.parse(String(attributes['query'])) as Record<string, unknown>;
-            const requestBody = JSON.parse(String(attributes['request'])) as Record<string, unknown>;
-            const responseBody = JSON.parse(String(attributes['response'])) as Record<string, unknown>;
+            const headers = JSON.parse(String(entry['headers'])) as Record<string, unknown>;
+            const query = JSON.parse(String(entry['query'])) as Record<string, unknown>;
+            const requestBody = JSON.parse(String(entry['request'])) as Record<string, unknown>;
+            const responseBody = JSON.parse(String(entry['response'])) as Record<string, unknown>;
 
             expect(headers['authorization']).toBe('***');
             expect(headers['x-api-key']).toBe('visible');
@@ -431,23 +427,23 @@ describe('Logger (integration)', () => {
             await request.get('/test/success').query({ page: '1' });
 
             const logs = parseLogs(stdoutSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, Record<string, unknown>>;
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
 
             expect(entry).toBeDefined();
-            expect(entry?.['attributes']).not.toHaveProperty('headers');
-            expect(entry?.['attributes']).not.toHaveProperty('query');
-            expect(entry?.['attributes']).not.toHaveProperty('request');
-            expect(entry?.['attributes']).not.toHaveProperty('response');
+            expect(entry).not.toHaveProperty('headers');
+            expect(entry).not.toHaveProperty('query');
+            expect(entry).not.toHaveProperty('request');
+            expect(entry).not.toHaveProperty('response');
         });
 
         it('omits error_stack from the failed request log', async () => {
             await request.get('/test/error');
 
             const logs = parseLogs(stderrSpy);
-            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, Record<string, unknown>>;
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, unknown>;
 
             expect(entry).toBeDefined();
-            expect(entry?.['attributes']).not.toHaveProperty('error_stack');
+            expect(entry).not.toHaveProperty('error_stack');
         });
     });
 });
