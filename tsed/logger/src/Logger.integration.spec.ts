@@ -1,11 +1,8 @@
 import { beforeEach, afterEach, describe, expect, it, vi, MockInstance } from 'vitest';
-import { OverrideProvider } from '@tsed/di';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import SuperTest from 'supertest';
 
-import { LoggerOptionsSchema } from './RequestLogOptions.schema.js';
-import type { LoggerOptions, LoggerOptionsInput } from './RequestLogOptions.schema.js';
-import { Logger } from './Logger.js';
+import { TestLoggerProvider } from './test/TestLoggerProvider.js';
 import { TestServer } from './test/TestServer.js';
 
 // ---------------------------------------------------------------------------
@@ -48,33 +45,15 @@ const parseLogs = (spy: { mock: { calls: unknown[][] } }): unknown[] =>
  * by the time the SuperTest `await` resolves.
  *
  * `$onResponse` is never called directly in these tests — Ts.ED automatically
- * invokes it on the registered TestLogger singleton after each HTTP response.
+ * invokes it on the registered TestLoggerProvider singleton after each HTTP response.
+ *
+ * The `@Injectable({token: Logger, scope: ProviderScope.SINGLETON})` override itself lives in
+ * `./test/TestLoggerProvider.ts` — the only place in this suite that references it directly.
+ * Its options are set via the static `configure()` method in each inner `beforeEach` BEFORE
+ * bootstrapping the platform, so there is no shared mutable state that could leak between
+ * test suites.
  */
 describe('Logger (integration)', () => {
-    // ---------------------------------------------------------------------------
-    // A single @OverrideProvider class is defined here (inside the outer describe
-    // scope, not at module level). Its options are set via the static `configure`
-    // method in each inner `beforeEach` BEFORE bootstrapping the platform, so
-    // there is no shared mutable state that could leak between test suites.
-    // ---------------------------------------------------------------------------
-    @OverrideProvider(Logger)
-    class TestLogger extends Logger {
-        private static _options: LoggerOptions = LoggerOptionsSchema.parse({
-            enabled: false,
-            requests: {
-                enabled: false
-            }
-        });
-
-        public static configure(opts: LoggerOptionsInput): void {
-            TestLogger._options = LoggerOptionsSchema.parse(opts);
-        }
-
-        public constructor() {
-            super(TestLogger._options);
-        }
-    }
-
     describe('with all request logging options enabled', () => {
         let request: SuperTest.Agent;
         let stdoutSpy: MockInstance;
@@ -83,7 +62,7 @@ describe('Logger (integration)', () => {
         beforeEach(async () => {
             stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
             stderrSpy = vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
-            TestLogger.configure({
+            TestLoggerProvider.configure({
                 enabled: true,
                 requests: {
                     enabled: true,
@@ -298,7 +277,7 @@ describe('Logger (integration)', () => {
         beforeEach(async () => {
             stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
             stderrSpy = vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
-            TestLogger.configure({
+            TestLoggerProvider.configure({
                 enabled: true,
                 requests: {
                     enabled: true,
@@ -371,7 +350,7 @@ describe('Logger (integration)', () => {
         beforeEach(async () => {
             stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
             stderrSpy = vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
-            TestLogger.configure({ requests: { enabled: false } });
+            TestLoggerProvider.configure({ requests: { enabled: false } });
             await PlatformTest.bootstrap(TestServer)();
             request = SuperTest(PlatformTest.callback());
             stdoutSpy.mockClear();
@@ -402,7 +381,7 @@ describe('Logger (integration)', () => {
         beforeEach(async () => {
             stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
             stderrSpy = vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
-            TestLogger.configure({
+            TestLoggerProvider.configure({
                 requests: {
                     enabled: true,
                     headers: { enabled: false },

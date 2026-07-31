@@ -2,7 +2,7 @@
 
 > Ts.ED injectable singleton logger with built-in HTTP request/response logging, wrapping `@radoslavirha/logger` for dependency injection.
 
-Provides a Ts.ED `@Injectable()` `Logger` class that extends the OTEL-compliant `@radoslavirha/logger`. Injects into any service or controller, logs HTTP request/response metadata via `$onResponse`, and is designed to be overridden per-API using `@OverrideProvider(Logger)`.
+Provides a Ts.ED `@Injectable()` `Logger` class that extends the OTEL-compliant `@radoslavirha/logger`. Injects into any service or controller, logs HTTP request/response metadata via `$onResponse`, and is designed to be overridden per-API using `@Injectable({token: Logger, scope: ProviderScope.SINGLETON})`.
 
 ---
 
@@ -18,11 +18,10 @@ pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-logger
 **Essential Pattern:**
 ```typescript
 // 1. API-side — override Logger with your own LoggerProvider
-import { OverrideProvider, Scope, ProviderScope } from '@tsed/di';
+import { Injectable, ProviderScope } from '@tsed/di';
 import { Logger } from '@radoslavirha/tsed-logger';
 
-@OverrideProvider(Logger)
-@Scope(ProviderScope.SINGLETON)
+@Injectable({token: Logger, scope: ProviderScope.SINGLETON})
 export class LoggerProvider extends Logger {
   constructor(readonly configService: ConfigService) {
     super(configService.config.logger);
@@ -47,11 +46,11 @@ export class Service {
 }
 ```
 
-> Do not add `@Injectable()` on the override class. `@OverrideProvider(Logger)` already replaces the Logger provider token; registering the override as a second injectable provider also registers lifecycle hooks twice.
+> `@Injectable({token: Logger, scope: ProviderScope.SINGLETON})` already replaces the Logger provider token; registering the override as a second injectable provider also registers lifecycle hooks twice.
 
 > **HTTP request logging is automatic.** Ts.ED calls `$onResponse` on every `@Injectable()` provider that declares it — no manual wiring in `Server` is needed.
 
-**Key exports:** `Logger`, `LoggerOptionsInput`, `LoggerOptions`, `LoggerOptionsSchema`, `LogLevel`
+**Key exports:** `Logger`, `LoggerMetadata`, `LoggerOptionsInput`, `LoggerOptions`, `LoggerOptionsSchema`, `LogLevel`
 
 **Full documentation below** ↓
 
@@ -71,7 +70,8 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 
 | Export | Type | Description |
 |--------|------|-------------|
-| `Logger<T>` | Class | Injectable Ts.ED singleton logger extending `@radoslavirha/logger` |
+| `Logger` | Class | Injectable Ts.ED singleton logger extending `@radoslavirha/logger`, typed as `BaseLogger<LoggerMetadata>` |
+| `LoggerMetadata` | Interface | Empty extension point for custom log metadata — augment via TypeScript declaration merging |
 | `LoggerOptionsSchema` | Zod schema | Parses raw config with defaults for all logging options |
 | `LoggerOptionsInput` | Type | Raw input type for `LoggerOptionsSchema` (all fields optional) |
 | `LoggerOptions` | Type | Parsed output type from `LoggerOptionsSchema` (defaults applied) |
@@ -99,16 +99,15 @@ export type ConfigModel = z.infer<typeof ConfigSchema>;
 
 ### 2. Override Logger per API
 
-In each API, create a `LoggerProvider` that extends `Logger` and reads from `ConfigService`. Use `@OverrideProvider(Logger)` so the DI container substitutes it everywhere `Logger` is injected — including shared library packages:
+In each API, create a `LoggerProvider` that extends `Logger` and reads from `ConfigService`. Use `@Injectable({token: Logger, scope: ProviderScope.SINGLETON})` so the DI container substitutes it everywhere `Logger` is injected — including shared library packages:
 
 ```typescript
 // src/config/LoggerProvider.ts
-import { OverrideProvider, Scope, ProviderScope } from '@tsed/di';
+import { Injectable, ProviderScope } from '@tsed/di';
 import { Logger } from '@radoslavirha/tsed-logger';
 import { ConfigService } from './ConfigService.js';
 
-@OverrideProvider(Logger)
-@Scope(ProviderScope.SINGLETON)
+@Injectable({token: Logger, scope: ProviderScope.SINGLETON})
 export class LoggerProvider extends Logger {
   constructor(readonly configService: ConfigService) {
     super(
@@ -119,7 +118,31 @@ export class LoggerProvider extends Logger {
 }
 ```
 
-### 3. Inject in shared packages
+### 3. Extend `LoggerMetadata` for typed custom attributes
+
+`Logger` is not generic — it is always typed as `Logger extends BaseLogger<LoggerMetadata>`. `LoggerMetadata` is an empty interface by default; augment it via TypeScript declaration merging so `metaProvider` and every per-call `meta` argument are typed with your API's own attributes, with no generic parameter needed on `Logger` itself:
+
+```typescript
+// src/config/LoggerProviderLogMetadata.ts
+export interface LoggerProviderLogMetadata {
+  requestId?: string;
+  tenantId?: string;
+}
+```
+
+```typescript
+// src/types/tsed-logger.d.ts
+import '@radoslavirha/tsed-logger';
+import { LoggerProviderLogMetadata } from '../config/LoggerProviderLogMetadata.js';
+
+declare module '@radoslavirha/tsed-logger' {
+  interface LoggerMetadata extends LoggerProviderLogMetadata {}
+}
+```
+
+Once declared, `metaProvider` in `LoggerProvider` and every `.info(body, meta)`-style call across the codebase — including in shared library packages — are typed with `LoggerProviderLogMetadata`'s fields.
+
+### 4. Inject in shared packages
 
 Any `@Injectable` in any package just injects `Logger` and scopes it with `child()`:
 
@@ -138,7 +161,7 @@ export class Service {
 }
 ```
 
-### 4. HTTP request/response logging
+### 5. HTTP request/response logging
 
 `$onResponse` is automatically called by Ts.ED on every `@Injectable()` provider that declares it. No manual wiring in `Server` is needed — registering `LoggerProvider` (or the `Logger` override) is sufficient.
 
@@ -179,7 +202,7 @@ Request log output (error, status ≥ 400):
 }
 ```
 
-### 5. Disable or selectively suppress request logging
+### 6. Disable or selectively suppress request logging
 
 Control what is included in request log entries via in configuration JSON file:
 
@@ -190,14 +213,17 @@ Control what is included in request log entries via in configuration JSON file:
         "level": "info",
         "requests": {
             "enabled": true,
-          "headers": { "enabled": false, "redactPaths": ["authorization", "cookie"] },
-          "query": { "enabled": true, "redactPaths": ["token"] },
-          "request": { "enabled": false, "redactPaths": ["password", "user.secret"] },
-          "response": { "enabled": false, "redactPaths": ["body.password"] },
-            "stack": false                   // omit error stack traces
+            "headers": { "enabled": false, "redactPaths": ["authorization", "cookie"] },
+            "query": { "enabled": true, "redactPaths": ["token"] },
+            "request": { "enabled": false, "redactPaths": ["password", "user.secret"] },
+            "response": { "enabled": false, "redactPaths": ["body.password"] },
+            "stack": false
         }
+    }
 }
 ```
+
+`stack: false` omits error stack traces from error log entries.
 
     `redactPaths` selectors are path-based per source:
     - `authorization` redacts only root-level `authorization` for that source.
@@ -208,15 +234,46 @@ Set `requests.enabled: false` to disable HTTP request logging entirely.
 
 ---
 
+## Testing
+
+Import your `LoggerProvider` override (see [Override Logger per API](#2-override-logger-per-api)) **once**, in a test setup file — the `@Injectable({token: Logger, scope: ProviderScope.SINGLETON})` decorator registers the DI override as soon as the file is loaded, nothing else is needed. Every spec file should only import and use `Logger` — never `LoggerProvider` directly.
+
+```typescript
+// test/setup.ts
+import '../src/config/LoggerProvider.js';
+```
+
+Wire the setup file via Vitest `setupFiles` so it runs before any test bootstraps the platform:
+
+```typescript
+// vitest.config.ts
+export default defineConfig({
+  test: {
+    setupFiles: ['./test/setup.ts']
+  }
+});
+```
+
+Then in any spec file, just import and use `Logger`:
+
+```typescript
+import { Logger } from '@radoslavirha/tsed-logger';
+import { PlatformTest } from '@tsed/platform-http/testing';
+
+const logger = PlatformTest.get<Logger>(Logger);
+```
+
+---
+
 ## API Reference
 
-### `Logger<T extends object = object>`
+### `Logger`
 
 ```typescript
 @Injectable()
 @Scope(ProviderScope.SINGLETON)
-class Logger<T extends object = object> extends BaseLogger<T> {
-    constructor(options: LoggerOptions, metaProvider?: () => Partial<T>)
+class Logger extends BaseLogger<LoggerMetadata> {
+    constructor(options?: LoggerOptionsInput, metaProvider?: () => Partial<LoggerMetadata>)
 }
 ```
 
@@ -231,6 +288,16 @@ Inherits all methods from `@radoslavirha/logger`:
 | `info(body, meta?)` | Log at INFO level — writes to **stdout** |
 | `debug(body, meta?)` | Log at DEBUG level — writes to **stdout** |
 | `trace(body, meta?)` | Log at TRACE level — writes to **stdout** |
+
+---
+
+### `LoggerMetadata`
+
+```typescript
+interface LoggerMetadata {}
+```
+
+Empty by default. Augment via TypeScript declaration merging to type `metaProvider` and per-call `meta` with your API's custom attributes — see [Extend `LoggerMetadata` for typed custom attributes](#3-extend-loggermetadata-for-typed-custom-attributes).
 
 ---
 

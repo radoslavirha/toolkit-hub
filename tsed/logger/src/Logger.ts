@@ -5,6 +5,7 @@ import { ObjectUtils } from '@radoslavirha/utils';
 
 import { RedactionUtils, type RedactorFunction } from './RedactionUtils.js';
 import { LoggerOptionsInput, LoggerOptionsSchema, type LoggerOptions } from './RequestLogOptions.schema.js';
+import { LoggerMetadata } from './LoggerMetadata.js';
 
 type RequestLogSource = 'headers' | 'query' | 'request' | 'response';
 type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
@@ -17,21 +18,20 @@ type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
  * on every log line emitted from that class.
  *
  * `Logger` is the shared DI token across all packages. The API overrides it using
- * `@OverrideProvider` so every injectable — including shared library packages —
+ * `@Injectable({token: Logger, scope: ProviderScope.SINGLETON})` so every injectable — including shared library packages —
  * receives the single API-configured instance.
  *
  * ## API-side setup
  *
  * In the API, create a `LoggerService` that extends `Logger` and reads options
- * from `ConfigService`. Decorate it with `@OverrideProvider(Logger)` so the DI
+ * from `ConfigService`. Decorate it with `@Injectable({token: Logger, scope: ProviderScope.SINGLETON})` so the DI
  * container substitutes it everywhere `Logger` is injected:
  *
  * ```typescript
  * // API — LoggerService.ts
- * import { OverrideProvider } from '@tsed/di';
  * import { Logger } from '@radoslavirha/tsed-logger';
  *
- * \@OverrideProvider(Logger)
+ * \@Injectable({token: Logger, scope: ProviderScope.SINGLETON})
  * export class LoggerService extends Logger {
  *   constructor(readonly configService: ConfigService) {
  *     // metaProvider is passed as the second argument; options come from JSON config
@@ -40,7 +40,7 @@ type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
  * }
  * ```
  *
- * Do not also decorate `LoggerService` with `@Injectable()`: `@OverrideProvider(Logger)`
+ * Do not also decorate `LoggerService` with `@Injectable()`: `@Injectable({token: Logger, scope: ProviderScope.SINGLETON})`
  * already replaces the Logger provider token, and registering the override as a second
  * injectable provider registers lifecycle hooks twice.
  *
@@ -61,7 +61,7 @@ type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
  */
 @Injectable()
 @Scope(ProviderScope.SINGLETON)
-export class Logger<T extends object = object> extends BaseLogger<T> {
+export class Logger extends BaseLogger<LoggerMetadata> {
     private readonly httpLog: BaseLogger;
     private readonly options: LoggerOptions;
     private readonly redactors: RequestSourceRedactors;
@@ -74,7 +74,7 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
      *   supply base attributes (e.g. request-id, trace-id).  Not serialisable,
      *   so it must be passed here rather than included in `options`.
      */
-    public constructor(options: LoggerOptionsInput = {}, metaProvider?: () => Partial<T>) {
+    public constructor(options: LoggerOptionsInput = {}, metaProvider?: () => Partial<LoggerMetadata>) {
         const resolved: LoggerOptions = LoggerOptionsSchema.parse(options);
         super({
             enabled: resolved.enabled,

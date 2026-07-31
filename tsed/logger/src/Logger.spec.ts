@@ -21,7 +21,7 @@ const getOptions = (opts: LoggerOptionsInput = {}): LoggerOptions => LoggerOptio
  *   - Logger is a subclass of BaseLogger
  *   - Logger consumes parsed LoggerOptions
  *   - child() returns a Logger instance (not just BaseLogger)
- *   - The @OverrideProvider(Logger) pattern is the intended API-side setup
+ *   - The @Injectable({token: Logger, scope: ProviderScope.SINGLETON}) pattern is the intended API-side setup
  */
 const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream; _stderr: NodeJS.WriteStream };
 
