@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-logger
 
+## 0.5.2
+
+### Patch Changes
+
+- [`8053320`](https://github.com/radoslavirha/toolkit-hub/commit/8053320d75a08cf8b1f0f340715a858c29f4f741) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Redaction improvements
+
 ## 0.5.1
 
 ### Patch Changes
