@@ -88,9 +88,3 @@ export type LoggerOptions = z.output<typeof LoggerOptionsSchema>;
  * Parsed type for per-source request logging options.
  */
 export type LoggerRequestFieldOptions = z.output<typeof RequestFieldOptionsSchema>;
-
-/**
- * Runtime defaults used when Logger is instantiated by DI without explicit options.
- * Derived from LoggerOptionsSchema so defaults are defined in one place only.
- */
-export const LoggerOptionsDefaults: LoggerOptions = LoggerOptionsSchema.parse({});

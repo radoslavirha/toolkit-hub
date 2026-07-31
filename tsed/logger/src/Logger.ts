@@ -4,7 +4,7 @@ import { Logger as BaseLogger } from '@radoslavirha/logger';
 import { ObjectUtils } from '@radoslavirha/utils';
 
 import { RedactionUtils, type RedactorFunction } from './RedactionUtils.js';
-import { LoggerOptionsDefaults, type LoggerOptions } from './RequestLogOptions.schema.js';
+import { LoggerOptionsInput, LoggerOptionsSchema, type LoggerOptions } from './RequestLogOptions.schema.js';
 
 type RequestLogSource = 'headers' | 'query' | 'request' | 'response';
 type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
@@ -74,8 +74,8 @@ export class Logger<T extends object = object> extends BaseLogger<T> {
      *   supply base attributes (e.g. request-id, trace-id).  Not serialisable,
      *   so it must be passed here rather than included in `options`.
      */
-    public constructor(options: LoggerOptions = LoggerOptionsDefaults, metaProvider?: () => Partial<T>) {
-        const resolved: LoggerOptions = options;
+    public constructor(options: LoggerOptionsInput = {}, metaProvider?: () => Partial<T>) {
+        const resolved: LoggerOptions = LoggerOptionsSchema.parse(options);
         super({
             enabled: resolved.enabled,
             level: resolved.level,
