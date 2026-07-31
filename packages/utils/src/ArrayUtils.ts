@@ -16,7 +16,7 @@ export class ArrayUtils {
      * ArrayUtils.isArray('string');   // false
      * ArrayUtils.isArray(null);       // false
      */
-    public static isArray<T>(value: T): value is Extract<T, unknown[]> {
+    public static isArray<T>(value: T): value is T & unknown[] {
         return _.isArray(value);
     }
 
