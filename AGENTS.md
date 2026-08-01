@@ -24,6 +24,21 @@
 | [@radoslavirha/utils](packages/utils/) | 36 common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
 | [@radoslavirha/types](packages/types/) | TypeScript utility types (`Dictionary`, `EnumDictionary`, `NullableProperty`, `FullPartial`) | When you need common reusable types or to avoid lodash type imports |
 | [@radoslavirha/logger](packages/logger/) | OTEL-compliant Winston logger (zero dependencies on Ts.ED) | When you need structured JSON logging outside of Ts.ED, or as the core logger in any Node.js package |
+| [@radoslavirha/redaction](packages/redaction/) | Pre-compiled, config-driven redaction of sensitive fields | When a package logs payloads, headers or query strings — redact **before** calling the logger |
+
+### Logging conventions
+
+The logger is a **pure transport**: it does not redact and does not know about HTTP. Callers
+build the log structure and sanitise it first.
+
+| Package kind | Pattern |
+|---|---|
+| Ts.ED packages | `@Inject(Logger)` then `logger.child('<SCOPE>')` |
+| Framework-free packages | Accept a structural `{ child, info, error }` port — never import a logger |
+| Anything logging payloads | Build one `RedactionProfile` at construction, `collect()` per call |
+
+Scope naming is `SUBSYSTEM` or `SUBSYSTEM:instance` — e.g. `HTTP_REQUEST` (inbound),
+`HTTP_CLIENT:miot-spec` (outbound, per configured provider).
 
 ### Configuration Packages
 

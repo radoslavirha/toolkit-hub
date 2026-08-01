@@ -1,12 +1,13 @@
 {
-    "name": "@radoslavirha/tsed-logger",
-    "version": "0.5.4",
-    "description": "Ts.ED injectable wrapper for @radoslavirha/logger",
+    "name": "@radoslavirha/redaction",
+    "version": "0.1.0",
+    "description": "Pre-compiled, configuration-driven redaction of sensitive fields for logs and diagnostics",
     "keywords": [
-        "tsed",
-        "logger",
-        "winston",
-        "otel"
+        "redaction",
+        "redact",
+        "logging",
+        "gdpr",
+        "security"
     ],
     "repository": {
         "type": "git",
@@ -41,9 +42,7 @@
         "test:watch": "vitest"
     },
     "dependencies": {
-        "@radoslavirha/logger": "workspace:*",
-        "@radoslavirha/redaction": "workspace:*",
-        "@radoslavirha/utils": "workspace:*",
+        "fast-redact": "catalog:",
         "zod": "catalog:"
     },
     "devDependencies": {
@@ -52,29 +51,14 @@
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
-        "@swc/helpers": "catalog:",
-        "@tsed/di": "catalog:tsed",
-        "@tsed/platform-express": "catalog:tsed",
-        "@tsed/platform-http": "catalog:tsed",
-        "@tsed/platform-params": "catalog:tsed",
-        "@tsed/schema": "catalog:tsed",
-        "@types/body-parser": "catalog:express",
-        "@types/cors": "catalog:express",
+        "@types/fast-redact": "catalog:",
         "@types/node": "catalog:",
-        "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
-        "body-parser": "catalog:express",
-        "cors": "catalog:express",
         "eslint": "catalog:",
-        "supertest": "catalog:",
         "tsdown": "catalog:",
         "tslib": "catalog:",
         "typescript": "catalog:",
         "vitest": "catalog:"
-    },
-    "peerDependencies": {
-        "@tsed/di": "catalog:tsed",
-        "@tsed/platform-http": "catalog:tsed"
     },
     "engines": {
         "node": ">= 24",
