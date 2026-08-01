@@ -81,7 +81,7 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 
 ## Usage
 
-### 1. Use ZOD validator in config model 
+### 1. Use ZOD validator in config model
 
 Use `LoggerOptionsSchema.parse()` at bootstrap time to apply defaults before passing options to the `Logger` constructor:
 

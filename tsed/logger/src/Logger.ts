@@ -3,12 +3,12 @@ import { PlatformContext } from '@tsed/platform-http';
 import { Logger as BaseLogger } from '@radoslavirha/logger';
 import { ObjectUtils } from '@radoslavirha/utils';
 
-import { RedactionUtils, type RedactorFunction } from './RedactionUtils.js';
+import { RedactionProfile } from '@radoslavirha/redaction';
+
 import { LoggerOptionsInput, LoggerOptionsSchema, type LoggerOptions } from './RequestLogOptions.schema.js';
 import { LoggerMetadata } from './LoggerMetadata.js';
 
 type RequestLogSource = 'headers' | 'query' | 'request' | 'response';
-type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
 
 /**
  * Ts.ED injectable singleton logger.
@@ -64,7 +64,7 @@ type RequestSourceRedactors = Record<RequestLogSource, RedactorFunction>;
 export class Logger extends BaseLogger<LoggerMetadata> {
     private readonly httpLog: BaseLogger;
     private readonly options: LoggerOptions;
-    private readonly redactors: RequestSourceRedactors;
+    private readonly redaction: RedactionProfile<RequestLogSource>;
 
     /**
      * @param options - Logger configuration, already parsed and defaulted via
@@ -83,12 +83,13 @@ export class Logger extends BaseLogger<LoggerMetadata> {
         });
         this.httpLog = this.child('HTTP_REQUEST');
         this.options = resolved;
-        this.redactors = {
-            headers: RedactionUtils.compileRedactor(resolved.requests.headers.redactPaths),
-            query: RedactionUtils.compileRedactor(resolved.requests.query.redactPaths),
-            request: RedactionUtils.compileRedactor(resolved.requests.request.redactPaths),
-            response: RedactionUtils.compileRedactor(resolved.requests.response.redactPaths)
-        };
+        // Compiled once here — never per request.
+        this.redaction = new RedactionProfile<RequestLogSource>({
+            headers: resolved.requests.headers,
+            query: resolved.requests.query,
+            request: resolved.requests.request,
+            response: resolved.requests.response
+        });
     }
 
     private $onResponse($ctx: PlatformContext): void {
@@ -106,22 +107,18 @@ export class Logger extends BaseLogger<LoggerMetadata> {
             duration
         };
 
-        if (ObjectUtils.isEnabled(this.options.requests.headers)) {
-            meta.headers = this.redactors.headers($ctx.request.headers);
-        }
+        const contentType = String($ctx.response.getHeaders()['content-type'] ?? '');
+        const isTextSafe = !contentType || /^(text\/|application\/(json|xml|ld\+json|graphql|javascript|x-www-form-urlencoded))/i.test(contentType);
 
-        if (ObjectUtils.isEnabled(this.options.requests.query)) {
-            meta.query = this.redactors.query($ctx.request.query);
-        }
+        Object.assign(meta, this.redaction.collect({
+            headers: $ctx.request.headers,
+            query: $ctx.request.query,
+            request: $ctx.request.body,
+            ...(isTextSafe ? { response: $ctx.data } : {})
+        }));
 
-        if (ObjectUtils.isEnabled(this.options.requests.request)) {
-            meta.request = this.redactors.request($ctx.request.body);
-        }
-
-        if (ObjectUtils.isEnabled(this.options.requests.response)) {
-            const contentType = String($ctx.response.getHeaders()['content-type'] ?? '');
-            const isTextSafe = !contentType || /^(text\/|application\/(json|xml|ld\+json|graphql|javascript|x-www-form-urlencoded))/i.test(contentType);
-            meta.response = isTextSafe ? this.redactors.response($ctx.data) : '[[ BINARY ]]';
+        if (!isTextSafe && this.redaction.isEnabled('response')) {
+            meta.response = '[[ BINARY ]]';
         }
 
         if (status >= 400) {

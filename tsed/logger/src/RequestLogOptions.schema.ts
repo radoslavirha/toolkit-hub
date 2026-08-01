@@ -1,21 +1,14 @@
 import { z } from 'zod';
 
 import { LogLevel } from '@radoslavirha/logger';
+import { RedactionFieldOptionsSchema } from '@radoslavirha/redaction';
 
-const RedactionSelectorSchema = z.string().trim().min(1);
-
-const RequestFieldOptionsSchema = z.object({
-    enabled: z.boolean().default(true),
-    /**
-     * Per-source redaction path selectors.
-     *
-     * Selector semantics:
-     * - `authorization` → redact only the root-level `authorization` property.
-     * - `user.password` → redact an exact nested path.
-     * - `items.*.token` → redact wildcard paths.
-     */
-    redactPaths: z.array(RedactionSelectorSchema).default(() => [])
-});
+/**
+ * Per-source redaction options. Re-exported from `@radoslavirha/redaction` so
+ * inbound request logging shares one configuration vocabulary with every other
+ * package that redacts (outbound HTTP, storage, messaging).
+ */
+const RequestFieldOptionsSchema = RedactionFieldOptionsSchema;
 
 const RequestFieldOptionsDefaultSchema = RequestFieldOptionsSchema.default(() => ({
     enabled: true,

@@ -19,6 +19,16 @@
   - any-glob-to-any-file:
     - 'config/config-vitest/*'
 
+'@radoslavirha/logger':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'packages/logger/*'
+
+'@radoslavirha/redaction':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'packages/redaction/*'
+
 '@radoslavirha/types':
 - changed-files:
   - any-glob-to-any-file:
@@ -38,6 +48,11 @@
 - changed-files:
   - any-glob-to-any-file:
     - 'tsed/configuration/*'
+
+'@radoslavirha/tsed-logger':
+- changed-files:
+  - any-glob-to-any-file:
+    - 'tsed/logger/*'
 
 '@radoslavirha/tsed-mongoose':
 - changed-files:
