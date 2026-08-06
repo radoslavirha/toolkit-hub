@@ -382,9 +382,17 @@ Returns sensible default configuration for Ts.ED servers, merged with your `serv
     },
     ajv: {
         returnsCoercedValues: true
+    },
+    logger: {
+        ignoreUrlPatterns: ['^/health(/|$)', '^/healthz$']
     }
 }
 ```
+
+`logger.ignoreUrlPatterns` keeps Kubernetes probe endpoints out of Ts.ED's own
+`request.end` line. The `@radoslavirha/tsed-logger` emitter is separate and is suppressed
+for the same paths by its own `logger.requests.ignorePaths` default. An app that sets its
+own `logger` key in `@Configuration` overrides this wholesale — as with every other key here.
 
 ---
 

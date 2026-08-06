@@ -17,6 +17,9 @@ describe('getServerDefaultConfig', () => {
                 },
                 ajv: {
                     returnsCoercedValues: true
+                },
+                logger: {
+                    ignoreUrlPatterns: ['^/health(/|$)', '^/healthz$']
                 }
             });
         });
@@ -58,6 +61,13 @@ describe('getServerDefaultConfig', () => {
             const config = getServerDefaultConfig();
             expect(config.ajv).toEqual({
                 returnsCoercedValues: true
+            });
+        });
+
+        it('Should ignore Kubernetes probe endpoints in Ts.ED request logs', () => {
+            const config = getServerDefaultConfig();
+            expect(config.logger).toEqual({
+                ignoreUrlPatterns: ['^/health(/|$)', '^/healthz$']
             });
         });
     });
@@ -103,6 +113,7 @@ describe('getServerDefaultConfig', () => {
             expect(keys).toContain('disableComponentsScan');
             expect(keys).toContain('jsonMapper');
             expect(keys).toContain('ajv');
+            expect(keys).toContain('logger');
         });
 
         it('Should return valid TsED Configuration partial', () => {

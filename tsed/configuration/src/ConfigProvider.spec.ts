@@ -64,6 +64,9 @@ describe('ConfigProvider', () => {
                 ajv: {
                     returnsCoercedValues: true
                 },
+                logger: {
+                    ignoreUrlPatterns: ['^/health(/|$)', '^/healthz$']
+                },
                 envs: expect.any(Object)
             });
         });
@@ -142,6 +145,9 @@ describe('ConfigProvider', () => {
                 },
                 ajv: {
                     returnsCoercedValues: true
+                },
+                logger: {
+                    ignoreUrlPatterns: ['^/health(/|$)', '^/healthz$']
                 },
                 envs: expect.any(Object)
             });

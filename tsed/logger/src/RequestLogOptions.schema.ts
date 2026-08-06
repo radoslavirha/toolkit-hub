@@ -27,14 +27,23 @@ const LoggerRequestOptionsSchema = z.object({
     /** Include the endpoint return value (response payload) in the log entry. Default: `true`. */
     response: RequestFieldOptionsDefaultSchema,
     /** Include the error stack trace in error log entries. Default: `true`. */
-    stack: z.boolean().default(true)
+    stack: z.boolean().default(true),
+    /**
+     * Request paths to exclude from HTTP request/response logging. Matched against
+     * the request pathname (query string stripped) as an anchored prefix: an entry
+     * `/health` suppresses `/health`, `/health/live` and `/health/ready`, but not
+     * `/healthcheck`. Kubernetes probe endpoints are excluded by default — they run
+     * every few seconds for the life of the pod and carry no information.
+     */
+    ignorePaths: z.array(z.string()).default(['/health', '/healthz'])
 }).default(() => ({
     enabled: true,
     headers: { enabled: true, redactPaths: [] },
     query: { enabled: true, redactPaths: [] },
     request: { enabled: true, redactPaths: [] },
     response: { enabled: true, redactPaths: [] },
-    stack: true
+    stack: true,
+    ignorePaths: ['/health', '/healthz']
 }));
 
 /**

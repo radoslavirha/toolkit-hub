@@ -17,9 +17,29 @@ describe('LoggerOptionsSchema', () => {
                 query: { enabled: true, redactPaths: [] },
                 request: { enabled: true, redactPaths: [] },
                 response: { enabled: true, redactPaths: [] },
-                stack: true
+                stack: true,
+                ignorePaths: ['/health', '/healthz']
             }
         });
+    });
+
+    it('defaults requests.ignorePaths to the Kubernetes probe paths', () => {
+        const result = LoggerOptionsSchema.parse({ requests: { enabled: true } });
+        expect(result.requests.ignorePaths).toStrictEqual(['/health', '/healthz']);
+    });
+
+    it('preserves explicit requests.ignorePaths', () => {
+        const result = LoggerOptionsSchema.parse({ requests: { ignorePaths: ['/probe'] } });
+        expect(result.requests.ignorePaths).toStrictEqual(['/probe']);
+    });
+
+    it('preserves an empty requests.ignorePaths array', () => {
+        const result = LoggerOptionsSchema.parse({ requests: { ignorePaths: [] } });
+        expect(result.requests.ignorePaths).toStrictEqual([]);
+    });
+
+    it('rejects a non-string entry in requests.ignorePaths', () => {
+        expect(() => LoggerOptionsSchema.parse({ requests: { ignorePaths: [/health/] } })).toThrow();
     });
 
     it('accepts a valid level', () => {

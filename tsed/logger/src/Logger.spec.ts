@@ -93,7 +93,7 @@ describe('Logger (tsed-logger)', () => {
             dateStart: new Date(Date.now() - 10),
             request: {
                 method: 'GET',
-                url: '/health',
+                url: '/api/things',
                 headers: {},
                 query: {},
                 body: undefined
@@ -113,6 +113,117 @@ describe('Logger (tsed-logger)', () => {
         const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
         expect(args[0]).toBe('Request completed');
         expect(args[1]['response']).toBe('{"ok":true}');
+    });
+
+    describe('requests.ignorePaths', () => {
+        type LoggerInternal = {
+            $onResponse: ($ctx: PlatformContext) => void;
+            httpLog: {
+                info: (message: string, attributes: Record<string, unknown>) => void;
+                error: (message: string, attributes: Record<string, unknown>) => void;
+            };
+            redaction: { collect: (sources: Record<string, unknown>) => Record<string, unknown> };
+        };
+
+        const buildCtx = (url: string, statusCode = 200): PlatformContext => ({
+            id: 'req-1',
+            dateStart: new Date(Date.now() - 10),
+            request: {
+                method: 'GET',
+                url,
+                headers: {},
+                query: {},
+                body: undefined
+            },
+            response: {
+                statusCode,
+                getHeaders: () => ({})
+            },
+            data: { ok: true }
+        } as unknown as PlatformContext);
+
+        const buildLogger = (ignorePaths?: string[]): LoggerInternal => {
+            const logger = new Logger(getOptions({
+                requests: {
+                    enabled: true,
+                    ...(ignorePaths ? { ignorePaths } : {})
+                }
+            }));
+
+            return logger as unknown as LoggerInternal;
+        };
+
+        it('suppresses a path under a default ignore entry', () => {
+            const logger = buildLogger();
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            logger.$onResponse(buildCtx('/health/live'));
+
+            expect(infoSpy).not.toHaveBeenCalled();
+        });
+
+        it('still logs a path outside the ignore list', () => {
+            const logger = buildLogger();
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            logger.$onResponse(buildCtx('/api/things'));
+
+            expect(infoSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('strips the query string before matching', () => {
+            const logger = buildLogger();
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            logger.$onResponse(buildCtx('/health/ready?verbose=1'));
+
+            expect(infoSpy).not.toHaveBeenCalled();
+        });
+
+        it('matches only on a path-segment boundary', () => {
+            const logger = buildLogger();
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            logger.$onResponse(buildCtx('/healthchecks-admin'));
+
+            expect(infoSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('is case-sensitive', () => {
+            const logger = buildLogger();
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            logger.$onResponse(buildCtx('/Health/live'));
+
+            expect(infoSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('logs every path when ignorePaths is empty', () => {
+            const logger = buildLogger([]);
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            logger.$onResponse(buildCtx('/health/live'));
+
+            expect(infoSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('does no redaction work for a suppressed request', () => {
+            const logger = buildLogger();
+            const collectSpy = vi.spyOn(logger.redaction, 'collect');
+
+            logger.$onResponse(buildCtx('/health/live'));
+
+            expect(collectSpy).not.toHaveBeenCalled();
+        });
+
+        it('suppresses a failed request on an ignored path — the filter is about the path, not the outcome', () => {
+            const logger = buildLogger();
+            const errorSpy = vi.spyOn(logger.httpLog, 'error');
+
+            logger.$onResponse(buildCtx('/health/ready', 503));
+
+            expect(errorSpy).not.toHaveBeenCalled();
+        });
     });
 
 });

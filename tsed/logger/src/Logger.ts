@@ -65,6 +65,7 @@ export class Logger extends BaseLogger<LoggerMetadata> {
     private readonly httpLog: BaseLogger;
     private readonly options: LoggerOptions;
     private readonly redaction: RedactionProfile<RequestLogSource>;
+    private readonly ignorePaths: readonly string[];
 
     /**
      * @param options - Logger configuration, already parsed and defaulted via
@@ -90,10 +91,31 @@ export class Logger extends BaseLogger<LoggerMetadata> {
             request: resolved.requests.request,
             response: resolved.requests.response
         });
+        // Resolved once here — never per request.
+        this.ignorePaths = resolved.requests.ignorePaths;
+    }
+
+    /**
+     * Anchored, case-sensitive prefix match on a path-segment boundary: `/health`
+     * matches `/health` and `/health/live`, but not `/healthchecks-admin`.
+     * The query string is stripped before matching.
+     */
+    private isIgnoredPath(url: string): boolean {
+        if (this.ignorePaths.length === 0) {
+            return false;
+        }
+
+        const path = url.split('?')[0] as string;
+
+        return this.ignorePaths.some((entry) => path === entry || path.startsWith(`${entry}/`));
     }
 
     private $onResponse($ctx: PlatformContext): void {
         if (!ObjectUtils.isEnabled(this.options.requests)) {
+            return;
+        }
+
+        if (this.isIgnoredPath($ctx.request.url)) {
             return;
         }
 

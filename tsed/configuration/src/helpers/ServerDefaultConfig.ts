@@ -12,5 +12,11 @@ export const getServerDefaultConfig = (): Partial<TsED.Configuration> => ({
     },
     ajv: {
         returnsCoercedValues: true
+    },
+    // Kubernetes probe endpoints. Suppresses `@tsed/platform-log-request`'s
+    // `request.end` line; the @radoslavirha/tsed-logger equivalent is suppressed
+    // by `logger.requests.ignorePaths`, which defaults to the same paths.
+    logger: {
+        ignoreUrlPatterns: ['^/health(/|$)', '^/healthz$']
     }
 });

@@ -217,13 +217,25 @@ Control what is included in request log entries via in configuration JSON file:
             "query": { "enabled": true, "redactPaths": ["token"] },
             "request": { "enabled": false, "redactPaths": ["password", "user.secret"] },
             "response": { "enabled": false, "redactPaths": ["body.password"] },
-            "stack": false
+            "stack": false,
+            "ignorePaths": ["/health", "/healthz"]
         }
     }
 }
 ```
 
 `stack: false` omits error stack traces from error log entries.
+
+`ignorePaths` suppresses request/response logging for the listed paths. Matching is an
+anchored, case-sensitive prefix on a path-segment boundary against the pathname (query
+string stripped): `/health` suppresses `/health`, `/health/live` and `/health/ready?x=1`,
+but not `/healthchecks-admin`. Suppression happens before any redaction work and applies
+to failed responses too — the filter is about the path, not the outcome.
+
+Kubernetes probe endpoints (`/health`, `/healthz`) are excluded **by default**. Set
+`"ignorePaths": []` to log them. Ts.ED's own `request.end` line comes from a separate
+emitter — `@radoslavirha/tsed-configuration`'s `getServerDefaultConfig()` silences it via
+`logger.ignoreUrlPatterns` for the same paths.
 
     `redactPaths` selectors are path-based per source:
     - `authorization` redacts only root-level `authorization` for that source.
@@ -341,6 +353,7 @@ Parsed output type from `LoggerOptionsSchema` with defaults already applied.
 | `requests.response.enabled` | `boolean` | `true` | Include endpoint return value |
 | `requests.response.redactPaths` | `string[]` | `[]` | Path selectors for response payload redaction |
 | `requests.stack` | `boolean` | `true` | Include error stack trace in error log entries |
+| `requests.ignorePaths` | `string[]` | `['/health', '/healthz']` | Paths excluded from request logging (anchored, case-sensitive prefix on a segment boundary) |
 
 ---
 
