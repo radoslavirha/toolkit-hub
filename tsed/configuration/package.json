@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/tsed-configuration",
-    "version": "0.7.4",
+    "version": "0.8.0",
     "description": "Ts.ED server configuration",
     "keywords": [
         "tsed"

@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/tsed-logger",
-    "version": "0.5.5",
+    "version": "0.6.0",
     "description": "Ts.ED injectable wrapper for @radoslavirha/logger",
     "keywords": [
         "tsed",
