@@ -210,3 +210,4 @@ Phase C rollout lands:
 - **Sampling instead of exclusion.** Logging 1-in-N probe responses was considered and
   rejected: a sampled success line tells you nothing a probe failure event does not
   already tell you better, and it reintroduces the ingest cost this change exists to remove.
+
