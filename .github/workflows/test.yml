@@ -27,6 +27,8 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Verify capability index freshness and agent references
+        run: pnpm check:capability-index
       # Temporary, need some workspace manager
       - name: Build workspaces
         run: pnpm build

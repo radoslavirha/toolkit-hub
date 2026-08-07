@@ -187,6 +187,14 @@ See individual package READMEs for specific installation instructions and peer d
 
 [Development guide](.github/development.md)
 
+### Capability index automation
+
+- Generate capability index files: `pnpm generate:capability-index`
+- Verify capability index freshness (and AGENTS/skills symbol references): `pnpm check:capability-index`
+- Generated files: `docs/capability-index.json` and `docs/capability-index.md`
+
+The `Test` workflow runs the freshness gate, and release PR creation (Changesets) regenerates the index automatically.
+
 ## 🤖 Development Guidelines
 
 **For AI Agents & Developers:**
