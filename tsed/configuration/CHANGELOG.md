@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-configuration
 
+## 0.8.0
+
+### Minor Changes
+
+- [`f7431d9`](https://github.com/radoslavirha/toolkit-hub/commit/f7431d9ed18e3dbb90d59709c3ea3a95c5dd7a28) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `getServerDefaultConfig()` now defaults `logger.ignoreUrlPatterns` to
+  `['^/health(/|$)', '^/healthz$']`, suppressing `@tsed/platform-log-request`'s `request.end`
+  line for Kubernetes probe endpoints. The `@radoslavirha/tsed-logger` emitter is a separate
+  one, suppressed for the same paths by its `logger.requests.ignorePaths` default.
+
+  An app that sets its own `logger` key in `@Configuration` overrides this wholesale, as with
+  every other key returned by this helper.
+
 ## 0.7.4
 
 ### Patch Changes
