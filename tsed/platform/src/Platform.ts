@@ -66,7 +66,7 @@ export class Platform extends PlatformExpress {
      */
     static bootstrap(module: Type, settings: ServerConfiguration): ReturnType<typeof PlatformExpress.bootstrap> {
         const loggerBridge = injector().get<TsEDLoggerBridge>(TsEDLoggerBridge);
-        settings.logger = loggerBridge.getTsEDLoggerConfig(settings.logger);
+        settings.logger = loggerBridge.getTsEDLoggerConfig({ ...settings.logger , logRequest: false });
         return PlatformExpress.bootstrap(module, settings);
     }
 }
