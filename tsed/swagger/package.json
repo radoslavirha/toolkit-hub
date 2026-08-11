@@ -1,6 +1,6 @@
 {
     "name": "@radoslavirha/tsed-swagger",
-    "version": "8.0.0",
+    "version": "9.0.0",
     "description": "Ts.ED swagger utils",
     "keywords": [
         "tsed",
