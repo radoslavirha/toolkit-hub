@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-swagger
 
+## 9.1.0
+
+### Minor Changes
+
+- [`b1a9b59`](https://github.com/radoslavirha/toolkit-hub/commit/b1a9b59952b527450e8d6994bd0aa74855840966) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix swagger.ejs path
+
 ## 9.0.0
 
 ### Patch Changes
