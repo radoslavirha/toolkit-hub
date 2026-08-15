@@ -125,7 +125,7 @@ export class SwaggerController {
 
         // files are compiled by tsdown into single index.ts file
         // we need to keep assets in the same directory as index.ts
-        // views are copied by cpx library into dist directory
+        // views are copied into each dist/{esm,cjs} directory by the build script
         return await this.platformViews.render(path.join(_dirname, 'views', 'swagger.ejs'), {
             BASE_URL: hostUrl,
             SERVICE: this.api.service,
