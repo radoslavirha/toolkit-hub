@@ -34,7 +34,7 @@ jobs:
         run: pnpm build
       - name: Create Release Pull Request and Publish to GitHub Packages
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           publish: pnpm changeset publish
         env:
