@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-platform
 
+## 4.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`086e150`](https://github.com/radoslavirha/toolkit-hub/commit/086e150cb25fe2aa84cb097a212547014f36acc8)]:
+  - @radoslavirha/utils@0.8.5
+  - @radoslavirha/tsed-configuration@0.8.1
+  - @radoslavirha/tsed-logger@0.6.1
+
 ## 4.1.0
 
 ### Minor Changes

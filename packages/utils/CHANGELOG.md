@@ -1,5 +1,18 @@
 # @radoslavirha/utils
 
+## 0.8.5
+
+### Patch Changes
+
+- [#162](https://github.com/radoslavirha/toolkit-hub/pull/162) [`086e150`](https://github.com/radoslavirha/toolkit-hub/commit/086e150cb25fe2aa84cb097a212547014f36acc8) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Ship agent guidance with the package as an APM skill (`using-utils`): which
+  toolkit predicate replaces a raw null/undefined/type check, which `buildModel*`
+  variant fits which situation (and why `buildModel` is deprecated), how
+  `MappingUtils` preserves nullability, and a "do not reimplement" list for the
+  semantic misses a linter cannot catch.
+  
+  The skill ships from git and is not part of the npm tarball, so this release
+  carries no runtime change.
+
 ## 0.8.4
 
 ### Patch Changes
