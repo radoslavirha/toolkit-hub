@@ -1,0 +1,6 @@
+name: toolkit-adoption
+version: 0.1.0
+description: How to adopt @radoslavirha toolkit packages and their agent skills
+license: MIT
+repository: https://github.com/radoslavirha/toolkit-hub
+type: skill

@@ -6,3 +6,6 @@ reports
 .npmrc
 .vscode
 .mcp.json
+.github/plugin
+build
+.claude-plugin/plugin.json
