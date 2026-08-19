@@ -22,12 +22,16 @@
     "author": "Radoslav Irha <radoslav.irha@gmail.com>",
     "scripts": {
         "build": "pnpm --stream --recursive run build",
+        "build:marketplace": "apm pack",
+        "check:apm-versions": "bash scripts/sync-apm-versions.sh --check",
         "cleanup": "pnpm --stream --recursive run cleanup",
         "cleanup:modules": "pnpm --stream --recursive run cleanup:modules && rm -rf node_modules",
         "lint": "pnpm --stream --recursive run lint",
         "lint:fix": "pnpm --stream --recursive run lint:fix",
         "prepare": "husky",
-        "test": "pnpm --stream --recursive --sequential run test"
+        "sync:apm-versions": "bash scripts/sync-apm-versions.sh",
+        "test": "pnpm --stream --recursive --sequential run test",
+        "version": "changeset version && pnpm sync:apm-versions && pnpm build:marketplace"
     },
     "dependencies": {
         "husky": "^9.1.7"

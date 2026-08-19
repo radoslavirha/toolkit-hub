@@ -32,10 +32,16 @@ jobs:
       # Temporary, need some workspace manager
       - name: Build workspaces
         run: pnpm build
+      - name: Install APM CLI
+        uses: microsoft/apm-action@v1
+        with:
+          setup-only: true
+          apm-version: '0.28.0'
       - name: Create Release Pull Request and Publish to GitHub Packages
         id: changesets
         uses: changesets/action@v2
         with:
+          version-script: pnpm run version
           publish-script: pnpm changeset publish
           github-token: ${{ secrets.GITHUB_TOKEN }}
         env:
