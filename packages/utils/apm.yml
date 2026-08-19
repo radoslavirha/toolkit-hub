@@ -1,0 +1,6 @@
+name: utils
+version: 0.8.4
+description: Agent guidance for @radoslavirha/utils - guards, model building and mapping
+license: MIT
+repository: https://github.com/radoslavirha/toolkit-hub
+type: skill

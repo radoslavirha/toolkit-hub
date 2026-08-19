@@ -57,3 +57,7 @@ catalogs:
     '@tsed/swagger': 8.37.1
     '@tsed/testcontainers-mongo': 8.37.1
     ajv: 8.20.0
+
+minimumReleaseAgeExclude:
+  - '@changesets/cli@3.0.1'
+  - '@changesets/write@1.0.1'

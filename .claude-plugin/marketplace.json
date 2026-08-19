@@ -1,0 +1,15 @@
+{
+  "name": "toolkit-hub",
+  "owner": {
+    "name": "radoslavirha",
+    "url": "https://github.com/radoslavirha"
+  },
+  "plugins": [
+    {
+      "name": "utils",
+      "description": "Agent guidance for @radoslavirha/utils - guards, model building and mapping",
+      "version": "0.8.4",
+      "source": "./packages/utils"
+    }
+  ]
+}
