@@ -1,0 +1,38 @@
+lockfile_version: '1'
+generated_at: '2026-08-19T19:25:05.502102+00:00'
+apm_version: 0.28.0
+dependencies: []
+deployments:
+- kind: uri
+  target: mcp
+  value: context7
+  runtime: claude
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: uri
+  target: mcp
+  value: context7
+  runtime: vscode
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+mcp_servers:
+- context7
+mcp_configs:
+  context7:
+    name: context7
+    transport: http
+    registry: false
+    headers:
+      CONTEXT7_API_KEY: ${input:context7_api_key}
+    url: https://mcp.context7.com/mcp
+mcp_target_servers:
+  claude:
+  - context7
+  vscode:
+  - context7
