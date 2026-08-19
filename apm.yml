@@ -1,0 +1,21 @@
+name: toolkit-hub
+version: 0.1.0
+description: Agent skills for the @radoslavirha toolkit packages
+license: MIT
+repository: https://github.com/radoslavirha/toolkit-hub
+
+marketplace:
+  owner:
+    name: radoslavirha
+    url: https://github.com/radoslavirha
+
+  build:
+    tagPattern: "@radoslavirha/{name}@{version}"
+
+  outputs:
+    claude: {}
+
+  packages:
+    - name: utils
+      description: Agent guidance for @radoslavirha/utils - guards, model building and mapping
+      source: ./packages/utils
