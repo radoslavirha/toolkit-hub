@@ -25,11 +25,15 @@ import { MongoUpdate } from '../types/MongoUpdate.js';
  * 
  * @example
  * ```typescript
- * import { MongoMapper } from './mappers/MongoMapper';
+ * import { MongoMapper } from '@radoslavirha/tsed-mongoose';
+ * import { CommonUtils } from '@radoslavirha/utils';
  * import { Item } from './models/Item.mongo';
  * import { ItemModel } from './models/Item.model';
  * 
  * export class ItemMapper extends MongoMapper<Item, ItemModel> {
+ *   protected mongo = Item;
+ *   protected model = ItemModel;
+ *
  *   async mongoToModel(mongo: Item): Promise<ItemModel> {
  *     return CommonUtils.buildModelStrict(ItemModel, {
  *       ...this.mongoToModelBase(mongo),
@@ -40,7 +44,7 @@ import { MongoUpdate } from '../types/MongoUpdate.js';
  * ```
  * 
  * @remarks
- * - Subclasses must implement the three abstract methods for complete mapping functionality
+ * - Subclasses must declare the `mongo` and `model` properties; the mapping methods themselves are yours to define
  * - Base methods handle common fields like id, createdAt, and updatedAt
  * - Helper methods simplify handling of Mongoose references and populated documents
  * - Supports extracting default values from JSON Schema decorators
@@ -82,7 +86,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      *
      * @example
      * ```typescript
-     * async mongoToModel(mongo: Item): Promise<ItemModel> {
+     * public mongoToModel(mongo: Item): ItemModel {
      *   return CommonUtils.buildModelStrict(ItemModel, {
      *     ...this.mongoToModelBase(mongo), // provides id, createdAt, updatedAt
      *     name: mongo.name,               // domain fields must be explicit

@@ -32,6 +32,10 @@ marketplace:
       description: How to adopt @radoslavirha toolkit packages and their agent skills
       source: ./agents/adoption
 
+    - name: tsed-mongoose
+      description: Agent guidance for @radoslavirha/tsed-mongoose - mapper and repository pattern
+      source: ./tsed/mongoose
+
     - name: utils
       description: Agent guidance for @radoslavirha/utils - guards, model building and mapping
       source: ./packages/utils

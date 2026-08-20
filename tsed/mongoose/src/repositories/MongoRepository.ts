@@ -31,7 +31,6 @@ import { BaseMongo } from '../models/BaseMongo.js';
  * ```typescript
  * import { Injectable, Inject } from '@tsed/di';
  * import type { MongooseModel } from '@tsed/mongoose';
- * import { Type } from '@tsed/core';
  * import {
  *   MongoRepository,
  *   MongoCreate, MongoUpdate, MongoFilter,
@@ -44,7 +43,7 @@ import { BaseMongo } from '../models/BaseMongo.js';
  *   @Inject(Item)
  *   protected model!: MongooseModel<Item>;
  *
- *   protected type: Type<Item> = Item;
+ *   protected mongo = Item;
  *
  *   async findById(id: string): Promise<Item | null> {
  *     const result = await this.model.findById(id).lean<Item>() as Item | null;

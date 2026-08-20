@@ -12,6 +12,12 @@
       "source": "./agents/adoption"
     },
     {
+      "name": "tsed-mongoose",
+      "description": "Agent guidance for @radoslavirha/tsed-mongoose - mapper and repository pattern",
+      "version": "5.0.5",
+      "source": "./tsed/mongoose"
+    },
+    {
       "name": "utils",
       "description": "Agent guidance for @radoslavirha/utils - guards, model building and mapping",
       "version": "0.8.5",

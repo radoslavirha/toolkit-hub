@@ -1,0 +1,6 @@
+name: tsed-mongoose
+version: 5.0.5
+description: Agent guidance for @radoslavirha/tsed-mongoose - mapper and repository pattern
+license: MIT
+repository: https://github.com/radoslavirha/toolkit-hub
+type: skill
