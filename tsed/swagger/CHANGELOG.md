@@ -1,5 +1,25 @@
 # @radoslavirha/tsed-swagger
 
+## 9.1.2
+
+### Patch Changes
+
+- [#166](https://github.com/radoslavirha/toolkit-hub/pull/166) [`4f38c21`](https://github.com/radoslavirha/toolkit-hub/commit/4f38c21f5849de053391774441ba0e7cdcbae451) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Ship agent guidance as APM skills.
+  
+  `using-logger` covers the child-scope convention and the rule that the logger is a pure transport that neither redacts nor understands HTTP, plus the structural-port pattern for framework-free packages.
+  
+  `using-redaction` covers compiling one `RedactionProfile` at construction, `collect()` per call, and redacting before the logger rather than expecting it to sanitise.
+  
+  `using-tsed-logger` covers injecting `Logger`, deriving scoped children, and registering a subclass under the `Logger` token — including the double-decoration mistake that registers two providers.
+  
+  `using-tsed-swagger` covers building `SwaggerDocumentConfig` instead of passing object literals, and the field names (`docs`, `security`) that are easy to guess wrong.
+- Updated dependencies [[`5d796c2`](https://github.com/radoslavirha/toolkit-hub/commit/5d796c25881ac3aa34a962a8fc50f955307f0a90), [`4f38c21`](https://github.com/radoslavirha/toolkit-hub/commit/4f38c21f5849de053391774441ba0e7cdcbae451), [`92ff78d`](https://github.com/radoslavirha/toolkit-hub/commit/92ff78d0b6f78d17a172871f2353f523040b51aa), [`a5970cb`](https://github.com/radoslavirha/toolkit-hub/commit/a5970cb1a2628ea3f36eb3f183115cea3cc66d9b), [`f8354e9`](https://github.com/radoslavirha/toolkit-hub/commit/f8354e9138ebc1debdfeb42b03a7ffd3282e871b)]:
+  - @radoslavirha/tsed-configuration@0.8.2
+  - @radoslavirha/tsed-logger@0.6.2
+  - @radoslavirha/tsed-platform@4.1.2
+  - @radoslavirha/types@0.4.4
+  - @radoslavirha/utils@0.8.6
+
 ## 9.1.1
 
 ### Patch Changes

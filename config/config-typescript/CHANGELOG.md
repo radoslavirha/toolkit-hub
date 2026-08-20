@@ -1,5 +1,15 @@
 # @radoslavirha/config-typescript
 
+## 1.1.4
+
+### Patch Changes
+
+- [#166](https://github.com/radoslavirha/toolkit-hub/pull/166) [`f8354e9`](https://github.com/radoslavirha/toolkit-hub/commit/f8354e9138ebc1debdfeb42b03a7ffd3282e871b) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Ship agent guidance as APM skills.
+  
+  `using-types` names the four helpers and what each is for, including why `EnumDictionary` is worth reaching for (it makes a lookup exhaustive, which `Record<string, T>` does not).
+  
+  The `config-*` skills cover the thin-wrapper pattern each package follows: spreading the shared ESLint flat config rather than nesting it, merging the vitest base rather than replacing it, spreading the tsdown configs, and choosing the right tsconfig base — including that a Ts.ED package extending `tsconfig.node.json` compiles but loses decorator metadata, so DI fails at runtime.
+
 ## 1.1.3
 
 ### Patch Changes

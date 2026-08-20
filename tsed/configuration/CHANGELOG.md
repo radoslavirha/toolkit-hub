@@ -1,5 +1,22 @@
 # @radoslavirha/tsed-configuration
 
+## 0.8.2
+
+### Patch Changes
+
+- [#166](https://github.com/radoslavirha/toolkit-hub/pull/166) [`5d796c2`](https://github.com/radoslavirha/toolkit-hub/commit/5d796c25881ac3aa34a962a8fc50f955307f0a90) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Document where configuration values come from in the `using-tsed-configuration` skill: the `config/` file layout and the `default.json` → `{NODE_ENV}.json` → environment variable load order, with guidance on which layer a value belongs in.
+
+- [#166](https://github.com/radoslavirha/toolkit-hub/pull/166) [`92ff78d`](https://github.com/radoslavirha/toolkit-hub/commit/92ff78d0b6f78d17a172871f2353f523040b51aa) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Ship agent guidance as APM skills.
+  
+  `using-tsed-configuration` covers extending the `BaseConfig` Zod schema, deriving the type with `z.infer` rather than hand-writing it, the `ConfigProvider` subclass and its typed accessors, and why configuration is resolved through the injector instead of constructed.
+  
+  `using-tsed-common` covers `BaseModel`, the `Serializer` wrapper that makes the target type a required argument, and choosing between `JSONSchemaValidator` and `ZodValidator`.
+  
+  Also corrects `ConfigProvider`'s JSDoc example, which imported and extended a `BaseConfigSchema` export that does not exist — the schema is exported as `BaseConfig`.
+- Updated dependencies [[`92ff78d`](https://github.com/radoslavirha/toolkit-hub/commit/92ff78d0b6f78d17a172871f2353f523040b51aa)]:
+  - @radoslavirha/tsed-common@0.5.6
+  - @radoslavirha/utils@0.8.6
+
 ## 0.8.1
 
 ### Patch Changes

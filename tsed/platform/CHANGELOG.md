@@ -1,5 +1,15 @@
 # @radoslavirha/tsed-platform
 
+## 4.1.2
+
+### Patch Changes
+
+- [#166](https://github.com/radoslavirha/toolkit-hub/pull/166) [`a5970cb`](https://github.com/radoslavirha/toolkit-hub/commit/a5970cb1a2628ea3f36eb3f183115cea3cc66d9b) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Ship agent guidance as an APM skill (`using-tsed-platform`): `Platform.bootstrap` and the required `api` metadata, extending `BaseServer` and overriding `registerMiddlewares` rather than rebuilding the stack, the `execute`/`performOperation` split, mounting controllers by value instead of by glob, resolving configuration through the injector, and the `BaseHandler` constructor mistake.
+- Updated dependencies [[`5d796c2`](https://github.com/radoslavirha/toolkit-hub/commit/5d796c25881ac3aa34a962a8fc50f955307f0a90), [`4f38c21`](https://github.com/radoslavirha/toolkit-hub/commit/4f38c21f5849de053391774441ba0e7cdcbae451), [`92ff78d`](https://github.com/radoslavirha/toolkit-hub/commit/92ff78d0b6f78d17a172871f2353f523040b51aa)]:
+  - @radoslavirha/tsed-configuration@0.8.2
+  - @radoslavirha/tsed-logger@0.6.2
+  - @radoslavirha/utils@0.8.6
+
 ## 4.1.1
 
 ### Patch Changes
