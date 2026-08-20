@@ -28,6 +28,10 @@ marketplace:
     claude: {}
 
   packages:
+    - name: toolkit-adoption
+      description: How to adopt @radoslavirha toolkit packages and their agent skills
+      source: ./agents/adoption
+
     - name: utils
       description: Agent guidance for @radoslavirha/utils - guards, model building and mapping
       source: ./packages/utils

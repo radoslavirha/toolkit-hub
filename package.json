@@ -24,6 +24,8 @@
         "build": "pnpm --stream --recursive run build",
         "build:marketplace": "apm pack",
         "check:apm-versions": "bash scripts/sync-apm-versions.sh --check",
+        "check:doc-links": "node scripts/check-doc-links.mjs",
+        "check:doc-snippets": "node scripts/check-doc-snippets.mjs",
         "cleanup": "pnpm --stream --recursive run cleanup",
         "cleanup:modules": "pnpm --stream --recursive run cleanup:modules && rm -rf node_modules",
         "lint": "pnpm --stream --recursive run lint",

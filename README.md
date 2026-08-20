@@ -32,7 +32,7 @@ Ts.ED Framework:
 
 Utilities:
 - [logger](packages/logger#-quick-reference-for-ai-agents) - OTEL-compliant structured logger
-- [utils](packages/utils#-for-ai-agents) - Common functions (ALWAYS use instead of reimplementing)
+- [utils](packages/utils#-quick-reference-for-ai-agents) - Common functions (ALWAYS use instead of reimplementing)
 - [types](packages/types#-quick-reference-for-ai-agents) - TypeScript utility types
 
 Configs:

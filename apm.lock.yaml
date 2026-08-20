@@ -3,6 +3,186 @@ generated_at: '2026-08-19T19:25:05.502102+00:00'
 apm_version: 0.28.0
 dependencies: []
 deployments:
+- kind: project-relative
+  target: agents
+  value: .agents/skills/agents-md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/agents-md/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:a375bb0d591e2faea1e422b8d740be9efeb002fe24b4afa4e4fd99237417aaf3
+- kind: project-relative
+  target: agents
+  value: .agents/skills/package-readme
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/package-readme/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:c7e4bc9e51fe5aaadc18713898228924c51debcc6d115a89104ba172fbf490c2
+- kind: project-relative
+  target: agents
+  value: .agents/skills/package-skill-authoring
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/package-skill-authoring/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:69b2978c57d2aa1d08e9248dcb5d11512b88a6680979d9e9ecaa7e44cbe7da34
+- kind: project-relative
+  target: agents
+  value: .agents/skills/release-flow
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/release-flow/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:cb897a9507fd5fbebe7ec350b602ffebfec9ff7ef295c45316eaa36b9cebd3df
+- kind: project-relative
+  target: agents
+  value: .agents/skills/tests
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/tests/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:2e521045f3eb685d3acff573284401920e15256174c365515c3997753f6aa3d8
+- kind: project-relative
+  target: claude
+  value: .claude/skills/agents-md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/agents-md/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:a375bb0d591e2faea1e422b8d740be9efeb002fe24b4afa4e4fd99237417aaf3
+- kind: project-relative
+  target: claude
+  value: .claude/skills/package-readme
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/package-readme/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:c7e4bc9e51fe5aaadc18713898228924c51debcc6d115a89104ba172fbf490c2
+- kind: project-relative
+  target: claude
+  value: .claude/skills/package-skill-authoring
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/package-skill-authoring/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:69b2978c57d2aa1d08e9248dcb5d11512b88a6680979d9e9ecaa7e44cbe7da34
+- kind: project-relative
+  target: claude
+  value: .claude/skills/release-flow
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/release-flow/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:cb897a9507fd5fbebe7ec350b602ffebfec9ff7ef295c45316eaa36b9cebd3df
+- kind: project-relative
+  target: claude
+  value: .claude/skills/tests
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/tests/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:2e521045f3eb685d3acff573284401920e15256174c365515c3997753f6aa3d8
 - kind: uri
   target: mcp
   value: context7
@@ -36,3 +216,35 @@ mcp_target_servers:
   - context7
   vscode:
   - context7
+local_deployed_files:
+- .agents/skills/agents-md
+- .agents/skills/agents-md/SKILL.md
+- .agents/skills/package-readme
+- .agents/skills/package-readme/SKILL.md
+- .agents/skills/package-skill-authoring
+- .agents/skills/package-skill-authoring/SKILL.md
+- .agents/skills/release-flow
+- .agents/skills/release-flow/SKILL.md
+- .agents/skills/tests
+- .agents/skills/tests/SKILL.md
+- .claude/skills/agents-md
+- .claude/skills/agents-md/SKILL.md
+- .claude/skills/package-readme
+- .claude/skills/package-readme/SKILL.md
+- .claude/skills/package-skill-authoring
+- .claude/skills/package-skill-authoring/SKILL.md
+- .claude/skills/release-flow
+- .claude/skills/release-flow/SKILL.md
+- .claude/skills/tests
+- .claude/skills/tests/SKILL.md
+local_deployed_file_hashes:
+  .agents/skills/agents-md/SKILL.md: sha256:a375bb0d591e2faea1e422b8d740be9efeb002fe24b4afa4e4fd99237417aaf3
+  .agents/skills/package-readme/SKILL.md: sha256:c7e4bc9e51fe5aaadc18713898228924c51debcc6d115a89104ba172fbf490c2
+  .agents/skills/package-skill-authoring/SKILL.md: sha256:69b2978c57d2aa1d08e9248dcb5d11512b88a6680979d9e9ecaa7e44cbe7da34
+  .agents/skills/release-flow/SKILL.md: sha256:cb897a9507fd5fbebe7ec350b602ffebfec9ff7ef295c45316eaa36b9cebd3df
+  .agents/skills/tests/SKILL.md: sha256:2e521045f3eb685d3acff573284401920e15256174c365515c3997753f6aa3d8
+  .claude/skills/agents-md/SKILL.md: sha256:a375bb0d591e2faea1e422b8d740be9efeb002fe24b4afa4e4fd99237417aaf3
+  .claude/skills/package-readme/SKILL.md: sha256:c7e4bc9e51fe5aaadc18713898228924c51debcc6d115a89104ba172fbf490c2
+  .claude/skills/package-skill-authoring/SKILL.md: sha256:69b2978c57d2aa1d08e9248dcb5d11512b88a6680979d9e9ecaa7e44cbe7da34
+  .claude/skills/release-flow/SKILL.md: sha256:cb897a9507fd5fbebe7ec350b602ffebfec9ff7ef295c45316eaa36b9cebd3df
+  .claude/skills/tests/SKILL.md: sha256:2e521045f3eb685d3acff573284401920e15256174c365515c3997753f6aa3d8
