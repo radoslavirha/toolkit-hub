@@ -21,7 +21,7 @@
 
 | Package | Purpose | When to use |
 |---------|---------|-------------|
-| [@radoslavirha/utils](packages/utils/) | 36 common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
+| [@radoslavirha/utils](packages/utils/) | Common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
 | [@radoslavirha/types](packages/types/) | TypeScript utility types (`Dictionary`, `EnumDictionary`, `NullableProperty`, `FullPartial`) | When you need common reusable types or to avoid lodash type imports |
 | [@radoslavirha/logger](packages/logger/) | OTEL-compliant Winston logger (zero dependencies on Ts.ED) | When you need structured JSON logging outside of Ts.ED, or as the core logger in any Node.js package |
 | [@radoslavirha/redaction](packages/redaction/) | Pre-compiled, config-driven redaction of sensitive fields | When a package logs payloads, headers or query strings — redact **before** calling the logger |
@@ -584,131 +584,25 @@ export class ConfigService extends ConfigProvider<AppConfig> {
 
 ## 🛠️ Utilities Quick Reference
 
-### @radoslavirha/utils - All 39 Methods
+`@radoslavirha/utils` covers the operations services keep reinventing. Reach for it before
+writing a raw `=== null`, a `typeof` test, `Array.isArray`, a deep clone, or a distance
+calculation.
 
-**CommonUtils (11 methods):**
-- `isEmpty<T>(value: T): boolean` - Check if empty (objects, arrays, strings, maps, sets, null/undefined)
-- `isNil<T>(value: T): boolean` - Check if null or undefined (type guard)
-- `notNil<T>(value: T): boolean` - Check if NOT null/undefined (type guard)
-- `isNull<T>(value: T): boolean` - Check if null (type guard)
-- `notNull<T>(value: T): boolean` - Check if NOT null (type guard)
-- `isUndefined<T>(value: T): boolean` - Check if undefined (type guard)
-- `notUndefined<T>(value: T): boolean` - Check if NOT undefined (type guard)
-- `buildModel<T>(type: new() => T, data: Partial<T>): T` - *(deprecated)* Use `buildModelStrict` or `buildModelPartial`
-- `buildModelStrict<T>(type: new() => T, data: T): T` - Strict model construction; all TypeScript-required properties must be provided
-- `buildModelPartial<T, D extends Partial<T>>(type: new() => T, data: D): Pick<T, keyof D & keyof T> & Partial<Omit<T, keyof D>>` - Partial model construction; TypeScript tracks exactly which keys were provided
-- `buildModelCore<T, D extends Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'>>(type: new() => T, data: D): Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'>` - Like `buildModelPartial` but auto-generated DB fields (`id`, `_id`, `createdAt`, `updatedAt`) are excluded from required data; ideal for building pre-persist payloads
+| Class | Use it for |
+|---|---|
+| `CommonUtils` | null/undefined/empty guards, and the `buildModel*` family for constructing models |
+| `ObjectUtils` | object guards, typed keys/values, deep clone, deep merge, `enabled` guard |
+| `ArrayUtils` | array guard, normalising a value to an array |
+| `StringUtils` / `BooleanUtils` | string and boolean type guards |
+| `MappingUtils` | null-safe mapping of models, arrays, maps, enums (instance methods) |
+| `NumberUtils` | percentages, mean, min/max, rounding with precision |
+| `GeoUtils` | haversine distance, degree conversion |
+| `DefaultsUtil` | fallbacks for nullable strings and numbers |
 
-**ObjectUtils (7 methods + 1 type):**
-- `isObject<T>(value: T): value is Extract<T, object>` - Check if value is any object type (includes arrays, functions, class instances)
-- `isPlainObject<T>(value: T): value is Extract<T, Record<string, unknown>>` - Check if value is a plain object (POJO only, excludes arrays/functions)
-- `keys<T extends object>(object: T | null | undefined): Array<Extract<keyof T, string>>` - Get typed object keys
-- `keys<T>(object: Dictionary<T> | null | undefined): string[]` - Get dictionary keys (`Dictionary` from `@radoslavirha/types`)
-- `values<T extends object>(object: T | null | undefined): Array<T[keyof T]>` - Get typed object/enum values
-- `values<T>(object: Dictionary<T> | null | undefined): T[]` - Get dictionary values
-- `cloneDeep<T extends object>(object: T): T` - Deep clone with no shared references
-- `mergeDeep<T extends object, S extends object>(target: T, source: S): T & S` - Deep merge (arrays concatenate)
-- `isEnabled<T extends { enabled?: boolean }>(value: T | null | undefined): value is Enabled<T>` - Type guard: returns `true` when value is non-null/undefined and `enabled === true`, narrowing to `Enabled<T>`
-- `Enabled<T>` *(type)* - T with `enabled` narrowed to literal `true`; produced by `isEnabled`
-
-**ArrayUtils (2 methods):**
-- `isArray<T>(value: T): value is Extract<T, unknown[]>` - Check if value is an array (type guard)
-- `toArray<T>(value: T | T[] | undefined | null): T[]` - Convert value to array; returns `[]` for null/undefined, wraps single value, passes through arrays
-
-**BooleanUtils (1 method):**
-- `isBoolean<T>(value: T): value is Extract<T, boolean>` - Check if value is a boolean primitive (type guard)
-
-**StringUtils (1 method):**
-- `isString<T>(value: T): value is Extract<T, string>` - Check if value is a string primitive or String object (type guard)
-
-**MappingUtils (7 methods):**
-- `mapOptionalModel<TValue extends object | null | undefined, TOut, TArgs extends unknown[] = []>(model: TValue, mapper: (model: NonNullable<TValue>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut>>` - Map optional model while preserving nullability
-- `mapArray<TValue extends unknown[] | null, TOut, TArgs extends unknown[] = []>(models: TValue, mapper: (model: ArrayElement<NonNullable<TValue>>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut[]>>` - Map array with null support
-- `mapOptionalArray<TValue extends unknown[] | null | undefined, TOut, TArgs extends unknown[] = []>(models: TValue, mapper: (model: ArrayElement<NonNullable<TValue>>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut[]>>` - Map optional array with null/undefined support
-- `mapMap<TValue extends Map<unknown, unknown> | null, TKeyOut, TValueOut>(source: TValue, mapper: (key: MapKey<NonNullable<TValue>>, value: MapValue<NonNullable<TValue>>) => Promise<[TKeyOut, TValueOut]>): Promise<Result<TValue, Map<TKeyOut, TValueOut>>>` - Map Map entries with null support
-- `mapOptionalMap<TValue extends Map<unknown, unknown> | null | undefined, TKeyOut, TValueOut>(source: TValue, mapper: (key: MapKey<NonNullable<TValue>>, value: MapValue<NonNullable<TValue>>) => Promise<[TKeyOut, TValueOut]>): Promise<Result<TValue, Map<TKeyOut, TValueOut>>>` - Map optional Map entries
-- `mapEnum<TSource extends Record<string, string | number>, TTarget extends Record<string, string | number>, TValue extends TSource[keyof TSource] | null>(sourceTypeObject: Record<string, TSource>, targetTypeObject: Record<string, TTarget>, value: TValue, ignoreUnknownKeys?: boolean): Result<TValue, TTarget[keyof TTarget]>` - Map enum values by matching source key name
-- `mapOptionalEnum<TSource extends Record<string, string | number>, TTarget extends Record<string, string | number>, TValue extends TSource[keyof TSource] | null | undefined>(sourceTypeObject: Record<string, TSource>, targetTypeObject: Record<string, TTarget>, value: TValue, ignoreUnknownKeys?: boolean): Result<TValue, TTarget[keyof TTarget]>` - Map optional enum values with null/undefined support
-
-**NumberUtils (8 methods):**
-- `getPercentFromValue(maxValue: number, value: number): number` - Calculate percentage
-- `getValueFromPercent(maxValue: number, percent: number): number` - Get value from percentage
-- `mean(values: number[]): number` - Calculate average
-- `round(value: number, precision?: number): number` - Round to decimal places
-- `floor(value: number, precision?: number): number` - Floor to decimal places
-- `ceil(value: number, precision?: number): number` - Ceil to decimal places
-- `min(values: number[]): number | undefined` - Find minimum value
-- `max(values: number[]): number | undefined` - Find maximum value
-
-**GeoUtils (2 methods):**
-- `calculateKmBetweenCoordinates(lat1: number, lng1: number, lat2: number, lng2: number): number` - Haversine distance in kilometers
-- `degToRad(deg: number): number` - Convert degrees to radians
-
-**DefaultsUtil (2 methods):**
-- `string(string: string | null | undefined, defaultValue: string): string` - Default if empty/null/undefined
-- `number(number: number | null | undefined, defaultValue: number): number` - Default if null/undefined
-
-**Usage:**
-```typescript
-import { CommonUtils, NumberUtils, GeoUtils, ObjectUtils, MappingUtils, ArrayUtils, BooleanUtils, StringUtils, DefaultsUtil } from '@radoslavirha/utils';
-
-// Strict model creation — all required properties must be provided
-const doc = CommonUtils.buildModelStrict(SwaggerDocumentConfig, { docs: 'v1', security: [SwaggerSecurityScheme.BEARER_JWT] });
-
-// Partial model creation — only provide what you have; TypeScript knows exactly which keys are set
-const config = CommonUtils.buildModelPartial(SwaggerConfig, { title: 'API', version: '1.0.0', description: 'desc', documents: [doc] });
-
-// Core model creation — required domain fields only; id/_id/createdAt/updatedAt are excluded from the required type
-const core = CommonUtils.buildModelCore(UserModel, { name: 'Alice', email: 'alice@example.com' });
-// core.name === 'Alice'; id/createdAt/updatedAt are absent until persisted
-
-// Type guards
-if (CommonUtils.notNil(value)) {
-  // TypeScript knows value is not null or undefined
-}
-
-// Math operations
-const rounded = NumberUtils.round(3.14159, 2); // 3.14
-const percent = NumberUtils.getPercentFromValue(200, 50); // 25
-const average = NumberUtils.mean([1, 2, 3, 4, 5]); // 3
-
-// Object operations
-ObjectUtils.isObject(value);          // true for objects, arrays, functions
-ObjectUtils.isPlainObject(value);     // true for plain POJOs only
-const keys = ObjectUtils.keys(config);
-const vals = ObjectUtils.values(config);
-const clone = ObjectUtils.cloneDeep(original);
-const merged = ObjectUtils.mergeDeep(target, source);
-
-// Enabled type guard
-if (ObjectUtils.isEnabled(feature)) {
-  feature.enabled; // type: true — TypeScript knows it's enabled
-}
-// Works with null/undefined/missing enabled field — all return false
-
-// Array operations
-ArrayUtils.isArray(value);            // type guard for arrays
-ArrayUtils.toArray(value);            // always returns T[]
-
-// Type checks
-BooleanUtils.isBoolean(value);        // type guard for booleans
-StringUtils.isString(value);          // type guard for strings
-
-// Mapping operations
-const mappingUtils = new MappingUtils();
-const mappedModel = await mappingUtils.mapOptionalModel(model, async (item) => ({ id: item.id }));
-const mappedArray = await mappingUtils.mapArray([1, 2, 3], async (value) => value * 2);
-
-// Geospatial (NY to London)
-const distance = GeoUtils.calculateKmBetweenCoordinates(
-  40.7128, -74.0060,
-  51.5074, -0.1278
-); // ~5570.22 km
-
-// Defaults
-const name = DefaultsUtil.string(user.name, 'Anonymous');
-const port = DefaultsUtil.number(config.port, 3000);
-```
+Method lists and signatures deliberately live outside this file — in the type declarations,
+[the package README](packages/utils/README.md), and the `using-utils` skill that consuming
+repos install. Restating them here is how this section came to claim 36 methods in one place
+and 39 in another while the real number was 41.
 
 ---
 
@@ -751,7 +645,7 @@ What are you building?
 - [tsed-common README](tsed/common/README.md#-quick-reference-for-ai-agents) - Base models, serialization & validation
 
 ### Utility Packages
-- [utils README](packages/utils/README.md#-quick-reference-for-ai-agents) - 22 utility methods
+- [utils README](packages/utils/README.md#-quick-reference-for-ai-agents) - guards, model building, mapping
 - [types README](packages/types/README.md#-quick-reference-for-ai-agents) - TypeScript types
 
 ### Config Packages
