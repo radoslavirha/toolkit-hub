@@ -50,6 +50,10 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      # Snippets import workspace packages by name, which resolve through each
+      # package's exports map into dist/ — so the workspace has to be built first.
+      - name: Build workspaces
+        run: pnpm build
       - name: Install APM CLI
         uses: microsoft/apm-action@v1
         with:
