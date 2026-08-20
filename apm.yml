@@ -28,6 +28,10 @@ marketplace:
     claude: {}
 
   packages:
+    - name: tsed-service
+      description: How to assemble a Ts.ED service from the toolkit packages
+      source: ./agents/tsed-service
+
     - name: toolkit-adoption
       description: How to adopt @radoslavirha toolkit packages and their agent skills
       source: ./agents/adoption

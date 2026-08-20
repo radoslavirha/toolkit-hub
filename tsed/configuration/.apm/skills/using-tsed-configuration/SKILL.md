@@ -50,6 +50,27 @@ values: `config` (your validated object), `api`, `server`, `envs`, `packageJson`
 validated before any of them are readable, so an invalid configuration fails at startup
 rather than at first use.
 
+## Where values come from
+
+Sources are layered, later overriding earlier:
+
+```
+config/
+  default.json         # base
+  development.json     # NODE_ENV overrides
+  production.json
+  test.json
+```
+
+**`default.json` → `{NODE_ENV}.json` → environment variables.** Everything is merged and then
+validated against the schema, so a missing or malformed value fails at startup rather than at
+first read. `isTest` exists so code can branch on the test environment without re-reading
+`NODE_ENV` itself.
+
+Put a value in `default.json` when it is a sensible baseline, in an environment file when it
+genuinely differs per environment, and in an environment variable when it is a secret or
+provided by the deployment.
+
 ## Read it the same way everywhere
 
 Resolve once at bootstrap, inject everywhere else:
