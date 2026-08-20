@@ -1,0 +1,6 @@
+name: tsed-logger
+version: 0.6.1
+description: Agent guidance for @radoslavirha/tsed-logger
+license: MIT
+repository: https://github.com/radoslavirha/toolkit-hub
+type: skill

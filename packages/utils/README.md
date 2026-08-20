@@ -61,16 +61,19 @@ DefaultsUtil.string(value, 'default');       // Returns default if value is nil/
 DefaultsUtil.number(value, 0);               // Returns default if value is nil
 ```
 
-**Complete Method List (ALL 35 methods + 1 type):**
-- **CommonUtils (11):** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel *(deprecated)*, buildModelStrict, buildModelPartial, buildModelCore
-- **ObjectUtils (5 + 1 type):** keys, values, cloneDeep, mergeDeep, isEnabled — plus `Enabled<T>` type
-- **MappingUtils (7):** mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum
-- **NumberUtils (8):** getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
-- **GeoUtils (2):** calculateKmBetweenCoordinates, degToRad
-- **DefaultsUtil (2):** string, number
+**Complete method list:**
+- **CommonUtils:** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel *(deprecated)*, buildModelStrict, buildModelPartial, buildModelCore
+- **ObjectUtils:** isObject, isPlainObject, keys, values, cloneDeep, mergeDeep, isEnabled — plus the `Enabled<T>` type
+- **ArrayUtils:** isArray, toArray
+- **StringUtils:** isString
+- **BooleanUtils:** isBoolean
+- **MappingUtils** *(instance methods — construct it)*: mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum
+- **NumberUtils:** getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
+- **GeoUtils:** calculateKmBetweenCoordinates, degToRad
+- **DefaultsUtil:** string, number
 
-**❌ DON'T reimplement:** Type checks, null checks, deep clone/merge, percentage calculations, rounding, distance calculations, default values  
-**✅ DO use:** All 31 provided utilities - they're tested, optimized, and maintain consistency
+**❌ DON'T reimplement:** Type checks, null checks, deep clone/merge, percentage calculations, rounding, distance calculations, default values
+**✅ DO use:** the utilities above — they are tested, typed as predicates so narrowing survives, and keep behaviour consistent across services
 
 **Full documentation below** ↓
 
@@ -393,16 +396,20 @@ function paginate(page?: number, pageSize?: number) {
 
 ## API Reference
 
-| Utility Class | Methods | Purpose |
-|---------------|---------|---------|
-| CommonUtils | 10 methods (1 deprecated) | Type checking, null/undefined guards, emptiness checks, model instantiation |
-| ObjectUtils | 5 methods + 1 type | Typed object keys, deep clone, deep merge with array concatenation, enabled type guard |
-| MappingUtils | 7 methods | Null-safe mapping for models, arrays, maps, and enums |
-| NumberUtils | 8 methods | Percentages, statistics, rounding, min/max |
-| GeoUtils | 2 methods | Haversine distance calculations, degree conversion |
-| DefaultsUtil | 2 methods | Safe default values for strings/numbers |
+| Utility Class | Purpose |
+|---------------|---------|
+| CommonUtils | Null/undefined/empty guards and model instantiation (`buildModelStrict`, `buildModelPartial`, `buildModelCore`; `buildModel` is deprecated) |
+| ObjectUtils | Object type guards, typed keys/values, deep clone, deep merge, `enabled` type guard |
+| ArrayUtils | Array type guard and normalising a value to an array |
+| StringUtils | String type guard |
+| BooleanUtils | Boolean type guard |
+| MappingUtils | Null-safe mapping for models, arrays, maps and enums (instance methods — construct it) |
+| NumberUtils | Percentages, mean, min/max, rounding with precision |
+| GeoUtils | Haversine distance between coordinates, degree conversion |
+| DefaultsUtil | Fallback values for nullable strings and numbers |
 
-**Total: 34 utility methods (1 deprecated) + 1 type**
+Every class exposes static methods except `MappingUtils`. For the exact method list and
+signatures, read the type declarations — they cannot go stale.
 
 ---
 

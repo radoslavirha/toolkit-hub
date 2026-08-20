@@ -1,0 +1,6 @@
+name: config-vitest
+version: 0.4.3
+description: Agent guidance for @radoslavirha/config-vitest
+license: MIT
+repository: https://github.com/radoslavirha/toolkit-hub
+type: skill

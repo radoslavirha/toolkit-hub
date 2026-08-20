@@ -21,7 +21,7 @@
 
 | Package | Purpose | When to use |
 |---------|---------|-------------|
-| [@radoslavirha/utils](packages/utils/) | 36 common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
+| [@radoslavirha/utils](packages/utils/) | Common utility methods | **Always** - When you need common operations (don't reinvent the wheel) for e.g. numeric, string, object operations and more |
 | [@radoslavirha/types](packages/types/) | TypeScript utility types (`Dictionary`, `EnumDictionary`, `NullableProperty`, `FullPartial`) | When you need common reusable types or to avoid lodash type imports |
 | [@radoslavirha/logger](packages/logger/) | OTEL-compliant Winston logger (zero dependencies on Ts.ED) | When you need structured JSON logging outside of Ts.ED, or as the core logger in any Node.js package |
 | [@radoslavirha/redaction](packages/redaction/) | Pre-compiled, config-driven redaction of sensitive fields | When a package logs payloads, headers or query strings — redact **before** calling the logger |
@@ -108,607 +108,68 @@ export class Controller {
 
 ## 🎯 Common Integration Patterns
 
-### Pattern 1: Full REST API with MongoDB
+The end-to-end recipes — REST API with MongoDB, REST API without a database, background
+worker — live in the `building-a-tsed-service` skill, published from `agents/tsed-service/`.
 
-**Packages:** platform + configuration + swagger + mongoose + common + utils
+They are not here because they are task-triggered rather than always needed, and because
+consuming repos never receive this file: they install skills through APM, so assembly
+guidance is only reachable to them as a skill. Per-package detail lives in each package's own
+skill (`using-tsed-platform`, `using-tsed-mongoose`, `using-tsed-swagger`, …).
 
-```typescript
-// 1. Configuration Service (tsed-configuration)
-import { z } from 'zod';
-import { BaseConfig } from '@radoslavirha/tsed-configuration';
-
-export const AppConfigSchema = BaseConfig.extend({
-  config: z.object({ mongodb: z.object({ url: z.string() }) })
-});
-export type AppConfig = z.infer<typeof AppConfigSchema>;
-
-@Injectable()
-export class ConfigService extends ConfigProvider<AppConfig> {
-  public static readonly options: ConfigProviderOptions<AppConfig> = {
-    schema: AppConfigSchema
-  };
-  constructor() {
-    super(ConfigService.options);
-  }
-}
-
-// 2. Bootstrap with Swagger (index.ts)
-import { Platform } from '@radoslavirha/tsed-platform';
-import { SwaggerConfig, SwaggerProvider } from '@radoslavirha/tsed-swagger';
-import { CommonUtils } from '@radoslavirha/utils';
-
-const config = injector().get<ConfigService>(ConfigService);
-
-const swaggerConfig = CommonUtils.buildModelPartial(SwaggerConfig, {
-  title: config.api.service,
-  version: config.api.version,
-  description: config.api.description,
-  documents: [
-    CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
-      docs: 'v1',
-      security: [SwaggerSecurityScheme.BEARER_JWT]
-    })
-  ]
-});
-
-const configuration: ServerConfiguration = {
-  ...config.server,
-  swagger: new SwaggerProvider(swaggerConfig).config,
-  mongoose: [{ url: config.config.mongodb.url, connectionOptions: config.config.mongodb.connectionOptions }]
-};
-
-await Platform.bootstrap(Server, configuration);
-
-// 3. Mongoose Schema (tsed-mongoose + tsed-common)
-import { Model } from '@tsed/mongoose';
-import { BaseMongo } from '@radoslavirha/tsed-mongoose';
-
-@Model()
-export class MongoModel extends BaseMongo {
-  @Property() name: string;
-  @Property() email: string;
-}
-
-// 4. API Model (tsed-common)
-import { BaseModel, Serializer, JSONSchemaValidator, ZodValidator } from '@radoslavirha/tsed-common';
-
-export class Model extends BaseModel {
-  @Property() name: string;
-  @Property() email: string;
-}
-
-// 5. Mapper (tsed-mongoose + utils)
-import { MongoMapper, MongoCreate, MongoUpdate } from '@radoslavirha/tsed-mongoose';
-import { CommonUtils } from '@radoslavirha/utils';
-
-@Injectable()
-export class Mapper extends MongoMapper<MongoModel, Model> {
-  // Required: declare class constructors
-  protected mongo = MongoModel;
-  protected model = Model;
-
-  public mongoToModel(mongo: MongoModel): Model {
-    return CommonUtils.buildModelStrict(Model, {
-      ...this.mongoToModelBase(mongo),   // spreads id, createdAt, updatedAt
-      name: mongo.name,
-      email: mongo.email,
-    });
-  }
-
-  // POST / create — getModelValue falls back to @Default() when undefined
-  public buildMongoCreate(model: Model): MongoCreate<MongoModel> {
-    return this.buildMongoPayload({
-      name: this.getModelValue(model, 'name'),
-      email: this.getModelValue(model, 'email'),
-    });
-  }
-
-  // PATCH / update — patch=true skips default fallback, omits undefined fields
-  public buildMongoUpdate(model: Model): MongoUpdate<MongoModel> {
-    return this.buildMongoUpdatePayload({
-      name: this.getModelValue(model, 'name', true),
-    });
-  }
-}
-
-// 6. Repository (tsed-mongoose)
-import { MongoRepository } from '@radoslavirha/tsed-mongoose';
-
-@Injectable()
-export class Repository extends MongoRepository<MongoModel> {
-  @Inject(MongoModel)
-  protected model!: MongooseModel<MongoModel>;
-
-  protected mongo = MongoModel;  // ← formerly called 'type'
-}
-
-// 7. Service — plain @Injectable(), no base class
-@Injectable()
-export class Service {
-  @Inject(Repository)
-  private repository!: Repository;
-
-  @Inject(Mapper)
-  private mapper!: Mapper;
-
-  async findAll(): Promise<Model[]> {
-    return (await this.repository.find()).map(m => this.mapper.mongoToModel(m));
-  }
-
-  async create(model: Model): Promise<Model> {
-    const mongo = await this.repository.create(this.mapper.buildMongoCreate(model));
-    return this.mapper.mongoToModel(mongo);
-  }
-
-  async update(id: string, model: Model): Promise<Model | null> {
-    const mongo = await this.repository.findByIdAndUpdate(id, this.mapper.buildMongoUpdate(model));
-    return mongo ? this.mapper.mongoToModel(mongo) : null;
-  }
-}
-
-// 8. Controller (tsed-swagger)
-import { Docs } from '@tsed/swagger';
-import { SwaggerSecurityScheme } from '@radoslavirha/tsed-swagger';
-
-@Controller('/')
-@Docs('v1')
-export class Controller {
-  constructor(
-    private handlerGet: HandlerGet,
-    private handlerPost: HandlerPost
-  ) {}
-  
-  @Get('/')
-  @Returns(200, Array).Of(Model)
-  @Security(SwaggerSecurityScheme.BEARER_JWT)
-  async getAll(): Promise<Model[]> {
-    return this.handlerGet.performOperation();
-  }
-  
-  @Post('/')
-  @Returns(201, Model)
-  @Security(SwaggerSecurityScheme.BEARER_JWT)
-  async create(@Required() @BodyParams(Model) request: Request): Promise<Model> {
-    return this.handlerPost.performOperation(request);
-  }
-}
-
-// 8. Server Configuration (tsed-platform + tsed-swagger)
-import { BaseServer } from '@radoslavirha/tsed-platform';
-import { SwaggerController } from '@radoslavirha/tsed-swagger';
-import * as controllers from './controllers/index.js';
-
-@Configuration({
-  mount: {
-    '/': [SwaggerController],
-    '/api/v1': [...Object.values(controllers)]
-  }
-})
-export class Server extends BaseServer {
-  $beforeRoutesInit(): void {
-    this.registerMiddlewares();
-  }
-}
-```
-
-**Installation:**
-```bash
-pnpm --filter YOUR_SERVICE_NAME add \
-  @radoslavirha/tsed-platform \
-  @radoslavirha/tsed-configuration \
-  @radoslavirha/tsed-swagger \
-  @radoslavirha/tsed-mongoose \
-  @radoslavirha/tsed-common \
-  @radoslavirha/utils
-```
-
----
-
-### Pattern 2: REST API without Database
-
-**Packages:** platform + configuration + swagger + utils
-
-```typescript
-// Minimal service with Swagger docs but no database
-// Skip mongoose, mappers
-// Controllers calls internal services
-
-@Controller('/health')
-@Docs('v1')
-export class HealthController {
-  constructor(
-    private handler: Handler
-  ) {}
-
-  @Get('/')
-  @Returns(200, String)
-  async check(): Promise<string> {
-    return this.handler.performOperation();
-  }
-}
-```
-
-**Installation:**
-```bash
-pnpm --filter YOUR_SERVICE_NAME add \
-  @radoslavirha/tsed-platform \
-  @radoslavirha/tsed-configuration \
-  @radoslavirha/tsed-swagger \
-  @radoslavirha/utils
-```
-
----
-
-### Pattern 3: Background Worker with MongoDB
-
-**Packages:** platform + configuration + mongoose + common + utils
-
-```typescript
-// No Swagger, no controllers
-// Just services processing queues or scheduled jobs
-
-import { Platform } from '@radoslavirha/tsed-platform';
-
-const config = injector().get<ConfigService>(ConfigService);
-
-const configuration: ServerConfiguration = {
-  ...config.server,
-  mongoose: [{ url: config.config.mongodb.url, connectionOptions: config.config.mongodb.connectionOptions }]
-  // No mount, no Swagger
-};
-
-await Platform.bootstrap(Server, configuration);
-
-// Use services directly, no HTTP layer
-const Service = injector().get<Service>(Service);
-await Service.processQueue();
-```
-
-**Installation:**
-```bash
-pnpm --filter YOUR_SERVICE_NAME add \
-  @radoslavirha/tsed-platform \
-  @radoslavirha/tsed-configuration \
-  @radoslavirha/tsed-mongoose \
-  @radoslavirha/tsed-common \
-  @radoslavirha/utils
-```
+Working in this repo, read `agents/tsed-service/.apm/skills/building-a-tsed-service/SKILL.md`
+directly.
 
 ---
 
 ## 🚫 Anti-Patterns & Common Mistakes
 
-### 1. BaseHandler Usage
+Each of these now lives in the skill for the package it concerns, where the correct form sits
+next to the API it applies to — and where consuming repos actually receive it:
 
-❌ **WRONG:**
-```typescript
-@Injectable()
-export class MyHandler extends BaseHandler<Request, Response> {
-  constructor() {
-    super(); // NO! BaseHandler doesn't have constructor parameters
-  }
-}
-```
-
-✅ **CORRECT:**
-```typescript
-@Injectable()
-export class MyHandler extends BaseHandler<Request, Response> {
-  // No constructor needed, or use it only for injected dependencies
-  constructor(private myService: MyService) {
-    super();
-  }
-}
-```
-
-### 2. Configuration Loading
-
-❌ **WRONG:**
-```typescript
-// In service/controller
-const config = new ConfigService(); // Creates new instance
-```
-
-✅ **CORRECT:**
-```typescript
-// In bootstrap (index.ts)
-const config = injector().get<ConfigService>(ConfigService);
-
-// In services/controllers - inject it
-constructor(private config: ConfigService) {}
-```
-
-### 3. Mount Configuration
-
-❌ **WRONG:**
-```typescript
-@Configuration({
-  mount: {
-    '/api': [`${__dirname}/controllers/**/*.ts`] // Glob pattern
-  }
-})
-```
-
-✅ **CORRECT:**
-```typescript
-import * as controllers from './controllers/index.js';
-
-@Configuration({
-  mount: {
-    '/api': [...Object.values(controllers)]
-  }
-})
-```
-
-### 4. Mapper Methods
-
-❌ **WRONG — old mutation pattern:**
-```typescript
-@Injectable()
-class Mapper extends MongoMapper<MongoModel, Model> {
-  async mongoToModel(mongo: MongoModel): Promise<Model> {
-    const model = new Model();
-    this.mongoToModelBase(model, mongo); // ❌ old mutating signature is gone
-    model.name = mongo.name;
-    return model;
-  }
-  // ❌ modelToMongoCreateObject / modelToMongoUpdateObject no longer exist
-  async modelToMongoCreateObject(model: Model) { return { name: model.name }; }
-}
-```
-
-✅ **CORRECT — declare mongo+model, use spread + helpers:**
-```typescript
-import { CommonUtils } from '@radoslavirha/utils';
-import { MongoCreate, MongoUpdate } from '@radoslavirha/tsed-mongoose';
-
-@Injectable()
-class Mapper extends MongoMapper<MongoModel, Model> {
-  protected mongo = MongoModel;   // required
-  protected model = Model;        // required
-
-  public mongoToModel(mongo: MongoModel): Model {
-    return CommonUtils.buildModelStrict(Model, {
-      ...this.mongoToModelBase(mongo),  // returns {id, createdAt, updatedAt} — spread it
-      name: mongo.name,
-    });
-  }
-
-  public buildMongoCreate(model: Model): MongoCreate<MongoModel> {
-    return this.buildMongoPayload({
-      name: this.getModelValue(model, 'name'),         // POST — uses @Default if undefined
-    });
-  }
-
-  public buildMongoUpdate(model: Model): MongoUpdate<MongoModel> {
-    return this.buildMongoUpdatePayload({
-      name: this.getModelValue(model, 'name', true),  // PATCH — omits undefined fields
-    });
-  }
-}
-```
-
-❌ **WRONG — repository still using old `type` property:**
-```typescript
-class Repository extends MongoRepository<MongoModel> {
-  protected type: Type<MongoModel> = MongoModel;  // ❌ renamed to 'mongo'
-}
-```
-
-✅ **CORRECT:**
-```typescript
-class Repository extends MongoRepository<MongoModel> {
-  protected mongo = MongoModel;  // ✅
-}
-```
-
-### 5. Installation in Monorepo
-
-❌ **WRONG:**
-```bash
-pnpm add -w @radoslavirha/utils # Installing in workspace root
-```
-
-✅ **CORRECT:**
-```bash
-pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/utils
-```
-
-### 6. Swagger Document Configuration
-
-❌ **WRONG:**
-```typescript
-documents: [{
-  path: '/v1',
-  version: 'v1',
-  securitySchemes: [...]
-}]
-```
-
-✅ **CORRECT:**
-```typescript
-documents: [
-  CommonUtils.buildModelStrict(SwaggerDocumentConfig, {
-    docs: 'v1',
-    security: [SwaggerSecurityScheme.BEARER_JWT]
-  })
-]
-```
+| Mistake | Correct form is in |
+|---|---|
+| `super()` in a `BaseHandler` subclass implying constructor arguments | `using-tsed-platform` |
+| Mounting controllers with a glob instead of by value | `using-tsed-platform` |
+| Calling a handler's `performOperation` instead of `execute` | `using-tsed-platform` |
+| Constructing `ConfigService` instead of resolving it from the injector | `using-tsed-configuration` |
+| Mapper still using the mutating `mongoToModelBase(model, mongo)`, or the removed `modelToMongo*` methods | `using-tsed-mongoose` |
+| Repository declaring `protected type` instead of `protected mongo` | `using-tsed-mongoose` |
+| Swagger documents passed as object literals instead of built models | `using-tsed-swagger` |
+| Installing toolkit packages without `pnpm --filter` | `adopting-toolkit-hub` |
+| Logging payloads without redacting first | `using-redaction` |
+| Hand-rolling null checks, type tests, deep clone or haversine | `using-utils` |
 
 ---
 
 ## 🔧 Configuration Best Practices
 
-### Environment-Specific Configs
-
-```
-config/
-  default.json         # Base config
-  development.json     # Dev overrides
-  production.json      # Prod overrides
-  test.json           # Test overrides
-```
-
-**Loading Priority:** `default.json` → `{NODE_ENV}.json` → Environment variables
-
-### Configuration Schema Pattern
-
-```typescript
-// config/AppConfigSchema.ts
-import { z } from 'zod';
-import { BaseConfig } from '@radoslavirha/tsed-configuration';
-
-export const AppConfigSchema = BaseConfig.extend({
-  mongo: z.object({ url: z.string() })
-});
-export type AppConfig = z.infer<typeof AppConfigSchema>;
-
-// config/ConfigService.ts
-import { Injectable } from '@tsed/di';
-import { ConfigProvider, ConfigProviderOptions } from '@radoslavirha/tsed-configuration';
-import { AppConfigSchema, AppConfig } from './AppConfigSchema.js';
-
-@Injectable()
-export class ConfigService extends ConfigProvider<AppConfig> {
-  public static readonly options: ConfigProviderOptions<AppConfig> = {
-    schema: AppConfigSchema
-  };
-
-  constructor() {
-    super(ConfigService.options);
-  }
-}
-```
+Config file layout, the `default.json` → `{NODE_ENV}.json` → environment variable load order,
+and the schema/provider pattern live in the `using-tsed-configuration` skill
+(`tsed/configuration/.apm/skills/`).
 
 ---
 
 ## 🛠️ Utilities Quick Reference
 
-### @radoslavirha/utils - All 39 Methods
+`@radoslavirha/utils` covers the operations services keep reinventing. Reach for it before
+writing a raw `=== null`, a `typeof` test, `Array.isArray`, a deep clone, or a distance
+calculation.
 
-**CommonUtils (11 methods):**
-- `isEmpty<T>(value: T): boolean` - Check if empty (objects, arrays, strings, maps, sets, null/undefined)
-- `isNil<T>(value: T): boolean` - Check if null or undefined (type guard)
-- `notNil<T>(value: T): boolean` - Check if NOT null/undefined (type guard)
-- `isNull<T>(value: T): boolean` - Check if null (type guard)
-- `notNull<T>(value: T): boolean` - Check if NOT null (type guard)
-- `isUndefined<T>(value: T): boolean` - Check if undefined (type guard)
-- `notUndefined<T>(value: T): boolean` - Check if NOT undefined (type guard)
-- `buildModel<T>(type: new() => T, data: Partial<T>): T` - *(deprecated)* Use `buildModelStrict` or `buildModelPartial`
-- `buildModelStrict<T>(type: new() => T, data: T): T` - Strict model construction; all TypeScript-required properties must be provided
-- `buildModelPartial<T, D extends Partial<T>>(type: new() => T, data: D): Pick<T, keyof D & keyof T> & Partial<Omit<T, keyof D>>` - Partial model construction; TypeScript tracks exactly which keys were provided
-- `buildModelCore<T, D extends Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'>>(type: new() => T, data: D): Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'>` - Like `buildModelPartial` but auto-generated DB fields (`id`, `_id`, `createdAt`, `updatedAt`) are excluded from required data; ideal for building pre-persist payloads
+| Class | Use it for |
+|---|---|
+| `CommonUtils` | null/undefined/empty guards, and the `buildModel*` family for constructing models |
+| `ObjectUtils` | object guards, typed keys/values, deep clone, deep merge, `enabled` guard |
+| `ArrayUtils` | array guard, normalising a value to an array |
+| `StringUtils` / `BooleanUtils` | string and boolean type guards |
+| `MappingUtils` | null-safe mapping of models, arrays, maps, enums (instance methods) |
+| `NumberUtils` | percentages, mean, min/max, rounding with precision |
+| `GeoUtils` | haversine distance, degree conversion |
+| `DefaultsUtil` | fallbacks for nullable strings and numbers |
 
-**ObjectUtils (7 methods + 1 type):**
-- `isObject<T>(value: T): value is Extract<T, object>` - Check if value is any object type (includes arrays, functions, class instances)
-- `isPlainObject<T>(value: T): value is Extract<T, Record<string, unknown>>` - Check if value is a plain object (POJO only, excludes arrays/functions)
-- `keys<T extends object>(object: T | null | undefined): Array<Extract<keyof T, string>>` - Get typed object keys
-- `keys<T>(object: Dictionary<T> | null | undefined): string[]` - Get dictionary keys (`Dictionary` from `@radoslavirha/types`)
-- `values<T extends object>(object: T | null | undefined): Array<T[keyof T]>` - Get typed object/enum values
-- `values<T>(object: Dictionary<T> | null | undefined): T[]` - Get dictionary values
-- `cloneDeep<T extends object>(object: T): T` - Deep clone with no shared references
-- `mergeDeep<T extends object, S extends object>(target: T, source: S): T & S` - Deep merge (arrays concatenate)
-- `isEnabled<T extends { enabled?: boolean }>(value: T | null | undefined): value is Enabled<T>` - Type guard: returns `true` when value is non-null/undefined and `enabled === true`, narrowing to `Enabled<T>`
-- `Enabled<T>` *(type)* - T with `enabled` narrowed to literal `true`; produced by `isEnabled`
-
-**ArrayUtils (2 methods):**
-- `isArray<T>(value: T): value is Extract<T, unknown[]>` - Check if value is an array (type guard)
-- `toArray<T>(value: T | T[] | undefined | null): T[]` - Convert value to array; returns `[]` for null/undefined, wraps single value, passes through arrays
-
-**BooleanUtils (1 method):**
-- `isBoolean<T>(value: T): value is Extract<T, boolean>` - Check if value is a boolean primitive (type guard)
-
-**StringUtils (1 method):**
-- `isString<T>(value: T): value is Extract<T, string>` - Check if value is a string primitive or String object (type guard)
-
-**MappingUtils (7 methods):**
-- `mapOptionalModel<TValue extends object | null | undefined, TOut, TArgs extends unknown[] = []>(model: TValue, mapper: (model: NonNullable<TValue>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut>>` - Map optional model while preserving nullability
-- `mapArray<TValue extends unknown[] | null, TOut, TArgs extends unknown[] = []>(models: TValue, mapper: (model: ArrayElement<NonNullable<TValue>>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut[]>>` - Map array with null support
-- `mapOptionalArray<TValue extends unknown[] | null | undefined, TOut, TArgs extends unknown[] = []>(models: TValue, mapper: (model: ArrayElement<NonNullable<TValue>>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut[]>>` - Map optional array with null/undefined support
-- `mapMap<TValue extends Map<unknown, unknown> | null, TKeyOut, TValueOut>(source: TValue, mapper: (key: MapKey<NonNullable<TValue>>, value: MapValue<NonNullable<TValue>>) => Promise<[TKeyOut, TValueOut]>): Promise<Result<TValue, Map<TKeyOut, TValueOut>>>` - Map Map entries with null support
-- `mapOptionalMap<TValue extends Map<unknown, unknown> | null | undefined, TKeyOut, TValueOut>(source: TValue, mapper: (key: MapKey<NonNullable<TValue>>, value: MapValue<NonNullable<TValue>>) => Promise<[TKeyOut, TValueOut]>): Promise<Result<TValue, Map<TKeyOut, TValueOut>>>` - Map optional Map entries
-- `mapEnum<TSource extends Record<string, string | number>, TTarget extends Record<string, string | number>, TValue extends TSource[keyof TSource] | null>(sourceTypeObject: Record<string, TSource>, targetTypeObject: Record<string, TTarget>, value: TValue, ignoreUnknownKeys?: boolean): Result<TValue, TTarget[keyof TTarget]>` - Map enum values by matching source key name
-- `mapOptionalEnum<TSource extends Record<string, string | number>, TTarget extends Record<string, string | number>, TValue extends TSource[keyof TSource] | null | undefined>(sourceTypeObject: Record<string, TSource>, targetTypeObject: Record<string, TTarget>, value: TValue, ignoreUnknownKeys?: boolean): Result<TValue, TTarget[keyof TTarget]>` - Map optional enum values with null/undefined support
-
-**NumberUtils (8 methods):**
-- `getPercentFromValue(maxValue: number, value: number): number` - Calculate percentage
-- `getValueFromPercent(maxValue: number, percent: number): number` - Get value from percentage
-- `mean(values: number[]): number` - Calculate average
-- `round(value: number, precision?: number): number` - Round to decimal places
-- `floor(value: number, precision?: number): number` - Floor to decimal places
-- `ceil(value: number, precision?: number): number` - Ceil to decimal places
-- `min(values: number[]): number | undefined` - Find minimum value
-- `max(values: number[]): number | undefined` - Find maximum value
-
-**GeoUtils (2 methods):**
-- `calculateKmBetweenCoordinates(lat1: number, lng1: number, lat2: number, lng2: number): number` - Haversine distance in kilometers
-- `degToRad(deg: number): number` - Convert degrees to radians
-
-**DefaultsUtil (2 methods):**
-- `string(string: string | null | undefined, defaultValue: string): string` - Default if empty/null/undefined
-- `number(number: number | null | undefined, defaultValue: number): number` - Default if null/undefined
-
-**Usage:**
-```typescript
-import { CommonUtils, NumberUtils, GeoUtils, ObjectUtils, MappingUtils, ArrayUtils, BooleanUtils, StringUtils, DefaultsUtil } from '@radoslavirha/utils';
-
-// Strict model creation — all required properties must be provided
-const doc = CommonUtils.buildModelStrict(SwaggerDocumentConfig, { docs: 'v1', security: [SwaggerSecurityScheme.BEARER_JWT] });
-
-// Partial model creation — only provide what you have; TypeScript knows exactly which keys are set
-const config = CommonUtils.buildModelPartial(SwaggerConfig, { title: 'API', version: '1.0.0', description: 'desc', documents: [doc] });
-
-// Core model creation — required domain fields only; id/_id/createdAt/updatedAt are excluded from the required type
-const core = CommonUtils.buildModelCore(UserModel, { name: 'Alice', email: 'alice@example.com' });
-// core.name === 'Alice'; id/createdAt/updatedAt are absent until persisted
-
-// Type guards
-if (CommonUtils.notNil(value)) {
-  // TypeScript knows value is not null or undefined
-}
-
-// Math operations
-const rounded = NumberUtils.round(3.14159, 2); // 3.14
-const percent = NumberUtils.getPercentFromValue(200, 50); // 25
-const average = NumberUtils.mean([1, 2, 3, 4, 5]); // 3
-
-// Object operations
-ObjectUtils.isObject(value);          // true for objects, arrays, functions
-ObjectUtils.isPlainObject(value);     // true for plain POJOs only
-const keys = ObjectUtils.keys(config);
-const vals = ObjectUtils.values(config);
-const clone = ObjectUtils.cloneDeep(original);
-const merged = ObjectUtils.mergeDeep(target, source);
-
-// Enabled type guard
-if (ObjectUtils.isEnabled(feature)) {
-  feature.enabled; // type: true — TypeScript knows it's enabled
-}
-// Works with null/undefined/missing enabled field — all return false
-
-// Array operations
-ArrayUtils.isArray(value);            // type guard for arrays
-ArrayUtils.toArray(value);            // always returns T[]
-
-// Type checks
-BooleanUtils.isBoolean(value);        // type guard for booleans
-StringUtils.isString(value);          // type guard for strings
-
-// Mapping operations
-const mappingUtils = new MappingUtils();
-const mappedModel = await mappingUtils.mapOptionalModel(model, async (item) => ({ id: item.id }));
-const mappedArray = await mappingUtils.mapArray([1, 2, 3], async (value) => value * 2);
-
-// Geospatial (NY to London)
-const distance = GeoUtils.calculateKmBetweenCoordinates(
-  40.7128, -74.0060,
-  51.5074, -0.1278
-); // ~5570.22 km
-
-// Defaults
-const name = DefaultsUtil.string(user.name, 'Anonymous');
-const port = DefaultsUtil.number(config.port, 3000);
-```
+Method lists and signatures deliberately live outside this file — in the type declarations,
+[the package README](packages/utils/README.md), and the `using-utils` skill that consuming
+repos install. Restating them here is how this section came to claim 36 methods in one place
+and 39 in another while the real number was 41.
 
 ---
 
@@ -751,7 +212,7 @@ What are you building?
 - [tsed-common README](tsed/common/README.md#-quick-reference-for-ai-agents) - Base models, serialization & validation
 
 ### Utility Packages
-- [utils README](packages/utils/README.md#-quick-reference-for-ai-agents) - 22 utility methods
+- [utils README](packages/utils/README.md#-quick-reference-for-ai-agents) - guards, model building, mapping
 - [types README](packages/types/README.md#-quick-reference-for-ai-agents) - TypeScript types
 
 ### Config Packages

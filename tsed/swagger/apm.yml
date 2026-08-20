@@ -1,0 +1,6 @@
+name: tsed-swagger
+version: 9.1.1
+description: Agent guidance for @radoslavirha/tsed-swagger
+license: MIT
+repository: https://github.com/radoslavirha/toolkit-hub
+type: skill

@@ -1,0 +1,6 @@
+name: tsed-service
+version: 0.1.0
+description: How to assemble a Ts.ED service from the @radoslavirha toolkit packages
+license: MIT
+repository: https://github.com/radoslavirha/toolkit-hub
+type: skill
