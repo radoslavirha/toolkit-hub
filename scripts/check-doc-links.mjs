@@ -22,7 +22,7 @@ const collectSkills = (dir) => {
     for (const name of readdirSync(dir)) addIfExists(join(dir, name, 'SKILL.md'));
 };
 collectSkills('.apm/skills');
-for (const root of ['packages', 'config', 'tsed', 'agents']) {
+for (const root of ['packages', 'config', 'tsed', 'apm-plugins']) {
     if (!existsSync(root)) continue;
     for (const name of readdirSync(root)) collectSkills(join(root, name, '.apm', 'skills'));
 }
