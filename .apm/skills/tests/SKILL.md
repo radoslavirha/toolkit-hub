@@ -1,6 +1,6 @@
 ---
 name: tests
-description: Use when writing or changing a `*.spec.ts` file in toolkit-hub, adding tests to a new package, writing a `vitest.config.ts`, picking a coverage threshold, or mocking Ts.ED DI or MongoDB testcontainers. States the conventions this repo enforces: spec naming and location, describe/it structure, assertion choices, mocking patterns, and where test helpers live.
+description: Use when writing or changing a `*.spec.ts` file in toolkit-hub, adding tests to a new package, writing a `vitest.config.ts`, picking a coverage threshold, or mocking Ts.ED DI or MongoDB testcontainers. States the conventions this repo enforces — spec naming and location, describe/it structure, assertion choices, mocking patterns, and where test helpers live.
 ---
 
 This skill provides guidance for creating and maintaining high-quality Vitest tests for the toolkit-hub monorepo. Use it when writing or updating test cases for any package, ensuring tests are passing and up-to-date with the latest code changes. Always follow best practices for testing and strive for high test coverage across the monorepo.
