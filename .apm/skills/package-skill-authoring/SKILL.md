@@ -11,11 +11,26 @@ guidance consumers need must live here rather than in `AGENTS.md`.
 
 ## Layout
 
+Where a plugin lives follows from what it describes:
+
+| Scope | Location |
+|---|---|
+| One package | that package's own directory — the skill and the API it describes move together |
+| Repo-level, published (adoption, service assembly) | `apm-plugins/<name>/` |
+| Maintaining this repo, never published | root `.apm/skills/` |
+
+A package plugin:
+
 ```
 packages/utils/
   apm.yml                              # name, version, description, license, type: skill
   .apm/skills/using-utils/SKILL.md     # the skill; directory name is its identity
 ```
+
+The maintainer skills stay in the root `.apm/` rather than becoming another plugin: a local
+path dependency would make `apm pack` refuse to build the marketplace from the same manifest
+("local dependencies are for development only"), which would break both the release flow and
+the CI freshness gate.
 
 Then register it in the root `apm.yml` under `marketplace.packages`:
 

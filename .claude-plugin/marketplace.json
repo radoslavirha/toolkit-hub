@@ -9,13 +9,13 @@
       "name": "tsed-service",
       "description": "How to assemble a Ts.ED service from the toolkit packages",
       "version": "0.1.0",
-      "source": "./agents/tsed-service"
+      "source": "./apm-plugins/tsed-service"
     },
     {
       "name": "toolkit-adoption",
       "description": "How to adopt @radoslavirha toolkit packages and their agent skills",
       "version": "0.1.0",
-      "source": "./agents/adoption"
+      "source": "./apm-plugins/adoption"
     },
     {
       "name": "config-eslint",

@@ -44,8 +44,8 @@ pnpm check:apm-versions      # exits 1 on mismatch
 apm marketplace check        # every marketplace entry resolves
 ```
 
-`agents/adoption` is the exception: it has no npm package, sits outside the sync script's
-globs (`packages/*`, `config/*`, `tsed/*`), and its version is bumped by hand.
+`apm-plugins/*` are the exception: they have no npm package, sit outside the sync script's globs (`packages/*`, `config/*`,
+`tsed/*`), and their versions are bumped by hand.
 
 ## Toolchain facts worth knowing
 

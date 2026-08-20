@@ -109,14 +109,14 @@ export class Controller {
 ## 🎯 Common Integration Patterns
 
 The end-to-end recipes — REST API with MongoDB, REST API without a database, background
-worker — live in the `building-a-tsed-service` skill, published from `agents/tsed-service/`.
+worker — live in the `building-a-tsed-service` skill, published from `apm-plugins/tsed-service/`.
 
 They are not here because they are task-triggered rather than always needed, and because
 consuming repos never receive this file: they install skills through APM, so assembly
 guidance is only reachable to them as a skill. Per-package detail lives in each package's own
 skill (`using-tsed-platform`, `using-tsed-mongoose`, `using-tsed-swagger`, …).
 
-Working in this repo, read `agents/tsed-service/.apm/skills/building-a-tsed-service/SKILL.md`
+Working in this repo, read `apm-plugins/tsed-service/.apm/skills/building-a-tsed-service/SKILL.md`
 directly.
 
 ---
