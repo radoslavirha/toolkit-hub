@@ -3,6 +3,42 @@ generated_at: '2026-08-19T19:25:05.502102+00:00'
 apm_version: 0.28.0
 dependencies: []
 deployments:
+- kind: project-relative
+  target: agents
+  value: .agents/skills/tests
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: agents
+  value: .agents/skills/tests/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:13e57ffb0212e43011990d07e2a8a7ec44836fb97a78cec9eeaab235d76c8a48
+- kind: project-relative
+  target: claude
+  value: .claude/skills/tests
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/tests/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:13e57ffb0212e43011990d07e2a8a7ec44836fb97a78cec9eeaab235d76c8a48
 - kind: uri
   target: mcp
   value: context7
@@ -36,3 +72,11 @@ mcp_target_servers:
   - context7
   vscode:
   - context7
+local_deployed_files:
+- .agents/skills/tests
+- .agents/skills/tests/SKILL.md
+- .claude/skills/tests
+- .claude/skills/tests/SKILL.md
+local_deployed_file_hashes:
+  .agents/skills/tests/SKILL.md: sha256:13e57ffb0212e43011990d07e2a8a7ec44836fb97a78cec9eeaab235d76c8a48
+  .claude/skills/tests/SKILL.md: sha256:13e57ffb0212e43011990d07e2a8a7ec44836fb97a78cec9eeaab235d76c8a48

@@ -9,3 +9,9 @@ reports
 .github/plugin
 build
 .claude-plugin/plugin.json
+
+
+# APM dependencies
+apm_modules/
+.agents
+.claude
