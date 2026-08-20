@@ -12,6 +12,30 @@
       "source": "./agents/adoption"
     },
     {
+      "name": "logger",
+      "description": "Agent guidance for @radoslavirha/logger - scoped structured logging",
+      "version": "0.4.1",
+      "source": "./packages/logger"
+    },
+    {
+      "name": "redaction",
+      "description": "Agent guidance for @radoslavirha/redaction - compiled redaction profiles",
+      "version": "0.2.0",
+      "source": "./packages/redaction"
+    },
+    {
+      "name": "tsed-logger",
+      "description": "Agent guidance for @radoslavirha/tsed-logger - DI logger and scopes",
+      "version": "0.6.1",
+      "source": "./tsed/logger"
+    },
+    {
+      "name": "tsed-swagger",
+      "description": "Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI",
+      "version": "9.1.1",
+      "source": "./tsed/swagger"
+    },
+    {
       "name": "tsed-common",
       "description": "Agent guidance for @radoslavirha/tsed-common - models, serialization, validation",
       "version": "0.5.5",
