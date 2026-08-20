@@ -7,7 +7,7 @@ description: Use when creating a README for a new toolkit-hub package, or after 
 
 A package README is the human-facing document. Agent-facing guidance goes in that package's
 `.apm/skills/` (see `package-skill-authoring`), and cross-package guidance goes in
-`AGENTS.md` (see `agents-md`). Do not duplicate between them — duplicated facts drift.
+`AGENTS.md` at the repo root (see `agents-md`). Do not duplicate between them — duplicated facts drift.
 
 ## Required core
 
@@ -15,7 +15,7 @@ Every package README has:
 
 1. `# @radoslavirha/<name>` + a one-line description
 2. `## 🤖 Quick Reference for AI Agents` — the shortest path to correct usage: install command, main exports, a minimal example
-3. `## See Also` — link to [AGENTS.md](../../AGENTS.md) and to related packages
+3. `## See Also` — link to `AGENTS.md` at the repo root and to related packages
 
 ## Optional, per package
 
@@ -35,9 +35,14 @@ Prefer the shape that explains the package over the shape that matches its neigh
 
 - **Generic names only**: `Handler`, `Controller`, `Service`, `Request`, `Response`, `Model`,
   `MongoModel`, `Mapper`. Never domain nouns (`User`, `Order`, `Product`).
-- **Examples must compile.** Write them as TypeScript blocks against the real exports, and
-  check them — a block that no longer compiles is the drift signal. Prose claims cannot be
-  verified and rot silently.
+- **Complete examples should be checked.** READMEs legitimately contain fragments —
+  placeholder inventories, snippets whose `import` sits in an earlier block — so compilation
+  is opt-in here. When a block *is* self-contained, tag it and CI will defend it:
+
+      ```ts check
+
+  Run `pnpm check:doc-snippets` locally. Untagged blocks are ignored, so an example that
+  drifts silently is a choice, not an accident.
 - **Installation** uses pnpm with a filter:
   ```bash
   pnpm --filter YOUR_SERVICE add @radoslavirha/package-name

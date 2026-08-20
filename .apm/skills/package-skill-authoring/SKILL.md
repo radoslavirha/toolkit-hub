@@ -54,12 +54,23 @@ List the symptoms, in the words that appear in the work.
 ## Write claims as compilable code
 
 Prose is unverifiable; a fenced TypeScript block can be checked against the real package.
-Prefer a short example over a sentence describing one. To verify:
+Prefer a short example over a sentence describing one.
+
+**Every `ts` block in a skill is compiled by CI** against that package's own `tsconfig`, with
+imports of the package's own name rewritten to its source entrypoint. Run it yourself with:
 
 ```bash
-# extract the ts blocks to temp files inside the package, then
-npx tsc --noEmit
+pnpm check:doc-snippets          # all packages
+pnpm check:doc-links             # relative links and heading anchors
 ```
+
+A block that cannot stand alone — a signature listing, a fragment continuing an earlier
+example — must be tagged so it is skipped:
+
+    ```ts ignore
+
+Prefer making the block self-contained over tagging it. Skills are short; a complete example
+is usually only two lines longer than a fragment, and it is the only version CI can defend.
 
 Never list every method — the `.d.ts` already does that. Cover instead: which of several
 similar APIs applies, what is deprecated and what replaced it, and the "do not reimplement"
