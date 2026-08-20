@@ -35,10 +35,10 @@ export type ConfigProviderOptions<T extends BaseConfig> = {
  * @example
  * ```typescript
  * import { z } from 'zod';
- * import { ConfigProvider, ConfigProviderOptions, BaseConfigSchema } from '@radoslavirha/tsed-configuration';
+ * import { ConfigProvider, ConfigProviderOptions, BaseConfig } from '@radoslavirha/tsed-configuration';
  * import { Injectable } from '@tsed/di';
  *
- * export const AppConfigSchema = BaseConfigSchema.extend({
+ * export const AppConfigSchema = BaseConfig.extend({
  *     databaseUrl: z.string(),
  * });
  * export type AppConfig = z.infer<typeof AppConfigSchema>;

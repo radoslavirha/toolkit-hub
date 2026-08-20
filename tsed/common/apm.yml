@@ -1,0 +1,6 @@
+name: tsed-common
+version: 0.5.5
+description: Agent guidance for @radoslavirha/tsed-common
+license: MIT
+repository: https://github.com/radoslavirha/toolkit-hub
+type: skill

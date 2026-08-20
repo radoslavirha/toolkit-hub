@@ -12,6 +12,18 @@
       "source": "./agents/adoption"
     },
     {
+      "name": "tsed-common",
+      "description": "Agent guidance for @radoslavirha/tsed-common - models, serialization, validation",
+      "version": "0.5.5",
+      "source": "./tsed/common"
+    },
+    {
+      "name": "tsed-configuration",
+      "description": "Agent guidance for @radoslavirha/tsed-configuration - schema-validated config",
+      "version": "0.8.1",
+      "source": "./tsed/configuration"
+    },
+    {
       "name": "tsed-platform",
       "description": "Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers",
       "version": "4.1.1",

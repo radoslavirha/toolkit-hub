@@ -32,6 +32,14 @@ marketplace:
       description: How to adopt @radoslavirha toolkit packages and their agent skills
       source: ./agents/adoption
 
+    - name: tsed-common
+      description: Agent guidance for @radoslavirha/tsed-common - models, serialization, validation
+      source: ./tsed/common
+
+    - name: tsed-configuration
+      description: Agent guidance for @radoslavirha/tsed-configuration - schema-validated config
+      source: ./tsed/configuration
+
     - name: tsed-platform
       description: Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers
       source: ./tsed/platform
