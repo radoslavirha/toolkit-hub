@@ -12,6 +12,12 @@
       "source": "./agents/adoption"
     },
     {
+      "name": "tsed-platform",
+      "description": "Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers",
+      "version": "4.1.1",
+      "source": "./tsed/platform"
+    },
+    {
       "name": "tsed-mongoose",
       "description": "Agent guidance for @radoslavirha/tsed-mongoose - mapper and repository pattern",
       "version": "5.0.5",
