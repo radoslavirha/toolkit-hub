@@ -32,6 +32,22 @@ marketplace:
       description: How to adopt @radoslavirha toolkit packages and their agent skills
       source: ./agents/adoption
 
+    - name: config-eslint
+      description: Agent guidance for @radoslavirha/config-eslint - shared flat config
+      source: ./config/config-eslint
+
+    - name: config-tsdown
+      description: Agent guidance for @radoslavirha/config-tsdown - dual ESM/CJS builds
+      source: ./config/config-tsdown
+
+    - name: config-typescript
+      description: Agent guidance for @radoslavirha/config-typescript - shared tsconfig bases
+      source: ./config/config-typescript
+
+    - name: config-vitest
+      description: Agent guidance for @radoslavirha/config-vitest - test config and coverage
+      source: ./config/config-vitest
+
     - name: logger
       description: Agent guidance for @radoslavirha/logger - scoped structured logging
       source: ./packages/logger
@@ -47,6 +63,10 @@ marketplace:
     - name: tsed-swagger
       description: Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI
       source: ./tsed/swagger
+
+    - name: types
+      description: Agent guidance for @radoslavirha/types - shared type helpers
+      source: ./packages/types
 
     - name: tsed-common
       description: Agent guidance for @radoslavirha/tsed-common - models, serialization, validation

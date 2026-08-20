@@ -12,6 +12,30 @@
       "source": "./agents/adoption"
     },
     {
+      "name": "config-eslint",
+      "description": "Agent guidance for @radoslavirha/config-eslint - shared flat config",
+      "version": "0.4.4",
+      "source": "./config/config-eslint"
+    },
+    {
+      "name": "config-tsdown",
+      "description": "Agent guidance for @radoslavirha/config-tsdown - dual ESM/CJS builds",
+      "version": "0.2.1",
+      "source": "./config/config-tsdown"
+    },
+    {
+      "name": "config-typescript",
+      "description": "Agent guidance for @radoslavirha/config-typescript - shared tsconfig bases",
+      "version": "1.1.3",
+      "source": "./config/config-typescript"
+    },
+    {
+      "name": "config-vitest",
+      "description": "Agent guidance for @radoslavirha/config-vitest - test config and coverage",
+      "version": "0.4.3",
+      "source": "./config/config-vitest"
+    },
+    {
       "name": "logger",
       "description": "Agent guidance for @radoslavirha/logger - scoped structured logging",
       "version": "0.4.1",
@@ -34,6 +58,12 @@
       "description": "Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI",
       "version": "9.1.1",
       "source": "./tsed/swagger"
+    },
+    {
+      "name": "types",
+      "description": "Agent guidance for @radoslavirha/types - shared type helpers",
+      "version": "0.4.3",
+      "source": "./packages/types"
     },
     {
       "name": "tsed-common",
