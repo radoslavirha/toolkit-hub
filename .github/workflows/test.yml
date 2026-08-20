@@ -32,3 +32,41 @@ jobs:
         run: pnpm build
       - name: Test workspaces
         run: pnpm test
+
+  docs:
+    name: Docs & APM metadata
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Use pnpm 11
+        uses: pnpm/action-setup@v6.0.10
+        with:
+          version: 11
+      - name: Use Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install APM CLI
+        uses: microsoft/apm-action@v1
+        with:
+          setup-only: true
+          apm-version: '0.28.0'
+      # Each package's apm.yml version must equal its package.json version.
+      - name: Check APM versions
+        run: pnpm check:apm-versions
+      # Relative links and heading anchors across READMEs, AGENTS.md and skills.
+      - name: Check documentation links
+        run: pnpm check:doc-links
+      # Type-check the TypeScript in skills (all blocks) and READMEs (tagged blocks).
+      - name: Check documentation snippets
+        run: pnpm check:doc-snippets
+      # Every marketplace entry resolves.
+      - name: Check marketplace entries
+        run: apm marketplace check
+      # The committed .claude-plugin/marketplace.json matches what apm pack produces.
+      - name: Check marketplace is up to date
+        run: apm pack --check-clean
