@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-mongoose
 
+## 5.0.7
+
+### Patch Changes
+
+- [#169](https://github.com/radoslavirha/toolkit-hub/pull/169) [`5281353`](https://github.com/radoslavirha/toolkit-hub/commit/528135319ec3d81325cf8d28fca953a9f1fa058a) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Use `CommonUtils.notNull` in the test repository helper instead of a raw null comparison, and enable the toolkit reuse lint rules for the package.
+- Updated dependencies [[`5281353`](https://github.com/radoslavirha/toolkit-hub/commit/528135319ec3d81325cf8d28fca953a9f1fa058a)]:
+  - @radoslavirha/utils@0.9.0
+  - @radoslavirha/tsed-common@0.5.7
+
 ## 5.0.6
 
 ### Patch Changes
