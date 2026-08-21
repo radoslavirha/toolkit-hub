@@ -1,6 +1,7 @@
 import winston from 'winston';
 import { LogLevel } from './LogLevel.enum.js';
 import type { LoggerOptions } from './LoggerOptions.js';
+import { CommonUtils } from '@radoslavirha/utils';
 
 /** Winston custom levels — lower number = higher priority (matches OTEL severity order). */
 const WINSTON_LEVELS: Record<LogLevel, number> = {
@@ -58,7 +59,7 @@ export class Logger<T extends object = object> {
     public constructor(options?: LoggerOptions<T>);
     public constructor(childConfig: ChildConfig);
     constructor(optionsOrChild?: LoggerOptions<T> | ChildConfig) {
-        if (optionsOrChild !== undefined && CHILD_LOGGER in optionsOrChild) {
+        if (CommonUtils.notUndefined(optionsOrChild) && CHILD_LOGGER in optionsOrChild) {
             this.enabled = optionsOrChild.enabled;
             this.logger = optionsOrChild.logger;
             this.metaProvider = optionsOrChild.metaProvider as (() => Partial<T>) | undefined;
@@ -88,7 +89,7 @@ export class Logger<T extends object = object> {
         const childProvider = options?.metaProvider as (() => Partial<object>) | undefined;
 
         let mergedProvider: (() => Partial<object>) | undefined;
-        if (parentProvider !== undefined && childProvider !== undefined) {
+        if (CommonUtils.notUndefined(parentProvider) && CommonUtils.notUndefined(childProvider)) {
             mergedProvider = () => ({ ...parentProvider(), ...childProvider() });
         } else {
             mergedProvider = childProvider ?? parentProvider;
@@ -140,11 +141,11 @@ export class Logger<T extends object = object> {
         }
 
         const baseMeta = this.metaProvider?.();
-        const metadata = baseMeta !== undefined || meta !== undefined
+        const metadata = CommonUtils.notUndefined(baseMeta) || CommonUtils.notUndefined(meta)
             ? { ...baseMeta, ...meta }
             : undefined;
 
-        if (metadata !== undefined) {
+        if (CommonUtils.notUndefined(metadata)) {
             this.logger.log(level, body, metadata);
         } else {
             this.logger.log(level, body);

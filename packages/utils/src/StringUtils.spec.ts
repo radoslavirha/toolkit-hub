@@ -35,4 +35,23 @@ describe('StringUtils', () => {
             expect(StringUtils.isString(undefined)).toBe(false);
         });
     });
+
+    describe('isNotEmpty', () => {
+        it('returns true for a string with content', () => {
+            expect(StringUtils.isNotEmpty('hello')).toBe(true);
+        });
+
+        it('returns false for an empty string', () => {
+            expect(StringUtils.isNotEmpty('')).toBe(false);
+        });
+
+        it('returns false for a whitespace-only string', () => {
+            expect(StringUtils.isNotEmpty('   ')).toBe(false);
+        });
+
+        it('returns false for a non-string value', () => {
+            expect(StringUtils.isNotEmpty(42)).toBe(false);
+            expect(StringUtils.isNotEmpty(null)).toBe(false);
+        });
+    });
 });

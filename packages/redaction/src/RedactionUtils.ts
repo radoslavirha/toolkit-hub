@@ -1,4 +1,5 @@
 import fastRedact from 'fast-redact';
+import { CommonUtils, StringUtils } from '@radoslavirha/utils';
 
 /** A compiled redactor: serialises its input, censoring any configured paths. */
 export type RedactorFunction = (value: unknown) => string;
@@ -24,18 +25,18 @@ export class RedactionUtils {
      *   `[[ UNSERIALIZABLE ]]` when it throws (e.g. circular references).
      */
     public static stringifyForLog(value: unknown): string {
-        if (typeof value === 'string') {
+        if (StringUtils.isString(value)) {
             return value;
         }
 
-        if (typeof value === 'undefined') {
+        if (CommonUtils.isUndefined(value)) {
             return 'undefined';
         }
 
         try {
             const serialized = JSON.stringify(value);
 
-            if (typeof serialized === 'string') {
+            if (StringUtils.isString(serialized)) {
                 return serialized;
             }
         } catch {

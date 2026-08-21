@@ -5,6 +5,42 @@ import _ from 'lodash';
  */
 export class NumberUtils {
     /**
+     * Checks if a value is a number. Acts as a type guard, narrowing the type to `number`
+     * when the check returns true.
+     *
+     * Matches `typeof value === 'number'` semantics, which means `NaN` passes — it is a
+     * number by type. Use {@link isFiniteNumber} when the value has to be usable in
+     * arithmetic.
+     * @template T A generic value type.
+     * @param value The value to check.
+     * @returns `true` if the value is a number, otherwise `false`.
+     * @example
+     * NumberUtils.isNumber(42);        // true
+     * NumberUtils.isNumber(NaN);       // true  (a number by type)
+     * NumberUtils.isNumber('42');      // false
+     * NumberUtils.isNumber(null);      // false
+     */
+    public static isNumber<T>(value: T): value is Extract<T, number> {
+        return _.isNumber(value);
+    }
+
+    /**
+     * Checks if a value is a number that can be used in arithmetic — excluding `NaN`,
+     * `Infinity` and `-Infinity`.
+     * @template T A generic value type.
+     * @param value The value to check.
+     * @returns `true` if the value is a finite number, otherwise `false`.
+     * @example
+     * NumberUtils.isFiniteNumber(42);        // true
+     * NumberUtils.isFiniteNumber(NaN);       // false
+     * NumberUtils.isFiniteNumber(Infinity);  // false
+     * NumberUtils.isFiniteNumber('42');      // false
+     */
+    public static isFiniteNumber<T>(value: T): value is Extract<T, number> {
+        return _.isFinite(value);
+    }
+
+    /**
      * Calculates the percentage of a value in relation to a maximum value.
      * @param maxValue The maximum value to use as 100%. Defaults to 100.
      * @param value The value to calculate the percentage for. Defaults to 50.

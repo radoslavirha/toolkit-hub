@@ -62,13 +62,13 @@ DefaultsUtil.number(value, 0);               // Returns default if value is nil
 ```
 
 **Complete method list:**
-- **CommonUtils:** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, buildModel *(deprecated)*, buildModelStrict, buildModelPartial, buildModelCore
-- **ObjectUtils:** isObject, isPlainObject, keys, values, cloneDeep, mergeDeep, isEnabled — plus the `Enabled<T>` type
+- **CommonUtils:** isEmpty, isNil, notNil, isNull, notNull, isUndefined, notUndefined, isFunction, buildModel *(deprecated)*, buildModelStrict, buildModelPartial, buildModelCore
+- **ObjectUtils:** isObject, isPlainObject, isDate, keys, values, cloneDeep, mergeDeep, isEnabled — plus the `Enabled<T>` type
 - **ArrayUtils:** isArray, toArray
-- **StringUtils:** isString
+- **StringUtils:** isString, isNotEmpty
 - **BooleanUtils:** isBoolean
 - **MappingUtils** *(instance methods — construct it)*: mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum
-- **NumberUtils:** getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
+- **NumberUtils:** isNumber, isFiniteNumber, getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
 - **GeoUtils:** calculateKmBetweenCoordinates, degToRad
 - **DefaultsUtil:** string, number
 
@@ -398,13 +398,13 @@ function paginate(page?: number, pageSize?: number) {
 
 | Utility Class | Purpose |
 |---------------|---------|
-| CommonUtils | Null/undefined/empty guards and model instantiation (`buildModelStrict`, `buildModelPartial`, `buildModelCore`; `buildModel` is deprecated) |
-| ObjectUtils | Object type guards, typed keys/values, deep clone, deep merge, `enabled` type guard |
+| CommonUtils | Null/undefined/empty/callable guards and model instantiation (`buildModelStrict`, `buildModelPartial`, `buildModelCore`; `buildModel` is deprecated) |
+| ObjectUtils | Object and Date type guards, typed keys/values, deep clone, deep merge, `enabled` type guard |
 | ArrayUtils | Array type guard and normalising a value to an array |
-| StringUtils | String type guard |
+| StringUtils | String type guard, and a non-empty string guard |
 | BooleanUtils | Boolean type guard |
 | MappingUtils | Null-safe mapping for models, arrays, maps and enums (instance methods — construct it) |
-| NumberUtils | Percentages, mean, min/max, rounding with precision |
+| NumberUtils | Number and finite-number guards, percentages, mean, min/max, rounding with precision |
 | GeoUtils | Haversine distance between coordinates, degree conversion |
 | DefaultsUtil | Fallback values for nullable strings and numbers |
 

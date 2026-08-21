@@ -383,4 +383,23 @@ describe('CommonUtils', () => {
             expect(model.count).toEqual(42);
         });
     });
+
+    describe('isFunction', () => {
+        it('returns true for an arrow function', () => {
+            expect(CommonUtils.isFunction(() => 1)).toBe(true);
+        });
+
+        it('returns true for a class, which is callable', () => {
+            expect(CommonUtils.isFunction(class Example {})).toBe(true);
+        });
+
+        it('returns false for a plain object', () => {
+            expect(CommonUtils.isFunction({})).toBe(false);
+        });
+
+        it('returns false for null and undefined', () => {
+            expect(CommonUtils.isFunction(null)).toBe(false);
+            expect(CommonUtils.isFunction(undefined)).toBe(false);
+        });
+    });
 });

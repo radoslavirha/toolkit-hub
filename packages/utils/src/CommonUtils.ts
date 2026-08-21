@@ -79,6 +79,22 @@ export class CommonUtils {
     }
 
     /**
+     * Checks if a value is callable. Acts as a type guard, so the value can be invoked
+     * inside the branch without a cast.
+     * @template T A generic value type.
+     * @param value The value to check.
+     * @returns `true` if the value is a function, otherwise `false`.
+     * @example
+     * CommonUtils.isFunction(() => 1);   // true
+     * CommonUtils.isFunction(class {});  // true (classes are callable)
+     * CommonUtils.isFunction({});        // false
+     * CommonUtils.isFunction(null);      // false
+     */
+    public static isFunction<T>(value: T): value is Extract<T, (...args: never[]) => unknown> {
+        return _.isFunction(value);
+    }
+
+    /**
      * Builds a model instance from a type and data.
      * Creates a new instance of the specified class and assigns the provided data to it.
      * @template T The type of the model to create.

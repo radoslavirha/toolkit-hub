@@ -20,4 +20,22 @@ export class StringUtils {
     public static isString<T>(value: T): value is Extract<T, string> {
         return _.isString(value);
     }
+
+    /**
+     * Checks if a value is a string with at least one non-whitespace character.
+     *
+     * Distinct from {@link isString}, which accepts `''`, and from `CommonUtils.isEmpty`,
+     * which also treats empty arrays and objects as empty.
+     * @template T A generic value type.
+     * @param value The value to check.
+     * @returns `true` if the value is a string carrying content, otherwise `false`.
+     * @example
+     * StringUtils.isNotEmpty('hello');  // true
+     * StringUtils.isNotEmpty('');       // false
+     * StringUtils.isNotEmpty('   ');    // false (whitespace only)
+     * StringUtils.isNotEmpty(42);       // false
+     */
+    public static isNotEmpty<T>(value: T): value is Extract<T, string> {
+        return _.isString(value) && value.trim().length > 0;
+    }
 }

@@ -1,5 +1,6 @@
 import { RedactionUtils, type RedactorFunction } from './RedactionUtils.js';
 import type { RedactionConfig } from './RedactionOptions.schema.js';
+import { CommonUtils } from '@radoslavirha/utils';
 
 /**
  * A set of named, **pre-compiled** redactors built once from configuration.
@@ -41,7 +42,7 @@ export class RedactionProfile<K extends string = string> {
         this.redactors = new Map();
 
         for (const [field, options] of Object.entries(config) as [K, RedactionConfig<K>[K] | undefined][]) {
-            if (options?.enabled !== false && options !== undefined) {
+            if (CommonUtils.notUndefined(options) && options.enabled !== false) {
                 this.redactors.set(field, RedactionUtils.compileRedactor(options.redactPaths));
             }
         }
