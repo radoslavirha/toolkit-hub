@@ -25,6 +25,7 @@ import { APIInformation } from '@radoslavirha/tsed-configuration';
  * const config = injector().get<ConfigService>(ConfigService);
  * 
  * const configuration: ServerConfiguration = {
+ *     rootModule: Server,  // the @Configuration server class
  *     ...config.server,  // httpPort, httpsPort, etc.
  *     api: config.api   // service, version, description, publicURL
  * };

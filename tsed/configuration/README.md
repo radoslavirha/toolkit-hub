@@ -40,7 +40,8 @@ export class ConfigService extends ConfigProvider<AppConfig> {
 import { injector } from '@tsed/di';
 
 const config = injector().get<ConfigService>(ConfigService);
-const platform = await Platform.bootstrap(Server, {
+const platform = await Platform.bootstrap({
+  rootModule: Server,
   ...config.server,  // httpPort, httpsPort, etc.
   api: config.api    // service, version, description
 });
@@ -244,11 +245,12 @@ try {
     console.log(`Starting ${api.service} v${api.version}`);
 
     const configuration: ServerConfiguration = {
+        rootModule: Server,
         api: api
         ...server
     };
 
-    const platform = await Platform.bootstrap(Server, configuration);
+    const platform = await Platform.bootstrap(configuration);
 
     await platform.listen();
 } catch (error) {

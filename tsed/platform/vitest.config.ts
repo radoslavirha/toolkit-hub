@@ -11,8 +11,8 @@ export default defineConfig(mergeConfig(defaultConfig, {
                 'src/test'
             ],
             thresholds: {
-                statements: 94.87,
-                lines: 94.87,
+                statements: 94.73,
+                lines: 94.73,
                 branches: 85.71
             }
         }

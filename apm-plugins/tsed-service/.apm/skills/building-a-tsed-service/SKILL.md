@@ -49,18 +49,20 @@ The order is fixed, because each step consumes the previous one:
 2. Build `ServerConfiguration` from `config.server` plus the required `api` metadata.
 3. Add the pieces the shape needs: `mongoose: [...]` for persistence, the output of
    `SwaggerProvider` for OpenAPI.
-4. `Platform.bootstrap(Server, configuration)`, then `listen()`.
+4. `Platform.bootstrap(configuration)` — the server class travels in the configuration as
+   `rootModule` — then `listen()`.
 
 ```ts ignore
 const config = injector().get<ConfigService>(ConfigService);
 
 const configuration: ServerConfiguration = {
+    rootModule: Server,
     ...config.server,
     api: config.api,
     mongoose: [{ url: config.config.mongodb.url }]
 };
 
-const platform = await Platform.bootstrap(Server, configuration);
+const platform = await Platform.bootstrap(configuration);
 await platform.listen();
 ```
 

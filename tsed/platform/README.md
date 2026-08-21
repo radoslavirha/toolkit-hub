@@ -31,7 +31,8 @@ export class Server extends BaseServer {
 import { Platform, ServerConfiguration } from '@radoslavirha/tsed-platform';
 
 const config = injector().get<ConfigService>(ConfigService);
-const platform = await Platform.bootstrap(Server, {
+const platform = await Platform.bootstrap({
+  rootModule: Server,
   ...config.server,
   api: config.api
 });
@@ -77,7 +78,7 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 
 ### Core Components
 
-- **`Platform`** - Platform bootstrap utility extending `PlatformExpress`
+- **`Platform`** - Platform bootstrap utility wrapping `PlatformExpress`
 - **`BaseServer`** - Pre-configured Express server with common middleware
 - **`BaseHandler<IRequest, IResponse>`** - Performance-tracked operation handler (abstract class)
 - **`ServerConfiguration<T>`** - Type for Ts.ED server configuration with API metadata
@@ -87,7 +88,7 @@ See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo
 This package provides a layered architecture for Ts.ED applications:
 
 ```
-Platform.bootstrap(Server, config)
+Platform.bootstrap({ rootModule: Server, ...config })
             ↓
     BaseServer (extends)
             ↓
@@ -150,12 +151,13 @@ try {
 
     // Create server configuration
     const configuration: ServerConfiguration = {
+        rootModule: Server,
         ...config.server,
         api: config.api
     };
 
     // Bootstrap platform
-    const platform = await Platform.bootstrap(Server, configuration);
+    const platform = await Platform.bootstrap(configuration);
     
     // Start listening
     await platform.listen();
@@ -222,17 +224,17 @@ export class Controller {
 
 ### Platform
 
-Express-based platform bootstrap utility extending Ts.ED's `PlatformExpress`.
+Express-based platform bootstrap utility wrapping Ts.ED's `PlatformExpress`.
 
 **Static Method:**
 
 | Method | Parameters | Returns | Description |
 |--------|-----------|---------|-------------|
-| `bootstrap()` | `module: Type`, `settings: ServerConfiguration` | `Promise<PlatformExpress>` | Bootstrap Ts.ED application with Express |
+| `bootstrap()` | `settings: ServerConfiguration` (with `rootModule`) | `Promise<PlatformExpress>` | Bootstrap Ts.ED application with Express |
 
 **Example:**
 ```typescript
-const platform = await Platform.bootstrap(Server, settings);
+const platform = await Platform.bootstrap({ rootModule: Server, ...settings });
 await platform.listen();
 ```
 

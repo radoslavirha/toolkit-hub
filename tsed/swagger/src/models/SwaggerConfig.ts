@@ -44,11 +44,12 @@ import { SwaggerSecurityScheme } from '../enums/SwaggerSecurityScheme.enum.js';
  * 
  * // Use in server configuration
  * const configuration: ServerConfiguration = {
+ *     rootModule: Server,
  *     ...serverConfig,
  *     swagger: new SwaggerProvider(swaggerConfig).config
  * };
  * 
- * const platform = await Platform.bootstrap(Server, configuration);
+ * const platform = await Platform.bootstrap(configuration);
  * ```
  * 
  * @see {@link SwaggerProvider} - Converts this config into Ts.ED SwaggerSettings

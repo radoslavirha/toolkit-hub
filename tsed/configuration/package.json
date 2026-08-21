@@ -40,7 +40,7 @@
     "dependencies": {
         "@radoslavirha/tsed-common": "workspace:*",
         "@radoslavirha/utils": "workspace:*",
-        "config": "4.4.2",
+        "config": "5.0.1",
         "dotenv": "17.4.2",
         "read-pkg": "10.1.0"
     },

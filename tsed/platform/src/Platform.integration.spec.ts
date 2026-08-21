@@ -29,6 +29,7 @@ describe('Platform', () => {
     describe('bootstrap()', () => {
         it('should create platform', async () => {
             const settings: ServerConfiguration = {
+                rootModule: BaseServer,
                 api: {
                     service: 'test',
                     version: '0.0.1',
@@ -36,8 +37,25 @@ describe('Platform', () => {
                 }
             };
 
-            const platform = await Platform.bootstrap(BaseServer, settings);
+            const platform = await Platform.bootstrap(settings);
 
+            expect(platform.rootModule).toBeInstanceOf(BaseServer);
+            expect(platform.adapter).toBeInstanceOf(PlatformExpress);
+            await platform.stop();
+        });
+
+        it('should create platform without a root module', async () => {
+            const settings: ServerConfiguration = {
+                api: {
+                    service: 'test',
+                    version: '0.0.1',
+                    publicURL: 'http://localhost:3000/api'
+                }
+            };
+
+            const platform = await Platform.bootstrap(settings);
+
+            expect(platform.rootModule).toBeUndefined();
             expect(platform.adapter).toBeInstanceOf(PlatformExpress);
             await platform.stop();
         });
@@ -46,6 +64,7 @@ describe('Platform', () => {
 
             it('should create platform and listen', async () => {
                 const settings: ServerConfiguration = {
+                    rootModule: BaseServer,
                     api: {
                         service: 'test',
                         version: '0.0.1',
@@ -56,7 +75,7 @@ describe('Platform', () => {
                     }
                 };
 
-                const platform = await Platform.bootstrap(BaseServer, settings);
+                const platform = await Platform.bootstrap(settings);
                 await platform.listen();
 
                 const logs = parseLogs(stdoutSpy);

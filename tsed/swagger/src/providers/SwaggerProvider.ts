@@ -51,12 +51,13 @@ import { SwaggerUIConfig } from '../models/SwaggerUIConfig.js';
  * 
  * // Convert to Ts.ED SwaggerSettings[] and use in server configuration
  * const configuration: ServerConfiguration = {
+ *     rootModule: Server,
  *     ...config.server,
  *     api: config.api,
  *     swagger: new SwaggerProvider(swaggerConfig).config
  * };
  * 
- * const platform = await Platform.bootstrap(Server, configuration);
+ * const platform = await Platform.bootstrap(configuration);
  * ```
  * 
  * @see {@link SwaggerConfig} - Input configuration model

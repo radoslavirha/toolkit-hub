@@ -195,12 +195,13 @@ try {
 
     // Bootstrap server with Swagger configuration
     const configuration: ServerConfiguration = {
+        rootModule: Server,
         ...config.server,
         api: config.api,
         swagger: swaggerProvider.config  // Inject Swagger settings
     };
 
-    const platform = await Platform.bootstrap(Server, configuration);
+    const platform = await Platform.bootstrap(configuration);
     await platform.listen();
 } catch (error) {
     logger.error('Bootstrap failed.', { error: error });

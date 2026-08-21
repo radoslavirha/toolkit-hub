@@ -60,11 +60,12 @@ export type ConfigProviderOptions<T extends BaseConfig> = {
  * // Usage in Ts.ED bootstrap
  * const config = injector().get<ConfigService>(ConfigService);
  * const configuration: ServerConfiguration = {
+ *     rootModule: Server,
  *     ...config.server,
  *     api: config.api
  * };
  * 
- * const platform = await Platform.bootstrap(Server, configuration);
+ * const platform = await Platform.bootstrap(configuration);
  * ```
  * 
  * @remarks
