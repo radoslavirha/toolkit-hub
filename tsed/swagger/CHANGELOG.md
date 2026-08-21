@@ -1,5 +1,33 @@
 # @radoslavirha/tsed-swagger
 
+## 9.1.4
+
+### Patch Changes
+
+- [`6905e0c`](https://github.com/radoslavirha/toolkit-hub/commit/6905e0c9f25b10bf534d105b0114600eea9f0e92) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Align `Platform.bootstrap` with the Ts.ED 8.38 `rootModule` API
+  
+  **Breaking:** `Platform.bootstrap` now takes settings only — pass the server class as `rootModule` inside `ServerConfiguration`, the shape Ts.ED 8.38 documents:
+  
+  ```ts
+  // before
+  const platform = await Platform.bootstrap(Server, configuration);
+  
+  // after
+  const platform = await Platform.bootstrap({ rootModule: Server, ...configuration });
+  ```
+  
+  **Breaking:** `Platform` no longer extends `PlatformExpress`. It never used the inheritance — the adapter comes from the settings — and the single-argument signature is incompatible with the base class static side. Inherited members such as `Platform.create()` are gone; use `PlatformExpress` directly if you need them.
+  
+  `@tsed/platform-express@8.38.0` added a `bootstrap(settings)` overload, which made the previous two-argument override an invalid static-side override (`TS2417`).
+  
+  Also bumps `config` to 5.0.1, `typescript-eslint` to 8.67.0 and `unplugin-swc` to 1.5.11.
+- Updated dependencies [[`6905e0c`](https://github.com/radoslavirha/toolkit-hub/commit/6905e0c9f25b10bf534d105b0114600eea9f0e92)]:
+  - @radoslavirha/tsed-platform@5.0.0
+  - @radoslavirha/tsed-configuration@0.8.4
+  - @radoslavirha/types@0.4.4
+  - @radoslavirha/utils@0.9.0
+  - @radoslavirha/tsed-logger@0.6.3
+
 ## 9.1.3
 
 ### Patch Changes
