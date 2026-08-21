@@ -31,20 +31,15 @@ package's own config hides the problem from everywhere else that shares the conf
 If a rule is wrong for the whole toolkit, change it in this package and release it — that is
 the point of sharing the config.
 
-## Toolkit reuse rules
+## Reuse rules are not here
 
-A separate opt-in config warns when code hand-rolls something `@radoslavirha/utils` already
-provides — raw `=== null`, `typeof x === 'string'`, `Array.isArray`,
-`JSON.parse(JSON.stringify(...))`, or a lodash import:
+The rules that flag hand-rolled `=== null`, `typeof` tests, `Array.isArray` and
+`JSON.parse(JSON.stringify(...))` ship from `@radoslavirha/utils/eslint`, because every
+message names a method of that package — keeping them together means a project can never be
+advised to call something its installed version does not have.
 
 ```ts ignore
-export default defineConfig(...Config, ...ToolkitReuse);
+export default defineConfig(...Config, ...PreferUtils);
 ```
 
-It is opt-in rather than part of the base config because every message names a method the
-project has to be able to import. Do not enable it in a package that does not depend on
-`utils` — including `utils` itself, which implements those primitives, and `redaction`, which
-is deliberately dependency-light.
-
-All rules are `warn`. `x == null` is not flagged: loose equality covers both null and
-undefined and is a deliberate choice, not an oversight.
+Enable it in any package that depends on `utils`. See the `using-utils` skill.

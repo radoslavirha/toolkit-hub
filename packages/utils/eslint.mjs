@@ -1,29 +1,31 @@
-import { defineConfig } from 'eslint/config';
-
 /**
- * Rules that steer code toward `@radoslavirha/utils` instead of hand-rolled equivalents.
+ * ESLint rules that steer code toward this package instead of hand-rolled equivalents.
  *
- * Opt-in, and separate from the base config on purpose: a project that does not depend on
- * `@radoslavirha/utils` would only get noise, since every suggestion names a method it
- * cannot import.
+ * They ship here rather than from `@radoslavirha/config-eslint` because every message names
+ * a method of this package: a rule and the method it recommends are released together, so a
+ * project can never be advised to call something its installed version does not have.
+ *
+ * Opt-in: a project that does not depend on `@radoslavirha/utils` would only get noise.
  *
  * ```js
  * import { defineConfig } from 'eslint/config';
  * import Config from '@radoslavirha/config-eslint';
- * import ToolkitReuse from '@radoslavirha/config-eslint/toolkit';
+ * import PreferUtils from '@radoslavirha/utils/eslint';
  *
- * export default defineConfig(...Config, ...ToolkitReuse);
+ * export default defineConfig(...Config, ...PreferUtils);
  * ```
  *
  * Everything is `warn`: these are suggestions about reuse, not correctness, and a raw check
- * is occasionally the clearer choice. Do not enable this inside `@radoslavirha/utils` itself,
- * which implements the primitives being recommended.
+ * is occasionally the clearer choice. Do not enable it inside this package, which implements
+ * the primitives being recommended.
+ *
+ * Exported as a plain flat-config array, so importing it costs no eslint dependency.
  */
 const reuseSuggestion = (selector, message) => ({ selector, message });
 
 const COMPARISON = '/^(===|!==)$/';
 
-export default defineConfig({
+export default [{
     files: ['**/*.js', '**/*.ts'],
     // Assertions are excluded on purpose: `expect(Array.isArray(x)).toBe(true)` is checking a
     // raw fact about a value, and routing it through a toolkit guard would partly test the
@@ -91,4 +93,4 @@ export default defineConfig({
             }
         ]
     }
-});
+}];

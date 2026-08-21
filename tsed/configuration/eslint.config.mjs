@@ -1,5 +1,5 @@
 import { defineConfig } from 'eslint/config';
 import Config from '@radoslavirha/config-eslint';
-import ToolkitReuse from '@radoslavirha/config-eslint/toolkit';
+import PreferUtils from '@radoslavirha/utils/eslint';
 
-export default defineConfig(...Config, ...ToolkitReuse);
+export default defineConfig(...Config, ...PreferUtils);

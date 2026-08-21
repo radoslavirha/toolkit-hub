@@ -159,3 +159,17 @@ any of them by hand, the package already has it:
 
 Also do not add `lodash` to a package for functionality listed above - `@radoslavirha/utils`
 already wraps it, and the wrapper carries the type predicates.
+
+## Let the linter find these for you
+
+This package ships the rules as an opt-in flat config, so the guards above are enforced
+rather than remembered:
+
+```ts ignore
+import PreferUtils from '@radoslavirha/utils/eslint';
+
+export default defineConfig(...Config, ...PreferUtils);
+```
+
+Everything warns rather than errors, spec files are excluded, and `x == null` is left alone.
+Enable it in any package that depends on `@radoslavirha/utils`.

@@ -413,6 +413,40 @@ signatures, read the type declarations — they cannot go stale.
 
 ---
 
+## ESLint rules
+
+This package ships an opt-in flat config that flags hand-rolled equivalents of its own API:
+
+```js
+import { defineConfig } from 'eslint/config';
+import Config from '@radoslavirha/config-eslint';
+import PreferUtils from '@radoslavirha/utils/eslint';
+
+export default defineConfig(...Config, ...PreferUtils);
+```
+
+| Flagged | Suggested |
+|---|---|
+| `x === null` / `x !== null` | `CommonUtils.isNull` / `notNull` |
+| `x === undefined` / `x !== undefined` | `CommonUtils.isUndefined` / `notUndefined` (or `isNil` / `notNil`) |
+| `typeof x === 'string'` | `StringUtils.isString` |
+| `typeof x === 'boolean'` | `BooleanUtils.isBoolean` |
+| `typeof x === 'number'` | `NumberUtils.isNumber` / `isFiniteNumber` |
+| `typeof x === 'function'` | `CommonUtils.isFunction` |
+| `x instanceof Date` | `ObjectUtils.isDate` |
+| `Array.isArray(x)` | `ArrayUtils.isArray` / `toArray` |
+| `JSON.parse(JSON.stringify(x))` | `ObjectUtils.cloneDeep` |
+| importing `lodash` / `lodash-es` / `@types/lodash` | this package / `@radoslavirha/types` |
+
+All rules are `warn`. `x == null` is deliberately not flagged — loose equality covers null and
+undefined at once and is a deliberate choice. Spec files are excluded: an assertion like
+`expect(Array.isArray(x)).toBe(true)` is checking a raw fact, and routing it through a guard
+would partly test this package instead.
+
+The rules live here rather than in `@radoslavirha/config-eslint` so that a rule and the method
+it recommends are always released together. Do not enable them in a project that does not
+depend on this package.
+
 ## See Also
 
 For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS.md)

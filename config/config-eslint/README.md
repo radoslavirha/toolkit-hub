@@ -302,36 +302,16 @@ For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS
 - [@radoslavirha/config-typescript](../config-typescript/) - TypeScript compiler configuration
 - [@radoslavirha/config-vitest](../config-vitest/) - Test runner configuration
 
-## Toolkit reuse rules (opt-in)
+## Reuse rules live with the code they describe
 
-A second, optional config flags code that hand-rolls what `@radoslavirha/utils` already
-provides:
+Rules that steer toward `@radoslavirha/utils` ship from that package as
+`@radoslavirha/utils/eslint`, not from here — every message names one of its methods, so the
+rule and the method it recommends are released together:
 
 ```js
 import { defineConfig } from 'eslint/config';
 import Config from '@radoslavirha/config-eslint';
-import ToolkitReuse from '@radoslavirha/config-eslint/toolkit';
+import PreferUtils from '@radoslavirha/utils/eslint';
 
-export default defineConfig(...Config, ...ToolkitReuse);
+export default defineConfig(...Config, ...PreferUtils);
 ```
-
-| Flagged | Suggested |
-|---|---|
-| `x === null` / `x !== null` | `CommonUtils.isNull` / `notNull` |
-| `x === undefined` / `x !== undefined` | `CommonUtils.isUndefined` / `notUndefined` (or `isNil` / `notNil`) |
-| `typeof x === 'string'` | `StringUtils.isString` |
-| `typeof x === 'boolean'` | `BooleanUtils.isBoolean` |
-| `typeof x === 'number'` | `NumberUtils.isNumber` / `isFiniteNumber` |
-| `typeof x === 'function'` | `CommonUtils.isFunction` |
-| `x instanceof Date` | `ObjectUtils.isDate` |
-| `Array.isArray(x)` | `ArrayUtils.isArray` / `ArrayUtils.toArray` |
-| `JSON.parse(JSON.stringify(x))` | `ObjectUtils.cloneDeep` |
-| importing `lodash` / `lodash-es` / `@types/lodash` | `@radoslavirha/utils` / `@radoslavirha/types` |
-
-Everything is `warn`, not `error`: these are reuse suggestions, and a raw check is sometimes
-the clearer choice. `x == null` is deliberately not flagged — it means something different.
-
-**Do not enable it where the toolkit is not a dependency.** Every message names a method the
-project must be able to import. In this repo that rules out `@radoslavirha/utils` itself,
-which implements the primitives, and `@radoslavirha/redaction`, which deliberately depends on
-nothing but `fast-redact` and `zod`.
