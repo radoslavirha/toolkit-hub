@@ -1,5 +1,11 @@
 # @radoslavirha/config-eslint
 
+## 0.4.6
+
+### Patch Changes
+
+- [#169](https://github.com/radoslavirha/toolkit-hub/pull/169) [`d7027b5`](https://github.com/radoslavirha/toolkit-hub/commit/d7027b5faf5a442d2d805428b75861d138ce6679) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Document that the toolkit reuse rules ship from `@radoslavirha/utils/eslint` rather than from this package, so a rule and the method it recommends are always released together.
+
 ## 0.4.5
 
 ### Patch Changes
