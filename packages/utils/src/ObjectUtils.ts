@@ -101,6 +101,23 @@ export class ObjectUtils {
     }
 
     /**
+     * Checks if a value is a `Date` instance. Acts as a type guard.
+     *
+     * Prefer this over `value instanceof Date`, which returns false for a Date created in
+     * another realm — a different iframe, worker or vm context.
+     * @template T A generic value type.
+     * @param value The value to check.
+     * @returns `true` if the value is a Date, otherwise `false`.
+     * @example
+     * ObjectUtils.isDate(new Date());            // true
+     * ObjectUtils.isDate('2026-01-01');          // false (a string, not a Date)
+     * ObjectUtils.isDate(Date.now());            // false (a number)
+     */
+    public static isDate<T>(value: T): value is Extract<T, Date> {
+        return _.isDate(value);
+    }
+
+    /**
      * Creates a deep clone of an object, recursively copying all nested properties.
      * The cloned object is completely independent from the original.
      * @template T The type of the object to clone, must be an object.

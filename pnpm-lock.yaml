@@ -232,6 +232,9 @@ importers:
 
   packages/logger:
     dependencies:
+      '@radoslavirha/utils':
+        specifier: workspace:*
+        version: link:../utils
       winston:
         specifier: 'catalog:'
         version: 3.19.0
@@ -275,6 +278,9 @@ importers:
 
   packages/redaction:
     dependencies:
+      '@radoslavirha/utils':
+        specifier: workspace:*
+        version: link:../utils
       fast-redact:
         specifier: 'catalog:'
         version: 3.5.0

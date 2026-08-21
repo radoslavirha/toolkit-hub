@@ -30,3 +30,16 @@ package's own config hides the problem from everywhere else that shares the conf
 
 If a rule is wrong for the whole toolkit, change it in this package and release it — that is
 the point of sharing the config.
+
+## Reuse rules are not here
+
+The rules that flag hand-rolled `=== null`, `typeof` tests, `Array.isArray` and
+`JSON.parse(JSON.stringify(...))` ship from `@radoslavirha/utils/eslint`, because every
+message names a method of that package — keeping them together means a project can never be
+advised to call something its installed version does not have.
+
+```ts ignore
+export default defineConfig(...Config, ...PreferUtils);
+```
+
+Enable it in any package that depends on `utils`. See the `using-utils` skill.

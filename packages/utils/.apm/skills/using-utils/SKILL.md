@@ -26,6 +26,10 @@ is available.
 | `x == null` / `x != null` | `CommonUtils.isNil(x)` / `CommonUtils.notNil(x)` | `Extract<T, null \| undefined>` / `NonNullable<T>` |
 | `typeof x === 'string'` | `StringUtils.isString(x)` | `Extract<T, string>` |
 | `typeof x === 'boolean'` | `BooleanUtils.isBoolean(x)` | `Extract<T, boolean>` |
+| `typeof x === 'number'` | `NumberUtils.isNumber(x)` — or `isFiniteNumber` to exclude `NaN`/`Infinity` | `Extract<T, number>` |
+| `typeof x === 'function'` | `CommonUtils.isFunction(x)` | a callable |
+| `x instanceof Date` | `ObjectUtils.isDate(x)` | `Extract<T, Date>` |
+| `typeof x === 'string' && x.trim()` | `StringUtils.isNotEmpty(x)` | `Extract<T, string>` |
 | `Array.isArray(x)` | `ArrayUtils.isArray(x)` | `T & unknown[]` |
 | `typeof x === 'object' && x !== null` | `ObjectUtils.isObject(x)` / `ObjectUtils.isPlainObject(x)` | `Extract<T, object>` / `Extract<T, Record<string, unknown>>` |
 | `JSON.parse(JSON.stringify(x))` | `ObjectUtils.cloneDeep(x)` | — |
@@ -44,6 +48,9 @@ function handle(token: string | null | undefined): string {
     return StringUtils.isString(token) ? token.trim() : 'anonymous';
 }
 ```
+
+`NumberUtils.isNumber` follows `typeof` semantics, so `NaN` passes — it really is a number by
+type. Use `isFiniteNumber` whenever the value has to survive arithmetic.
 
 `CommonUtils.isEmpty(value)` is separate from the nil guards — it is lodash `isEmpty`
 semantics (empty string, empty array, empty object, and also `null`/`undefined`), so it
@@ -145,8 +152,24 @@ any of them by hand, the package already has it:
 | `(value / maxValue) * 100` or its inverse | `NumberUtils.getPercentFromValue` / `getValueFromPercent` |
 | `Array.isArray(x) ? x : [x]`, with null handling | `ArrayUtils.toArray` |
 | `value ?? fallback` where `value` is a possibly-null string or number from config | `DefaultsUtil.string` / `DefaultsUtil.number` |
+| `typeof x === 'number' && !Number.isNaN(x)` | `NumberUtils.isFiniteNumber` |
+| `x instanceof Date` across realms (iframe, worker, vm) | `ObjectUtils.isDate` |
 | A null check wrapped around a mapper call | `MappingUtils.mapOptional*` |
 | `if (x === null) return null;` before mapping an array | `MappingUtils.mapOptionalArray` |
 
 Also do not add `lodash` to a package for functionality listed above - `@radoslavirha/utils`
 already wraps it, and the wrapper carries the type predicates.
+
+## Let the linter find these for you
+
+This package ships the rules as an opt-in flat config, so the guards above are enforced
+rather than remembered:
+
+```ts ignore
+import PreferUtils from '@radoslavirha/utils/eslint';
+
+export default defineConfig(...Config, ...PreferUtils);
+```
+
+Everything warns rather than errors, spec files are excluded, and `x == null` is left alone.
+Enable it in any package that depends on `@radoslavirha/utils`.

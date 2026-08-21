@@ -12,6 +12,10 @@
         "url": "https://github.com:radoslavirha/toolkit-hub.git"
     },
     "type": "module",
+    "exports": {
+        ".": "./src/index.mjs",
+        "./toolkit": "./src/toolkit.mjs"
+    },
     "main": "src/index.mjs",
     "files": [
         "src",

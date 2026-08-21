@@ -301,3 +301,17 @@ For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS
 
 - [@radoslavirha/config-typescript](../config-typescript/) - TypeScript compiler configuration
 - [@radoslavirha/config-vitest](../config-vitest/) - Test runner configuration
+
+## Reuse rules live with the code they describe
+
+Rules that steer toward `@radoslavirha/utils` ship from that package as
+`@radoslavirha/utils/eslint`, not from here — every message names one of its methods, so the
+rule and the method it recommends are released together:
+
+```js
+import { defineConfig } from 'eslint/config';
+import Config from '@radoslavirha/config-eslint';
+import PreferUtils from '@radoslavirha/utils/eslint';
+
+export default defineConfig(...Config, ...PreferUtils);
+```

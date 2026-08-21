@@ -12,20 +12,24 @@
     },
     "type": "module",
     "exports": {
-        "import": {
-            "types": "./dist/esm/index.d.mts",
-            "import": "./dist/esm/index.mjs"
+        ".": {
+            "import": {
+                "types": "./dist/esm/index.d.mts",
+                "import": "./dist/esm/index.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/index.d.cts",
+                "require": "./dist/cjs/index.cjs"
+            }
         },
-        "require": {
-            "types": "./dist/cjs/index.d.cts",
-            "require": "./dist/cjs/index.cjs"
-        }
+        "./eslint": "./eslint.mjs"
     },
     "main": "./dist/cjs/index.cjs",
     "module": "./dist/esm/index.mjs",
     "types": "./dist/esm/index.d.mts",
     "files": [
         "dist",
+        "eslint.mjs",
         "package.json",
         "README.md"
     ],

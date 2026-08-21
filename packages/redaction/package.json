@@ -42,6 +42,7 @@
         "test:watch": "vitest"
     },
     "dependencies": {
+        "@radoslavirha/utils": "workspace:*",
         "fast-redact": "catalog:",
         "zod": "catalog:"
     },

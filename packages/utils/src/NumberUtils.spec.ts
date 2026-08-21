@@ -229,4 +229,46 @@ describe('NumberUtils', () => {
             expect(result).toBe(42);
         });
     });
+
+    describe('isNumber', () => {
+        it('returns true for an integer', () => {
+            expect(NumberUtils.isNumber(42)).toBe(true);
+        });
+
+        it('returns true for a float', () => {
+            expect(NumberUtils.isNumber(3.14)).toBe(true);
+        });
+
+        it('returns true for NaN, which is a number by type', () => {
+            expect(NumberUtils.isNumber(NaN)).toBe(true);
+        });
+
+        it('returns false for a numeric string', () => {
+            expect(NumberUtils.isNumber('42')).toBe(false);
+        });
+
+        it('returns false for null and undefined', () => {
+            expect(NumberUtils.isNumber(null)).toBe(false);
+            expect(NumberUtils.isNumber(undefined)).toBe(false);
+        });
+    });
+
+    describe('isFiniteNumber', () => {
+        it('returns true for a finite number', () => {
+            expect(NumberUtils.isFiniteNumber(42)).toBe(true);
+        });
+
+        it('returns false for NaN', () => {
+            expect(NumberUtils.isFiniteNumber(NaN)).toBe(false);
+        });
+
+        it('returns false for Infinity and -Infinity', () => {
+            expect(NumberUtils.isFiniteNumber(Infinity)).toBe(false);
+            expect(NumberUtils.isFiniteNumber(-Infinity)).toBe(false);
+        });
+
+        it('returns false for a numeric string', () => {
+            expect(NumberUtils.isFiniteNumber('42')).toBe(false);
+        });
+    });
 });

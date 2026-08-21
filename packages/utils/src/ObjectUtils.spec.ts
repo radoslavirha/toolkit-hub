@@ -399,4 +399,22 @@ describe('ObjectUtils', () => {
             }
         });
     });
+
+    describe('isDate', () => {
+        it('returns true for a Date instance', () => {
+            expect(ObjectUtils.isDate(new Date())).toBe(true);
+        });
+
+        it('returns true for an invalid Date, which is still a Date', () => {
+            expect(ObjectUtils.isDate(new Date('nope'))).toBe(true);
+        });
+
+        it('returns false for a date string', () => {
+            expect(ObjectUtils.isDate('2026-01-01')).toBe(false);
+        });
+
+        it('returns false for a timestamp number', () => {
+            expect(ObjectUtils.isDate(Date.now())).toBe(false);
+        });
+    });
 });

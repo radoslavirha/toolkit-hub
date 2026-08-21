@@ -7,6 +7,7 @@ import { MongoUpdate } from '../types/MongoUpdate.js';
 import { MongoDeleteResult } from '../types/MongoDeleteResult.js';
 import { MongoUpdateResult } from '../types/MongoUpdateResult.js';
 import { TestModelMongo } from './TestMongoModel.js';
+import { CommonUtils } from '@radoslavirha/utils';
 
 @Injectable()
 export class TestMongoRepository extends MongoRepository<TestModelMongo> {
@@ -39,7 +40,7 @@ export class TestMongoRepository extends MongoRepository<TestModelMongo> {
 
     async exists(filter: MongoFilter<TestModelMongo>): Promise<boolean> {
         const result = await this.model.exists(filter);
-        return result !== null;
+        return CommonUtils.notNull(result);
     }
 
     async create(data: MongoCreate<TestModelMongo>): Promise<TestModelMongo> {
