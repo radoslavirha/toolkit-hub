@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "weekly"
 
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "daily"
+# npm is handled by Renovate (renovate.json), not Dependabot. Dependabot only
+# ever opened manifest-level PRs, and every alert this repo accumulates lives in
+# pnpm-lock.yaml as a transitive dependency it cannot reach. Running both on npm
+# would duplicate PRs.
