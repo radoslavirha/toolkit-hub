@@ -1,0 +1,54 @@
+name: Renovate
+
+on:
+  schedule:
+    # Well before the working day, so a lock file PR is waiting rather than landing mid-review.
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: Renovate log level
+        required: false
+        default: info
+        type: choice
+        options:
+          - info
+          - debug
+
+jobs:
+  renovate:
+    name: Renovate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      # RENOVATE_TOKEN has to be a PAT, never GITHUB_TOKEN: pull requests opened
+      # with GITHUB_TOKEN do not trigger workflow runs, so Test and Lint & Build
+      # would never run on a Renovate branch — and a lock file refresh here can
+      # carry framework majors, so it must be verified before anyone merges it.
+      - name: Require a Renovate PAT
+        env:
+          RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
+        run: |
+          if [ -z "$RENOVATE_TOKEN" ]; then
+            echo "::error::secrets.RENOVATE_TOKEN is not set. It must be a PAT with 'repo' scope."
+            exit 1
+          fi
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v46.2.2
+        with:
+          token: ${{ secrets.RENOVATE_TOKEN }}
+        env:
+          RENOVATE_PLATFORM: github
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          # renovate.json is committed, so there is nothing to onboard and a
+          # missing config should fail the run rather than silently do nothing.
+          RENOVATE_ONBOARDING: 'false'
+          RENOVATE_REQUIRE_CONFIG: required
+          # No RENOVATE_HOST_RULES here, unlike iot-miniservers: every
+          # @radoslavirha/* dependency in this repo is a workspace:* link and no
+          # catalog entry resolves from GitHub Packages, so npmjs.org covers it.
+          GITHUB_COM_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
+          LOG_LEVEL: ${{ inputs.logLevel || 'info' }}
