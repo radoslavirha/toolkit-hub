@@ -15,7 +15,7 @@ export default defineConfig([cjsConfig, esmConfig]);
 ```
 
 Both configs already set: entry `src/index.ts`, `dts: true`, `clean: true`, the package's own
-`tsconfig.json`, and `skipNodeModulesBundle` so dependencies are not inlined. `esmConfig`
+`tsconfig.json`, and `deps.neverBundle` so dependencies are not inlined. `esmConfig`
 outputs to `dist/esm`, `cjsConfig` to `dist/cjs` — matching the `exports` map in
 `package.json`.
 

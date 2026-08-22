@@ -7,7 +7,7 @@ const commonConfig: UserConfig = {
     clean: true,
     tsconfig: './tsconfig.json',
     deps: {
-        skipNodeModulesBundle: true
+        neverBundle: true
     }
 };
 
