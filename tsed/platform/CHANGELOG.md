@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-platform
 
+## 5.0.1
+
+### Patch Changes
+
+- [#178](https://github.com/radoslavirha/toolkit-hub/pull/178) [`9be3b74`](https://github.com/radoslavirha/toolkit-hub/commit/9be3b74e90b7124a0812e0191b0b0f084dbbe6cc) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Move the Ts.ED catalog to 8.38.2 and stop routing `Platform.bootstrap` through `PlatformExpress.bootstrap(settings)`.
+  
+  Ts.ED 8.38.2 funnels both `bootstrap()` overloads through `PlatformBuilder.options()`, which tells a root module from a settings object with `isClass()`. That helper returns `true` for plain objects — it only rejects `Object` itself — so a settings-only call is read as a root module and every key, `rootModule` included, is discarded. `Platform.bootstrap` now builds the `PlatformBuilder` directly, which is what the adapter did up to 8.38.0.
+- Updated dependencies [[`9be3b74`](https://github.com/radoslavirha/toolkit-hub/commit/9be3b74e90b7124a0812e0191b0b0f084dbbe6cc)]:
+  - @radoslavirha/tsed-configuration@0.8.5
+  - @radoslavirha/tsed-logger@0.6.4
+  - @radoslavirha/utils@0.9.0
+
 ## 5.0.0
 
 ### Major Changes
