@@ -8,6 +8,7 @@ allowBuilds:
   '@swc/core': true
   cpu-features: false
   esbuild: true
+  protobufjs: false
   ssh2: false
 
 catalog:
@@ -17,7 +18,7 @@ catalog:
   '@types/node': 26.2.0
   '@types/supertest': 7.2.1
   '@vitest/coverage-v8': 4.1.11
-  eslint: 10.8.1
+  eslint: 10.9.0
   fast-redact: 3.5.0
   mongoose: 9.9.3
   supertest: 7.2.2
@@ -41,21 +42,21 @@ catalogs:
     cors: 2.8.6
     method-override: 3.0.0
   tsed:
-    '@tsed/ajv': 8.38.0
-    '@tsed/core': 8.38.0
-    '@tsed/di': 8.38.0
-    '@tsed/json-mapper': 8.38.0
+    '@tsed/ajv': 8.38.2
+    '@tsed/core': 8.38.2
+    '@tsed/di': 8.38.2
+    '@tsed/json-mapper': 8.38.2
     '@tsed/logger': 8.0.5
-    '@tsed/mongoose': 8.38.0
-    '@tsed/openspec': 8.38.0
-    '@tsed/platform-express': 8.38.0
-    '@tsed/platform-http': 8.38.0
-    '@tsed/platform-log-request': 8.38.0
-    '@tsed/platform-params': 8.38.0
-    '@tsed/platform-views': 8.38.0
-    '@tsed/schema': 8.38.0
-    '@tsed/swagger': 8.38.0
-    '@tsed/testcontainers-mongo': 8.38.0
+    '@tsed/mongoose': 8.38.2
+    '@tsed/openspec': 8.38.2
+    '@tsed/platform-express': 8.38.2
+    '@tsed/platform-http': 8.38.2
+    '@tsed/platform-log-request': 8.38.2
+    '@tsed/platform-params': 8.38.2
+    '@tsed/platform-views': 8.38.2
+    '@tsed/schema': 8.38.2
+    '@tsed/swagger': 8.38.2
+    '@tsed/testcontainers-mongo': 8.38.2
     ajv: 8.20.0
 
 minimumReleaseAgeExclude:
