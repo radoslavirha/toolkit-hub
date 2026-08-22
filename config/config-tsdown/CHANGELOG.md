@@ -1,5 +1,19 @@
 # @radoslavirha/config-tsdown
 
+## 0.2.3
+
+### Patch Changes
+
+- [#174](https://github.com/radoslavirha/toolkit-hub/pull/174) [`d465b75`](https://github.com/radoslavirha/toolkit-hub/commit/d465b752c2f66083a515ff6334b37e7963b70449) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Replace the deprecated `deps.skipNodeModulesBundle` with `deps.neverBundle: true`
+  
+  Both `cjsConfig` and `esmConfig` set the option, so every consumer printed the deprecation warning twice per package build:
+  
+  ```
+  WARN `deps.skipNodeModulesBundle` is deprecated. Use `deps.neverBundle: true` instead.
+  ```
+  
+  Behaviour is unchanged — `neverBundle: true` externalizes all dependencies, which is what the old option did. `neverBundle: true` requires tsdown `>= 0.22.13`; the catalog pins `0.22.14`.
+
 ## 0.2.2
 
 ### Patch Changes
