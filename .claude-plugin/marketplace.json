@@ -26,7 +26,7 @@
     {
       "name": "config-tsdown",
       "description": "Agent guidance for @radoslavirha/config-tsdown - dual ESM/CJS builds",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "source": "./config/config-tsdown"
     },
     {
