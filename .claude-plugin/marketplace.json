@@ -26,7 +26,7 @@
     {
       "name": "config-tsdown",
       "description": "Agent guidance for @radoslavirha/config-tsdown - dual ESM/CJS builds",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "source": "./config/config-tsdown"
     },
     {
@@ -56,13 +56,13 @@
     {
       "name": "tsed-logger",
       "description": "Agent guidance for @radoslavirha/tsed-logger - DI logger and scopes",
-      "version": "0.6.3",
+      "version": "0.6.4",
       "source": "./tsed/logger"
     },
     {
       "name": "tsed-swagger",
       "description": "Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI",
-      "version": "9.1.4",
+      "version": "9.1.5",
       "source": "./tsed/swagger"
     },
     {
@@ -74,25 +74,25 @@
     {
       "name": "tsed-common",
       "description": "Agent guidance for @radoslavirha/tsed-common - models, serialization, validation",
-      "version": "0.5.7",
+      "version": "0.5.8",
       "source": "./tsed/common"
     },
     {
       "name": "tsed-configuration",
       "description": "Agent guidance for @radoslavirha/tsed-configuration - schema-validated config",
-      "version": "0.8.4",
+      "version": "0.8.5",
       "source": "./tsed/configuration"
     },
     {
       "name": "tsed-platform",
       "description": "Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers",
-      "version": "5.0.0",
+      "version": "5.0.1",
       "source": "./tsed/platform"
     },
     {
       "name": "tsed-mongoose",
       "description": "Agent guidance for @radoslavirha/tsed-mongoose - mapper and repository pattern",
-      "version": "5.0.7",
+      "version": "5.0.8",
       "source": "./tsed/mongoose"
     },
     {
