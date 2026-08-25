@@ -1,5 +1,5 @@
 lockfile_version: '1'
-generated_at: '2026-08-20T19:15:27.756329+00:00'
+generated_at: '2026-08-25T18:36:53.518240+00:00'
 apm_version: 0.28.0
 dependencies: []
 deployments:
@@ -183,28 +183,6 @@ deployments:
   - .
   active_owner: .
   content_hash: sha256:2e521045f3eb685d3acff573284401920e15256174c365515c3997753f6aa3d8
-- kind: uri
-  target: mcp
-  value: context7
-  runtime: vscode
-  scope: project
-  owners:
-  - .
-  active_owner: .
-  content_hash: null
-mcp_servers:
-- context7
-mcp_configs:
-  context7:
-    name: context7
-    transport: http
-    registry: false
-    headers:
-      CONTEXT7_API_KEY: ${input:context7_api_key}
-    url: https://mcp.context7.com/mcp
-mcp_target_servers:
-  vscode:
-  - context7
 local_deployed_files:
 - .agents/skills/agents-md
 - .agents/skills/agents-md/SKILL.md
