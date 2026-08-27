@@ -7,6 +7,7 @@ reports
 .vscode
 .mcp.json
 .github/plugin
+.github/hooks
 build
 .claude-plugin/plugin.json
 
