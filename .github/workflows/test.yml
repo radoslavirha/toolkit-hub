@@ -59,6 +59,11 @@ jobs:
         with:
           setup-only: true
           apm-version: '0.28.0'
+      # apm.lock.yaml records files that land in gitignored dirs (.agents/,
+      # .claude/, apm_modules/), so a clean checkout has to restore them before
+      # anything can pack.
+      - name: Install APM dependencies
+        run: apm install
       # Each package's apm.yml version must equal its package.json version.
       - name: Check APM versions
         run: pnpm check:apm-versions

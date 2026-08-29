@@ -37,6 +37,10 @@ jobs:
         with:
           setup-only: true
           apm-version: '0.28.0'
+      # `pnpm run version` runs `apm pack`, which needs the dependency files
+      # restored into the gitignored .agents/ and .claude/ dirs.
+      - name: Install APM dependencies
+        run: apm install
       - name: Create Release Pull Request and Publish to GitHub Packages
         id: changesets
         uses: changesets/action@v2
