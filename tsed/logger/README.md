@@ -237,10 +237,26 @@ Kubernetes probe endpoints (`/health`, `/healthz`) are excluded **by default**. 
 emitter — `@radoslavirha/tsed-configuration`'s `getServerDefaultConfig()` silences it via
 `logger.ignoreUrlPatterns` for the same paths.
 
-    `redactPaths` selectors are path-based per source:
-    - `authorization` redacts only root-level `authorization` for that source.
-    - `user.password` redacts an exact nested path.
-    - `items.*.token` redacts wildcard path matches.
+`redactPaths` selectors are path-based per source:
+- `authorization` redacts only root-level `authorization` for that source.
+- `user.password` redacts an exact nested path.
+- `items.*.token` redacts wildcard path matches.
+- `["x-api-key"]` — the bracket form is **required** for names containing a hyphen.
+
+### Header redaction is on by default
+
+`requests.headers.redactPaths` defaults to the credential-bearing header names
+(`authorization`, `cookie`, `["set-cookie"]`, `["proxy-authorization"]`, `["x-api-key"]` —
+`SENSITIVE_HEADER_SELECTORS` from `@radoslavirha/redaction`). Headers were previously logged
+verbatim unless a service remembered to configure this, so a rejected
+`Authorization: Bearer …` was written at `error` level on every 401 — and a rejected token is
+often still a live one.
+
+The default applies whenever `redactPaths` is absent, including when the field is partially
+configured (`"headers": { "enabled": true }`). A configured list **replaces** it rather than
+extending it: `"redactPaths": ["x-trace-token"]` redacts that header and nothing else, and
+`"redactPaths": []` restores fully unredacted headers. Nothing is defaulted for `query`,
+`request` or `response` — those field names belong to the application and cannot be guessed.
 
 Set `requests.enabled: false` to disable HTTP request logging entirely.
 
@@ -345,7 +361,7 @@ Parsed output type from `LoggerOptionsSchema` with defaults already applied.
 | `level` | `LogLevel` | `LogLevel.INFO` | Minimum severity to emit |
 | `requests.enabled` | `boolean` | `true` | Enable HTTP request/response logging |
 | `requests.headers.enabled` | `boolean` | `true` | Include raw request headers |
-| `requests.headers.redactPaths` | `string[]` | `[]` | Path selectors for header redaction |
+| `requests.headers.redactPaths` | `string[]` | `['authorization', 'cookie', '["set-cookie"]', '["proxy-authorization"]', '["x-api-key"]']` | Path selectors for header redaction. A configured list **replaces** this default; `[]` logs headers unredacted |
 | `requests.query.enabled` | `boolean` | `true` | Include query-string parameters |
 | `requests.query.redactPaths` | `string[]` | `[]` | Path selectors for query redaction |
 | `requests.request.enabled` | `boolean` | `true` | Include parsed request body |

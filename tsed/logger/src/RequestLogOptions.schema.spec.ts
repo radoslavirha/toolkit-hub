@@ -5,6 +5,20 @@ import { LogLevel } from '@radoslavirha/logger';
 import { LoggerOptionsSchema } from './RequestLogOptions.schema.js';
 import type { LoggerOptions } from './RequestLogOptions.schema.js';
 
+/**
+ * The header selectors this package must redact when a service configures nothing.
+ * Written out literally rather than imported from `@radoslavirha/redaction`: this is the
+ * contract consumers were promised, and a test that compares the constant to itself could
+ * not notice the list being emptied.
+ */
+const DEFAULT_HEADER_SELECTORS = [
+    'authorization',
+    'cookie',
+    '["set-cookie"]',
+    '["proxy-authorization"]',
+    '["x-api-key"]'
+];
+
 describe('LoggerOptionsSchema', () => {
     it('defaults all fields when empty object is parsed', () => {
         const result = LoggerOptionsSchema.parse({});
@@ -13,7 +27,7 @@ describe('LoggerOptionsSchema', () => {
             level: LogLevel.INFO,
             requests: {
                 enabled: true,
-                headers: { enabled: true, redactPaths: [] },
+                headers: { enabled: true, redactPaths: DEFAULT_HEADER_SELECTORS },
                 query: { enabled: true, redactPaths: [] },
                 request: { enabled: true, redactPaths: [] },
                 response: { enabled: true, redactPaths: [] },
@@ -21,6 +35,49 @@ describe('LoggerOptionsSchema', () => {
                 ignorePaths: ['/health', '/healthz']
             }
         });
+    });
+
+    describe('requests.headers.redactPaths defaults', () => {
+        it('redacts the credential-bearing headers when the requests block is omitted entirely', () => {
+            expect(LoggerOptionsSchema.parse({}).requests.headers.redactPaths).toStrictEqual(DEFAULT_HEADER_SELECTORS);
+        });
+
+        it('redacts the credential-bearing headers when requests is given without headers', () => {
+            const result = LoggerOptionsSchema.parse({ requests: { enabled: true } });
+            expect(result.requests.headers.redactPaths).toStrictEqual(DEFAULT_HEADER_SELECTORS);
+        });
+
+        it('redacts the credential-bearing headers when headers is given without redactPaths', () => {
+            const result = LoggerOptionsSchema.parse({ requests: { headers: { enabled: true } } });
+            expect(result.requests.headers.redactPaths).toStrictEqual(DEFAULT_HEADER_SELECTORS);
+        });
+
+        it('replaces the default rather than appending to it when redactPaths is configured', () => {
+            const result = LoggerOptionsSchema.parse({ requests: { headers: { redactPaths: ['x-custom'] } } });
+
+            expect(result.requests.headers.redactPaths).toStrictEqual(['x-custom']);
+            expect(result.requests.headers.redactPaths).not.toContain('authorization');
+        });
+
+        it('honours an explicit empty redactPaths as redact nothing', () => {
+            const result = LoggerOptionsSchema.parse({ requests: { headers: { redactPaths: [] } } });
+            expect(result.requests.headers.redactPaths).toStrictEqual([]);
+        });
+
+        it('does not share the default array between parses', () => {
+            LoggerOptionsSchema.parse({}).requests.headers.redactPaths.push('mutated');
+            expect(LoggerOptionsSchema.parse({}).requests.headers.redactPaths).toStrictEqual(DEFAULT_HEADER_SELECTORS);
+        });
+
+        it.each(['query', 'request', 'response'] as const)(
+            'leaves requests.%s.redactPaths empty — those field names are application-specific',
+            (source) => {
+                expect(LoggerOptionsSchema.parse({}).requests[source].redactPaths).toStrictEqual([]);
+                expect(LoggerOptionsSchema.parse({ requests: { [source]: { enabled: true } } })[
+                    'requests'
+                ][source].redactPaths).toStrictEqual([]);
+            }
+        );
     });
 
     it('defaults requests.ignorePaths to the Kubernetes probe paths', () => {

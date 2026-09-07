@@ -52,3 +52,10 @@ receives becomes order-dependent.
 
 The logger is a transport. It does not redact. Anything carrying payloads, headers or query
 strings must pass through a `RedactionProfile` from `@radoslavirha/redaction` first.
+
+Inbound request logging is the exception, because this package owns it: `requests.headers`
+redacts `authorization`, `cookie`, `set-cookie`, `proxy-authorization` and `x-api-key` with no
+configuration. Setting `requests.headers.redactPaths` **replaces** that list rather than adding
+to it — so a service that only wants one extra header redacted must repeat the defaults, and
+`redactPaths: []` opts out of header redaction entirely. Bodies and query strings are still
+defaulted to nothing: name their sensitive fields yourself.
