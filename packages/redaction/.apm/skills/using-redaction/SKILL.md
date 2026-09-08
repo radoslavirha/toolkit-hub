@@ -50,3 +50,18 @@ If a payload reaches the logger unredacted, it is in the log. The order is alway
 of field names so a service's configuration file is checked at startup rather than failing
 when the first secret leaks. `redactPaths` uses the selector syntax documented in the package
 README — read it before inventing a path expression.
+
+Give every field that can hold a credential a **default** selector list, so forgetting to
+configure it is safe rather than silent. For HTTP headers the list already exists:
+
+```ts
+import { SENSITIVE_HEADER_SELECTORS, createRedactionSchema } from '@radoslavirha/redaction';
+
+const Schema = createRedactionSchema({
+    headers: [...SENSITIVE_HEADER_SELECTORS],
+    request: []
+});
+```
+
+A configured list **replaces** the default rather than extending it, and an explicit `[]`
+means "redact nothing for this field" — so a caller can always opt out, deliberately.

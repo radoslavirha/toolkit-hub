@@ -48,6 +48,7 @@ reuse it for the lifetime of the process.
 | `RedactionUtils.REDACTED_VALUE` | The censor string (`***`). |
 | `RedactionFieldOptionsSchema` | Zod `{ enabled, redactPaths }` — the shared config vocabulary. |
 | `createRedactionSchema(fields)` | Build a Zod schema for a fixed field set with per-field default selectors. |
+| `SENSITIVE_HEADER_SELECTORS` | The credential-bearing HTTP header selectors, ready to use as a default. |
 
 ### `RedactionProfile`
 
@@ -77,11 +78,11 @@ and to `[[ UNSERIALIZABLE ]]` on circular references.
 ## Configuration
 
 ```typescript
-import { createRedactionSchema } from '@radoslavirha/redaction';
+import { SENSITIVE_HEADER_SELECTORS, createRedactionSchema } from '@radoslavirha/redaction';
 
 // per-field default selectors; callers may override or disable any field
 export const HttpRedactionSchema = createRedactionSchema({
-  headers: ['authorization', '["set-cookie"]'],
+  headers: [...SENSITIVE_HEADER_SELECTORS],
   query: [],
   request: [],
   response: []
@@ -89,6 +90,22 @@ export const HttpRedactionSchema = createRedactionSchema({
 ```
 
 Parsed output feeds straight into `new RedactionProfile(...)`.
+
+A configured `redactPaths` **replaces** the field's default — it is never appended to it, so a
+caller gets exactly the list it wrote, and an explicit `[]` means "redact nothing here". The
+default survives a partially configured field too: `headers: { enabled: true }` keeps the
+default selectors rather than falling back to an empty list.
+
+### `SENSITIVE_HEADER_SELECTORS`
+
+```typescript
+['authorization', 'cookie', '["set-cookie"]', '["proxy-authorization"]', '["x-api-key"]']
+```
+
+Header names are the one category of sensitive field knowable in advance — HTTP fixes them,
+the application does not. Body and query field names are application-specific, so this package
+never guesses at those. Vendor headers that would rarely match are deliberately left out: a
+selector that never fires makes the list look more complete than it is.
 
 ## Notes
 

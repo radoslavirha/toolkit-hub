@@ -1,31 +1,54 @@
 import { z } from 'zod';
 
 import { LogLevel } from '@radoslavirha/logger';
-import { RedactionFieldOptionsSchema } from '@radoslavirha/redaction';
+import { SENSITIVE_HEADER_SELECTORS, createRedactionSchema } from '@radoslavirha/redaction';
+import type { RedactionFieldOptions } from '@radoslavirha/redaction';
 
 /**
- * Per-source redaction options. Re-exported from `@radoslavirha/redaction` so
- * inbound request logging shares one configuration vocabulary with every other
- * package that redacts (outbound HTTP, storage, messaging).
+ * Per-source schemas with their default selectors.
+ *
+ * Only `headers` gets a non-empty default. Header names that carry credentials are
+ * fixed by HTTP, so they are knowable here; the sensitive names inside a query string,
+ * a request body or a response body are chosen by the application and cannot be guessed
+ * — defaulting them would either miss the real field or censor an innocent one.
+ *
+ * Headers were previously logged verbatim unless a service remembered to configure
+ * `redactPaths`, which meant a rejected `Authorization: Bearer …` was written to the log
+ * at `error` level on every 401 — and a rejected token is often still a live one. The
+ * default closes that without any configuration; a service that wants raw headers back
+ * sets `requests.headers.redactPaths: []`.
  */
-const RequestFieldOptionsSchema = RedactionFieldOptionsSchema;
+const RequestFieldSchemas = createRedactionSchema({
+    headers: [...SENSITIVE_HEADER_SELECTORS],
+    query: [],
+    request: [],
+    response: []
+}).shape;
 
-const RequestFieldOptionsDefaultSchema = RequestFieldOptionsSchema.default(() => ({
-    enabled: true,
-    redactPaths: []
-}));
-
+/**
+ * HTTP request/response logging options.
+ *
+ * Defaulted with `prefault({})`, not `default(...)`: Zod 4's `.default()` short-circuits and
+ * returns the literal it was handed without parsing it, so a hand-written default object
+ * would have to restate every nested default and would drift from them silently — which is
+ * how an omitted `requests` block used to end up with `headers.redactPaths: []`.
+ * `prefault({})` runs an empty object through this schema instead, leaving the field
+ * declarations below as the single source of truth.
+ */
 const LoggerRequestOptionsSchema = z.object({
     /** Enable or disable HTTP request/response logging entirely. Default: `true`. */
     enabled: z.boolean().default(true),
-    /** Include raw request headers in the log entry. Default: `true`. */
-    headers: RequestFieldOptionsDefaultSchema,
+    /**
+     * Include raw request headers in the log entry. Default: `true`, with
+     * {@link SENSITIVE_HEADER_SELECTORS} redacted unless `redactPaths` is configured.
+     */
+    headers: RequestFieldSchemas.headers,
     /** Include query-string parameters in the log entry. Default: `true`. */
-    query: RequestFieldOptionsDefaultSchema,
+    query: RequestFieldSchemas.query,
     /** Include the parsed request payload in the log entry. Default: `true`. */
-    request: RequestFieldOptionsDefaultSchema,
+    request: RequestFieldSchemas.request,
     /** Include the endpoint return value (response payload) in the log entry. Default: `true`. */
-    response: RequestFieldOptionsDefaultSchema,
+    response: RequestFieldSchemas.response,
     /** Include the error stack trace in error log entries. Default: `true`. */
     stack: z.boolean().default(true),
     /**
@@ -36,15 +59,7 @@ const LoggerRequestOptionsSchema = z.object({
      * every few seconds for the life of the pod and carry no information.
      */
     ignorePaths: z.array(z.string()).default(['/health', '/healthz'])
-}).default(() => ({
-    enabled: true,
-    headers: { enabled: true, redactPaths: [] },
-    query: { enabled: true, redactPaths: [] },
-    request: { enabled: true, redactPaths: [] },
-    response: { enabled: true, redactPaths: [] },
-    stack: true,
-    ignorePaths: ['/health', '/healthz']
-}));
+}).prefault({});
 
 /**
  * Zod schema for logger configuration.
@@ -88,5 +103,9 @@ export type LoggerOptions = z.output<typeof LoggerOptionsSchema>;
 
 /**
  * Parsed type for per-source request logging options.
+ *
+ * Aliased from `@radoslavirha/redaction` so inbound request logging shares one
+ * configuration vocabulary with every other package that redacts (outbound HTTP,
+ * storage, messaging).
  */
-export type LoggerRequestFieldOptions = z.output<typeof RequestFieldOptionsSchema>;
+export type LoggerRequestFieldOptions = RedactionFieldOptions;

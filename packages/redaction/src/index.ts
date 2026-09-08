@@ -4,6 +4,7 @@ export type { RedactorFunction } from './RedactionUtils.js';
 export {
     RedactionFieldOptionsSchema,
     RedactionSelectorSchema,
+    SENSITIVE_HEADER_SELECTORS,
     createRedactionSchema
 } from './RedactionOptions.schema.js';
 export type {

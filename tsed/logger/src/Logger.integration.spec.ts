@@ -125,7 +125,7 @@ describe('Logger (integration)', () => {
         });
 
         it('includes stringified headers, query, request, and response in the completed log', async () => {
-            await request.get('/test/success').query({ page: '1' }).set('x-api-key', 'token');
+            await request.get('/test/success').query({ page: '1' }).set('x-request-source', 'integration');
 
             const logs = parseLogs(stdoutSpy);
             const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
@@ -134,9 +134,40 @@ describe('Logger (integration)', () => {
             expect(typeof entry['query']).toBe('string');
             expect(typeof entry['response']).toBe('string');
 
-            expect(JSON.parse(String(entry['headers']))).toMatchObject({ 'x-api-key': 'token' });
+            expect(JSON.parse(String(entry['headers']))).toMatchObject({ 'x-request-source': 'integration' });
             expect(JSON.parse(String(entry['query']))).toMatchObject({ page: '1' });
             expect(JSON.parse(String(entry['response']))).toMatchObject({ ok: true });
+        });
+
+        // This suite configures `headers: { enabled: true }` and no `redactPaths` at all —
+        // the shape almost every service ships. Credential headers must still not reach the log.
+        it('redacts credential-bearing headers when no redactPaths are configured', async () => {
+            await request
+                .get('/test/success')
+                .set('authorization', 'Bearer supersecrettokenvalue123')
+                .set('cookie', 'session=abc')
+                .set('x-api-key', 'k-123')
+                .set('x-request-source', 'integration');
+
+            const logs = parseLogs(stdoutSpy);
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request completed') as Record<string, unknown>;
+            const headers = JSON.parse(String(entry['headers'])) as Record<string, unknown>;
+
+            expect(headers['authorization']).toBe('***');
+            expect(headers['cookie']).toBe('***');
+            expect(headers['x-api-key']).toBe('***');
+            expect(headers['x-request-source']).toBe('integration');
+        });
+
+        it('redacts credential-bearing headers on a failed request too', async () => {
+            await request.get('/test/error').set('authorization', 'Bearer supersecrettokenvalue123');
+
+            const logs = parseLogs(stderrSpy);
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, unknown>;
+
+            expect(entry['level']).toBe('error');
+            expect(JSON.parse(String(entry['headers']))['authorization']).toBe('***');
+            expect(String(entry['headers'])).not.toContain('supersecrettokenvalue123');
         });
 
         it('logs parsed POST payload and response body for JSON requests', async () => {
