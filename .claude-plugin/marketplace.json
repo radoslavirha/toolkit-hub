@@ -50,19 +50,19 @@
     {
       "name": "redaction",
       "description": "Agent guidance for @radoslavirha/redaction - compiled redaction profiles",
-      "version": "0.2.2",
+      "version": "0.3.0",
       "source": "./packages/redaction"
     },
     {
       "name": "tsed-logger",
       "description": "Agent guidance for @radoslavirha/tsed-logger - DI logger and scopes",
-      "version": "0.6.4",
+      "version": "0.7.0",
       "source": "./tsed/logger"
     },
     {
       "name": "tsed-swagger",
       "description": "Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI",
-      "version": "9.1.5",
+      "version": "9.1.6",
       "source": "./tsed/swagger"
     },
     {
@@ -86,7 +86,7 @@
     {
       "name": "tsed-platform",
       "description": "Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers",
-      "version": "5.0.1",
+      "version": "5.0.2",
       "source": "./tsed/platform"
     },
     {
