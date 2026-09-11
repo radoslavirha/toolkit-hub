@@ -1,5 +1,11 @@
 # @radoslavirha/config-eslint
 
+## 0.4.8
+
+### Patch Changes
+
+- [`87a3a08`](https://github.com/radoslavirha/toolkit-hub/commit/87a3a080b81aced77c2728df4681b39c6ea80686) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+
 ## 0.4.7
 
 ### Patch Changes
