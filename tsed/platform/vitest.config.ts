@@ -8,7 +8,7 @@ export default defineConfig(mergeConfig(defaultConfig, {
         },
         coverage: {
             exclude: [
-                'src/test'
+                'src/test/**'
             ],
             thresholds: {
                 statements: 94.73,

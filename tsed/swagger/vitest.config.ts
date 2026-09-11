@@ -8,8 +8,8 @@ export default defineConfig(mergeConfig(defaultConfig, {
         },
         coverage: {
             exclude: [
-                'src/models',
-                'src/test'
+                'src/models/**',
+                'src/test/**'
             ],
             thresholds: {
                 branches: 78.57

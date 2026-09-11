@@ -32,7 +32,6 @@ describe('BaseHandler', () => {
     afterEach(() => vi.restoreAllMocks());
 
     it('Should call performOperation', async () => {
-        // @ts-expect-error protected
         const spy = vi.spyOn(handler, 'performOperation');
 
         await handler.execute({ key: 'value' });
@@ -41,7 +40,6 @@ describe('BaseHandler', () => {
     });
 
     it('Should call performOperation with 2 arguments', async () => {
-        // @ts-expect-error protected
         const spy = vi.spyOn(handler, 'performOperation');
 
         await handler.execute({ key: 'value' }, '2');
@@ -50,7 +48,6 @@ describe('BaseHandler', () => {
     });
 
     it('Should return value', async () => {
-        // @ts-expect-error protected
         vi.spyOn(handler, 'performOperation').mockResolvedValue({ key: 'value' });
 
         expect.assertions(1);
@@ -61,7 +58,6 @@ describe('BaseHandler', () => {
     });
 
     it('Should return error', async () => {
-        // @ts-expect-error protected
         vi.spyOn(handler, 'performOperation').mockRejectedValue(new Error('test'));
 
         expect.assertions(1);

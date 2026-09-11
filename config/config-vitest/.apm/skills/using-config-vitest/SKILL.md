@@ -32,7 +32,7 @@ export default defineConfig(mergeConfig(defaultConfig, {
     test: {
         globalSetup: [import.meta.resolve('@tsed/testcontainers-mongo/vitest/setup')],
         coverage: {
-            exclude: ['src/models', 'src/test', 'src/types']
+            exclude: ['src/models/**', 'src/test/**', 'src/types/**']
         }
     }
 }));

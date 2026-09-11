@@ -159,7 +159,6 @@ describe('MongoMapper', () => {
     it('getModelValue - POST with value', async () => {
         const model = new TestModel();
         model.label = 'tester';
-        // @ts-expect-error protected method
         const spy = vi.spyOn(mapper, 'getModelDefault');
 
         expect.assertions(2);
@@ -172,7 +171,6 @@ describe('MongoMapper', () => {
 
     it('getModelValue - POST with undefined', async () => {
         const model = new TestModel();
-        // @ts-expect-error protected method
         const spy = vi.spyOn(mapper, 'getModelDefault').mockReturnValue('mocked');
 
         expect.assertions(2);
@@ -186,7 +184,6 @@ describe('MongoMapper', () => {
     it('getModelValue - PATCH with value', async () => {
         const model = new TestModel();
         model.label = 'tester';
-        // @ts-expect-error protected method
         const spy = vi.spyOn(mapper, 'getModelDefault');
 
         expect.assertions(2);
@@ -199,7 +196,6 @@ describe('MongoMapper', () => {
 
     it('getModelValue - PATCH with undefined', async () => {
         const model = new TestModel();
-        // @ts-expect-error protected method
         const spy = vi.spyOn(mapper, 'getModelDefault');
 
         expect.assertions(2);
