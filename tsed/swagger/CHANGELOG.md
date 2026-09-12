@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-swagger
 
+## 9.1.8
+
+### Patch Changes
+
+- [`58987a4`](https://github.com/radoslavirha/toolkit-hub/commit/58987a4aa81d3d4e706b5c7baca51c1ab31d91ad) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix peer dependency, rollback pnpm
+- Updated dependencies [[`58987a4`](https://github.com/radoslavirha/toolkit-hub/commit/58987a4aa81d3d4e706b5c7baca51c1ab31d91ad)]:
+  - @radoslavirha/tsed-configuration@0.8.7
+  - @radoslavirha/tsed-logger@0.7.2
+  - @radoslavirha/tsed-platform@5.0.4
+  - @radoslavirha/types@0.4.6
+  - @radoslavirha/utils@0.9.2
+
 ## 9.1.7
 
 ### Patch Changes
