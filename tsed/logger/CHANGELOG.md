@@ -1,5 +1,15 @@
 # @radoslavirha/tsed-logger
 
+## 0.7.2
+
+### Patch Changes
+
+- [`58987a4`](https://github.com/radoslavirha/toolkit-hub/commit/58987a4aa81d3d4e706b5c7baca51c1ab31d91ad) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix peer dependency, rollback pnpm
+- Updated dependencies [[`58987a4`](https://github.com/radoslavirha/toolkit-hub/commit/58987a4aa81d3d4e706b5c7baca51c1ab31d91ad)]:
+  - @radoslavirha/logger@0.4.5
+  - @radoslavirha/redaction@0.3.2
+  - @radoslavirha/utils@0.9.2
+
 ## 0.7.1
 
 ### Patch Changes

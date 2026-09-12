@@ -1,5 +1,11 @@
 # @radoslavirha/config-tsdown
 
+## 0.2.5
+
+### Patch Changes
+
+- [`58987a4`](https://github.com/radoslavirha/toolkit-hub/commit/58987a4aa81d3d4e706b5c7baca51c1ab31d91ad) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Fix peer dependency, rollback pnpm
+
 ## 0.2.4
 
 ### Patch Changes

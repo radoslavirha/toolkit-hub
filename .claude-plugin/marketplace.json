@@ -20,85 +20,85 @@
     {
       "name": "config-eslint",
       "description": "Agent guidance for @radoslavirha/config-eslint - shared flat config",
-      "version": "0.4.8",
+      "version": "0.4.9",
       "source": "./config/config-eslint"
     },
     {
       "name": "config-tsdown",
       "description": "Agent guidance for @radoslavirha/config-tsdown - dual ESM/CJS builds",
-      "version": "0.2.4",
+      "version": "0.2.5",
       "source": "./config/config-tsdown"
     },
     {
       "name": "config-typescript",
       "description": "Agent guidance for @radoslavirha/config-typescript - shared tsconfig bases",
-      "version": "1.1.5",
+      "version": "1.1.6",
       "source": "./config/config-typescript"
     },
     {
       "name": "config-vitest",
       "description": "Agent guidance for @radoslavirha/config-vitest - test config and coverage",
-      "version": "0.4.6",
+      "version": "0.4.7",
       "source": "./config/config-vitest"
     },
     {
       "name": "logger",
       "description": "Agent guidance for @radoslavirha/logger - scoped structured logging",
-      "version": "0.4.4",
+      "version": "0.4.5",
       "source": "./packages/logger"
     },
     {
       "name": "redaction",
       "description": "Agent guidance for @radoslavirha/redaction - compiled redaction profiles",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "source": "./packages/redaction"
     },
     {
       "name": "tsed-logger",
       "description": "Agent guidance for @radoslavirha/tsed-logger - DI logger and scopes",
-      "version": "0.7.1",
+      "version": "0.7.2",
       "source": "./tsed/logger"
     },
     {
       "name": "tsed-swagger",
       "description": "Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI",
-      "version": "9.1.7",
+      "version": "9.1.8",
       "source": "./tsed/swagger"
     },
     {
       "name": "types",
       "description": "Agent guidance for @radoslavirha/types - shared type helpers",
-      "version": "0.4.5",
+      "version": "0.4.6",
       "source": "./packages/types"
     },
     {
       "name": "tsed-common",
       "description": "Agent guidance for @radoslavirha/tsed-common - models, serialization, validation",
-      "version": "0.5.9",
+      "version": "0.5.10",
       "source": "./tsed/common"
     },
     {
       "name": "tsed-configuration",
       "description": "Agent guidance for @radoslavirha/tsed-configuration - schema-validated config",
-      "version": "0.8.6",
+      "version": "0.8.7",
       "source": "./tsed/configuration"
     },
     {
       "name": "tsed-platform",
       "description": "Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers",
-      "version": "5.0.3",
+      "version": "5.0.4",
       "source": "./tsed/platform"
     },
     {
       "name": "tsed-mongoose",
       "description": "Agent guidance for @radoslavirha/tsed-mongoose - mapper and repository pattern",
-      "version": "5.0.9",
+      "version": "5.0.10",
       "source": "./tsed/mongoose"
     },
     {
       "name": "utils",
       "description": "Agent guidance for @radoslavirha/utils - guards, model building and mapping",
-      "version": "0.9.1",
+      "version": "0.9.2",
       "source": "./packages/utils"
     }
   ]
