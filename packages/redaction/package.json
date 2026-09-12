@@ -43,7 +43,9 @@
     },
     "dependencies": {
         "@radoslavirha/utils": "workspace:*",
-        "fast-redact": "catalog:",
+        "fast-redact": "catalog:"
+    },
+    "peerDependencies": {
         "zod": "catalog:"
     },
     "devDependencies": {
@@ -59,11 +61,12 @@
         "tsdown": "catalog:",
         "tslib": "catalog:",
         "typescript": "catalog:",
-        "vitest": "catalog:"
+        "vitest": "catalog:",
+        "zod": "catalog:"
     },
     "engines": {
         "node": ">= 24",
-        "pnpm": ">= 12.3"
+        "pnpm": ">= 11.26"
     },
     "os": [
         "darwin",
