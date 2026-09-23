@@ -61,7 +61,7 @@ pnpm add -D tsdown @radoslavirha/config-tsdown
 pnpm add -D -w tsdown @radoslavirha/config-tsdown
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
 - `tsdown` >= 0.14.0

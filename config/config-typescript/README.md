@@ -53,7 +53,7 @@ pnpm add -D @radoslavirha/config-typescript tslib typescript
 pnpm add -D -w @radoslavirha/config-typescript tslib typescript
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
 - `typescript` >= 5.0.0

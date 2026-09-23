@@ -128,6 +128,3 @@ These signatures changed and the old shapes still circulate:
 | `mongoToModelBase(model, mongo)` mutating the model | `mongoToModelBase(mongo)` returning `{ id, createdAt, updatedAt }` to spread |
 | `modelToMongoCreateObject` / `modelToMongoUpdateObject` | `buildMongoPayload` / `buildMongoUpdatePayload` |
 | `protected type: Type<T> = T` on the repository | `protected mongo = T` |
-
-The package's own JSDoc still shows the removed `type` property in one example. Trust this
-skill and the type declarations over that comment.

@@ -50,8 +50,8 @@ apm marketplace check        # every marketplace entry resolves
 ## Toolchain facts worth knowing
 
 - Changesets **CLI v3** is required — `changesets/action@v2` validates this and rejects v2.
-- v2 renamed the inputs (`publish` → `publish-script`, `version` → `version-script`) and no
-  longer reads a `GITHUB_TOKEN` env var; the token goes in the `github-token` input. npm auth
+- The action's inputs are `publish-script` and `version-script` (not `publish` / `version`),
+  and the token goes in the `github-token` input — a `GITHUB_TOKEN` env var is ignored. npm auth
   comes from `actions/setup-node` (`registry-url` + `scope`).
 - `release.yml` installs the APM CLI via `microsoft/apm-action` with `setup-only: true`.
 - `changeset version` exits 1 when there are no changesets; the action gates on that, so it

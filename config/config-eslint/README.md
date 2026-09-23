@@ -62,7 +62,7 @@ pnpm add -D @radoslavirha/config-eslint eslint
 pnpm add -D -w @radoslavirha/config-eslint eslint
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
 - `eslint` >= 9.0.0

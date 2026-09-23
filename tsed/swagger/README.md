@@ -75,7 +75,7 @@ pnpm --filter my-service add @radoslavirha/tsed-swagger
 pnpm add @radoslavirha/tsed-configuration @radoslavirha/tsed-platform @tsed/di @tsed/json-mapper @tsed/openspec @tsed/platform-http @tsed/platform-params @tsed/platform-views @tsed/schema @tsed/swagger
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
 - `@radoslavirha/tsed-configuration` - Base configuration provider and API information

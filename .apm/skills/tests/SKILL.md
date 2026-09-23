@@ -3,10 +3,6 @@ name: tests
 description: Use when writing or changing a `*.spec.ts` file in toolkit-hub, adding tests to a new package, writing a `vitest.config.ts`, picking a coverage threshold, or mocking Ts.ED DI or MongoDB testcontainers. States the conventions this repo enforces — spec naming and location, describe/it structure, assertion choices, mocking patterns, and where test helpers live.
 ---
 
-This skill provides guidance for creating and maintaining high-quality Vitest tests for the toolkit-hub monorepo. Use it when writing or updating test cases for any package, ensuring tests are passing and up-to-date with the latest code changes. Always follow best practices for testing and strive for high test coverage across the monorepo.
-
----
-
 # File Naming & Location
 
 - **Convention:** `*.spec.ts` — always `spec`, never `test`
@@ -33,15 +29,15 @@ export default defineConfig(mergeConfig(defaultConfig, {}));
 
 **Package-specific overrides:**
 - Packages with Ts.ED DI models/test helpers: exclude `src/models`, `src/test`, `src/types` from coverage
-- Packages using MongoDB: add `globalSetup: ['@tsed/testcontainers-mongo/vitest/setup']`
+- Packages using MongoDB: add the testcontainers `globalSetup`, resolved through `import.meta.resolve`
 
 ```ts
 // Example with MongoDB + coverage exclusions
 export default defineConfig(mergeConfig(defaultConfig, {
   test: {
-    globalSetup: ['@tsed/testcontainers-mongo/vitest/setup'],
+    globalSetup: [import.meta.resolve('@tsed/testcontainers-mongo/vitest/setup')],
     coverage: {
-      exclude: ['src/models/**', 'src/test/**', 'src/types/**', ...coverageConfigDefaults.exclude],
+      exclude: ['src/models/**', 'src/test/**', 'src/types/**'],
     },
   },
 }));
@@ -102,11 +98,7 @@ describe('ZodValidator', () => {
 it('throws when handler fails', async () => {
     vi.spyOn(handler, 'performOperation').mockRejectedValue(new Error('fail'));
     expect.assertions(1);
-    try {
-        await handler.execute();
-    } catch (error) {
-        expect(error).toEqual(new Error('fail'));
-    }
+    await expect(handler.execute()).rejects.toThrow('fail');
 });
 ```
 
@@ -150,8 +142,7 @@ afterEach(() => TestContainersMongo.reset());
 | Use case | Assertion |
 |----------|-----------|
 | Primitive equality | `expect(x).toBe(y)` |
-| Deep equality | `expect(x).toEqual(y)` |
-| Strict deep equality | `expect(x).toStrictEqual(y)` |
+| Deep equality | `expect(x).toStrictEqual(y)` — also compares types, so a class instance never matches a plain object with the same keys. Use `toEqual` only when that match is intended |
 | Truthiness | `expect(x).toBeTruthy()` / `.toBeFalsy()` |
 | Null / undefined | `expect(x).toBeNull()` / `.toBeUndefined()` / `.toBeDefined()` |
 | Length | `expect(x).toHaveLength(N)` |
@@ -161,7 +152,6 @@ afterEach(() => TestContainersMongo.reset());
 | Partial match | `expect.objectContaining({})` / `expect.arrayContaining([])` / `expect.any(Type)` |
 | Partial string | `expect.stringContaining(str)` |
 
-always prefer toStrictEqual(), it checks also types and prevents false positives from toEqual() which can match different types with same structure (e.g. class instance vs plain object)
 ---
 
 # Test Helpers / Fixtures
@@ -186,7 +176,7 @@ it('GET / returns 200', async () => {
     const request = SuperTest.agent(PlatformTest.callback());
     const response = await request.get('/');
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ ... });
+    expect(response.body).toStrictEqual({ ... });
 });
 ```
 

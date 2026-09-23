@@ -72,7 +72,7 @@ pnpm --filter my-service add @radoslavirha/tsed-platform @radoslavirha/tsed-conf
   body-parser compression cookie-parser cors method-override
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 ## What's Included
 

@@ -64,7 +64,7 @@ pnpm add -D @radoslavirha/config-vitest vitest @swc/core @vitest/coverage-v8
 pnpm add -D -w @radoslavirha/config-vitest vitest @swc/core @vitest/coverage-v8
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
 - `vitest` >= 4.0.0

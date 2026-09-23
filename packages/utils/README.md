@@ -92,7 +92,7 @@ pnpm --filter my-service add @radoslavirha/utils
 pnpm -r add @radoslavirha/utils
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Dependencies:**
 - `lodash` - Core utility functions

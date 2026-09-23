@@ -69,7 +69,7 @@ pnpm add @radoslavirha/tsed-common
 pnpm --filter my-service add @radoslavirha/tsed-common
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
 - `@tsed/core` - Required for `Type<T>` used by Serializer

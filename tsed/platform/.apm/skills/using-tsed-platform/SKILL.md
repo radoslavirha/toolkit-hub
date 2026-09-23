@@ -23,7 +23,7 @@ await platform.listen();
 ```
 
 `bootstrap` takes settings only — the server class travels in them as `rootModule`, the shape
-Ts.ED 8.38 documents. `Platform` is a plain wrapper, not a `PlatformExpress` subclass.
+Ts.ED documents. `Platform` is a plain wrapper, not a `PlatformExpress` subclass.
 
 `ServerConfiguration` is Ts.ED's configuration plus a **required** `api` property carrying
 `APIInformation` (service, version, description, publicURL). It is generic over your own

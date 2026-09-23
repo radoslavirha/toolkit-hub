@@ -128,18 +128,22 @@ pnpm add -D @radoslavirha/config-eslint @radoslavirha/config-typescript @radosla
 
 All packages are published to GitHub Packages registry under the `@radoslavirha` scope.
 
-### Setup .npmrc
+### Registry setup (pnpm 11)
 
-**For both simple repositories and monorepos**, create `.npmrc` in your project root (or monorepo root):
+**For both simple repositories and monorepos**, map the scope in `pnpm-workspace.yaml` at the project (or monorepo) root. The file is committed, and a single-package repo can have one too:
 
+```yaml
+registries:
+  '@radoslavirha': https://npm.pkg.github.com/
 ```
-@radoslavirha:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
+
+Put the token in a **user-level** auth file (`~/.config/pnpm/auth.ini` or `~/.npmrc`), never in the repository:
+
+```ini
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
-[Get your GitHub token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token)
-
-**Security:** Add `.npmrc` to `.gitignore` or store only the registry line and authenticate separately.
+[Get your GitHub token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token) (needs `read:packages`). pnpm ignores `${...}` placeholders in a project-level `.npmrc`, so a token in the repo only works as a plain-text value. Don't do that.
 
 ### Install Packages
 
@@ -169,8 +173,7 @@ pnpm -r add @radoslavirha/utils
 **Monorepo Structure Example:**
 ```
 my-monorepo/
-├── .npmrc                           # GitHub Packages auth
-├── pnpm-workspace.yaml              # Workspace definition
+├── pnpm-workspace.yaml              # Workspace definition + GitHub Packages registry
 ├── package.json                     # Root dependencies (shared configs)
 └── packages/
     ├── api-service/
@@ -214,7 +217,7 @@ This monorepo uses a **three-level documentation system** optimized for both hum
 ### 📗 [README.md](README.md) - Monorepo Overview
 **This file — start here:**
 - Monorepo structure and all packages at a glance
-- Installation instructions (`.npmrc` setup, simple and monorepo installs)
+- Installation instructions (registry setup, simple and monorepo installs)
 - Quick Start guide
 - Development guidelines
 

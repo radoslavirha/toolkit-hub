@@ -66,7 +66,7 @@ pnpm --filter my-service add @radoslavirha/types
 pnpm -r add @radoslavirha/types
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 ## What's Included
 

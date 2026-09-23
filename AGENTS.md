@@ -77,7 +77,7 @@ Mongoose Models (Data Layer)
 })
 export class Server extends BaseServer {}
 
-// 2. Inject via constructor (no base class — plain @Injectable)
+// 2. Inject dependencies (no base class — plain @Injectable)
 @Injectable()
 export class Service {
   @Inject(Repository)
@@ -225,17 +225,11 @@ What are you building?
 
 ## 📚 Maintenance
 
-This document is maintained alongside package READMEs:
+What belongs in this file versus a skill is decided by the `agents-md` skill
+(`.apm/skills/agents-md/SKILL.md`). Update this file when:
 
-1. **Package-specific details** → Stay in package READMEs
-2. **Cross-package patterns** → Documented here in AGENTS.md
-3. **API changes** → Update both README and relevant pattern here
-4. **New integration patterns** → Add to this document
-
-**Review Checklist:**
-- [ ] When adding new package → Add to Package Overview table
-- [ ] When changing API → Update anti-patterns section if relevant
-- [ ] When discovering common pattern → Add to Common Integration Patterns
-- [ ] Monthly review for accuracy
+- A package is added, removed or renamed → Package Overview table
+- A repo-wide rule changes → Architecture Patterns / Anti-Patterns table
+- An anti-pattern moves to a different package's skill → its row in the Anti-Patterns table
 
 ---

@@ -62,7 +62,7 @@ export class Service {
 pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-logger
 ```
 
-See [root README](../../README.md#-installation) for `.npmrc` setup and monorepo details.
+See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 ---
 

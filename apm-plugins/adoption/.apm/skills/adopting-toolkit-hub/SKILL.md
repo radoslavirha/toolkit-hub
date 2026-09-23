@@ -11,23 +11,29 @@ Adopt both, or an agent works against the package without knowing how it is mean
 
 ## 1. Registry access (once per repo)
 
-Toolkit packages are published to **GitHub Packages**, not npmjs.org. Without both lines
-below, installs fail with `404 Not Found` (missing scope mapping) or `401 Unauthorized`
-(missing token).
+Toolkit packages are published to **GitHub Packages**, not npmjs.org. Installs fail with
+`404 Not Found` without the scope mapping and `401 Unauthorized` without the token. pnpm 11
+splits the two: the mapping lives in `pnpm-workspace.yaml`, and the token lives in a
+user-level INI file. The project needs no `.npmrc`.
 
-```ini
-# .npmrc - committed
-@radoslavirha:registry=https://npm.pkg.github.com/
+```yaml
+# pnpm-workspace.yaml - committed
+registries:
+  '@radoslavirha': https://npm.pkg.github.com/
 ```
 
 ```ini
-# ~/.npmrc or CI secret - NEVER committed
+# ~/.config/pnpm/auth.ini (or ~/.npmrc) - user-level, never in the repo
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
-The token needs `read:packages`. In GitHub Actions, `secrets.GITHUB_TOKEN` is enough;
-`actions/setup-node` with `registry-url: https://npm.pkg.github.com/` and
-`scope: '@radoslavirha'` wires it up.
+The token must stay user-level: pnpm ignores `${...}` in a project-level `.npmrc` (and warns),
+because a checked-out repo could otherwise send your environment's secrets to a registry it
+names.
+
+The token needs `read:packages`. In GitHub Actions, `secrets.GITHUB_TOKEN` is enough:
+`actions/setup-node` with `registry-url: https://npm.pkg.github.com/` writes a user-level
+config that reads it from `NODE_AUTH_TOKEN`.
 
 ## 2. Install the package
 
