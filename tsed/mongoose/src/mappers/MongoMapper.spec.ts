@@ -27,9 +27,9 @@ describe('MongoMapper', () => {
 
         const result = mapper.mongoToModelBase(mongo);
 
-        expect(result.id).toEqual('654bcd82bba81536a4ed4df3');
-        expect(result.createdAt).toEqual(new Date('2023-12-09T21:08:36.576Z'));
-        expect(result.updatedAt).toEqual(new Date('2023-12-10T10:00:00.000Z'));
+        expect(result.id).toStrictEqual('654bcd82bba81536a4ed4df3');
+        expect(result.createdAt).toStrictEqual(new Date('2023-12-09T21:08:36.576Z'));
+        expect(result.updatedAt).toStrictEqual(new Date('2023-12-10T10:00:00.000Z'));
     });
 
     it('mongoToModelBase - returns a BaseModel instance, not a POJO', async () => {
@@ -58,7 +58,7 @@ describe('MongoMapper', () => {
 
         // Only the 3 base fields are returned — domain fields must be mapped explicitly
         // via buildModelStrict, which enforces compile-time exhaustiveness
-        expect(Object.keys(result)).toEqual(['id', 'createdAt', 'updatedAt']);
+        expect(Object.keys(result)).toStrictEqual(['id', 'createdAt', 'updatedAt']);
         expect((result as Record<string, unknown>)['label']).toBeUndefined();
     });
 
@@ -76,7 +76,7 @@ describe('MongoMapper', () => {
         // @ts-expect-error protected method
         const response = mapper.canBePopulated(mongo.child_id);
 
-        expect(response).toEqual(false);
+        expect(response).toStrictEqual(false);
     });
 
     it('canBePopulated - true', async () => {
@@ -94,7 +94,7 @@ describe('MongoMapper', () => {
         // @ts-expect-error protected method
         const response = mapper.canBePopulated(mongo.child_id);
 
-        expect(response).toEqual(true);
+        expect(response).toStrictEqual(true);
     });
 
     it('getPopulated', async () => {
@@ -131,7 +131,7 @@ describe('MongoMapper', () => {
         // @ts-expect-error protected method
         const response = mapper.getIdFromPotentiallyPopulated(mongo.child_id);
 
-        expect(response).toEqual(childId);
+        expect(response).toStrictEqual(childId);
     });
 
     it('getIdFromPotentiallyPopulated - from populated', async () => {
@@ -153,7 +153,7 @@ describe('MongoMapper', () => {
         // @ts-expect-error protected method
         const response = mapper.getIdFromPotentiallyPopulated(mongo.child_id);
 
-        expect(response).toEqual(childId);
+        expect(response).toStrictEqual(childId);
     });
 
     it('getModelValue - POST with value', async () => {
@@ -165,7 +165,7 @@ describe('MongoMapper', () => {
 
         const response = mapper.getModelValue(model, 'label');
 
-        expect(response).toEqual('tester');
+        expect(response).toStrictEqual('tester');
         expect(spy).not.toHaveBeenCalled();
     });
 
@@ -177,7 +177,7 @@ describe('MongoMapper', () => {
 
         const response = mapper.getModelValue(model, 'label');
 
-        expect(response).toEqual('mocked');
+        expect(response).toStrictEqual('mocked');
         expect(spy).toHaveBeenCalledWith(model, 'label');
     });
 
@@ -190,7 +190,7 @@ describe('MongoMapper', () => {
 
         const response = mapper.getModelValue(model, 'label', true);
 
-        expect(response).toEqual('tester');
+        expect(response).toStrictEqual('tester');
         expect(spy).not.toHaveBeenCalled();
     });
 
@@ -214,7 +214,7 @@ describe('MongoMapper', () => {
         // @ts-expect-error protected method
         const response = mapper.getModelDefault(model, 'label');
 
-        expect(response).toEqual('label');
+        expect(response).toStrictEqual('label');
     });
 
     it('getModelDefault - no default value', async () => {
@@ -246,7 +246,7 @@ describe('MongoMapper', () => {
             expect(result.id).toBe('654bcd82bba81536a4ed4df4');
             expect(result.label).toBe('test-label');
             expect(result.child_id).toBe(childId);
-            expect(result.createdAt).toEqual(new Date('2023-12-09T21:08:36.576Z'));
+            expect(result.createdAt).toStrictEqual(new Date('2023-12-09T21:08:36.576Z'));
         });
     });
 
@@ -256,7 +256,7 @@ describe('MongoMapper', () => {
 
             const result = mapper.mapMany([]);
 
-            expect(result).toEqual([]);
+            expect(result).toStrictEqual([]);
         });
 
         it('maps multiple documents', () => {

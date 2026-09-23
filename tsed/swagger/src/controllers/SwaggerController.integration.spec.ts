@@ -65,7 +65,7 @@ describe('SwaggerController', () => {
         expect(minified).toContain(`<h1>My API 1.0.0</h1>`);
         expect(minified).toContain(`<li><a href="http://api.example.com/v1/docs/"><span>API v1</span> <span>OpenSpec 3.0.3</span></a></li>`);
         expect(minified).toContain(`<li><a href="http://api.example.com/v2/docs/"><span>API v2</span> <span>OpenSpec 3.0.3</span></a></li>`);
-        expect(response.status).toEqual(200);
+        expect(response.status).toStrictEqual(200);
     });
 
     it('Should call GET / with set publicURL', async () => {
@@ -115,6 +115,6 @@ describe('SwaggerController', () => {
         expect(minified).toContain(`<h1>My API 1.0.0</h1>`);
         expect(minified).toContain(`<li><a href="https://api.public-url.com/path/v1/docs/"><span>API v1</span> <span>OpenSpec 3.0.3</span></a></li>`);
         expect(minified).toContain(`<li><a href="https://api.public-url.com/path/v2/docs/"><span>API v2</span> <span>OpenSpec 3.0.3</span></a></li>`);
-        expect(response.status).toEqual(200);
+        expect(response.status).toStrictEqual(200);
     });
 });

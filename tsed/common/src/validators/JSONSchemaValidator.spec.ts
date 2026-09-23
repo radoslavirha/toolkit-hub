@@ -37,7 +37,7 @@ describe('JSONSchemaValidator', () => {
                 JSONSchemaValidator.validate(ValidModel, { age: 30 });
             } catch (errors) {
                 expect(Array.isArray(errors)).toBe(true);
-                expect(errors).toEqual(
+                expect(errors).toStrictEqual(
                     expect.arrayContaining([
                         expect.objectContaining({ keyword: expect.any(String) })
                     ])

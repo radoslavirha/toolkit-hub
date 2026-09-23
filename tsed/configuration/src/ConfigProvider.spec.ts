@@ -2,6 +2,8 @@ import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { z } from 'zod';
 import { ConfigProviderOptions, ConfigProvider } from './ConfigProvider.js';
 import { injector } from '@tsed/di';
+import { CommonUtils } from '@radoslavirha/utils';
+import { APIInformation } from './models/APIInformation.js';
 import { BaseConfig } from './models/BaseConfig.js';
 
 // Must match the config file in config/test.json
@@ -38,13 +40,13 @@ describe('ConfigProvider', () => {
         it('Should pass', async () => {
             const loader = injector().get(ConfigProvider, { useOpts: options });
     
-            expect(loader.api).toEqual({
+            expect(loader.api).toStrictEqual(CommonUtils.buildModelStrict(APIInformation, {
                 service: 'test-service',
                 version: expect.any(String),
                 description: expect.any(String),
                 publicURL: 'http://localhost:4000/api'
-            });
-            expect(loader.config).toEqual({
+            }));
+            expect(loader.config).toStrictEqual({
                 test: 'value',
                 server: {
                     httpPort: 4000
@@ -52,7 +54,7 @@ describe('ConfigProvider', () => {
                 serviceName: 'test-service',
                 publicURL: 'http://localhost:4000/api'
             });
-            expect(loader.server).toEqual({
+            expect(loader.server).toStrictEqual({
                 httpPort: 4000,
                 acceptMimes: ['application/json'],
                 httpsPort: false,
@@ -86,13 +88,13 @@ describe('ConfigProvider', () => {
             const loader = injector().get(ConfigProvider, { useOpts: options });
             loader._envs.NODE_ENV = 'test';
     
-            expect(loader.isTest).toEqual(true);
+            expect(loader.isTest).toStrictEqual(true);
         });
         
         it('Should load package.json', async () => {
             const loader = injector().get(ConfigProvider, { useOpts: options });
 
-            expect(loader.packageJson).toEqual({
+            expect(loader.packageJson).toStrictEqual({
                 name: '@radoslavirha/tsed-configuration',
                 version: expect.any(String),
                 description: 'Ts.ED server configuration'
@@ -120,13 +122,13 @@ describe('ConfigProvider', () => {
         it('Should pass', async () => {
             const loader = new ConfigProvider<ConfigModel>(options);
 
-            expect(loader.api).toEqual({
+            expect(loader.api).toStrictEqual(CommonUtils.buildModelStrict(APIInformation, {
                 service: 'test-service',
                 version: expect.any(String),
                 description: expect.any(String),
                 publicURL: 'http://localhost:4000/api'
-            });
-            expect(loader.config).toEqual({
+            }));
+            expect(loader.config).toStrictEqual({
                 test: 'value',
                 server: {
                     httpPort: 4000
@@ -134,7 +136,7 @@ describe('ConfigProvider', () => {
                 serviceName: 'test-service',
                 publicURL: 'http://localhost:4000/api'
             });
-            expect(loader.server).toEqual({
+            expect(loader.server).toStrictEqual({
                 httpPort: 4000,
                 acceptMimes: ['application/json'],
                 httpsPort: false,
@@ -157,7 +159,7 @@ describe('ConfigProvider', () => {
             const loader = new ConfigProvider<ConfigModel>(options);
             loader._envs.NODE_ENV = 'test';
     
-            expect(loader.isTest).toEqual(true);
+            expect(loader.isTest).toStrictEqual(true);
         });
 
         it('Should pass with debug enabled', async () => {
@@ -174,7 +176,7 @@ describe('ConfigProvider', () => {
         it('Should load package.json', async () => {
             const loader = new ConfigProvider<ConfigModel>(options);
 
-            expect(loader.packageJson).toEqual({
+            expect(loader.packageJson).toStrictEqual({
                 name: '@radoslavirha/tsed-configuration',
                 version: expect.any(String),
                 description: 'Ts.ED server configuration'

@@ -52,7 +52,7 @@ describe('MappingUtils', () => {
         it('maps all array items', async () => {
             const result = await mappingUtils.mapArray([1, 2, 3], async (value) => value * 2);
 
-            expect(result).toEqual([2, 4, 6]);
+            expect(result).toStrictEqual([2, 4, 6]);
         });
 
         it('maps all array items using vi.fn mapper variant', async () => {
@@ -60,7 +60,7 @@ describe('MappingUtils', () => {
 
             const result = await mappingUtils.mapArray([1, 2, 3], mapper);
 
-            expect(result).toEqual([2, 4, 6]);
+            expect(result).toStrictEqual([2, 4, 6]);
             expect(mapper).toHaveBeenCalledTimes(3);
         });
 
@@ -79,7 +79,7 @@ describe('MappingUtils', () => {
 
             const result = await mappingUtils.mapOptionalArray([1, 2], mapper, 'n-');
 
-            expect(result).toEqual(['n-1', 'n-2']);
+            expect(result).toStrictEqual(['n-1', 'n-2']);
             expect(mapper).toHaveBeenCalledTimes(2);
         });
 
@@ -109,7 +109,7 @@ describe('MappingUtils', () => {
 
             const result = await mappingUtils.mapMap(source, async (key, value) => [key.toUpperCase(), value * 10]);
 
-            expect(result).toEqual(new Map([
+            expect(result).toStrictEqual(new Map([
                 ['A', 10],
                 ['B', 20]
             ]));
@@ -124,7 +124,7 @@ describe('MappingUtils', () => {
 
             const result = await mappingUtils.mapMap(source, mapper);
 
-            expect(result).toEqual(new Map([
+            expect(result).toStrictEqual(new Map([
                 ['A', 10],
                 ['B', 20]
             ]));
@@ -147,7 +147,7 @@ describe('MappingUtils', () => {
 
             const result = await mappingUtils.mapOptionalMap(source, mapper);
 
-            expect(result).toEqual(new Map([['A', 2]]));
+            expect(result).toStrictEqual(new Map([['A', 2]]));
             expect(mapper).toHaveBeenCalledTimes(1);
         });
 

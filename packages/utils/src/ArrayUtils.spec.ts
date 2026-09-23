@@ -34,37 +34,37 @@ describe('ArrayUtils', () => {
 
     describe('toArray', () => {
         it('returns empty array for null', () => {
-            expect(ArrayUtils.toArray(null)).toEqual([]);
+            expect(ArrayUtils.toArray(null)).toStrictEqual([]);
         });
 
         it('returns empty array for undefined', () => {
-            expect(ArrayUtils.toArray(undefined)).toEqual([]);
+            expect(ArrayUtils.toArray(undefined)).toStrictEqual([]);
         });
 
         it('returns same array when value is already an array', () => {
             const input = [1, 2, 3];
 
-            expect(ArrayUtils.toArray(input)).toEqual([1, 2, 3]);
+            expect(ArrayUtils.toArray(input)).toStrictEqual([1, 2, 3]);
         });
 
         it('wraps a single value into an array', () => {
-            expect(ArrayUtils.toArray('hello')).toEqual(['hello']);
+            expect(ArrayUtils.toArray('hello')).toStrictEqual(['hello']);
         });
 
         it('wraps a single number into an array', () => {
-            expect(ArrayUtils.toArray(42)).toEqual([42]);
+            expect(ArrayUtils.toArray(42)).toStrictEqual([42]);
         });
 
         it('wraps a single object into an array', () => {
             const obj = { id: 1 };
 
-            expect(ArrayUtils.toArray(obj)).toEqual([{ id: 1 }]);
+            expect(ArrayUtils.toArray(obj)).toStrictEqual([{ id: 1 }]);
         });
 
         it('passes through an array of objects unchanged', () => {
             const input = [{ id: 1 }, { id: 2 }];
 
-            expect(ArrayUtils.toArray(input)).toEqual(input);
+            expect(ArrayUtils.toArray(input)).toStrictEqual(input);
         });
     });
 });

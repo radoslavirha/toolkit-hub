@@ -6,7 +6,7 @@ describe('getServerDefaultConfig', () => {
         it('Should return default server configuration', () => {
             const config = getServerDefaultConfig();
 
-            expect(config).toEqual({
+            expect(config).toStrictEqual({
                 httpPort: 4000,
                 acceptMimes: ['application/json'],
                 httpsPort: false,
@@ -52,21 +52,21 @@ describe('getServerDefaultConfig', () => {
 
         it('Should configure jsonMapper with additionalProperties false', () => {
             const config = getServerDefaultConfig();
-            expect(config.jsonMapper).toEqual({
+            expect(config.jsonMapper).toStrictEqual({
                 additionalProperties: false
             });
         });
 
         it('Should configure ajv with returnsCoercedValues true', () => {
             const config = getServerDefaultConfig();
-            expect(config.ajv).toEqual({
+            expect(config.ajv).toStrictEqual({
                 returnsCoercedValues: true
             });
         });
 
         it('Should ignore Kubernetes probe endpoints in Ts.ED request logs', () => {
             const config = getServerDefaultConfig();
-            expect(config.logger).toEqual({
+            expect(config.logger).toStrictEqual({
                 ignoreUrlPatterns: ['^/health(/|$)', '^/healthz$']
             });
         });
@@ -81,7 +81,7 @@ describe('getServerDefaultConfig', () => {
             expect(config1).not.toBe(config2);
             
             // But with same values
-            expect(config1).toEqual(config2);
+            expect(config1).toStrictEqual(config2);
         });
 
         it('Should be safe to mutate returned object', () => {
@@ -97,7 +97,7 @@ describe('getServerDefaultConfig', () => {
 
             // Should return original values
             expect(config2.httpPort).toBe(originalPort);
-            expect(config2.acceptMimes).toEqual(['application/json']);
+            expect(config2.acceptMimes).toStrictEqual(['application/json']);
         });
     });
 

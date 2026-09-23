@@ -265,7 +265,7 @@ describe('CommonUtils', () => {
             const model = CommonUtils.buildModel(TestModel, { property: 'value 1' });
 
             expect(model).toBeInstanceOf(TestModel);
-            expect(model.property).toEqual('value 1');
+            expect(model.property).toStrictEqual('value 1');
         });
     });
 
@@ -280,8 +280,8 @@ describe('CommonUtils', () => {
             const model = CommonUtils.buildModelStrict(TestModel, { required: 'value 1', count: 42 });
 
             expect(model).toBeInstanceOf(TestModel);
-            expect(model.required).toEqual('value 1');
-            expect(model.count).toEqual(42);
+            expect(model.required).toStrictEqual('value 1');
+            expect(model.count).toStrictEqual(42);
             expect(model.optional).toBeUndefined();
         });
 
@@ -289,9 +289,9 @@ describe('CommonUtils', () => {
             const model = CommonUtils.buildModelStrict(TestModel, { required: 'value 1', count: 42, optional: true });
 
             expect(model).toBeInstanceOf(TestModel);
-            expect(model.required).toEqual('value 1');
-            expect(model.count).toEqual(42);
-            expect(model.optional).toEqual(true);
+            expect(model.required).toStrictEqual('value 1');
+            expect(model.count).toStrictEqual(42);
+            expect(model.optional).toStrictEqual(true);
         });
     });
 
@@ -307,9 +307,9 @@ describe('CommonUtils', () => {
             const model = CommonUtils.buildModelPartial(TestModel, { required: 'value 1' });
 
             expect(model).toBeInstanceOf(TestModel);
-            expect(model.required).toEqual('value 1');
+            expect(model.required).toStrictEqual('value 1');
             // constructor default preserved because Object.assign only overwrites provided keys
-            expect(model.count).toEqual(0);
+            expect(model.count).toStrictEqual(0);
             expect(model.optional).toBeUndefined();
         });
 
@@ -317,9 +317,9 @@ describe('CommonUtils', () => {
             const model = CommonUtils.buildModelPartial(TestModel, { required: 'value 1', count: 42, optional: true });
 
             expect(model).toBeInstanceOf(TestModel);
-            expect(model.required).toEqual('value 1');
-            expect(model.count).toEqual(42);
-            expect(model.optional).toEqual(true);
+            expect(model.required).toStrictEqual('value 1');
+            expect(model.count).toStrictEqual(42);
+            expect(model.optional).toStrictEqual(true);
         });
     });
 
@@ -347,9 +347,9 @@ describe('CommonUtils', () => {
         it('should assign provided domain properties', () => {
             const model = CommonUtils.buildModelCore(TestModel, { name: 'Alice', email: 'alice@example.com', count: 5 });
 
-            expect(model.name).toEqual('Alice');
-            expect(model.email).toEqual('alice@example.com');
-            expect(model.count).toEqual(5);
+            expect(model.name).toStrictEqual('Alice');
+            expect(model.email).toStrictEqual('alice@example.com');
+            expect(model.count).toStrictEqual(5);
         });
 
         it('should not include auto-generated fields when they are not provided', () => {
@@ -366,7 +366,7 @@ describe('CommonUtils', () => {
             const modelWith    = CommonUtils.buildModelCore(TestModel, { name: 'Bob', email: 'bob@example.com', count: 2, optional: true });
 
             expect(modelWithout.optional).toBeUndefined();
-            expect(modelWith.optional).toEqual(true);
+            expect(modelWith.optional).toStrictEqual(true);
         });
 
         it('should override class-body default when property is provided', () => {
@@ -380,7 +380,7 @@ describe('CommonUtils', () => {
 
             const model = CommonUtils.buildModelCore(ModelWithDefault, { name: 'Test', count: 42 });
 
-            expect(model.count).toEqual(42);
+            expect(model.count).toStrictEqual(42);
         });
     });
 

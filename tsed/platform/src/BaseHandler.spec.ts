@@ -54,7 +54,7 @@ describe('BaseHandler', () => {
 
         const response = await handler.execute({ key: 'value' });
 
-        expect(response).toEqual({ key: 'value' });
+        expect(response).toStrictEqual({ key: 'value' });
     });
 
     it('Should return error', async () => {
@@ -64,7 +64,7 @@ describe('BaseHandler', () => {
         try {
             await handler.execute({ key: 'value' });
         } catch (error) {
-            expect(error).toEqual(new Error('test'));
+            expect(error).toStrictEqual(new Error('test'));
         }
     });
 });

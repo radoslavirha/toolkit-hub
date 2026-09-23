@@ -70,7 +70,7 @@ describe('EnvironmentVariablesProvider', () => {
             expect(env1).not.toBe(env2);
             
             // But with same values
-            expect(env1).toEqual(env2);
+            expect(env1).toStrictEqual(env2);
         });
     });
 

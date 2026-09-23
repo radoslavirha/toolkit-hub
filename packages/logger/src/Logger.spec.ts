@@ -67,27 +67,27 @@ describe('Logger', () => {
             const logger = new Logger();
             logger.info('with attrs', { parent: { child: 'data' }, count: 3 });
             const line = getLine();
-            expect(line['parent']).toEqual({ child: 'data' });
+            expect(line['parent']).toStrictEqual({ child: 'data' });
             expect(line['count']).toBe(3);
         });
 
         it('emits fields in the order: timestamp, level, message, and merged meta fields', () => {
             const logger = new Logger();
             logger.info('hello', { key: 'value' });
-            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message', 'key']);
+            expect(Object.keys(getLine())).toStrictEqual(['timestamp', 'level', 'message', 'key']);
         });
 
         it('emits fields in the order: timestamp, level, message, scope, and merged meta fields for child logger', () => {
             const logger = new Logger();
             const child = logger.child('SomeService');
             child.info('hello', { key: 'value' });
-            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message', 'scope', 'key']);
+            expect(Object.keys(getLine())).toStrictEqual(['timestamp', 'level', 'message', 'scope', 'key']);
         });
 
         it('allows callers to choose nested metadata shape explicitly', () => {
             const logger = new Logger();
             logger.info('with custom nesting', { attributes: { parent: 'chosen-by-caller' } });
-            expect(getLine()['attributes']).toEqual({ parent: 'chosen-by-caller' });
+            expect(getLine()['attributes']).toStrictEqual({ parent: 'chosen-by-caller' });
         });
     });
 
@@ -187,7 +187,7 @@ describe('Logger', () => {
         it('emits no additional fields when provider returns empty object and no per-call meta', () => {
             const logger = new Logger({ metaProvider: () => ({}) });
             logger.info('empty provider');
-            expect(Object.keys(getLine())).toEqual(['timestamp', 'level', 'message']);
+            expect(Object.keys(getLine())).toStrictEqual(['timestamp', 'level', 'message']);
         });
 
         it('child logger inherits metaProvider from parent', () => {

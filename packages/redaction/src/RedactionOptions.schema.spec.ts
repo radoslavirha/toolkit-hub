@@ -4,16 +4,16 @@ import { RedactionUtils } from './RedactionUtils.js';
 
 describe('RedactionFieldOptionsSchema', () => {
     it('defaults to enabled with no selectors', () => {
-        expect(RedactionFieldOptionsSchema.parse({})).toEqual({ enabled: true, redactPaths: [] });
+        expect(RedactionFieldOptionsSchema.parse({})).toStrictEqual({ enabled: true, redactPaths: [] });
     });
 
     it('keeps explicit values', () => {
         expect(RedactionFieldOptionsSchema.parse({ enabled: false, redactPaths: ['a.b'] }))
-            .toEqual({ enabled: false, redactPaths: ['a.b'] });
+            .toStrictEqual({ enabled: false, redactPaths: ['a.b'] });
     });
 
     it('trims selectors and rejects empty ones', () => {
-        expect(RedactionFieldOptionsSchema.parse({ redactPaths: ['  token  '] }).redactPaths).toEqual(['token']);
+        expect(RedactionFieldOptionsSchema.parse({ redactPaths: ['  token  '] }).redactPaths).toStrictEqual(['token']);
         expect(() => RedactionFieldOptionsSchema.parse({ redactPaths: ['   '] })).toThrow();
     });
 });
@@ -25,7 +25,7 @@ describe('createRedactionSchema', () => {
     });
 
     it('applies the per-field default selectors when the field is omitted', () => {
-        expect(Schema.parse({})).toEqual({
+        expect(Schema.parse({})).toStrictEqual({
             headers: { enabled: true, redactPaths: ['authorization'] },
             response: { enabled: true, redactPaths: [] }
         });
@@ -35,12 +35,12 @@ describe('createRedactionSchema', () => {
         // The case that leaks: the field object exists, so an object-level default never
         // fires and `redactPaths` would otherwise fall back to the bare `[]`.
         expect(Schema.parse({ headers: { enabled: true } }).headers)
-            .toEqual({ enabled: true, redactPaths: ['authorization'] });
+            .toStrictEqual({ enabled: true, redactPaths: ['authorization'] });
     });
 
     it('lets configuration replace the default selectors', () => {
         expect(Schema.parse({ headers: { redactPaths: ['x-api-key'] } }).headers)
-            .toEqual({ enabled: true, redactPaths: ['x-api-key'] });
+            .toStrictEqual({ enabled: true, redactPaths: ['x-api-key'] });
     });
 
     it('replaces rather than appends — the default is absent from a configured list', () => {
@@ -49,31 +49,31 @@ describe('createRedactionSchema', () => {
     });
 
     it('honours an explicit empty redactPaths as redact nothing', () => {
-        expect(Schema.parse({ headers: { redactPaths: [] } }).headers.redactPaths).toEqual([]);
+        expect(Schema.parse({ headers: { redactPaths: [] } }).headers.redactPaths).toStrictEqual([]);
     });
 
     it('lets configuration disable a field', () => {
         expect(Schema.parse({ response: { enabled: false } }).response)
-            .toEqual({ enabled: false, redactPaths: [] });
+            .toStrictEqual({ enabled: false, redactPaths: [] });
     });
 
     it('does not share the default array between parses', () => {
         const first = Schema.parse({});
         first.headers.redactPaths.push('mutated');
 
-        expect(Schema.parse({}).headers.redactPaths).toEqual(['authorization']);
+        expect(Schema.parse({}).headers.redactPaths).toStrictEqual(['authorization']);
     });
 
     it('does not share the default array between parses of a partially configured field', () => {
         Schema.parse({ headers: { enabled: true } }).headers.redactPaths.push('mutated');
 
-        expect(Schema.parse({ headers: { enabled: true } }).headers.redactPaths).toEqual(['authorization']);
+        expect(Schema.parse({ headers: { enabled: true } }).headers.redactPaths).toStrictEqual(['authorization']);
     });
 });
 
 describe('SENSITIVE_HEADER_SELECTORS', () => {
     it('lists the credential-bearing headers in fast-redact selector syntax', () => {
-        expect([...SENSITIVE_HEADER_SELECTORS]).toEqual([
+        expect([...SENSITIVE_HEADER_SELECTORS]).toStrictEqual([
             'authorization',
             'cookie',
             '["set-cookie"]',
@@ -96,7 +96,7 @@ describe('SENSITIVE_HEADER_SELECTORS', () => {
             'host': 'localhost:4001'
         })) as Record<string, string>;
 
-        expect(headers).toEqual({
+        expect(headers).toStrictEqual({
             'authorization': RedactionUtils.REDACTED_VALUE,
             'cookie': RedactionUtils.REDACTED_VALUE,
             'set-cookie': RedactionUtils.REDACTED_VALUE,

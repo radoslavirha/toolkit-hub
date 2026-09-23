@@ -43,7 +43,7 @@ describe('Serializer', () => {
         it('serializes a model instance to a plain object with all properties', () => {
             const result = Serializer.serialize(makeModel(), TestModel);
 
-            expect(result).toEqual({
+            expect(result).toStrictEqual({
                 id: '1',
                 name: 'Alice',
                 age: 30,
@@ -58,7 +58,7 @@ describe('Serializer', () => {
 
             const result = Serializer.serialize(model, TestModel);
 
-            expect(result).toEqual({
+            expect(result).toStrictEqual({
                 id: '1',
                 name: 'Alice',
                 age: 30,
@@ -91,7 +91,7 @@ describe('Serializer', () => {
             const result = Serializer.deserialize(plain, TestModel);
 
             expect(result).toBeInstanceOf(TestModel);
-            expect(result).toEqual(expect.objectContaining({
+            expect(result).toStrictEqual(expect.objectContaining({
                 id: '1',
                 name: 'Alice',
                 age: 30,
@@ -119,7 +119,7 @@ describe('Serializer', () => {
 
             expect(result).toBeInstanceOf(TestModel);
             expect(result.child).toBeInstanceOf(ChildModel);
-            expect(result).toEqual(expect.objectContaining({
+            expect(result).toStrictEqual(expect.objectContaining({
                 id: '1',
                 name: 'Alice',
                 age: 30,
@@ -147,7 +147,7 @@ describe('Serializer', () => {
             const restored = Serializer.deserialize(plain as object, TestModel);
 
             expect(restored).toBeInstanceOf(TestModel);
-            expect(restored).toEqual(expect.objectContaining({
+            expect(restored).toStrictEqual(expect.objectContaining({
                 id: '1',
                 name: 'Alice',
                 age: 30,
@@ -169,14 +169,14 @@ describe('Serializer', () => {
             expect(result).toHaveLength(2);
             expect(result[0]).toBeInstanceOf(TestModel);
             expect(result[1]).toBeInstanceOf(TestModel);
-            expect(result[0]).toEqual(expect.objectContaining({ id: '1', name: 'Alice', age: 30, createdAt: CREATED_AT, updatedAt: UPDATED_AT }));
-            expect(result[1]).toEqual(expect.objectContaining({ id: '2', name: 'Bob', age: 25, createdAt: CREATED_AT, updatedAt: UPDATED_AT }));
+            expect(result[0]).toStrictEqual(expect.objectContaining({ id: '1', name: 'Alice', age: 30, createdAt: CREATED_AT, updatedAt: UPDATED_AT }));
+            expect(result[1]).toStrictEqual(expect.objectContaining({ id: '2', name: 'Bob', age: 25, createdAt: CREATED_AT, updatedAt: UPDATED_AT }));
         });
 
         it('returns an empty array for an empty input', () => {
             const result = Serializer.deserializeArray([], TestModel);
 
-            expect(result).toEqual([]);
+            expect(result).toStrictEqual([]);
         });
 
         it('deserializes array items with nested models', () => {
@@ -192,7 +192,7 @@ describe('Serializer', () => {
 
             expect(result[0]).toBeInstanceOf(TestModel);
             expect(result[0].child).toBeInstanceOf(ChildModel);
-            expect(result[0]).toEqual(expect.objectContaining({
+            expect(result[0]).toStrictEqual(expect.objectContaining({
                 id: '1',
                 name: 'Alice',
                 age: 30,

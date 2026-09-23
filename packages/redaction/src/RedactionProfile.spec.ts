@@ -21,7 +21,7 @@ describe('RedactionProfile', () => {
                 request: { user: 'me', password: 'hunter2' }
             });
 
-            expect(collected).toEqual({
+            expect(collected).toStrictEqual({
                 headers: '{"authorization":"***","accept":"json"}',
                 query: '{"page":2}',
                 request: '{"user":"me","password":"***"}'
@@ -34,7 +34,7 @@ describe('RedactionProfile', () => {
             const collected = profile.collect({ response: { secret: 'value' } });
 
             expect(collected).not.toHaveProperty('response');
-            expect(collected).toEqual({});
+            expect(collected).toStrictEqual({});
         });
 
         it('omits fields absent from the supplied values', () => {
@@ -42,20 +42,20 @@ describe('RedactionProfile', () => {
 
             const collected = profile.collect({ query: { a: 1 } });
 
-            expect(Object.keys(collected)).toEqual(['query']);
+            expect(Object.keys(collected)).toStrictEqual(['query']);
         });
 
         it('distinguishes an explicitly undefined field from an absent one', () => {
             const profile = new RedactionProfile<Field>(CONFIG);
 
-            expect(profile.collect({ query: undefined })).toEqual({ query: 'undefined' });
-            expect(profile.collect({})).toEqual({});
+            expect(profile.collect({ query: undefined })).toStrictEqual({ query: 'undefined' });
+            expect(profile.collect({})).toStrictEqual({});
         });
 
         it('ignores fields that are not configured', () => {
             const profile = new RedactionProfile<Field>({ query: { enabled: true, redactPaths: [] } });
 
-            expect(profile.collect({ query: { a: 1 }, headers: { b: 2 } })).toEqual({ query: '{"a":1}' });
+            expect(profile.collect({ query: { a: 1 }, headers: { b: 2 } })).toStrictEqual({ query: '{"a":1}' });
         });
     });
 
@@ -107,6 +107,6 @@ describe('RedactionProfile', () => {
     it('accepts an empty configuration', () => {
         const profile = new RedactionProfile({});
 
-        expect(profile.collect({ anything: 1 })).toEqual({});
+        expect(profile.collect({ anything: 1 })).toStrictEqual({});
     });
 });

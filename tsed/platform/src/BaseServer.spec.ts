@@ -57,7 +57,7 @@ describe('ServerBase', () => {
 
         // assert
         expect(response.status).toBe(200);
-        expect(response.body).toEqual({
+        expect(response.body).toStrictEqual({
             test: 'This is a test',
             value: 12345
         });

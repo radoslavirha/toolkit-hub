@@ -71,7 +71,7 @@ describe('PackageJsonProvider', () => {
             expect(pkg1).not.toBe(pkg2);
             
             // But with same values
-            expect(pkg1).toEqual(pkg2);
+            expect(pkg1).toStrictEqual(pkg2);
         });
     });
 
@@ -125,8 +125,8 @@ describe('PackageJsonProvider', () => {
             const read3 = provider.config;
 
             // All reads should return the same values
-            expect(read1).toEqual(read2);
-            expect(read2).toEqual(read3);
+            expect(read1).toStrictEqual(read2);
+            expect(read2).toStrictEqual(read3);
         });
     });
 });

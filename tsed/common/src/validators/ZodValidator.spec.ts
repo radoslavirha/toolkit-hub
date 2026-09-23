@@ -45,7 +45,7 @@ describe('ZodValidator', () => {
             try {
                 ZodValidator.validate<ValidType>(ValidSchema, { age: 30 });
             } catch (error) {
-                expect(error).toEqual(
+                expect(error).toStrictEqual(
                     expect.objectContaining({
                         issues: expect.arrayContaining([
                             expect.objectContaining({ message: expect.any(String) })

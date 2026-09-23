@@ -32,7 +32,7 @@ describe('BaseConfigProvider', () => {
             expect(config1.nested.array).not.toBe(config2.nested.array);
 
             // But should have same values
-            expect(config1).toEqual(config2);
+            expect(config1).toStrictEqual(config2);
         });
 
         it('Should prevent mutations to primitive properties', () => {
@@ -82,7 +82,7 @@ describe('BaseConfigProvider', () => {
 
             // Original nested values should be preserved
             expect(config2.nested.value).toBe('original');
-            expect(config2.nested.array).toEqual([1, 2, 3]);
+            expect(config2.nested.array).toStrictEqual([1, 2, 3]);
         });
 
         it('Should prevent mutations to arrays', () => {
@@ -107,7 +107,7 @@ describe('BaseConfigProvider', () => {
             const config2 = provider.config;
 
             // Original array should be preserved
-            expect(config2.nested.array).toEqual([1, 2, 3]);
+            expect(config2.nested.array).toStrictEqual([1, 2, 3]);
         });
     });
 
@@ -117,7 +117,7 @@ describe('BaseConfigProvider', () => {
             const provider = new BaseConfigProvider(config);
 
             const retrieved = provider.config;
-            expect(retrieved).toEqual(config);
+            expect(retrieved).toStrictEqual(config);
         });
 
         it('Should handle empty configuration', () => {
@@ -125,7 +125,7 @@ describe('BaseConfigProvider', () => {
             const provider = new BaseConfigProvider(config);
 
             const retrieved = provider.config;
-            expect(retrieved).toEqual({});
+            expect(retrieved).toStrictEqual({});
         });
 
         it('Should handle complex nested structures', () => {
@@ -146,9 +146,9 @@ describe('BaseConfigProvider', () => {
             const provider = new BaseConfigProvider(config);
             const retrieved = provider.config;
 
-            expect(retrieved).toEqual(config);
+            expect(retrieved).toStrictEqual(config);
             expect(retrieved.level1.level2.level3.value).toBe('deep');
-            expect(retrieved.arrays).toEqual([[1, 2], [3, 4]]);
+            expect(retrieved.arrays).toStrictEqual([[1, 2], [3, 4]]);
         });
     });
 

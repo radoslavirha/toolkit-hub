@@ -15,7 +15,7 @@ describe('ObjectUtils', () => {
 
             const cloned = ObjectUtils.cloneDeep(original);
 
-            expect(cloned).toEqual(original);
+            expect(cloned).toStrictEqual(original);
             expect(cloned).not.toBe(original); // Ensure it's a different reference
             expect(cloned.b).not.toBe(original.b); // Ensure nested objects are also cloned
             expect(cloned.b.d).not.toBe(original.b.d); // Ensure nested arrays are also cloned
@@ -34,7 +34,7 @@ describe('ObjectUtils', () => {
             const original = new TestClass('value1', 42);
             const cloned = ObjectUtils.cloneDeep(original);
 
-            expect(cloned).toEqual(original);
+            expect(cloned).toStrictEqual(original);
             expect(cloned).not.toBe(original); // Ensure it's a different reference
             expect(cloned instanceof TestClass).toBe(true); // Ensure the cloned object is still an instance of TestClass
         });
@@ -43,7 +43,7 @@ describe('ObjectUtils', () => {
             const original = { a: null, b: { c: null } };
             const cloned = ObjectUtils.cloneDeep(original);
 
-            expect(cloned).toEqual(original);
+            expect(cloned).toStrictEqual(original);
             expect(cloned).not.toBe(original);
         });
 
@@ -51,7 +51,7 @@ describe('ObjectUtils', () => {
             const original = { a: undefined, b: { c: undefined } };
             const cloned = ObjectUtils.cloneDeep(original);
 
-            expect(cloned).toEqual(original);
+            expect(cloned).toStrictEqual(original);
             expect(cloned).not.toBe(original);
         });
 
@@ -59,7 +59,7 @@ describe('ObjectUtils', () => {
             const original = { date: new Date('2023-01-01') };
             const cloned = ObjectUtils.cloneDeep(original);
 
-            expect(cloned.date).toEqual(original.date);
+            expect(cloned.date).toStrictEqual(original.date);
             expect(cloned.date).not.toBe(original.date);
         });
 
@@ -67,7 +67,7 @@ describe('ObjectUtils', () => {
             const original = {};
             const cloned = ObjectUtils.cloneDeep(original);
 
-            expect(cloned).toEqual(original);
+            expect(cloned).toStrictEqual(original);
             expect(cloned).not.toBe(original);
         });
 
@@ -75,7 +75,7 @@ describe('ObjectUtils', () => {
             const original = [1, 'string', { a: 1 }, [2, 3], null, undefined];
             const cloned = ObjectUtils.cloneDeep(original);
 
-            expect(cloned).toEqual(original);
+            expect(cloned).toStrictEqual(original);
             expect(cloned).not.toBe(original);
             expect(cloned[2]).not.toBe(original[2]);
         });
@@ -109,7 +109,7 @@ describe('ObjectUtils', () => {
 
             const merged = ObjectUtils.mergeDeep(target, source);
 
-            expect(merged).toEqual({
+            expect(merged).toStrictEqual({
                 a: 1,
                 b: {
                     c: 20,
@@ -128,7 +128,7 @@ describe('ObjectUtils', () => {
             
             const merged = ObjectUtils.mergeDeep(target, source);
 
-            expect(merged).toEqual(target);
+            expect(merged).toStrictEqual(target);
             expect(merged).not.toBe(target);
         });
 
@@ -138,7 +138,7 @@ describe('ObjectUtils', () => {
             
             const merged = ObjectUtils.mergeDeep(target, source);
 
-            expect(merged).toEqual(source);
+            expect(merged).toStrictEqual(source);
         });
 
         it('should merge nested arrays by concatenation', () => {
@@ -147,7 +147,7 @@ describe('ObjectUtils', () => {
             
             const merged = ObjectUtils.mergeDeep(target, source);
 
-            expect(merged.arr).toEqual([1, 2, 3, 4, 5]);
+            expect(merged.arr).toStrictEqual([1, 2, 3, 4, 5]);
         });
 
         it('should handle null values in source', () => {
@@ -182,7 +182,7 @@ describe('ObjectUtils', () => {
             
             const merged = ObjectUtils.mergeDeep(target, source);
 
-            expect(merged).toEqual({
+            expect(merged).toStrictEqual({
                 a: {
                     b: {
                         c: {
@@ -200,26 +200,26 @@ describe('ObjectUtils', () => {
             const obj = { host: 'localhost', port: 3000 };
             const result: ('host' | 'port')[] = ObjectUtils.keys(obj);
 
-            expect(result).toEqual(['host', 'port']);
+            expect(result).toStrictEqual(['host', 'port']);
         });
 
         it('returns string keys from a dictionary', () => {
             const dict: Dictionary<number> = { a: 1, b: 2 };
             const result: string[] = ObjectUtils.keys(dict);
 
-            expect(result).toEqual(['a', 'b']);
+            expect(result).toStrictEqual(['a', 'b']);
         });
 
         it('returns empty array for null', () => {
-            expect(ObjectUtils.keys(null)).toEqual([]);
+            expect(ObjectUtils.keys(null)).toStrictEqual([]);
         });
 
         it('returns empty array for undefined', () => {
-            expect(ObjectUtils.keys(undefined)).toEqual([]);
+            expect(ObjectUtils.keys(undefined)).toStrictEqual([]);
         });
 
         it('returns empty array for an empty object', () => {
-            expect(ObjectUtils.keys({})).toEqual([]);
+            expect(ObjectUtils.keys({})).toStrictEqual([]);
         });
     });
 
@@ -228,21 +228,21 @@ describe('ObjectUtils', () => {
             const obj = { host: 'localhost', port: 3000 };
             const result: (string | number)[] = ObjectUtils.values(obj);
 
-            expect(result).toEqual(['localhost', 3000]);
+            expect(result).toStrictEqual(['localhost', 3000]);
         });
 
         it('returns typed values from a dictionary', () => {
             const dict: Dictionary<number> = { a: 1, b: 2 };
             const result: number[] = ObjectUtils.values(dict);
 
-            expect(result).toEqual([1, 2]);
+            expect(result).toStrictEqual([1, 2]);
         });
 
         it('returns enum values from a string enum', () => {
             enum Direction { Up = 'UP', Down = 'DOWN' }
             const result = ObjectUtils.values(Direction);
 
-            expect(result).toEqual(['UP', 'DOWN']);
+            expect(result).toStrictEqual(['UP', 'DOWN']);
         });
 
         it('returns enum values from a numeric enum', () => {
@@ -250,19 +250,19 @@ describe('ObjectUtils', () => {
             // Numeric enums have reverse mappings, so _.values returns both keys and values
             const numericValues = ObjectUtils.values(Status).filter((v) => typeof v === 'number');
 
-            expect(numericValues).toEqual([1, 2]);
+            expect(numericValues).toStrictEqual([1, 2]);
         });
 
         it('returns empty array for null', () => {
-            expect(ObjectUtils.values(null)).toEqual([]);
+            expect(ObjectUtils.values(null)).toStrictEqual([]);
         });
 
         it('returns empty array for undefined', () => {
-            expect(ObjectUtils.values(undefined)).toEqual([]);
+            expect(ObjectUtils.values(undefined)).toStrictEqual([]);
         });
 
         it('returns empty array for an empty object', () => {
-            expect(ObjectUtils.values({})).toEqual([]);
+            expect(ObjectUtils.values({})).toStrictEqual([]);
         });
     });
 
