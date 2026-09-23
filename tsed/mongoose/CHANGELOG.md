@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-mongoose
 
+## 5.0.11
+
+### Patch Changes
+
+- [`b15b9e0`](https://github.com/radoslavirha/toolkit-hub/commit/b15b9e0a6e59a499c3732c44f6ae22dbb0dc3f4b) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Skill update
+
 ## 5.0.10
 
 ### Patch Changes

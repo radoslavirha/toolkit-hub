@@ -62,7 +62,7 @@
     {
       "name": "tsed-swagger",
       "description": "Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI",
-      "version": "9.1.8",
+      "version": "9.1.9",
       "source": "./tsed/swagger"
     },
     {
@@ -86,13 +86,13 @@
     {
       "name": "tsed-platform",
       "description": "Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers",
-      "version": "5.0.4",
+      "version": "5.0.5",
       "source": "./tsed/platform"
     },
     {
       "name": "tsed-mongoose",
       "description": "Agent guidance for @radoslavirha/tsed-mongoose - mapper and repository pattern",
-      "version": "5.0.10",
+      "version": "5.0.11",
       "source": "./tsed/mongoose"
     },
     {
