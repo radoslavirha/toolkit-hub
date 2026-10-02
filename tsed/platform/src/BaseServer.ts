@@ -9,14 +9,12 @@ import { TsEDLoggerBridge } from './TsEDLoggerBridge.js';
 import bodyParser from 'body-parser';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import methodOverride from 'method-override';
 
 /**
  * Base server class with pre-configured Express middleware stack.
  * 
  * Provides a standardized foundation for Ts.ED microservices with common middleware
- * (CORS, compression, body parsing, cookies) and lifecycle hooks. Your server class
+ * (compression, body parsing, cookies) and lifecycle hooks. Your server class
  * should extend this and call {@link registerMiddlewares} in the `$beforeRoutesInit` hook.
  * 
  * @remarks
@@ -25,10 +23,8 @@ import methodOverride from 'method-override';
  * and provides protected access to the Express app instance and Ts.ED settings.
  * 
  * The middleware stack includes:
- * - **CORS**: Configured for credentials and all origins
  * - **Cookie Parser**: Parses Cookie header
  * - **Compression**: gzip/deflate response compression
- * - **Method Override**: HTTP method override via headers/query
  * - **Body Parser**: JSON and URL-encoded body parsing
  * 
  * @example Basic server implementation
@@ -141,16 +137,17 @@ export class BaseServer {
      * Register common Express middleware stack.
      * 
      * Configures the following middleware in order:
-     * 1. **CORS** - Cross-Origin Resource Sharing with credentials support
-     * 2. **Cookie Parser** - Parse Cookie header and populate req.cookies
-     * 3. **Compression** - gzip/deflate response compression
-     * 4. **Method Override** - Override HTTP method via headers or query params
-     * 5. **Body Parser (JSON)** - Parse application/json request bodies
-     * 6. **Body Parser (URL-encoded)** - Parse application/x-www-form-urlencoded bodies
+     * 1. **Cookie Parser** - Parse Cookie header and populate req.cookies
+     * 2. **Compression** - gzip/deflate response compression
+     * 3. **Body Parser (JSON)** - Parse application/json request bodies
+     * 4. **Body Parser (URL-encoded)** - Parse application/x-www-form-urlencoded bodies
      * 
      * @protected
      * 
      * @remarks
+     * CORS and HTTP method override are intentionally not registered: services run behind a
+     * gateway that owns CORS, and the app must not emit `Access-Control-*` headers.
+     * 
      * This method should be called in the `$beforeRoutesInit` lifecycle hook to ensure
      * middleware is registered before controllers and routes are initialized.
      * 
@@ -179,15 +176,8 @@ export class BaseServer {
         this.logger.info('Registering common middlewares...');
 
         this.app
-            .use(
-                cors({
-                    origin: true,
-                    credentials: true
-                })
-            )
             .use(cookieParser())
             .use(compress({}))
-            .use(methodOverride())
             .use(bodyParser.json())
             .use(
                 bodyParser.urlencoded({

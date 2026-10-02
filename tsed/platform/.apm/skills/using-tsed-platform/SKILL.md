@@ -32,9 +32,10 @@ settings, so service-specific configuration stays typed rather than cast.
 ## The Server
 
 Extend `BaseServer` and configure it with `@Configuration`. `BaseServer` already registers
-the standard Express stack — body parser, cookie parser, compression, method override, CORS —
+the standard Express stack — body parser, cookie parser, compression —
 in `registerMiddlewares()`. To add your own, override that method and call `super`; do not
-rebuild the stack from scratch.
+rebuild the stack from scratch. CORS and method override are deliberately not part of it: the
+gateway owns CORS, so the app must not emit `Access-Control-*` headers.
 
 **Mount controllers by value, never by glob.** A glob is resolved at runtime against paths
 that differ between `src` and `dist`, so it works in development and silently mounts nothing
