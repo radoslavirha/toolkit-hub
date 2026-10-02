@@ -126,18 +126,23 @@ beforeEach(PlatformTest.bootstrap(Server, { mount: { '/': [TestController] } }))
 afterEach(PlatformTest.reset);
 ```
 
-**Request context (unit-testing code that takes a `PlatformContext`, e.g. `$onResponse`):** never hand-roll a fake context with `as unknown as PlatformContext`. Build a real one with `PlatformTest.createRequestContext` (shape the request/response with `PlatformTest.createRequest` / `createResponse`) and run the code inside it with `runInContext` from `@tsed/di`, the way the platform does per request:
+**Request context (unit-testing code that takes a `PlatformContext`, e.g. `$onResponse`):** never hand-roll a fake context with `as unknown as PlatformContext`. Create a real one with `PlatformTest.createRequestContext()` (no options; its defaults are a working fake request/response), set only what the test needs on `$ctx.request.raw` / `$ctx.response`, run the code inside it with `runInContext` from `@tsed/di`, and destroy it afterwards:
 ```ts
-const $ctx = PlatformTest.createRequestContext({
-    id: 'req-1',
-    event: {
-        request: PlatformTest.createRequest({ method: 'GET', url: '/cb?x=1', query: { x: '1' } }),
-        response: PlatformTest.createResponse({ statusCode: 200 })
-    }
+let $ctx: PlatformContext;
+
+beforeEach(() => {
+    $ctx = PlatformTest.createRequestContext();
 });
-await runInContext($ctx, () => logger.$onResponse($ctx));
+afterEach(() => $ctx.destroy());
+
+it('...', async () => {
+    $ctx.request.raw.url = '/cb?x=1';
+    $ctx.request.raw.query = { x: '1' };
+    $ctx.response.status(503);
+
+    await runInContext($ctx, () => logger.$onResponse($ctx));
+});
 ```
-Put the builder in a helper at the top of the spec; the test is `async`.
 
 **MongoDB (testcontainers):**
 ```ts

@@ -37,43 +37,26 @@ type LoggerInternal = {
     redaction: { collect: (sources: Record<string, unknown>) => Record<string, unknown> };
 };
 
-interface CtxInput {
-    url?: string;
-    query?: Record<string, unknown>;
-    body?: unknown;
-    statusCode?: number;
-    data?: unknown;
-}
-
-/** Builds a real Ts.ED request context, the way the platform creates one per request. */
-const buildCtx = ({ url = '/api/things', query = {}, body, statusCode = 200, data = { ok: true } }: CtxInput = {}): PlatformContext => {
-    const $ctx = PlatformTest.createRequestContext({
-        id: 'req-1',
-        event: {
-            request: PlatformTest.createRequest({ method: 'GET', url, query, body }),
-            response: PlatformTest.createResponse({ statusCode })
-        }
-    });
-    $ctx.data = data;
-
-    return $ctx;
-};
-
 /** Fires the Logger's `$onResponse` hook inside the request's async context, as Ts.ED does. */
-const respond = (logger: LoggerInternal, $ctx: PlatformContext): Promise<void> =>
-    runInContext($ctx, () => logger.$onResponse($ctx));
+const respond = (logger: LoggerInternal, ctx: PlatformContext): Promise<void> =>
+    runInContext(ctx, () => logger.$onResponse(ctx));
 
 const buildLogger = (opts: LoggerOptionsInput = {}): LoggerInternal =>
     new Logger(getOptions(opts)) as unknown as LoggerInternal;
 
 describe('Logger (tsed-logger)', () => {
+    let $ctx: PlatformContext;
+
     beforeEach(() => {
         vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
         vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+        $ctx = PlatformTest.createRequestContext();
+        $ctx.data = { ok: true };
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         vi.restoreAllMocks();
+        await $ctx.destroy();
     });
 
     it('is an instance of BaseLogger', () => {
@@ -121,7 +104,7 @@ describe('Logger (tsed-logger)', () => {
         const logger = buildLogger({ requests: { enabled: true, response: { enabled: true } } });
         const infoSpy = vi.spyOn(logger.httpLog, 'info');
 
-        await respond(logger, buildCtx());
+        await respond(logger, $ctx);
 
         expect(infoSpy).toHaveBeenCalledTimes(1);
         const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
@@ -137,7 +120,8 @@ describe('Logger (tsed-logger)', () => {
             const logger = buildIgnoringLogger();
             const infoSpy = vi.spyOn(logger.httpLog, 'info');
 
-            await respond(logger, buildCtx({ url: '/health/live' }));
+            $ctx.request.raw.url = '/health/live';
+            await respond(logger, $ctx);
 
             expect(infoSpy).not.toHaveBeenCalled();
         });
@@ -146,7 +130,8 @@ describe('Logger (tsed-logger)', () => {
             const logger = buildIgnoringLogger();
             const infoSpy = vi.spyOn(logger.httpLog, 'info');
 
-            await respond(logger, buildCtx({ url: '/api/things' }));
+            $ctx.request.raw.url = '/api/things';
+            await respond(logger, $ctx);
 
             expect(infoSpy).toHaveBeenCalledTimes(1);
         });
@@ -155,7 +140,8 @@ describe('Logger (tsed-logger)', () => {
             const logger = buildIgnoringLogger();
             const infoSpy = vi.spyOn(logger.httpLog, 'info');
 
-            await respond(logger, buildCtx({ url: '/health/ready?verbose=1' }));
+            $ctx.request.raw.url = '/health/ready?verbose=1';
+            await respond(logger, $ctx);
 
             expect(infoSpy).not.toHaveBeenCalled();
         });
@@ -164,7 +150,8 @@ describe('Logger (tsed-logger)', () => {
             const logger = buildIgnoringLogger();
             const infoSpy = vi.spyOn(logger.httpLog, 'info');
 
-            await respond(logger, buildCtx({ url: '/healthchecks-admin' }));
+            $ctx.request.raw.url = '/healthchecks-admin';
+            await respond(logger, $ctx);
 
             expect(infoSpy).toHaveBeenCalledTimes(1);
         });
@@ -173,7 +160,8 @@ describe('Logger (tsed-logger)', () => {
             const logger = buildIgnoringLogger();
             const infoSpy = vi.spyOn(logger.httpLog, 'info');
 
-            await respond(logger, buildCtx({ url: '/Health/live' }));
+            $ctx.request.raw.url = '/Health/live';
+            await respond(logger, $ctx);
 
             expect(infoSpy).toHaveBeenCalledTimes(1);
         });
@@ -182,7 +170,8 @@ describe('Logger (tsed-logger)', () => {
             const logger = buildIgnoringLogger([]);
             const infoSpy = vi.spyOn(logger.httpLog, 'info');
 
-            await respond(logger, buildCtx({ url: '/health/live' }));
+            $ctx.request.raw.url = '/health/live';
+            await respond(logger, $ctx);
 
             expect(infoSpy).toHaveBeenCalledTimes(1);
         });
@@ -191,7 +180,8 @@ describe('Logger (tsed-logger)', () => {
             const logger = buildIgnoringLogger();
             const collectSpy = vi.spyOn(logger.redaction, 'collect');
 
-            await respond(logger, buildCtx({ url: '/health/live' }));
+            $ctx.request.raw.url = '/health/live';
+            await respond(logger, $ctx);
 
             expect(collectSpy).not.toHaveBeenCalled();
         });
@@ -200,7 +190,9 @@ describe('Logger (tsed-logger)', () => {
             const logger = buildIgnoringLogger();
             const errorSpy = vi.spyOn(logger.httpLog, 'error');
 
-            await respond(logger, buildCtx({ url: '/health/ready', statusCode: 503 }));
+            $ctx.request.raw.url = '/health/ready';
+            $ctx.response.status(503);
+            await respond(logger, $ctx);
 
             expect(errorSpy).not.toHaveBeenCalled();
         });
@@ -213,10 +205,9 @@ describe('Logger (tsed-logger)', () => {
             });
             const infoSpy = vi.spyOn(logger.httpLog, 'info');
 
-            await respond(logger, buildCtx({
-                url: '/cb?code=abc&token=s3cret',
-                query: { code: 'abc', token: 's3cret' }
-            }));
+            $ctx.request.raw.url = '/cb?code=abc&token=s3cret';
+            $ctx.request.raw.query = { code: 'abc', token: 's3cret' };
+            await respond(logger, $ctx);
 
             const meta = (infoSpy.mock.calls[0] as [string, Record<string, unknown>])[1];
             expect(meta['url']).toBe('/cb');
