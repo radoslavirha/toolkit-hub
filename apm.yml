@@ -5,10 +5,8 @@ license: MIT
 repository: https://github.com/radoslavirha/toolkit-hub
 targets:
   - claude
-  - copilot
 dependencies:
   apm:
-    - obra/superpowers
   mcp:
 
 marketplace:
