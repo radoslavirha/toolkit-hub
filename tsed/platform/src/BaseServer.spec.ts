@@ -5,6 +5,12 @@ import { describe, beforeEach, afterEach, expect, vi, it, MockInstance } from 'v
 import { TestController } from './test/TestController.js';
 import { BaseServer } from './BaseServer.js';
 
+class MiddlewareServer extends BaseServer {
+    public $beforeRoutesInit(): void {
+        this.registerMiddlewares();
+    }
+}
+
 const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream; _stderr: NodeJS.WriteStream };
 
 describe('ServerBase', () => {
@@ -46,7 +52,7 @@ describe('ServerBase', () => {
         server.registerMiddlewares();
 
         expect(loggerInfoSpy).toHaveBeenCalledWith('Registering common middlewares...');
-        expect(appSpy).toHaveBeenCalledTimes(6);
+        expect(appSpy).toHaveBeenCalledTimes(4);
     });
 
     it('should register routes', async () => {
@@ -61,5 +67,37 @@ describe('ServerBase', () => {
             test: 'This is a test',
             value: 12345
         });
+    });
+});
+
+describe('ServerBase middleware stack', () => {
+    beforeEach(() => {
+        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+        vi.spyOn(Logger.prototype, 'info').mockImplementation(vi.fn());
+    });
+
+    beforeEach(PlatformTest.bootstrap(MiddlewareServer, {
+        mount: {
+            '/': [TestController]
+        }
+    }));
+
+    afterEach(PlatformTest.reset);
+    afterEach(() => vi.restoreAllMocks());
+
+    it('does not emit CORS headers', async () => {
+        const response = await SuperTest(PlatformTest.callback()).get('/').set('Origin', 'https://evil.example');
+
+        expect(response.status).toBe(200);
+        expect(response.headers['access-control-allow-origin']).toBeUndefined();
+        expect(response.headers['access-control-allow-credentials']).toBeUndefined();
+    });
+
+    it('does not honour X-HTTP-Method-Override', async () => {
+        const response = await SuperTest(PlatformTest.callback()).post('/').set('X-HTTP-Method-Override', 'GET');
+
+        // POST / has no handler; had the override been applied it would have routed to GET / (200)
+        expect(response.status).toBe(404);
     });
 });

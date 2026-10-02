@@ -2,7 +2,7 @@
 
 > Pre-configured Express-based Ts.ED platform with standard middleware, base server class, and performance-tracked handler pattern for AI-assisted development.
 
-Express-based Ts.ED platform adapter providing standardized bootstrap, base server with common middleware stack (CORS, compression, body parsing), and performance-tracked handler pattern for building microservices quickly.
+Express-based Ts.ED platform adapter providing standardized bootstrap, base server with common middleware stack (compression, body parsing, cookies), and performance-tracked handler pattern for building microservices quickly.
 
 ---
 
@@ -13,7 +13,7 @@ Express-based Ts.ED platform adapter providing standardized bootstrap, base serv
 **Install in pnpm monorepo:**
 ```bash
 # From repository root
-pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration @tsed/di @tsed/platform-express @tsed/platform-http body-parser compression cookie-parser cors method-override
+pnpm --filter YOUR_SERVICE_NAME add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration @tsed/di @tsed/platform-express @tsed/platform-http body-parser compression cookie-parser
 ```
 
 **Essential Pattern:**
@@ -50,7 +50,7 @@ class Handler extends BaseHandler<Request, Response> {
 
 **Key Components:**
 - `Platform.bootstrap()` - Bootstrap Ts.ED application
-- `BaseServer` - Pre-configured Express server with middleware (CORS, compression, body-parser) + structured JSON logging via injected `@radoslavirha/tsed-logger`
+- `BaseServer` - Pre-configured Express server with middleware (compression, body-parser, cookies) + structured JSON logging via injected `@radoslavirha/tsed-logger`
 - `BaseHandler<IRequest, IResponse>` - Performance-tracked handler with structured JSON logging
 - `ServerConfiguration` - Type for Ts.ED config with API metadata
 
@@ -64,12 +64,12 @@ class Handler extends BaseHandler<Request, Response> {
 # Install with required peer dependencies
 pnpm add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration @radoslavirha/tsed-logger \
   @tsed/di @tsed/platform-express @tsed/platform-http @tsed/ajv \
-  body-parser compression cookie-parser cors method-override
+  body-parser compression cookie-parser
 
 # Monorepo - install in specific workspace package
 pnpm --filter my-service add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration @radoslavirha/tsed-logger \
   @tsed/di @tsed/platform-express @tsed/platform-http @tsed/ajv \
-  body-parser compression cookie-parser cors method-override
+  body-parser compression cookie-parser
 ```
 
 See [root README](../../README.md#-installation) for registry setup and monorepo details.
@@ -93,7 +93,7 @@ Platform.bootstrap({ rootModule: Server, ...config })
     BaseServer (extends)
             ↓
     registerMiddlewares()
-    → CORS, compression, body-parser, cookies
+    → compression, body-parser, cookies
             ↓
       Controllers
             ↓
@@ -271,14 +271,12 @@ Pre-configured Express server class with standard middleware stack.
 
 **Middleware Stack (via `registerMiddlewares()`):**
 
-1. **CORS** - Cross-Origin Resource Sharing
-   - `origin: true` - Allows all origins
-   - `credentials: true` - Allows credentials (cookies, auth headers)
-2. **cookie-parser** - Parse Cookie header and populate `req.cookies`
-3. **compression** - gzip/deflate response compression
-4. **method-override** - Override HTTP method via headers/query (`_method`)
-5. **body-parser.json()** - Parse `application/json` request bodies
-6. **body-parser.urlencoded()** - Parse `application/x-www-form-urlencoded` bodies (extended: true)
+1. **cookie-parser** - Parse Cookie header and populate `req.cookies`
+2. **compression** - gzip/deflate response compression
+3. **body-parser.json()** - Parse `application/json` request bodies
+4. **body-parser.urlencoded()** - Parse `application/x-www-form-urlencoded` bodies (extended: true)
+
+> **CORS and method override are not registered.** Services are expected to run behind a gateway (e.g. Traefik) that owns CORS; the app emits no `Access-Control-*` headers and ignores `X-HTTP-Method-Override`.
 
 **Protected Properties:**
 

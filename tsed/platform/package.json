@@ -44,9 +44,7 @@
         "@tsed/logger-connect": "8.0.5",
         "body-parser": "catalog:express",
         "compression": "catalog:express",
-        "cookie-parser": "catalog:express",
-        "cors": "catalog:express",
-        "method-override": "catalog:express"
+        "cookie-parser": "catalog:express"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
@@ -66,8 +64,6 @@
         "@types/body-parser": "catalog:express",
         "@types/compression": "catalog:express",
         "@types/cookie-parser": "catalog:express",
-        "@types/cors": "catalog:express",
-        "@types/method-override": "catalog:express",
         "@types/supertest": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "ajv": "catalog:tsed",
