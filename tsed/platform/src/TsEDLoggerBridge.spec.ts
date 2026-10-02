@@ -2,6 +2,7 @@ import { describe, beforeEach, afterEach, expect, it, vi, MockInstance } from 'v
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { BaseServer } from './BaseServer.js';
 import SuperTest from 'supertest';
+import { LogLevel } from '@radoslavirha/tsed-logger';
 import { TsEDLoggerBridge } from './TsEDLoggerBridge.js';
 import { TestController } from './test/TestController.js';
 
@@ -53,5 +54,28 @@ describe('TsEDLoggerBridge', () => {
         // assert
         const requestLog = parseLogs(stdoutSpy).find((log) => (log.message as string).includes('Request finished in'));
         expect(requestLog).toBeDefined();
+    });
+
+    it('should not throw on non-string message or data', async () => {
+        // arrange
+        const bridge = await PlatformTest.invoke<TsEDLoggerBridge>(TsEDLoggerBridge);
+        const process = (event: Record<string, unknown>): void =>
+            (bridge as unknown as { processLogEvent: (l: LogLevel, e: Record<string, unknown>) => void })
+                .processLogEvent(LogLevel.ERROR, event);
+        const logSpy = vi.spyOn((bridge as unknown as { logger: { log: (level: LogLevel, message: string) => void } }).logger, 'log');
+
+        // act & assert
+        expect(() => process({ data: ['failed', new Error('boom'), { a: 1 }, 42] })).not.toThrow();
+        expect(() => process({ message: 42 })).not.toThrow();
+        const circular: Record<string, unknown> = {};
+        circular.self = circular;
+        expect(() => process({ data: [circular, undefined] })).not.toThrow();
+
+        const messages = logSpy.mock.calls.map(([, message]) => message as string);
+        expect(messages[0]).toContain('failed');
+        expect(messages[0]).toContain('boom');
+        expect(messages[0]).toContain('{"a":1}');
+        expect(messages[0]).toContain('42');
+        expect(messages[1]).toBe('42');
     });
 });
