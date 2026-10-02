@@ -56,13 +56,13 @@
     {
       "name": "tsed-logger",
       "description": "Agent guidance for @radoslavirha/tsed-logger - DI logger and scopes",
-      "version": "0.7.2",
+      "version": "0.7.3",
       "source": "./tsed/logger"
     },
     {
       "name": "tsed-swagger",
       "description": "Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI",
-      "version": "9.1.9",
+      "version": "9.1.10",
       "source": "./tsed/swagger"
     },
     {
@@ -86,7 +86,7 @@
     {
       "name": "tsed-platform",
       "description": "Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers",
-      "version": "5.0.5",
+      "version": "5.0.6",
       "source": "./tsed/platform"
     },
     {

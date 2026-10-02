@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-platform
 
+## 5.0.6
+
+### Patch Changes
+
+- [#200](https://github.com/radoslavirha/toolkit-hub/pull/200) [`9c5fa3b`](https://github.com/radoslavirha/toolkit-hub/commit/9c5fa3b670d2e67e2f02008833a64df0626071cf) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Ts.ED log events with non-string message or data (Error objects, plain objects, numbers) no longer throw in the logger bridge and are logged with their details.
+
+- [#199](https://github.com/radoslavirha/toolkit-hub/pull/199) [`acf56a4`](https://github.com/radoslavirha/toolkit-hub/commit/acf56a429cb813dce2f549241ad8d23b341610cf) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `BaseServer.registerMiddlewares()` no longer registers CORS (`origin: true` with credentials) or method override, so the app emits no `Access-Control-*` headers; CORS is left to the gateway. The `cors` and `method-override` dependencies are removed.
+
+- [#201](https://github.com/radoslavirha/toolkit-hub/pull/201) [`1ee3a5f`](https://github.com/radoslavirha/toolkit-hub/commit/1ee3a5fa9ce059eae8936e9c2ebfdecdad5e2948) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `BaseServer` now registers its middleware stack from its own `$beforeRoutesInit` hook, so overriding `registerMiddlewares()` and calling `super` works without a manual hook.
+- Updated dependencies [[`4ef3d26`](https://github.com/radoslavirha/toolkit-hub/commit/4ef3d26b81c7ebfce1c33220542c798386b15adf)]:
+  - @radoslavirha/tsed-logger@0.7.3
+
 ## 5.0.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-logger
 
+## 0.7.3
+
+### Patch Changes
+
+- [#197](https://github.com/radoslavirha/toolkit-hub/pull/197) [`4ef3d26`](https://github.com/radoslavirha/toolkit-hub/commit/4ef3d26b81c7ebfce1c33220542c798386b15adf) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Request logs no longer include the raw query string in the `url` field, so `requests.query.redactPaths` can't be bypassed.
+
 ## 0.7.2
 
 ### Patch Changes
