@@ -23,9 +23,7 @@ import { BaseServer } from '@radoslavirha/tsed-platform';
 import * as api from './controllers/index.js';
 
 @Configuration({ mount: { '/api': [...Object.values(api)] } })
-export class Server extends BaseServer {
-  $beforeRoutesInit(): void { this.registerMiddlewares(); }
-}
+export class Server extends BaseServer {}
 
 // 2. Bootstrap (index.ts)
 import { Platform, ServerConfiguration } from '@radoslavirha/tsed-platform';
@@ -110,7 +108,7 @@ Before using this package, set up [@radoslavirha/tsed-configuration](../configur
 
 ### 1. Create Server Class
 
-Extend `BaseServer` and call `registerMiddlewares()` in the `$beforeRoutesInit` lifecycle hook:
+Extend `BaseServer`. Its `$beforeRoutesInit` hook registers the standard middleware stack; override `registerMiddlewares()` (calling `super`) to add your own. A subclass that overrides `$beforeRoutesInit` must call `super.$beforeRoutesInit()` or `this.registerMiddlewares()`:
 
 ```typescript
 // src/Server.ts
@@ -124,9 +122,10 @@ import * as api from './controllers/index.js';
     }
 })
 export class Server extends BaseServer {
-    $beforeRoutesInit(): void {
+    protected registerMiddlewares(): void {
         // Register standard middleware stack
-        this.registerMiddlewares();
+        super.registerMiddlewares();
+        // ...add your own middleware here
     }
 }
 ```

@@ -14,8 +14,8 @@ import cookieParser from 'cookie-parser';
  * Base server class with pre-configured Express middleware stack.
  * 
  * Provides a standardized foundation for Ts.ED microservices with common middleware
- * (compression, body parsing, cookies) and lifecycle hooks. Your server class
- * should extend this and call {@link registerMiddlewares} in the `$beforeRoutesInit` hook.
+ * (compression, body parsing, cookies) and lifecycle hooks. {@link registerMiddlewares} runs
+ * automatically from the `$beforeRoutesInit` hook; override it (and call `super`) to add your own.
  * 
  * @remarks
  * This class is decorated with `@Configuration` using default server settings from
@@ -37,11 +37,7 @@ import cookieParser from 'cookie-parser';
  *         '/api': [`${__dirname}/controllers/**\/*.ts`]
  *     }
  * })
- * export class Server extends BaseServer {
- *     $beforeRoutesInit(): void {
- *         this.registerMiddlewares();
- *     }
- * }
+ * export class Server extends BaseServer {}
  * ```
  * 
  * @example With custom middleware
@@ -56,9 +52,9 @@ import cookieParser from 'cookie-parser';
  *     }
  * })
  * export class Server extends BaseServer {
- *     $beforeRoutesInit(): void {
+ *     protected registerMiddlewares(): void {
  *         // Register base middlewares first
- *         this.registerMiddlewares();
+ *         super.registerMiddlewares();
  *         
  *         // Add custom middleware
  *         this.app.use(helmet());
@@ -134,6 +130,17 @@ export class BaseServer {
     }
 
     /**
+     * Lifecycle hook that registers the middleware stack before routes are initialized.
+     * 
+     * @remarks
+     * Calls {@link registerMiddlewares}. Subclasses that override this hook must call
+     * `super.$beforeRoutesInit()` or `this.registerMiddlewares()` themselves.
+     */
+    $beforeRoutesInit(): void {
+        this.registerMiddlewares();
+    }
+
+    /**
      * Register common Express middleware stack.
      * 
      * Configures the following middleware in order:
@@ -148,24 +155,18 @@ export class BaseServer {
      * CORS and HTTP method override are intentionally not registered: services run behind a
      * gateway that owns CORS, and the app must not emit `Access-Control-*` headers.
      * 
-     * This method should be called in the `$beforeRoutesInit` lifecycle hook to ensure
-     * middleware is registered before controllers and routes are initialized.
-     * 
-     * @example Standard usage
-     * ```typescript
-     * $beforeRoutesInit(): void {
-     *     this.registerMiddlewares();
-     * }
-     * ```
+     * Invoked by the base `$beforeRoutesInit` hook, so middleware is registered before
+     * controllers and routes are initialized. Override this method (calling `super`) to add
+     * middleware. A subclass that overrides `$beforeRoutesInit` itself must call
+     * `this.registerMiddlewares()` (or `super.$beforeRoutesInit()`) or the stack is not registered.
      * 
      * @example With custom middleware before/after
      * ```typescript
-     * $beforeRoutesInit(): void {
+     * protected registerMiddlewares(): void {
      *     // Custom middleware before standard stack
      *     this.app.use(requestLogger());
      *     
-     *     // Register standard middleware
-     *     this.registerMiddlewares();
+     *     super.registerMiddlewares();
      *     
      *     // Custom middleware after standard stack
      *     this.app.use(authMiddleware());

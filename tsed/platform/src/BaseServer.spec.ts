@@ -11,6 +11,16 @@ class MiddlewareServer extends BaseServer {
     }
 }
 
+class CustomMiddlewareServer extends BaseServer {
+    protected registerMiddlewares(): void {
+        super.registerMiddlewares();
+        this.app.use((_req: unknown, res: { setHeader: (k: string, v: string) => void }, next: () => void) => {
+            res.setHeader('x-custom', 'yes');
+            next();
+        });
+    }
+}
+
 const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream; _stderr: NodeJS.WriteStream };
 
 describe('ServerBase', () => {
@@ -99,5 +109,29 @@ describe('ServerBase middleware stack', () => {
 
         // POST / has no handler; had the override been applied it would have routed to GET / (200)
         expect(response.status).toBe(404);
+    });
+});
+
+describe('ServerBase registerMiddlewares override', () => {
+    beforeEach(() => {
+        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+        vi.spyOn(Logger.prototype, 'info').mockImplementation(vi.fn());
+    });
+
+    beforeEach(PlatformTest.bootstrap(CustomMiddlewareServer, {
+        mount: {
+            '/': [TestController]
+        }
+    }));
+
+    afterEach(PlatformTest.reset);
+    afterEach(() => vi.restoreAllMocks());
+
+    it('runs the override without an explicit $beforeRoutesInit', async () => {
+        const response = await SuperTest(PlatformTest.callback()).get('/');
+
+        expect(response.status).toBe(200);
+        expect(response.headers['x-custom']).toBe('yes');
     });
 });
