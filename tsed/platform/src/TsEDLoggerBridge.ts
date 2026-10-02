@@ -2,7 +2,7 @@ import { Inject, Injectable, ProviderScope, Scope } from '@tsed/di';
 import { $log } from '@tsed/logger';
 import { BaseLogger, Logger, LogLevel } from '@radoslavirha/tsed-logger';
 import '@tsed/logger-connect';
-import { ArrayUtils, CommonUtils } from '@radoslavirha/utils';
+import { ArrayUtils, CommonUtils, StringUtils } from '@radoslavirha/utils';
 
 @Injectable()
 @Scope(ProviderScope.SINGLETON)
@@ -44,7 +44,7 @@ export class TsEDLoggerBridge {
         const eventMessage = this.parseTsEDEvent(event);
 
         if (event.message) {
-            message = this.sanitizeString(event.message as string);
+            message = this.sanitizeString(event.message);
         } else if (eventMessage) {
             message = this.sanitizeString(eventMessage);
         } else {
@@ -52,7 +52,7 @@ export class TsEDLoggerBridge {
         }
 
         if (ArrayUtils.isArray(event.data) && event.data.length > 0) {
-            message = (event.data as string[])
+            message = event.data
                 .map((item) => this.sanitizeString(item))
                 .join(' ');
         }
@@ -72,7 +72,21 @@ export class TsEDLoggerBridge {
         }
     }
 
-    private sanitizeString(str: string): string {
-        return str.replace(/\x1B(?:\[[0-9;]*[A-Za-z])?/g, '').trim();
+    private stringify(value: unknown): string {
+        if (value instanceof Error) {
+            return value.stack ?? value.message;
+        }
+        if (StringUtils.isString(value)) {
+            return value;
+        }
+        try {
+            return JSON.stringify(value) ?? String(value);
+        } catch {
+            return String(value);
+        }
+    }
+
+    private sanitizeString(value: unknown): string {
+        return this.stringify(value).replace(/\x1B(?:\[[0-9;]*[A-Za-z])?/g, '').trim();
     }
 }
