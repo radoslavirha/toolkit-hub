@@ -124,7 +124,7 @@ export class Logger extends BaseLogger<LoggerMetadata> {
         const meta: Record<string, unknown> = {
             reqId: $ctx.id,
             method: $ctx.request.method,
-            url: $ctx.request.url,
+            url: ($ctx.request.url).split('?')[0],
             status,
             duration
         };
