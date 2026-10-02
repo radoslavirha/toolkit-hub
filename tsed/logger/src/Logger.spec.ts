@@ -226,5 +226,42 @@ describe('Logger (tsed-logger)', () => {
         });
     });
 
+    describe('url field', () => {
+        it('does not leak query string values via url', () => {
+            const logger = new Logger(getOptions({
+                requests: {
+                    enabled: true,
+                    query: { enabled: true, redactPaths: ['token'] }
+                }
+            })) as unknown as {
+                $onResponse: ($ctx: PlatformContext) => void;
+                httpLog: { info: (message: string, attributes: Record<string, unknown>) => void };
+            };
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+            const ctx = {
+                id: 'req-1',
+                dateStart: new Date(Date.now() - 10),
+                request: {
+                    method: 'GET',
+                    url: '/cb?code=abc&token=s3cret',
+                    headers: {},
+                    query: { code: 'abc', token: 's3cret' },
+                    body: undefined
+                },
+                response: {
+                    statusCode: 200,
+                    getHeaders: () => ({})
+                },
+                data: { ok: true }
+            } as unknown as PlatformContext;
+
+            logger.$onResponse(ctx);
+
+            const meta = (infoSpy.mock.calls[0] as [string, Record<string, unknown>])[1];
+            expect(meta['url']).toBe('/cb');
+            expect(JSON.stringify(meta)).not.toContain('s3cret');
+        });
+    });
+
 });
 
