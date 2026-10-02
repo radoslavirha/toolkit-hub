@@ -29,23 +29,34 @@ echo "node $(node -v), pnpm $(pnpm -v), $(apm --version)"
 
 # tsed/mongoose tests start MongoDB through testcontainers. Docker is installed
 # in the cloud image but the daemon isn't running, and the environment cache
-# keeps files, not processes — so start it on every run.
+# keeps files, not processes — so start it on every cloud run. Locally, only
+# report whether a daemon is reachable.
+docker_ok() { timeout 5 docker info >/dev/null 2>&1; }
+
 start_docker() {
-    docker info >/dev/null 2>&1 && return 0
+    docker_ok && return 0
+    [[ "${CLAUDE_CODE_REMOTE:-}" == "true" ]] || return 1
     local sudo=""
     [[ "$(id -u)" != 0 ]] && command -v sudo >/dev/null && sudo="sudo"
-    $sudo service docker start >/dev/null 2>&1 \
-        || $sudo setsid nohup dockerd >/tmp/dockerd.log 2>&1 < /dev/null &
+    # The environment snapshot can carry a stale pid file and socket from the
+    # setup script's daemon, which stop a new one from starting.
+    $sudo rm -f /var/run/docker.pid /var/run/docker.sock
+    # Background only dockerd, with no inherited stdio: a backgrounded group
+    # would keep this script's output pipe open, and the caller would wait on
+    # it for as long as the daemon runs.
+    $sudo setsid nohup dockerd >/tmp/dockerd.log 2>&1 </dev/null &
     for _ in $(seq 1 30); do
-        docker info >/dev/null 2>&1 && return 0
+        docker_ok && return 0
         sleep 1
     done
     return 1
 }
+
+echo "starting docker..."
 if command -v docker >/dev/null && start_docker; then
     echo "docker $(docker version --format '{{.Server.Version}}')"
 else
-    echo "WARN: Docker daemon unavailable — tsed/mongoose tests will fail for environment reasons, not bugs" >&2
+    echo "WARN: Docker daemon unavailable — tsed/mongoose tests will fail for environment reasons, not bugs (see /tmp/dockerd.log)" >&2
 fi
 
 pnpm install --frozen-lockfile
