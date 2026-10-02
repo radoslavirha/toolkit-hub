@@ -27,6 +27,27 @@ done
 
 echo "node $(node -v), pnpm $(pnpm -v), $(apm --version)"
 
+# tsed/mongoose tests start MongoDB through testcontainers. Docker is installed
+# in the cloud image but the daemon isn't running, and the environment cache
+# keeps files, not processes — so start it on every run.
+start_docker() {
+    docker info >/dev/null 2>&1 && return 0
+    local sudo=""
+    [[ "$(id -u)" != 0 ]] && command -v sudo >/dev/null && sudo="sudo"
+    $sudo service docker start >/dev/null 2>&1 \
+        || $sudo setsid nohup dockerd >/tmp/dockerd.log 2>&1 < /dev/null &
+    for _ in $(seq 1 30); do
+        docker info >/dev/null 2>&1 && return 0
+        sleep 1
+    done
+    return 1
+}
+if command -v docker >/dev/null && start_docker; then
+    echo "docker $(docker version --format '{{.Server.Version}}')"
+else
+    echo "WARN: Docker daemon unavailable — tsed/mongoose tests will fail for environment reasons, not bugs" >&2
+fi
+
 pnpm install --frozen-lockfile
 # Workspace packages resolve each other through dist/, so tests need a build.
 pnpm build
