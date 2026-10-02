@@ -33,8 +33,9 @@ settings, so service-specific configuration stays typed rather than cast.
 
 Extend `BaseServer` and configure it with `@Configuration`. `BaseServer` already registers
 the standard Express stack — body parser, cookie parser, compression —
-in `registerMiddlewares()`. To add your own, override that method and call `super`; do not
-rebuild the stack from scratch. CORS and method override are deliberately not part of it: the
+in `registerMiddlewares()`, which the base `$beforeRoutesInit` hook calls. To add your own,
+override `registerMiddlewares()` and call `super`; do not rebuild the stack from scratch. If you
+override `$beforeRoutesInit`, call `super.$beforeRoutesInit()` or the stack is not registered. CORS and method override are deliberately not part of it: the
 gateway owns CORS, so the app must not emit `Access-Control-*` headers.
 
 **Mount controllers by value, never by glob.** A glob is resolved at runtime against paths
