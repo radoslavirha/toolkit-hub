@@ -161,6 +161,24 @@ describe('SwaggerProvider', () => {
             { name: 'v1', url: 'https://api.example.com/path/v1/docs/swagger.json' }
         ]);
     });
+    it('Should build urls when serverUrl is set and swaggerUIOptions is undefined', () => {
+        // e.g. `swaggerUIOptions: config.swagger?.ui` where the optional config block is absent
+        const uiOptions: SwaggerUIConfig | undefined = undefined;
+        const configuration = CommonUtils.buildModel(SwaggerConfig, {
+            title: 'My API',
+            version: '1.0.0',
+            description: 'Description',
+            serverUrl: 'https://api.example.com',
+            documents: [CommonUtils.buildModel(SwaggerDocumentConfig, { docs: 'v1' })],
+            swaggerUIOptions: uiOptions
+        });
+
+        const provider = new SwaggerProvider(configuration);
+
+        expect(provider.config[0].options?.urls).toStrictEqual([
+            { name: 'v1', url: 'https://api.example.com/v1/docs/swagger.json' }
+        ]);
+    });
     it('Should build settings for a document without security schemes', () => {
         const configuration = deserialize<SwaggerConfig>({
             title: 'My API',
