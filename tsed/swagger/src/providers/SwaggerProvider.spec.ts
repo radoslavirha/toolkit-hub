@@ -117,6 +117,7 @@ describe('SwaggerProvider', () => {
                         version: '1.0.0',
                         description: 'This is a description of the application.'
                     },
+                    servers: [{ url: 'https://api.example.com/path' }],
                     components: {
                         securitySchemes: {
                             [SwaggerSecurityScheme.BASIC]: {
