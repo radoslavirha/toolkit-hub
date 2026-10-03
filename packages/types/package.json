@@ -13,6 +13,7 @@
     "types": "./src/index.ts",
     "files": [
         "src",
+        "!src/**/*.spec.ts",
         "package.json",
         "README.md"
     ],
@@ -20,7 +21,8 @@
         "cleanup": "rm -rf coverage dist",
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
-        "lint:fix": "eslint --fix ."
+        "lint:fix": "eslint --fix .",
+        "test": "tsc --noEmit -p tsconfig.json"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",
