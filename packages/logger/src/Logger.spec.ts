@@ -164,7 +164,7 @@ describe('Logger', () => {
 
     describe('metaProvider', () => {
         it('merges provider fields into the emitted log object on every call', () => {
-            const logger = new Logger({ metaProvider: () => ({ requestId: 'req-1' }) });
+            const logger = new Logger<object>({ metaProvider: () => ({ requestId: 'req-1' }) });
             logger.info('with provider');
             expect(getLine()['requestId']).toBe('req-1');
         });
@@ -235,6 +235,44 @@ describe('Logger', () => {
             const logger = new Logger({ enabled: false, metaProvider: provider });
             logger.info('suppressed');
             expect(provider).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('Error metadata', () => {
+        it('keeps the error name, message and stack when an Error is passed as meta', () => {
+            const logger = new Logger();
+            const error = new Error('card declined');
+            logger.error('Payment failed', error);
+
+            const line = getLine();
+            expect(line['message']).toBe('Payment failed');
+            expect(line['error_name']).toBe('Error');
+            expect(line['error_message']).toBe('card declined');
+            expect(line['error_stack']).toBe(error.stack);
+        });
+
+        it('keeps own enumerable properties of an Error passed as meta', () => {
+            const logger = new Logger();
+            logger.error('Read failed', Object.assign(new Error('missing'), { code: 'ENOENT' }));
+
+            expect(getLine()).toMatchObject({ error_message: 'missing', code: 'ENOENT' });
+        });
+
+        it('keeps the error name, message and stack when an Error is nested in meta', () => {
+            const logger = new Logger();
+            const error = new TypeError('card declined');
+            logger.error('Payment failed', { orderId: 'o-1', error });
+
+            const line = getLine();
+            expect(line['orderId']).toBe('o-1');
+            expect(line['error']).toEqual({ name: 'TypeError', message: 'card declined', stack: error.stack });
+        });
+
+        it('merges metaProvider fields with an Error passed as meta', () => {
+            const logger = new Logger<object>({ metaProvider: () => ({ requestId: 'req-1' }) });
+            logger.error('Payment failed', new Error('card declined'));
+
+            expect(getLine()).toMatchObject({ requestId: 'req-1', error_message: 'card declined' });
         });
     });
 });

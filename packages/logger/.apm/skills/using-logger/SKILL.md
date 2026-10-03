@@ -40,6 +40,11 @@ level is dynamic. Each takes a message string and an optional metadata object â€
 variable parts in the metadata, not interpolated into the message, or the lines stop being
 groupable.
 
+Pass a caught `Error` straight in as the metadata â€” `log.error('Payment failed', error)` emits
+`error_name`, `error_message` and `error_stack` fields. An `Error` nested one level down
+(`{ orderId, error }`) is emitted as `{ name, message, stack }`. Don't hand-copy
+`error.message` into the metadata.
+
 ## Framework-free packages take a port, not a logger
 
 A package that does not depend on Ts.ED should accept a structural

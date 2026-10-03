@@ -203,6 +203,10 @@ Every log line is a single JSON object:
 | `message` | Always | Log body string |
 | `scope` | Child loggers only | Instrumentation scope (class/module name) |
 | Additional keys | `metaProvider` or per-call `meta` provided | Merged metadata fields |
+| `error_name`, `error_message`, `error_stack` | `meta` is an `Error` | The error's name, message and stack, plus its own enumerable properties (e.g. `code`) |
+
+An `Error` passed as `meta` is flattened into the `error_*` fields above. An `Error` held in a
+top-level `meta` key (`{ error }`) is emitted as `{ name, message, stack }` instead of `{}`.
 
 `fatal` and `error` levels write to **stderr**; all other levels write to **stdout**.
 
