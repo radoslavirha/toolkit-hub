@@ -122,7 +122,7 @@ export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]> {
             swaggerUIOptions.urls = [
                 {
                     name: settings.docs,
-                    url: `${ config.serverUrl }/${ settings.docs }/docs/swagger.json`
+                    url: `${ config.serverUrl.replace(/\/+$/, '') }/${ settings.docs }/docs/swagger.json`
                 }
             ];
         }

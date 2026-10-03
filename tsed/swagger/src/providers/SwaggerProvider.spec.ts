@@ -144,6 +144,22 @@ describe('SwaggerProvider', () => {
             }
         ]);
     });
+    it('Should not produce a double slash when serverUrl ends with a slash', () => {
+        const configuration = CommonUtils.buildModelStrict(SwaggerConfig, {
+            title: 'My API',
+            version: '1.0.0',
+            description: 'Description',
+            serverUrl: 'https://api.example.com/path/',
+            documents: [CommonUtils.buildModelStrict(SwaggerDocumentConfig, { docs: 'v1', security: [] })],
+            swaggerUIOptions: CommonUtils.buildModelStrict(SwaggerUIConfig, {})
+        });
+
+        const provider = new SwaggerProvider(configuration);
+
+        expect(provider.config[0].options?.urls).toStrictEqual([
+            { name: 'v1', url: 'https://api.example.com/path/v1/docs/swagger.json' }
+        ]);
+    });
     it('Should build settings for a document without security schemes', () => {
         const configuration = deserialize<SwaggerConfig>({
             title: 'My API',
