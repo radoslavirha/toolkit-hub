@@ -105,8 +105,9 @@ Typed wrappers around `@tsed/json-mapper`'s `serialize` and `deserialize` functi
 AJV-based runtime validation of arbitrary input against a Ts.ED model. Useful for validating external data (e.g. configuration files, API payloads) before processing.
 
 - Derives a JSON Schema from `@tsed/schema` decorators at runtime
-- Deserializes the input via `Serializer` into a typed model instance
-- Validates the deserialized instance with AJV (`allErrors: true`)
+- Validates the raw input with AJV (`allErrors: true`), with the standard [`ajv-formats`](https://github.com/ajv-validator/ajv-formats) formats (`date-time`, `email`, `uri`, …) registered — so `BaseModel` subclasses validate
+- Does not coerce values: wrong-typed input (e.g. `"30"` for a `number`) is rejected
+- Deserializes the validated input via `Serializer` into a typed model instance
 - Throws an `ErrorObject[]` array on failure so all violations are surfaced at once
 
 ### ZodValidator
@@ -313,7 +314,7 @@ Static utility class wrapping `@tsed/json-mapper`.
 **Methods:**
 
 - `validate<T>(model: Type<T>, input: unknown, debug?: boolean): T`  
-  Validates and deserializes `input` against the JSON Schema derived from `model`. Returns a typed `T` instance on success; throws `ErrorObject[]` on validation failure.
+  Validates `input` (uncoerced) and then deserializes it against the JSON Schema derived from `model`. Returns a typed `T` instance on success; throws `ErrorObject[]` on validation failure.
 
 **Parameters:**
 
