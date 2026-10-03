@@ -94,7 +94,7 @@ export class SwaggerController {
      * - Clickable cards for each document version
      * - Full URLs to each version's Swagger UI
      * 
-     * @param protocol - HTTP protocol from x-forwarded-proto header (http/https)
+     * @param protocol - HTTP protocol from x-forwarded-proto header (http/https); first entry wins when proxies chain it into a list
      * @param host - Host from host header (e.g., api.example.com)
      * @returns HTML content with document listing
      * 
@@ -117,7 +117,9 @@ export class SwaggerController {
         @HeaderParams('host')
         host: string
     ) {
-        const hostUrl = (this.api.publicURL ?? `${ protocol || 'http' }://${ host }`).replace(/\/+$/, '');
+        // behind chained proxies the header is a list (`https, http`); the first entry is the client-facing one
+        const clientProtocol = protocol?.split(',')[0]?.trim() || 'http';
+        const hostUrl = (this.api.publicURL ?? `${ clientProtocol }://${ host }`).replace(/\/+$/, '');
 
         const _dirname = typeof __dirname !== 'undefined'
             ? __dirname
