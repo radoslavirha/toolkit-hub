@@ -152,4 +152,38 @@ describe('SwaggerController', () => {
         expect(minified).toContain(`<li><a href="https://api.public-url.com/path/v1/docs/"><span>API v1</span> <span>OpenSpec 3.0.3</span></a></li>`);
         expect(response.status).toStrictEqual(200);
     });
+
+    it('Should use the client-facing protocol when x-forwarded-proto has multiple hops', async () => {
+        await PlatformTest.bootstrap(BaseServer, <ServerConfiguration>{
+            mount: {
+                '/': [SwaggerController]
+            },
+            swagger: [
+                {
+                    path: '/v1/docs',
+                    doc: 'v1',
+                    specVersion: '3.0.3',
+                    spec: {
+                        info: {
+                            title: 'My API - v1',
+                            version: '1.0.0'
+                        }
+                    }
+                }
+            ],
+            api: <APIInformation>{
+                service: 'My API',
+                version: '1.0.0'
+            }
+        })();
+        request = SuperTest(PlatformTest.callback());
+
+        const response = await request.get('/').set('Host', 'api.example.com').set('X-Forwarded-Proto', 'https, http');
+
+        const minified = await minify(response.text, { collapseWhitespace: true });
+
+        expect(minified).toContain(`<link rel="icon" href="https://api.example.com/favicon.ico">`);
+        expect(minified).toContain(`<li><a href="https://api.example.com/v1/docs/"><span>API v1</span> <span>OpenSpec 3.0.3</span></a></li>`);
+        expect(response.status).toStrictEqual(200);
+    });
 });
