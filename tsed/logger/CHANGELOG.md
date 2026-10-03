@@ -1,5 +1,12 @@
 # @radoslavirha/tsed-logger
 
+## 0.7.4
+
+### Patch Changes
+
+- Updated dependencies [[`02251ff`](https://github.com/radoslavirha/toolkit-hub/commit/02251ff737c1cd9a8e5de1704e6b66d45b6263ec)]:
+  - @radoslavirha/logger@0.4.6
+
 ## 0.7.3
 
 ### Patch Changes
