@@ -117,4 +117,39 @@ describe('SwaggerController', () => {
         expect(minified).toContain(`<li><a href="https://api.public-url.com/path/v2/docs/"><span>API v2</span> <span>OpenSpec 3.0.3</span></a></li>`);
         expect(response.status).toStrictEqual(200);
     });
+
+    it('Should not produce a double slash when publicURL ends with a slash', async () => {
+        await PlatformTest.bootstrap(BaseServer, <ServerConfiguration>{
+            mount: {
+                '/': [SwaggerController]
+            },
+            swagger: [
+                {
+                    path: '/v1/docs',
+                    doc: 'v1',
+                    specVersion: '3.0.3',
+                    spec: {
+                        info: {
+                            title: 'My API - v1',
+                            version: '1.0.0'
+                        }
+                    }
+                }
+            ],
+            api: <APIInformation>{
+                service: 'My API',
+                version: '1.0.0',
+                publicURL: 'https://api.public-url.com/path/'
+            }
+        })();
+        request = SuperTest(PlatformTest.callback());
+
+        const response = await request.get('/').set('Host', 'api.example.com');
+
+        const minified = await minify(response.text, { collapseWhitespace: true });
+
+        expect(minified).toContain(`<link rel="icon" href="https://api.public-url.com/path/favicon.ico">`);
+        expect(minified).toContain(`<li><a href="https://api.public-url.com/path/v1/docs/"><span>API v1</span> <span>OpenSpec 3.0.3</span></a></li>`);
+        expect(response.status).toStrictEqual(200);
+    });
 });
