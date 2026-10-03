@@ -188,6 +188,7 @@ export class SwaggerConfig {
      * 
      * When provided:
      * - Automatically populates `swaggerUIOptions.urls` with document URLs
+     * - Published as the spec's `servers` entry, so Swagger UI "Try it out" requests keep any proxy path prefix
      * - Used by {@link SwaggerController} to generate correct documentation links
      * - Useful when API is behind a proxy or load balancer
      * 
@@ -203,6 +204,6 @@ export class SwaggerConfig {
      * @see {@link SwaggerProvider.generateSettings} - Uses this to build document URLs
      */
     @Property(String)
-    @Description('Server URL to be used in the Swagger documentation including any proxy removed paths. Automatically sets urls in Swagger UI config.')
+    @Description('Server URL to be used in the Swagger documentation including any proxy removed paths. Automatically sets urls in Swagger UI config and the spec servers.')
     public serverUrl?: string;
 }

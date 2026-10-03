@@ -18,7 +18,7 @@ import { SwaggerUIConfig } from '../models/SwaggerUIConfig.js';
  * 
  * The provider automatically:
  * - Converts each {@link SwaggerDocumentConfig} into a separate `SwaggerSettings` object
- * - Generates document URLs when `serverUrl` is provided
+ * - Generates document URLs and the spec `servers` entry when `serverUrl` is provided
  * - Maps security schemes from {@link SWAGGER_SECURITY_SCHEMES}
  * - Configures OpenAPI 3.0.3 specification structure
  * - Sets up Swagger UI options for each document
@@ -106,6 +106,7 @@ export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]> {
      * - Document path: `/{docs}/docs`
      * - OpenAPI 3.0.3 specification structure
      * - API metadata (title, version, description)
+     * - `servers: [{ url: serverUrl }]` when `serverUrl` is set, so "Try it out" keeps proxy path prefixes
      * - Security schemes mapped from {@link SWAGGER_SECURITY_SCHEMES}
      * - Swagger UI options with optional auto-generated URLs
      * 
@@ -138,6 +139,7 @@ export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]> {
                     version: config.version,
                     description: config.description
                 },
+                ...(config.serverUrl && { servers: [{ url: config.serverUrl }] }),
                 components: {
                     securitySchemes: SwaggerProvider.getSecuritySchemes(settings.security)
                 }

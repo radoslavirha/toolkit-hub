@@ -45,3 +45,10 @@ which is what this package exists to avoid.
 
 Multiple documents are the normal case, not an edge case: one entry per API version keeps
 `/v1` and `/v2` documented separately from a single service.
+
+## Behind a reverse proxy
+
+Set `serverUrl` to the public base URL, including any path prefix the proxy strips
+(`https://api.example.com/path`). It is used twice: to tell Swagger UI where to load each
+`swagger.json`, and as the spec's `servers` entry, which is the base URL "Try it out" calls.
+Leaving it unset makes "Try it out" call the spec's own scheme and host, dropping the prefix.

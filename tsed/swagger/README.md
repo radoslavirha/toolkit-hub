@@ -307,7 +307,7 @@ Main configuration model for the Swagger module. Defines global API metadata, do
 | `description` | `string` | Yes | API description supporting Markdown |
 | `documents` | `SwaggerDocumentConfig[]` | Yes | Array of document version configurations |
 | `swaggerUIOptions` | `SwaggerUIConfig` | No | Swagger UI customization options |
-| `serverUrl` | `string` | No | Public server URL for reverse proxy setups |
+| `serverUrl` | `string` | No | Public server URL for reverse proxy setups; also published as the spec `servers` entry |
 
 **Example:**
 ```typescript
@@ -481,6 +481,11 @@ const swaggerConfig = CommonUtils.buildModelStrict(SwaggerConfig, {
 - Nginx proxy: `https://api.example.com` → `http://localhost:4000`
 - Without `serverUrl`: Swagger UI tries to call `http://localhost:4000` (fails from client)
 - With `serverUrl`: Swagger UI correctly calls `https://api.example.com`
+
+`serverUrl` sets both where Swagger UI loads `swagger.json` from and the spec's `servers` entry
+(`servers: [{ url: serverUrl }]`), which is the base URL "Try it out" sends requests to. A proxy
+that strips a path prefix (`serverUrl: 'https://api.example.com/path'`) therefore keeps `/path`
+in "Try it out" requests.
 
 ### Export Swagger Spec for Code Generation
 
