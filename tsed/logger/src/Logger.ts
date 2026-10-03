@@ -1,6 +1,6 @@
 import { Injectable, ProviderScope, Scope } from '@tsed/di';
 import { PlatformContext } from '@tsed/platform-http';
-import { Logger as BaseLogger } from '@radoslavirha/logger';
+import { Logger as BaseLogger, LogErrorUtils } from '@radoslavirha/logger';
 import { ObjectUtils } from '@radoslavirha/utils';
 
 import { RedactionProfile } from '@radoslavirha/redaction';
@@ -148,13 +148,7 @@ export class Logger extends BaseLogger<LoggerMetadata> {
 
             this.httpLog.error('Request failed', {
                 ...meta,
-                ...(error
-                    ? {
-                        error_name: error.name ?? error.code,
-                        error_message: error.message,
-                        ...(this.options.requests.stack ? { error_stack: error.stack } : {})
-                    }
-                    : {})
+                ...(error ? LogErrorUtils.toFields(error, { stack: this.options.requests.stack }) : {})
             });
         } else {
             this.httpLog.info('Request completed', meta);

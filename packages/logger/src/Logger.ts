@@ -1,6 +1,7 @@
 import winston from 'winston';
 import { LogLevel } from './LogLevel.enum.js';
 import type { LoggerOptions } from './LoggerOptions.js';
+import { LogErrorUtils } from './LogErrorUtils.js';
 import { CommonUtils } from '@radoslavirha/utils';
 
 /** Winston custom levels — lower number = higher priority (matches OTEL severity order). */
@@ -159,12 +160,7 @@ export class Logger<T extends object = object> {
      */
     private static serializeMeta(meta?: object): object | undefined {
         if (meta instanceof Error) {
-            return {
-                ...meta,
-                error_name: meta.name,
-                error_message: meta.message,
-                error_stack: meta.stack
-            };
+            return { ...meta, ...LogErrorUtils.toFields(meta) };
         }
         if (CommonUtils.isUndefined(meta) || !Object.values(meta).some((value) => value instanceof Error)) {
             return meta;
