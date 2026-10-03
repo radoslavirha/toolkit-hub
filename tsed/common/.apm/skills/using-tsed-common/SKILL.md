@@ -39,7 +39,9 @@ Both are static, both take the shape descriptor first and the untrusted input se
 
 Use `JSONSchemaValidator` when the shape already exists as a decorated model — it validates
 against the same schema that produces your OpenAPI documentation, so the API contract and the
-runtime check cannot disagree. Use `ZodValidator` for shapes that are not models, such as
+runtime check cannot disagree. It checks the raw input before deserializing, with standard
+formats such as `date-time` registered, and does not coerce: send `30`, not `"30"`, for a
+`number`. Use `ZodValidator` for shapes that are not models, such as
 configuration or third-party payloads.
 
 Both throw on failure and return the typed value on success, so there is no separate "is it

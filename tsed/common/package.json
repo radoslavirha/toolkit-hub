@@ -40,7 +40,8 @@
     "dependencies": {
         "@radoslavirha/utils": "workspace:*",
         "@swc/helpers": "catalog:",
-        "ajv": "catalog:tsed"
+        "ajv": "catalog:tsed",
+        "ajv-formats": "catalog:tsed"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",

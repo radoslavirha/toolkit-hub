@@ -1,5 +1,6 @@
 import { Required, Property } from '@tsed/schema';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { BaseModel } from '../models/BaseModel.js';
 import { JSONSchemaValidator } from './JSONSchemaValidator.js';
 
 class ValidModel {
@@ -8,6 +9,11 @@ class ValidModel {
 
     @Property()
     age?: number;
+}
+
+class UserModel extends BaseModel {
+    @Required()
+    name!: string;
 }
 
 describe('JSONSchemaValidator', () => {
@@ -42,6 +48,36 @@ describe('JSONSchemaValidator', () => {
                         expect.objectContaining({ keyword: expect.any(String) })
                     ])
                 );
+            }
+        });
+
+        it('returns the instance for a valid BaseModel subclass', () => {
+            const result = JSONSchemaValidator.validate(UserModel, {
+                id: '1',
+                name: 'Alice',
+                createdAt: '2026-01-01T00:00:00.000Z',
+                updatedAt: '2026-01-01T00:00:00.000Z'
+            });
+
+            expect(result).toBeInstanceOf(UserModel);
+            expect(result.name).toBe('Alice');
+            expect(result.createdAt).toBeInstanceOf(Date);
+        });
+
+        it('throws an array of AJV errors when a date-time field is not a valid date-time', () => {
+            expect.hasAssertions();
+
+            try {
+                JSONSchemaValidator.validate(UserModel, {
+                    id: '1',
+                    name: 'Alice',
+                    createdAt: 'not-a-date',
+                    updatedAt: '2026-01-01T00:00:00.000Z'
+                });
+            } catch (errors) {
+                expect(errors).toStrictEqual([
+                    expect.objectContaining({ keyword: 'format', instancePath: '/createdAt' })
+                ]);
             }
         });
 

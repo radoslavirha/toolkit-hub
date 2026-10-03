@@ -1,7 +1,11 @@
 import { Type } from '@tsed/core';
 import { getJsonSchema } from '@tsed/schema';
 import { Ajv, Options } from 'ajv';
+import formatsPlugin from 'ajv-formats';
 import { Serializer } from '../serializer/Serializer.js';
+
+// ajv-formats is CJS; under nodenext the default import is the module object
+const addFormats = formatsPlugin as unknown as typeof formatsPlugin.default;
 
 export class JSONSchemaValidator {
     private static readonly AJV_OPTIONS: Options = { allErrors: true };
@@ -10,8 +14,10 @@ export class JSONSchemaValidator {
      * Validates and deserializes arbitrary input against the JSON Schema derived
      * from a Ts.ED model decorated with `@tsed/schema` decorators.
      *
-     * The input is first deserialized into a typed `T` instance via {@link Serializer},
-     * then validated against the compiled AJV schema. All validation errors are
+     * The raw input is first validated against the compiled AJV schema (with the
+     * standard `ajv-formats` formats such as `date-time` and `email` registered),
+     * then deserialized into a typed `T` instance via {@link Serializer}. Values are
+     * not coerced before validation, so wrong-typed input is rejected. All validation errors are
      * collected (`allErrors: true`) before throwing, so callers receive the full
      * picture in one shot.
      *
@@ -50,6 +56,7 @@ export class JSONSchemaValidator {
      */
     public static validate<T extends object>(model: Type<T>, input: unknown, debug = false): T {
         const ajv = new Ajv(JSONSchemaValidator.AJV_OPTIONS);
+        addFormats(ajv);
 
         if (debug) {
             console.log('Raw data:', JSON.stringify(input, null, 2));
@@ -62,17 +69,15 @@ export class JSONSchemaValidator {
             console.log('Generated JSON Schema:', JSON.stringify(schema, null, 2));
         }
 
-        // Deserialize once to get typed instance
-        const deserializedConfig = Serializer.deserialize<T>(input as T, model);
-
-        // Validate against schema
+        // Validate the raw input against schema
         const validate = ajv.compile(schema);
-        const isValid = validate(deserializedConfig);
+        const isValid = validate(input);
 
         if (!isValid) {
             throw validate.errors;
         }
 
-        return deserializedConfig;
+        // Deserialize once to get typed instance
+        return Serializer.deserialize<T>(input as T, model);
     }
 }
