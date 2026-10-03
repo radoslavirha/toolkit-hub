@@ -77,6 +77,7 @@ export class SwaggerDocumentConfig {
 
     /**
      * Array of security schemes to include in this document version.
+     * Defaults to `[]` (no authentication) when omitted.
      * 
      * Security schemes defined here will be available in the OpenAPI spec's
      * `components.securitySchemes` section for this document. Endpoints can then
@@ -100,7 +101,7 @@ export class SwaggerDocumentConfig {
     @Description(`An array of used security schemes used in this document/version.
         Single value should be used in @Security() decorator.`)
     @Example([SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT])
-    public security: SwaggerSecurityScheme[];
+    public security: SwaggerSecurityScheme[] = [];
 
     /**
      * Optional file path where the raw `swagger.json` should be saved.

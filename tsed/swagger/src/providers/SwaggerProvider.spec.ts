@@ -1,6 +1,7 @@
 import { describe, beforeEach, afterEach, expect, it } from 'vitest';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { CommonUtils } from '@radoslavirha/utils';
+import { deserialize } from '@tsed/json-mapper';
 import { SwaggerConfig } from '../models/SwaggerConfig.js';
 import { SwaggerDocumentConfig } from '../models/SwaggerDocumentConfig.js';
 import { SwaggerSecurityScheme } from '../enums/SwaggerSecurityScheme.enum.js';
@@ -142,5 +143,20 @@ describe('SwaggerProvider', () => {
                 }
             }
         ]);
+    });
+    it('Should build settings for a document without security schemes', () => {
+        const configuration = deserialize<SwaggerConfig>({
+            title: 'My API',
+            version: '1.0.0',
+            description: 'Public API',
+            documents: [{ docs: 'v1' }]
+        }, { type: SwaggerConfig });
+
+        const provider = new SwaggerProvider(configuration);
+
+        expect(provider.config[0].spec).toStrictEqual({
+            info: { title: 'My API - v1', version: '1.0.0', description: 'Public API' },
+            components: { securitySchemes: {} }
+        });
     });
 });

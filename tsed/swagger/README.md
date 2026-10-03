@@ -344,7 +344,7 @@ Configuration model for a single API version/document. Each document represents 
 | Property | Type | Required | Description |
 |----------|------|----------|-------------|
 | `docs` | `string` | Yes | Document identifier (e.g., 'v1', 'v2', 'internal') |
-| `security` | `SwaggerSecurityScheme[]` | Yes | Security schemes available in this document |
+| `security` | `SwaggerSecurityScheme[]` | No | Security schemes available in this document (defaults to `[]` — no authentication) |
 | `outFile` | `string` | No | File path to export OpenAPI spec |
 
 **Example:**

@@ -27,7 +27,8 @@ documents: [
 ```
 
 Note the field names: **`docs`**, not `path` or `version`, and **`security`**, not
-`securitySchemes`. `outFile` is optional and writes the generated spec to disk.
+`securitySchemes`. `security` defaults to `[]` (no authentication) when omitted. `outFile` is
+optional and writes the generated spec to disk.
 
 ## Security schemes
 
