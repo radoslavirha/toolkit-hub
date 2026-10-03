@@ -71,6 +71,14 @@ describe('RedactionProfile', () => {
 
             expect(profile.redact('response', { a: 1 })).toBeUndefined();
         });
+
+        it('redacts configured paths on a frozen object', () => {
+            const profile = new RedactionProfile<Field>(CONFIG);
+
+            const redacted = profile.redact('request', Object.freeze({ user: 'ada', password: 'hunter2' }));
+
+            expect(redacted).toBe('{"user":"ada","password":"***"}');
+        });
     });
 
     describe('isEnabled', () => {
