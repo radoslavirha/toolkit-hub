@@ -122,6 +122,30 @@ describe('RedactionUtils', () => {
             expect(redactor({ payload: cyclic })).toBe('[[ UNSERIALIZABLE ]]');
         });
 
+        it('redacts paths inside frozen objects nested in a writable value', () => {
+            const redactor = RedactionUtils.compileRedactor(['user.password', 'items.*.token']);
+
+            expect(redactor({
+                user: Object.freeze({ id: 'u-1', password: 'secret' }),
+                items: Object.freeze([Object.freeze({ token: 'a' })])
+            })).toBe('{"user":{"id":"u-1","password":"***"},"items":[{"token":"***"}]}');
+        });
+
+        it('does not modify a frozen input while redacting it', () => {
+            const source = Object.freeze({ password: 'secret' });
+            const redactor = RedactionUtils.compileRedactor(['password']);
+
+            expect(redactor(source)).toBe('{"password":"***"}');
+            expect(source.password).toBe('secret');
+        });
+
+        it('serialises a frozen value that JSON cannot represent like an unfrozen one', () => {
+            const redactor = RedactionUtils.compileRedactor(['password']);
+
+            expect(redactor(Object.freeze({ big: 1n }))).toBe('[[ UNSERIALIZABLE ]]');
+            expect(redactor(Object.freeze({ toJSON: () => undefined }))).toBe('[object Object]');
+        });
+
         it('handles recursive array and object references while traversing matching paths', () => {
             const cyclicArray: unknown[] = [];
             cyclicArray.push(cyclicArray);

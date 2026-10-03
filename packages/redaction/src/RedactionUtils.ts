@@ -1,5 +1,5 @@
 import fastRedact from 'fast-redact';
-import { CommonUtils, StringUtils } from '@radoslavirha/utils';
+import { CommonUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
 
 /** A compiled redactor: serialises its input, censoring any configured paths. */
 export type RedactorFunction = (value: unknown) => string;
@@ -57,15 +57,55 @@ export class RedactionUtils {
      * - `["set-cookie"]` → bracket notation, **required** for names containing
      *   characters that are not valid identifiers (e.g. a hyphen)
      *
+     * Frozen input is redacted too: `fast-redact` censors by assigning in place,
+     * which a frozen object silently ignores, so a value containing a frozen
+     * object is redacted on a JSON copy instead. The input is never modified.
+     *
      * @param redactPaths Selectors to censor. An empty list yields a redactor
      *   that only serialises.
      */
     public static compileRedactor(redactPaths: string[]): RedactorFunction {
-        return fastRedact({
+        const redactor = fastRedact({
             paths: redactPaths,
             censor: RedactionUtils.REDACTED_VALUE,
             serialize: RedactionUtils.stringifyForLog,
             strict: false
         }) as RedactorFunction;
+
+        if (redactPaths.length === 0) {
+            return redactor;
+        }
+
+        return (value: unknown): string => redactor(
+            RedactionUtils.containsFrozen(value, new Set()) ? RedactionUtils.toWritableCopy(value) : value
+        );
+    }
+
+    private static containsFrozen(value: unknown, seen: Set<object>): boolean {
+        if (!ObjectUtils.isObject(value) || seen.has(value)) {
+            return false;
+        }
+
+        if (Object.isFrozen(value)) {
+            return true;
+        }
+
+        seen.add(value);
+
+        return Object.values(value).some((child) => RedactionUtils.containsFrozen(child, seen));
+    }
+
+    /**
+     * A writable copy with the shape the serialiser would emit. Returns the
+     * value itself when it has no JSON form, so it serialises as before.
+     */
+    private static toWritableCopy(value: unknown): unknown {
+        try {
+            const serialized = JSON.stringify(value);
+
+            return StringUtils.isString(serialized) ? JSON.parse(serialized) as unknown : value;
+        } catch {
+            return value;
+        }
     }
 }
