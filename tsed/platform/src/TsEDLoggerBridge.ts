@@ -1,8 +1,35 @@
 import { Inject, Injectable, ProviderScope, Scope } from '@tsed/di';
-import { $log } from '@tsed/logger';
+import { $log, layout, LogEvent, logEventToObject } from '@tsed/logger';
 import { BaseLogger, Logger, LogLevel } from '@radoslavirha/tsed-logger';
 import '@tsed/logger-connect';
 import { ArrayUtils, CommonUtils, StringUtils } from '@radoslavirha/utils';
+
+const LAYOUT_NAME = 'radoslavirha-tsed-logger-bridge';
+
+/**
+ * Ts.ED's default `object` layout `Object.assign`s every object argument onto the log object and keeps only
+ * non-object arguments in `data`. `Error#message` and `Error#stack` are non-enumerable, so an `Error` passed as
+ * `logger.error('msg', error)` disappeared. This layout keeps `Error` arguments in `data`, in their original position.
+ */
+class TsEDLoggerBridgeLayout {
+    public transform(loggingEvent: LogEvent): Record<string, unknown> {
+        const data = (loggingEvent.data as unknown[]).reduce<unknown[]>((acc, current) => {
+            if (current instanceof Error) {
+                return [...acc, current];
+            }
+            // Mirrors `logEventToObject`: objects are already merged onto the log, only their nested `data` is kept.
+            if (typeof current === 'object') {
+                const nested = (current as { data?: unknown } | null)?.data;
+                return nested ? acc.concat(nested) : acc;
+            }
+            return [...acc, current];
+        }, []);
+
+        return { ...logEventToObject(loggingEvent), data };
+    }
+}
+
+layout(LAYOUT_NAME, TsEDLoggerBridgeLayout);
 
 @Injectable()
 @Scope(ProviderScope.SINGLETON)
@@ -17,6 +44,7 @@ export class TsEDLoggerBridge {
         $log.appenders.clear();
         $log.appenders.set('logger', {
             type: 'connect',
+            layout: { type: LAYOUT_NAME },
             options: {
                 logger: {
                     /* v8 ignore start */

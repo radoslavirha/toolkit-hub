@@ -2,6 +2,7 @@ import { describe, beforeEach, afterEach, expect, it, vi, MockInstance } from 'v
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { BaseServer } from './BaseServer.js';
 import SuperTest from 'supertest';
+import { $log } from '@tsed/logger';
 import { LogLevel } from '@radoslavirha/tsed-logger';
 import { TsEDLoggerBridge } from './TsEDLoggerBridge.js';
 import { TestController } from './test/TestController.js';
@@ -18,11 +19,15 @@ const parseLogs = (spy: { mock: { calls: unknown[][] } }): Record<string, unknow
 
 describe('TsEDLoggerBridge', () => {
     let stdoutSpy: MockInstance;
+    let bridge: TsEDLoggerBridge;
+
+    const spyOnBridgeLog = (): MockInstance =>
+        vi.spyOn((bridge as unknown as { logger: { log: (level: LogLevel, message: string) => void } }).logger, 'log');
 
     beforeEach(async () => {
         const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream };
         stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
-        const bridge = await PlatformTest.invoke<TsEDLoggerBridge>(TsEDLoggerBridge);
+        bridge = await PlatformTest.invoke<TsEDLoggerBridge>(TsEDLoggerBridge);
         await PlatformTest.bootstrap(BaseServer, {
             logger: bridge.getTsEDLoggerConfig(),
             mount: {
@@ -56,13 +61,40 @@ describe('TsEDLoggerBridge', () => {
         expect(requestLog).toBeDefined();
     });
 
+    it('should keep the Error message and stack when Ts.ED logs logger.error("msg", error)', () => {
+        // arrange
+        const logSpy = spyOnBridgeLog();
+
+        // act
+        $log.error('Failed to connect', new Error('ECONNREFUSED 127.0.0.1:6379'));
+
+        // assert
+        expect(logSpy).toHaveBeenCalledOnce();
+        const [level, message] = logSpy.mock.calls[0];
+        expect(level).toBe(LogLevel.ERROR);
+        expect(message).toContain('Failed to connect');
+        expect(message).toContain('ECONNREFUSED 127.0.0.1:6379');
+        expect(message).toContain('TsEDLoggerBridge.spec.ts');
+    });
+
+    it('should keep the Error message when the Error is the only argument', () => {
+        // arrange
+        const logSpy = spyOnBridgeLog();
+
+        // act
+        $log.error(new Error('boom'));
+
+        // assert
+        expect(logSpy).toHaveBeenCalledOnce();
+        expect(logSpy.mock.calls[0][1]).toContain('boom');
+    });
+
     it('should not throw on non-string message or data', async () => {
         // arrange
-        const bridge = await PlatformTest.invoke<TsEDLoggerBridge>(TsEDLoggerBridge);
         const process = (event: Record<string, unknown>): void =>
             (bridge as unknown as { processLogEvent: (l: LogLevel, e: Record<string, unknown>) => void })
                 .processLogEvent(LogLevel.ERROR, event);
-        const logSpy = vi.spyOn((bridge as unknown as { logger: { log: (level: LogLevel, message: string) => void } }).logger, 'log');
+        const logSpy = spyOnBridgeLog();
 
         // act & assert
         expect(() => process({ data: ['failed', new Error('boom'), { a: 1 }, 42] })).not.toThrow();
