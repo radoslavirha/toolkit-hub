@@ -116,7 +116,7 @@ export class SwaggerProvider extends BaseConfigProvider<SwaggerSettings[]> {
      * @private
      */
     private static generateSettings(config: SwaggerConfig, settings: SwaggerDocumentConfig): SwaggerSettings {
-        const swaggerUIOptions = serialize(config.swaggerUIOptions, { type: SwaggerUIConfig });
+        const swaggerUIOptions = serialize(config.swaggerUIOptions ?? {}, { type: SwaggerUIConfig });
 
         if (config.serverUrl && !swaggerUIOptions.urls) {
             swaggerUIOptions.urls = [
