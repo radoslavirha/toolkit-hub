@@ -1,5 +1,13 @@
 # @radoslavirha/tsed-platform
 
+## 5.0.7
+
+### Patch Changes
+
+- [#203](https://github.com/radoslavirha/toolkit-hub/pull/203) [`d9f643b`](https://github.com/radoslavirha/toolkit-hub/commit/d9f643b8fa594db3f96ed34bda20f9fd15457cf4) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `TsEDLoggerBridge` now keeps the message and stack of an `Error` passed to Ts.ED's logger (`logger.error('msg', error)`) instead of silently dropping it.
+- Updated dependencies []:
+  - @radoslavirha/tsed-logger@0.7.4
+
 ## 5.0.6
 
 ### Patch Changes
