@@ -1,6 +1,7 @@
 import winston from 'winston';
 import { LogLevel } from './LogLevel.enum.js';
 import type { LoggerOptions } from './LoggerOptions.js';
+import { LogErrorUtils } from './LogErrorUtils.js';
 import { CommonUtils } from '@radoslavirha/utils';
 
 /** Winston custom levels — lower number = higher priority (matches OTEL severity order). */
@@ -142,7 +143,7 @@ export class Logger<T extends object = object> {
 
         const baseMeta = this.metaProvider?.();
         const metadata = CommonUtils.notUndefined(baseMeta) || CommonUtils.notUndefined(meta)
-            ? { ...baseMeta, ...meta }
+            ? { ...baseMeta, ...Logger.serializeMeta(meta) }
             : undefined;
 
         if (CommonUtils.notUndefined(metadata)) {
@@ -150,6 +151,26 @@ export class Logger<T extends object = object> {
         } else {
             this.logger.log(level, body);
         }
+    }
+
+    /**
+     * Makes `Error` instances survive the object spread and JSON serialisation.
+     * A top-level `Error` becomes `error_name` / `error_message` / `error_stack` fields;
+     * an `Error` value one level down becomes `{ name, message, stack }`.
+     */
+    private static serializeMeta(meta?: object): object | undefined {
+        if (meta instanceof Error) {
+            return { ...meta, ...LogErrorUtils.toFields(meta) };
+        }
+        if (CommonUtils.isUndefined(meta) || !Object.values(meta).some((value) => value instanceof Error)) {
+            return meta;
+        }
+        return Object.fromEntries(
+            Object.entries(meta).map(([key, value]) => [
+                key,
+                value instanceof Error ? { ...value, name: value.name, message: value.message, stack: value.stack } : value
+            ])
+        );
     }
 
     private static buildLogger(options: LoggerOptions): winston.Logger {

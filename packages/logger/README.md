@@ -148,6 +148,32 @@ class Logger<T extends object = object> {
 
 ---
 
+### `LogErrorUtils`
+
+```typescript
+class LogErrorUtils {
+    static toFields(error: Error & { code?: string }, options?: { stack?: boolean }): LogErrorFields
+}
+
+interface LogErrorFields {
+    readonly error_name?: string;
+    readonly error_message: string;
+    readonly error_stack?: string;
+}
+```
+
+Converts an `Error` into the flat `error_name` / `error_message` / `error_stack` fields the
+logger emits. Use it when you build error metadata yourself, alongside other fields.
+`error_name` falls back to `error.code`, and `stack: false` leaves out `error_stack`. Only
+these three fields are returned, so other properties of the error (headers, request bodies)
+are not copied into the log.
+
+```typescript
+log.error('Request failed', { reqId, ...LogErrorUtils.toFields(error, { stack: false }) });
+```
+
+---
+
 ### `LoggerOptions<T extends object = object>`
 
 ```typescript
@@ -203,6 +229,10 @@ Every log line is a single JSON object:
 | `message` | Always | Log body string |
 | `scope` | Child loggers only | Instrumentation scope (class/module name) |
 | Additional keys | `metaProvider` or per-call `meta` provided | Merged metadata fields |
+| `error_name`, `error_message`, `error_stack` | `meta` is an `Error` | The error's name, message and stack, plus its own enumerable properties (e.g. `code`) |
+
+An `Error` passed as `meta` is flattened into the `error_*` fields above. An `Error` held in a
+top-level `meta` key (`{ error }`) is emitted as `{ name, message, stack }` instead of `{}`.
 
 `fatal` and `error` levels write to **stderr**; all other levels write to **stdout**.
 
