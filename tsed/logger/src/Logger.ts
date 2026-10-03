@@ -129,8 +129,9 @@ export class Logger extends BaseLogger<LoggerMetadata> {
             duration
         };
 
-        const contentType = String($ctx.response.getHeaders()['content-type'] ?? '');
-        const isTextSafe = !contentType || /^(text\/|application\/(json|xml|ld\+json|graphql|javascript|x-www-form-urlencoded))/i.test(contentType);
+        const mediaType = String($ctx.response.getHeaders()['content-type'] ?? '').split(';')[0]!.trim();
+        // Structured-syntax suffixes (RFC 6839): application/problem+json, application/vnd.api+json, …
+        const isTextSafe = !mediaType || /^(text\/|application\/(json|xml|graphql|javascript|x-www-form-urlencoded)$|application\/[\w.+-]+\+(json|xml)$)/i.test(mediaType);
 
         Object.assign(meta, this.redaction.collect({
             headers: $ctx.request.headers,
