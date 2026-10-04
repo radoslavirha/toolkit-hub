@@ -46,3 +46,11 @@ configuration or third-party payloads.
 
 Both throw on failure and return the typed value on success, so there is no separate "is it
 valid" step to forget.
+
+## ResourceId
+
+Put `@ResourceId(pattern)` on `:id` path params, query params and body properties
+(`@PathParams('id') @ResourceId(ResourceIdPattern.UUID) id: string`). Use a `ResourceIdPattern`
+preset (`HEX_24`, `UUID`) or supply your own, so it suits any id format or storage. A malformed id is rejected with 400 at the API edge; a well-formed id
+that matches nothing is still a 404 from the service. The pattern must have no regex flags —
+encode case handling inside it. The schema it emits is the `pattern` plus a neutral description.
