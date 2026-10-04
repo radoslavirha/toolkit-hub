@@ -7,13 +7,16 @@ import { BaseModel } from '@radoslavirha/tsed-common';
 import { TestModel } from '../test/TestModel.js';
 import { TestMongoMapper } from '../test/TestMongoMapper.js';
 import { TestModelChildMongo, TestModelMongo } from '../test/TestMongoModel.js';
+import { TestMongoRepository } from '../test/TestMongoRepository.js';
 
 describe('MongoMapper', () => {
     let mapper: TestMongoMapper;
+    let repository: TestMongoRepository;
 
     beforeEach(() => TestContainersMongo.create());
     beforeEach(() => {
         mapper = PlatformTest.get<TestMongoMapper>(TestMongoMapper);
+        repository = PlatformTest.get<TestMongoRepository>(TestMongoRepository);
     });
     afterEach(() => TestContainersMongo.reset());
 
@@ -154,6 +157,50 @@ describe('MongoMapper', () => {
         const response = mapper.getIdFromPotentiallyPopulated(mongo.child_id);
 
         expect(response).toStrictEqual(childId);
+    });
+
+    describe('populated refs read via lean() + deserialize()', () => {
+        async function findPopulatedLean(): Promise<{ mongo: TestModelMongo; childId: string }> {
+            const Child = PlatformTest.get<MongooseModel<TestModelChildMongo>>(TestModelChildMongo);
+            const child = await Child.create({ label: 'child' });
+            const parent = await repository.create({ label: 'parent', child_id: String(child._id) });
+
+            // @ts-expect-error protected member
+            const lean = await repository.model.findById(parent._id).populate('child_id').lean<TestModelMongo>();
+            // @ts-expect-error protected method
+            const mongo = repository.deserialize(lean)!;
+
+            return { mongo, childId: String(child._id) };
+        }
+
+        it('canBePopulated - returns true', async () => {
+            const { mongo } = await findPopulatedLean();
+
+            expect.assertions(1);
+
+            // @ts-expect-error protected method
+            expect(mapper.canBePopulated(mongo.child_id)).toBe(true);
+        });
+
+        it('getPopulated - returns the populated document', async () => {
+            const { mongo, childId } = await findPopulatedLean();
+
+            expect.assertions(2);
+
+            // @ts-expect-error protected method
+            const response = mapper.getPopulated(mongo.child_id);
+
+            expect(response).toBeInstanceOf(TestModelChildMongo);
+            expect(String(response._id)).toBe(childId);
+        });
+
+        it('getIdFromPotentiallyPopulated - returns the child id', async () => {
+            const { mongo, childId } = await findPopulatedLean();
+
+            expect.assertions(1);
+
+            expect(mapper.mongoToModel(mongo).child_id).toBe(childId);
+        });
     });
 
     it('getModelValue - POST with value', async () => {
