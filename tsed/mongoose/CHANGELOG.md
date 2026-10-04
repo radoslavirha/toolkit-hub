@@ -1,5 +1,20 @@
 # @radoslavirha/tsed-mongoose
 
+## 5.0.12
+
+### Patch Changes
+
+- [#241](https://github.com/radoslavirha/toolkit-hub/pull/241) [`8ad4685`](https://github.com/radoslavirha/toolkit-hub/commit/8ad4685655019c5ae3a0fcdf411227300d2d8d86) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `MongoMapper` now recognises refs populated through `.lean()` + `deserialize()`: `canBePopulated` returns `true`, `getPopulated` returns the document instead of throwing, and `getIdFromPotentiallyPopulated` returns the referenced id instead of `"[object Object]"`.
+
+- [#242](https://github.com/radoslavirha/toolkit-hub/pull/242) [`178382b`](https://github.com/radoslavirha/toolkit-hub/commit/178382b592ae4c866214d9b594e841b527e0836e) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `MongoMapper.getIdFromPotentiallyPopulated` returns `undefined` for an unset optional ref (`null`/`undefined`) instead of the string `"undefined"`/`"null"`.
+
+- [#243](https://github.com/radoslavirha/toolkit-hub/pull/243) [`7b5d4fc`](https://github.com/radoslavirha/toolkit-hub/commit/7b5d4fc16deaa962a1ded5559e148edbe5dbb5b5) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `MongoMapper.getModelValue` now resolves a field's `@Default` from the mapper's declared `model` class, so it no longer throws a `TypeError` when given a plain-object model (e.g. a spread copy).
+
+- [#258](https://github.com/radoslavirha/toolkit-hub/pull/258) [`fe4c682`](https://github.com/radoslavirha/toolkit-hub/commit/fe4c682a33645ba4347ce1efc3a20240112a5bde) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Add a protected `MongoRepository.isValidId()` guard so by-id queries can resolve `null` for a malformed id instead of throwing a Mongoose `CastError`.
+- Updated dependencies [[`13ca524`](https://github.com/radoslavirha/toolkit-hub/commit/13ca52450814163eb5f694f1cc9b7b4d98f4f6c8), [`ad3a682`](https://github.com/radoslavirha/toolkit-hub/commit/ad3a682a226c392fe7b649306971bf8185c07520), [`c033bdb`](https://github.com/radoslavirha/toolkit-hub/commit/c033bdbc0664285f0a9b578787727625e616744b)]:
+  - @radoslavirha/utils@0.9.3
+  - @radoslavirha/tsed-common@0.5.11
+
 ## 5.0.11
 
 ### Patch Changes

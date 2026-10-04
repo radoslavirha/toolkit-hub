@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-logger
 
+## 0.7.4
+
+### Patch Changes
+
+- [#236](https://github.com/radoslavirha/toolkit-hub/pull/236) [`3bb4131`](https://github.com/radoslavirha/toolkit-hub/commit/3bb413173f0e374ca052c5c5901c8a8590cb6155) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Request logs now include the response body for `+json`/`+xml` media types such as `application/problem+json` and `application/vnd.api+json`, instead of `[[ BINARY ]]`.
+
+- [#248](https://github.com/radoslavirha/toolkit-hub/pull/248) [`4171e73`](https://github.com/radoslavirha/toolkit-hub/commit/4171e733f87323d05c1b6737823ff608a72ec9a3) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Request failure logs now keep a description of non-`Error` thrown values (strings, plain objects) in `error_message` instead of logging it as `undefined`.
+- Updated dependencies [[`02251ff`](https://github.com/radoslavirha/toolkit-hub/commit/02251ff737c1cd9a8e5de1704e6b66d45b6263ec), [`8c4fcef`](https://github.com/radoslavirha/toolkit-hub/commit/8c4fcef1937e69b989efa13c4ec98df7671d7a05), [`b280595`](https://github.com/radoslavirha/toolkit-hub/commit/b2805953aaa6587532f8e2ae70180a754d9d2198), [`13ca524`](https://github.com/radoslavirha/toolkit-hub/commit/13ca52450814163eb5f694f1cc9b7b4d98f4f6c8), [`ad3a682`](https://github.com/radoslavirha/toolkit-hub/commit/ad3a682a226c392fe7b649306971bf8185c07520), [`5c65163`](https://github.com/radoslavirha/toolkit-hub/commit/5c65163cc3ee72e647212c56df326fd97782ddaf), [`cde53f4`](https://github.com/radoslavirha/toolkit-hub/commit/cde53f448f542aba0ab56ae20560c2c657f4ed6a), [`f755b36`](https://github.com/radoslavirha/toolkit-hub/commit/f755b36839bb31d02a9cbb7f8e6327cd616a745b), [`c253023`](https://github.com/radoslavirha/toolkit-hub/commit/c2530230f37ff68a9eed693b4acd94c9bd7a6230)]:
+  - @radoslavirha/logger@0.4.6
+  - @radoslavirha/redaction@0.3.3
+  - @radoslavirha/utils@0.9.3
+
 ## 0.7.3
 
 ### Patch Changes

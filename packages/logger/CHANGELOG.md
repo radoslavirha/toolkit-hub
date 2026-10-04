@@ -1,5 +1,19 @@
 # @radoslavirha/logger
 
+## 0.4.6
+
+### Patch Changes
+
+- [#219](https://github.com/radoslavirha/toolkit-hub/pull/219) [`02251ff`](https://github.com/radoslavirha/toolkit-hub/commit/02251ff737c1cd9a8e5de1704e6b66d45b6263ec) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `Logger` now keeps the name, message and stack of an `Error` passed as metadata (`logger.error('msg', error)` emits `error_name` / `error_message` / `error_stack`; a nested `{ error }` emits `{ name, message, stack }` instead of `{}`). The flattening is exported as `LogErrorUtils.toFields` for building error metadata by hand.
+
+- [#231](https://github.com/radoslavirha/toolkit-hub/pull/231) [`8c4fcef`](https://github.com/radoslavirha/toolkit-hub/commit/8c4fcef1937e69b989efa13c4ec98df7671d7a05) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Metadata keys named `timestamp`, `level`, `message` or `scope` no longer corrupt the log line: the logger's own value always wins and the caller's value is kept as `meta_<key>` (a `message` key used to be appended to the body, and a `scope` key overwrote a child's pinned scope).
+
+- [#253](https://github.com/radoslavirha/toolkit-hub/pull/253) [`cde53f4`](https://github.com/radoslavirha/toolkit-hub/commit/cde53f448f542aba0ab56ae20560c2c657f4ed6a) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Metadata with `exception: true` no longer silently drops the whole log line; the value is emitted as `meta_exception`.
+
+- [#254](https://github.com/radoslavirha/toolkit-hub/pull/254) [`f755b36`](https://github.com/radoslavirha/toolkit-hub/commit/f755b36839bb31d02a9cbb7f8e6327cd616a745b) Thanks [@radoslavirha](https://github.com/radoslavirha)! - An `Error` held in an own property of an `Error` passed as meta (e.g. `originalError`) is now logged as `{ name, message, stack }` instead of `{}`.
+- Updated dependencies [[`13ca524`](https://github.com/radoslavirha/toolkit-hub/commit/13ca52450814163eb5f694f1cc9b7b4d98f4f6c8), [`ad3a682`](https://github.com/radoslavirha/toolkit-hub/commit/ad3a682a226c392fe7b649306971bf8185c07520)]:
+  - @radoslavirha/utils@0.9.3
+
 ## 0.4.5
 
 ### Patch Changes

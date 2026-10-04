@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-configuration
 
+## 0.9.0
+
+### Minor Changes
+
+- [#230](https://github.com/radoslavirha/toolkit-hub/pull/230) [`0a40938`](https://github.com/radoslavirha/toolkit-hub/commit/0a40938caf4ea5291fd7fc8279a9f76cfac45735) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `.env` files are no longer loaded. Environment variables come from `process.env` only, so `envs` and `config` (`NODE_ENV`, `custom-environment-variables.json`) always agree. Set variables in whatever starts the process instead of a `.env` file.
+
+### Patch Changes
+
+- Updated dependencies [[`13ca524`](https://github.com/radoslavirha/toolkit-hub/commit/13ca52450814163eb5f694f1cc9b7b4d98f4f6c8), [`ad3a682`](https://github.com/radoslavirha/toolkit-hub/commit/ad3a682a226c392fe7b649306971bf8185c07520), [`c033bdb`](https://github.com/radoslavirha/toolkit-hub/commit/c033bdbc0664285f0a9b578787727625e616744b)]:
+  - @radoslavirha/utils@0.9.3
+  - @radoslavirha/tsed-common@0.5.11
+
 ## 0.8.7
 
 ### Patch Changes

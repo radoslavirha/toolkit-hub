@@ -1,5 +1,19 @@
 # @radoslavirha/tsed-platform
 
+## 5.0.7
+
+### Patch Changes
+
+- [#203](https://github.com/radoslavirha/toolkit-hub/pull/203) [`d9f643b`](https://github.com/radoslavirha/toolkit-hub/commit/d9f643b8fa594db3f96ed34bda20f9fd15457cf4) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `TsEDLoggerBridge` now keeps the message and stack of an `Error` passed to Ts.ED's logger (`logger.error('msg', error)`) instead of silently dropping it.
+
+- [#246](https://github.com/radoslavirha/toolkit-hub/pull/246) [`f50b1ff`](https://github.com/radoslavirha/toolkit-hub/commit/f50b1ff1867aa34d1a035d5cd00c5c1a7af1e09a) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Ts.ED log calls with a `null` argument (e.g. `$log.info('cached value:', null)`) no longer throw a `TypeError`; the `null` is logged as `null`.
+
+- [#247](https://github.com/radoslavirha/toolkit-hub/pull/247) [`b9e06b5`](https://github.com/radoslavirha/toolkit-hub/commit/b9e06b50a9d1d5a99fde84e43f2b838841fdce70) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Ts.ED log calls no longer drop object and array arguments, or `Error`s nested in a structured log object (`$log.warn({ event, message, error })`); they are now forwarded to the toolkit logger as metadata.
+- Updated dependencies [[`13ca524`](https://github.com/radoslavirha/toolkit-hub/commit/13ca52450814163eb5f694f1cc9b7b4d98f4f6c8), [`ad3a682`](https://github.com/radoslavirha/toolkit-hub/commit/ad3a682a226c392fe7b649306971bf8185c07520), [`0a40938`](https://github.com/radoslavirha/toolkit-hub/commit/0a40938caf4ea5291fd7fc8279a9f76cfac45735), [`3bb4131`](https://github.com/radoslavirha/toolkit-hub/commit/3bb413173f0e374ca052c5c5901c8a8590cb6155), [`4171e73`](https://github.com/radoslavirha/toolkit-hub/commit/4171e733f87323d05c1b6737823ff608a72ec9a3)]:
+  - @radoslavirha/utils@0.9.3
+  - @radoslavirha/tsed-configuration@0.9.0
+  - @radoslavirha/tsed-logger@0.7.4
+
 ## 5.0.6
 
 ### Patch Changes

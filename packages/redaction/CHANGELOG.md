@@ -1,5 +1,17 @@
 # @radoslavirha/redaction
 
+## 0.3.3
+
+### Patch Changes
+
+- [#225](https://github.com/radoslavirha/toolkit-hub/pull/225) [`b280595`](https://github.com/radoslavirha/toolkit-hub/commit/b2805953aaa6587532f8e2ae70180a754d9d2198) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Redaction now censors configured paths in frozen objects (e.g. `Object.freeze`d DTOs, Immer/Redux state) instead of serialising their secrets in clear.
+
+- [#250](https://github.com/radoslavirha/toolkit-hub/pull/250) [`5c65163`](https://github.com/radoslavirha/toolkit-hub/commit/5c65163cc3ee72e647212c56df326fd97782ddaf) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Redact getter-only, non-writable and `toJSON()`-produced fields instead of serialising them in clear.
+
+- [#256](https://github.com/radoslavirha/toolkit-hub/pull/256) [`c253023`](https://github.com/radoslavirha/toolkit-hub/commit/c2530230f37ff68a9eed693b4acd94c9bd7a6230) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Redact configured paths in payloads that arrive as JSON text (e.g. a stringified response body) instead of logging them in clear.
+- Updated dependencies [[`13ca524`](https://github.com/radoslavirha/toolkit-hub/commit/13ca52450814163eb5f694f1cc9b7b4d98f4f6c8), [`ad3a682`](https://github.com/radoslavirha/toolkit-hub/commit/ad3a682a226c392fe7b649306971bf8185c07520)]:
+  - @radoslavirha/utils@0.9.3
+
 ## 0.3.2
 
 ### Patch Changes

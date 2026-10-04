@@ -1,5 +1,15 @@
 # @radoslavirha/utils
 
+## 0.9.3
+
+### Patch Changes
+
+- [#235](https://github.com/radoslavirha/toolkit-hub/pull/235) [`13ca524`](https://github.com/radoslavirha/toolkit-hub/commit/13ca52450814163eb5f694f1cc9b7b4d98f4f6c8) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `ObjectUtils.mergeDeep` no longer mutates class instances nested in `target`; the result now holds independent copies of them.
+
+- [#237](https://github.com/radoslavirha/toolkit-hub/pull/237) [`ad3a682`](https://github.com/radoslavirha/toolkit-hub/commit/ad3a682a226c392fe7b649306971bf8185c07520) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `GeoUtils.calculateKmBetweenCoordinates` now returns half the Earth's circumference for antipodal points instead of `NaN`.
+- Updated dependencies [[`b8a2bbb`](https://github.com/radoslavirha/toolkit-hub/commit/b8a2bbb76c13b7467a49eb5055eb796e21111e08)]:
+  - @radoslavirha/types@0.4.7
+
 ## 0.9.2
 
 ### Patch Changes
