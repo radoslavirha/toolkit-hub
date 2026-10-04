@@ -157,6 +157,9 @@ export class CommonUtils {
      * domain-owned field is supplied. Use {@link buildModelPartial} when only a subset of
      * domain fields is available.
      *
+     * Any `id`, `_id`, `createdAt` or `updatedAt` key present on `data` at runtime (e.g. a full
+     * model or request DTO passed through a wider type) is dropped before assignment.
+     *
      * Under the hood this delegates to {@link buildModelPartial}, so the constructor runs
      * first (preserving class-body defaults) and `Object.assign` overlays only the provided keys.
      *
@@ -186,6 +189,8 @@ export class CommonUtils {
         type: { new (): T },
         data: D
     ): Omit<T, 'id' | '_id' | 'createdAt' | 'updatedAt'> {
-        return CommonUtils.buildModelPartial(type, data as unknown as Partial<T>);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, _id, createdAt, updatedAt, ...domain } = data as Record<string, unknown>;
+        return CommonUtils.buildModelPartial(type, domain as unknown as Partial<T>);
     }
 }
