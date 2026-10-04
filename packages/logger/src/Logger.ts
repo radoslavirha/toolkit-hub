@@ -172,8 +172,13 @@ export class Logger<T extends object = object> {
      */
     private static serializeMeta(meta?: object): object | undefined {
         if (meta instanceof Error) {
-            return { ...meta, ...LogErrorUtils.toFields(meta) };
+            return { ...Logger.serializeNestedErrors(meta), ...LogErrorUtils.toFields(meta) };
         }
+        return Logger.serializeNestedErrors(meta);
+    }
+
+    /** Replaces each `Error` among the own enumerable values of `meta` with `{ name, message, stack }`. */
+    private static serializeNestedErrors(meta?: object): object | undefined {
         if (CommonUtils.isUndefined(meta) || !Object.values(meta).some((value) => value instanceof Error)) {
             return meta;
         }
