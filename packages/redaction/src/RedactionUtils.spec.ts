@@ -173,6 +173,29 @@ describe('RedactionUtils', () => {
             expect(redactor(value)).toBe('{"user":"ada","password":"***"}');
         });
 
+        it('redacts configured paths inside a JSON object or array string', () => {
+            const redactor = RedactionUtils.compileRedactor(['password', '*.token']);
+
+            expect(redactor('{"user":"ada","password":"hunter2"}')).toBe('{"user":"ada","password":"***"}');
+            expect(redactor('[{"token":"a"},{"id":1}]')).toBe('[{"token":"***"},{"id":1}]');
+        });
+
+        it('returns non-JSON and JSON primitive strings unchanged', () => {
+            const redactor = RedactionUtils.compileRedactor(['token']);
+
+            expect(redactor('a=1&token=x')).toBe('a=1&token=x');
+            expect(redactor('"token"')).toBe('"token"');
+            expect(redactor('42')).toBe('42');
+            expect(redactor('null')).toBe('null');
+            expect(redactor('')).toBe('');
+        });
+
+        it('leaves strings untouched when no paths are configured', () => {
+            const redactor = RedactionUtils.compileRedactor([]);
+
+            expect(redactor('{ "password": "hunter2" }')).toBe('{ "password": "hunter2" }');
+        });
+
         it('handles recursive array and object references while traversing matching paths', () => {
             const cyclicArray: unknown[] = [];
             cyclicArray.push(cyclicArray);

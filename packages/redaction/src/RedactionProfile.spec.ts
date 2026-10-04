@@ -57,6 +57,17 @@ describe('RedactionProfile', () => {
 
             expect(profile.collect({ query: { a: 1 }, headers: { b: 2 } })).toStrictEqual({ query: '{"a":1}' });
         });
+
+        it('redacts configured paths in a payload that arrives as JSON text', () => {
+            const profile = new RedactionProfile({
+                response: { enabled: true, redactPaths: ['access_token'] }
+            });
+
+            const collected = profile.collect({ response: '{"access_token":"live-secret","expires_in":3600}' });
+
+            expect(collected.response).not.toContain('live-secret');
+            expect(collected).toStrictEqual({ response: '{"access_token":"***","expires_in":3600}' });
+        });
     });
 
     describe('redact', () => {
