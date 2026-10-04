@@ -1,4 +1,7 @@
 import { describe, expect, it, beforeEach, afterEach, vi } from 'vitest';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { EnvironmentVariablesProvider } from './EnvironmentVariablesProvider.js';
 
 describe('EnvironmentVariablesProvider', () => {
@@ -41,6 +44,31 @@ describe('EnvironmentVariablesProvider', () => {
 
             // Accessing non-existent variable should return undefined
             expect(env.NON_EXISTENT_VAR).toBeUndefined();
+        });
+    });
+
+    describe('.env file', () => {
+        const originalCwd = process.cwd();
+        let dir: string;
+
+        beforeEach(() => {
+            dir = mkdtempSync(join(tmpdir(), 'envs-'));
+            writeFileSync(join(dir, '.env'), 'DOTENV_ONLY_VAR=from-dotenv\n');
+            process.chdir(dir);
+        });
+
+        afterEach(() => {
+            process.chdir(originalCwd);
+            rmSync(dir, { recursive: true, force: true });
+        });
+
+        it('ignores variables defined only in .env', () => {
+            delete process.env.DOTENV_ONLY_VAR;
+
+            const provider = new EnvironmentVariablesProvider();
+
+            expect(provider.config.DOTENV_ONLY_VAR).toBeUndefined();
+            expect(process.env.DOTENV_ONLY_VAR).toBeUndefined();
         });
     });
 

@@ -1,7 +1,5 @@
-import { createRequire } from 'node:module';
-import { config } from 'dotenv';
 import { type ZodType } from 'zod';
-import type { Config } from 'config';
+import cfg from 'config';
 import { ZodValidator } from '@radoslavirha/tsed-common';
 import { BaseConfigProvider } from './BaseConfigProvider.js';
 import { BaseConfig } from './models/BaseConfig.js';
@@ -43,20 +41,6 @@ export class ConfigJsonProvider<T extends BaseConfig> extends BaseConfigProvider
     }
 
     /**
-     * Loads the `config` package on first use rather than at import time.
-     *
-     * `config` resolves `NODE_ENV` and `custom-environment-variables.json` when it is evaluated,
-     * so it must run after `.env` has been loaded into `process.env`. A static import would be
-     * evaluated before any code in this package runs (bundlers hoist external imports).
-     *
-     * @returns The `config` singleton.
-     */
-    private static loadConfig(): Config {
-        config({ quiet: true });
-        return createRequire(import.meta.url)('config') as Config;
-    }
-
-    /**
      * Validates the raw config file against the provided Zod schema.
      *
      * @param schema A Zod schema to validate against.
@@ -66,7 +50,7 @@ export class ConfigJsonProvider<T extends BaseConfig> extends BaseConfigProvider
      */
     static validateConfigFile<T extends BaseConfig>(schema: ZodType<T>, debug = false): T {
         try {
-            return ZodValidator.validate<T>(schema, ConfigJsonProvider.loadConfig(), debug);
+            return ZodValidator.validate<T>(schema, cfg, debug);
         } catch (error) {
             console.error(`Configuration validation failed: ${error}`);
             throw new Error(`Invalid configuration! ${error}`);

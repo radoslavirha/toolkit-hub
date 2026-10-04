@@ -1,4 +1,3 @@
-import { config } from 'dotenv';
 import { BaseConfigProvider } from './BaseConfigProvider.js';
 
 /**
@@ -11,22 +10,17 @@ export interface ENVS<TValue = string | undefined> {
 }
 
 /**
- * Configuration provider that loads and manages environment variables.
- * 
- * Automatically loads environment variables from two sources:
- * 1. Process environment variables (process.env)
- * 2. .env file in the project root (via dotenv)
- * 
- * **Precedence:** Process environment variables override .env file values.
- * This allows deployment environments to override local .env settings.
+ * Configuration provider that exposes the process environment variables (`process.env`).
+ *
+ * `.env` files are not loaded. Set variables in whatever starts the process (Kubernetes,
+ * Docker, the shell); the `config` package reads the same `process.env` for `NODE_ENV` and
+ * `custom-environment-variables.json`, so `envs` and `config` always agree.
  * 
  * @extends BaseConfigProvider<ENVS>
  * 
  * @example
  * ```typescript
- * // .env file:
- * // PORT=3000
- * // NODE_ENV=development
+ * // PORT=3000 NODE_ENV=development node dist/index.js
  * 
  * const envProvider = new EnvironmentVariablesProvider();
  * const env = envProvider.config;
@@ -39,21 +33,12 @@ export interface ENVS<TValue = string | undefined> {
  * ```
  * 
  * @remarks
- * - Loads .env file synchronously during construction
- * - Does not throw if .env file is missing (dotenv default behavior)
- * - Process environment variables always take precedence over .env file
+ * - Snapshots process.env during construction
  * - Provides immutable access to environment via BaseConfigProvider
  * - All values are strings (use parsing utilities for numbers/booleans)
  */
 export class EnvironmentVariablesProvider extends BaseConfigProvider<ENVS> {
     constructor() {
-        // Load .env file first (if exists)
-        const dotenvConfig = config({ quiet: true }).parsed ?? {};
-        
-        // Merge with precedence: process.env overrides .env file
-        super({
-            ...dotenvConfig,
-            ...process.env
-        });
+        super({ ...process.env });
     }
 }
