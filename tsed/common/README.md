@@ -129,7 +129,7 @@ A storage-neutral decorator that validates the format of a resource id against a
 get(@PathParams('id') @ResourceId(ResourceIdPattern.UUID) id: string) { ... }
 ```
 
-Pick a preset from the exported `ResourceIdPattern` enum (`HEX_24`, `UUID`, `NUMERIC`), or pass your own `RegExp` without flags (or a string); flags are rejected because AJV would read them literally. A well-formed id that matches nothing still resolves to 404 in the service.
+Pick a preset from the exported `ResourceIdPattern` enum (`HEX_24`, `UUID`), or pass your own `RegExp` without flags (or a string); flags are rejected because AJV would read them literally. A well-formed id that matches nothing still resolves to 404 in the service.
 
 ## Usage
 

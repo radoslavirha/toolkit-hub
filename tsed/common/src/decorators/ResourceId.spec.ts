@@ -1,6 +1,7 @@
 import { getJsonSchema, Property } from '@tsed/schema';
 import { describe, expect, it } from 'vitest';
-import { ResourceId, ResourceIdPattern } from './ResourceId.js';
+import { ResourceId } from './ResourceId.js';
+import { ResourceIdPattern } from './ResourceIdPattern.js';
 
 class Target {
     @Property()

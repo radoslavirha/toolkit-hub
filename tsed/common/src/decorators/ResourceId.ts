@@ -1,17 +1,6 @@
 import { useDecorators } from '@tsed/core';
 import { Description, Pattern } from '@tsed/schema';
-
-/**
- * Ready-made id patterns for {@link ResourceId}. Values are flag-free regular expression sources.
- */
-export enum ResourceIdPattern {
-    /** 24 hexadecimal characters (e.g. MongoDB ObjectId). */
-    HEX_24 = '^[a-fA-F0-9]{24}$',
-    /** Canonical UUID, any version. */
-    UUID = '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$',
-    /** Positive integer (e.g. auto-increment key). */
-    NUMERIC = '^[0-9]+$'
-}
+import type { ResourceIdPattern } from './ResourceIdPattern.js';
 
 /**
  * Validates the format of a resource id (path param, query param, body property) against a
