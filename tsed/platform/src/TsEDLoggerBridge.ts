@@ -5,35 +5,50 @@ import '@tsed/logger-connect';
 import { ArrayUtils, CommonUtils, StringUtils } from '@radoslavirha/utils';
 
 const LAYOUT_NAME = 'radoslavirha-tsed-logger-bridge';
+/** Fields the bridge turns into the log message, or that would overwrite the toolkit logger's own fields. */
+const CONSUMED_KEYS = new Set(['message', 'data', 'level', 'scope', 'timestamp']);
 
 /**
  * Ts.ED's default `object` layout `Object.assign`s every object argument onto the log object and keeps only
  * non-object arguments in `data`. `Error#message` and `Error#stack` are non-enumerable, so an `Error` passed as
  * `logger.error('msg', error)` disappeared. This layout keeps `Error` arguments in `data`, in their original position.
- * An object is only treated as the log record when it is the sole argument (`logger.warn({ event, message, error })`);
- * its nested `Error`s are kept in `data`. Objects and arrays passed alongside other arguments are context and are
- * kept in `data` too, instead of being merged onto the log where nothing reads them.
+ * `logEventToObject` also throws on a `null` argument (`typeof null === 'object'`), so nulls are kept out of it and
+ * kept in `data` instead.
+ * The bridge reads only `message`, `event` and `data`, so the other fields merged onto the log were dropped. Fields of
+ * object arguments (minus `CONSUMED_KEYS`) are therefore collected into `meta`, array arguments into `meta.data`, and
+ * forwarded to the toolkit logger as metadata. The toolkit logger serialises nested `Error`s.
  */
 class TsEDLoggerBridgeLayout {
     public transform(loggingEvent: LogEvent): Record<string, unknown> {
-        const args = loggingEvent.data as unknown[];
-        const data = args.reduce<unknown[]>((acc, current) => {
-            if (current instanceof Error || ArrayUtils.isArray(current)) {
+        const data = (loggingEvent.data as unknown[]).reduce<unknown[]>((acc, current) => {
+            if (current instanceof Error || CommonUtils.isNull(current)) {
                 return [...acc, current];
             }
-            if (typeof current === 'object' && args.length > 1) {
-                return [...acc, current];
-            }
-            // Mirrors `logEventToObject`: the record is already merged onto the log, only its nested `data` is kept.
+            // Mirrors `logEventToObject`: objects are already merged onto the log, only their nested `data` is kept.
             if (typeof current === 'object') {
-                const record = (current ?? {}) as Record<string, unknown>;
-                const errors = Object.values(record).filter((value) => value instanceof Error);
-                return acc.concat(record.data ?? [], errors);
+                const nested = (current as { data?: unknown }).data;
+                return nested ? acc.concat(nested) : acc;
             }
             return [...acc, current];
         }, []);
 
-        return { ...logEventToObject(loggingEvent), data };
+        // Copy keeps the prototype, so `logEventToObject` still sees the `startTime` getter.
+        const withoutNulls: LogEvent = Object.assign(Object.create(Object.getPrototypeOf(loggingEvent) as object) as LogEvent, loggingEvent, {
+            data: (loggingEvent.data as unknown[]).filter((current) => CommonUtils.notNull(current))
+        });
+
+        const meta = (loggingEvent.data as unknown[]).reduce<Record<string, unknown>>((acc, current) => {
+            if (ArrayUtils.isArray(current)) {
+                return { ...acc, data: [...(acc.data as unknown[] | undefined ?? []), ...current] };
+            }
+            if (CommonUtils.isNil(current) || typeof current !== 'object' || current instanceof Error) {
+                return acc;
+            }
+            const fields = Object.entries(current as object).filter(([key]) => !CONSUMED_KEYS.has(key));
+            return { ...acc, ...Object.fromEntries(fields) };
+        }, {});
+
+        return { ...logEventToObject(withoutNulls), data, meta };
     }
 }
 
@@ -74,25 +89,31 @@ export class TsEDLoggerBridge {
     }
 
     private processLogEvent(level: LogLevel, event: Record<string, unknown>): void {
+        let message: string;
+
         // Ts.ED logs are absolutely crazy and not standardised. Sometimes 'message' is in message property, sometimes in event property, sometimes in data array.
         const eventMessage = this.parseTsEDEvent(event);
-        const parts: unknown[] = [];
 
         if (event.message) {
-            parts.push(event.message);
+            message = this.sanitizeString(event.message);
         } else if (eventMessage) {
-            parts.push(eventMessage);
+            message = this.sanitizeString(eventMessage);
+        } else {
+            message = 'Ts.ED Log Event';
         }
 
-        if (ArrayUtils.isArray(event.data)) {
-            parts.push(...event.data);
+        if (ArrayUtils.isArray(event.data) && event.data.length > 0) {
+            message = event.data
+                .map((item) => this.sanitizeString(item))
+                .join(' ');
         }
+        const meta = event.meta as Record<string, unknown> | undefined;
 
-        const message = parts
-            .map((item) => this.sanitizeString(item))
-            .join(' ');
-
-        this.logger.log(level, message || 'Ts.ED Log Event');
+        if (meta && Object.keys(meta).length > 0) {
+            this.logger.log(level, message, meta);
+        } else {
+            this.logger.log(level, message);
+        }
     }
 
     private parseTsEDEvent(event: Record<string, unknown>): string | undefined {
@@ -116,7 +137,7 @@ export class TsEDLoggerBridge {
             return value;
         }
         try {
-            return JSON.stringify(value, (_key, nested: unknown) => nested instanceof Error ? nested.stack ?? nested.message : nested) ?? String(value);
+            return JSON.stringify(value) ?? String(value);
         } catch {
             return String(value);
         }

@@ -1,9 +1,9 @@
 import { Injectable, ProviderScope, Scope } from '@tsed/di';
 import { PlatformContext } from '@tsed/platform-http';
 import { Logger as BaseLogger, LogErrorUtils } from '@radoslavirha/logger';
-import { ObjectUtils } from '@radoslavirha/utils';
+import { CommonUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
 
-import { RedactionProfile } from '@radoslavirha/redaction';
+import { RedactionProfile, RedactionUtils } from '@radoslavirha/redaction';
 
 import { LoggerOptionsInput, LoggerOptionsSchema, type LoggerOptions } from './RequestLogOptions.schema.js';
 import { LoggerMetadata } from './LoggerMetadata.js';
@@ -110,6 +110,23 @@ export class Logger extends BaseLogger<LoggerMetadata> {
         return this.ignorePaths.some((entry) => path === entry || path.startsWith(`${entry}/`));
     }
 
+    /**
+     * `$ctx.error` is whatever the handler threw, unwrapped — not necessarily an `Error`.
+     * Error-like values keep `name` / `message` / `stack`; anything else (a string, a plain
+     * object without `message`) is stringified into `error_message` so the failure isn't lost.
+     */
+    private errorFields(error: unknown): Record<string, unknown> {
+        if (CommonUtils.isNil(error)) {
+            return {};
+        }
+
+        if (error instanceof Error || StringUtils.isString((error as { message?: unknown }).message)) {
+            return { ...LogErrorUtils.toFields(error as Error & { code?: string }, { stack: this.options.requests.stack }) };
+        }
+
+        return { error_message: RedactionUtils.stringifyForLog(error) };
+    }
+
     private $onResponse($ctx: PlatformContext): void {
         if (!ObjectUtils.isEnabled(this.options.requests)) {
             return;
@@ -129,8 +146,9 @@ export class Logger extends BaseLogger<LoggerMetadata> {
             duration
         };
 
-        const contentType = String($ctx.response.getHeaders()['content-type'] ?? '');
-        const isTextSafe = !contentType || /^(text\/|application\/(json|xml|ld\+json|graphql|javascript|x-www-form-urlencoded))/i.test(contentType);
+        const mediaType = String($ctx.response.getHeaders()['content-type'] ?? '').split(';')[0]!.trim();
+        // Structured-syntax suffixes (RFC 6839): application/problem+json, application/vnd.api+json, …
+        const isTextSafe = !mediaType || /^(text\/|application\/(json|xml|graphql|javascript|x-www-form-urlencoded)$|application\/[\w.+-]+\+(json|xml)$)/i.test(mediaType);
 
         Object.assign(meta, this.redaction.collect({
             headers: $ctx.request.headers,
@@ -144,11 +162,9 @@ export class Logger extends BaseLogger<LoggerMetadata> {
         }
 
         if (status >= 400) {
-            const error = $ctx.error as (Error & { code?: string; errors?: unknown[]; body?: unknown; headers?: unknown }) | undefined;
-
             this.httpLog.error('Request failed', {
                 ...meta,
-                ...(error ? LogErrorUtils.toFields(error, { stack: this.options.requests.stack }) : {})
+                ...this.errorFields($ctx.error)
             });
         } else {
             this.httpLog.info('Request completed', meta);

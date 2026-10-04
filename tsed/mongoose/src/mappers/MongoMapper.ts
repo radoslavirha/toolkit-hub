@@ -1,7 +1,8 @@
 import { BaseModel } from '@radoslavirha/tsed-common';
 import { Type } from '@tsed/core';
-import { CommonUtils, MappingUtils } from '@radoslavirha/utils';
+import { CommonUtils, MappingUtils, ObjectUtils } from '@radoslavirha/utils';
 import { MongooseDocumentMethods, Ref } from '@tsed/mongoose';
+import { Types } from 'mongoose';
 import { SpecTypes, getJsonSchema } from '@tsed/schema';
 import { BaseMongo } from '../models/BaseMongo.js';
 import { MongoCreate } from '../types/MongoCreate.js';
@@ -112,7 +113,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * 
      * @template T The type of the referenced document extending BaseMongo
      * @param value The Mongoose reference (populated or unpopulated)
-     * @returns The string representation of the document ID
+     * @returns The string representation of the document ID, or `undefined` when the reference is unset (`null`/`undefined`)
      * @protected
      * 
      * @example
@@ -125,9 +126,15 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * }
      * ```
      */
-    protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T>): string {
+    protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T>): string;
+    protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T> | null | undefined): string | undefined;
+    protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T> | null | undefined): string | undefined {
+        if (CommonUtils.isNil(value)) {
+            return undefined;
+        }
+
         return this.canBePopulated(value)
-            ? (value as unknown as MongooseDocumentMethods<T>).toClass()._id
+            ? String((value as unknown as T)._id)
             : String(value);
     }
 
@@ -136,6 +143,8 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * 
      * Assumes the reference has been populated. Use canBePopulated() first
      * to check if the reference is populated before calling this method.
+     * Hydrated documents are converted with `toClass()`; documents populated
+     * through `.lean()` (and `deserialize()`) are returned as they are.
      * 
      * @template T The type of the referenced document
      * @param value The populated Mongoose reference
@@ -151,14 +160,19 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * ```
      */
     protected getPopulated<T>(value: Ref<T>): T {
-        return (value as MongooseDocumentMethods<T>).toClass();
+        const document = value as Partial<MongooseDocumentMethods<T>>;
+
+        return typeof document.toClass === 'function'
+            ? document.toClass()
+            : value as T;
     }
 
     /**
      * Checks whether a Mongoose reference has been populated.
      * 
-     * Attempts to call toClass() on the reference. If successful, the reference
-     * is populated; if it throws an error, it's just an ID.
+     * A reference is populated when it is an object other than an `ObjectId` —
+     * either a hydrated document or a plain object read through `.lean()`.
+     * An unpopulated reference is just the ID (`ObjectId` or string).
      * 
      * @template T The type of the referenced document
      * @param value The Mongoose reference to check
@@ -177,13 +191,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * ```
      */
     protected canBePopulated<T>(value: Ref<T>): boolean {
-        try {
-            (value as MongooseDocumentMethods<T>).toClass();
-            return true;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-            return false;
-        }
+        return ObjectUtils.isObject(value) && !(value instanceof Types.ObjectId);
     }
 
     /**
@@ -277,7 +285,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
         if (!CommonUtils.isUndefined(model[property])) {
             return model[property];
         } else if (!patch) {
-            return this.getModelDefault(model, property);
+            return this.getModelDefault(property);
         }
         return undefined;
     }
@@ -285,18 +293,18 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
     /**
      * Retrieves the default value for a model property from its JSON Schema.
      * 
-     * Extracts the default value defined in the model's @tsed/schema decorators.
+     * Extracts the default value defined in the @tsed/schema decorators of the mapper's
+     * declared `model` class, so it also works when the value is a plain object (e.g. a spread copy).
      * Used internally by getModelValue().
      * 
      * @template PROPERTY The property key of the model
-     * @param model The application model
      * @param property The property name to get the default for
      * @returns The default value from schema, or undefined if no default is defined
      * @private
      */
-    private getModelDefault<PROPERTY extends keyof MODEL>(model: MODEL, property: PROPERTY): MODEL[PROPERTY] | undefined {
-        const spec = getJsonSchema(model as unknown as Type<MODEL>, { specType: SpecTypes.JSON });
+    private getModelDefault<PROPERTY extends keyof MODEL>(property: PROPERTY): MODEL[PROPERTY] | undefined {
+        const spec = getJsonSchema(this.model, { specType: SpecTypes.JSON });
 
-        return spec?.properties[property]?.default ?? undefined;
+        return spec?.properties?.[property]?.default ?? undefined;
     }
 }

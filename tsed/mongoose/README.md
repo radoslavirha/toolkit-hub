@@ -621,7 +621,7 @@ name: this.getModelValue(model, 'name', true)
 ```
 
 #### `protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T>): string`
-Extracts the ID string from a Mongoose reference regardless of whether it is populated (full document) or unpopulated (raw ObjectId).
+Extracts the ID string from a Mongoose reference regardless of whether it is populated (full document) or unpopulated (raw ObjectId). An unset optional reference (`null` or `undefined`) returns `undefined` — never the string `"undefined"` or `"null"`; an overload types that case as `string | undefined`.
 
 ```typescript
 child_id: this.getIdFromPotentiallyPopulated(mongo.child_id)

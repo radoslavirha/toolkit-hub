@@ -230,9 +230,17 @@ Every log line is a single JSON object:
 | `scope` | Child loggers only | Instrumentation scope (class/module name) |
 | Additional keys | `metaProvider` or per-call `meta` provided | Merged metadata fields |
 | `error_name`, `error_message`, `error_stack` | `meta` is an `Error` | The error's name, message and stack, plus its own enumerable properties (e.g. `code`) |
+| `meta_timestamp`, `meta_level`, `meta_message`, `meta_scope` | `metaProvider` or `meta` uses a reserved key | The caller's value for that key (see below) |
 
 An `Error` passed as `meta` is flattened into the `error_*` fields above. An `Error` held in a
 top-level `meta` key (`{ error }`) is emitted as `{ name, message, stack }` instead of `{}`.
+
+`timestamp`, `level`, `message` and `scope` are reserved: the logger's own value always wins, and
+a metadata key with one of these names (from `meta`, `metaProvider` or an `Error`'s own
+properties) is emitted as `meta_<key>`. `log.warn('Upstream call failed', { message: res.statusText })`
+emits `"message":"Upstream call failed","meta_message":"Service Unavailable"`, and a child's pinned
+`scope` is never overwritten. The rename applies on root loggers too, so `scope` always means the
+instrumentation scope.
 
 `fatal` and `error` levels write to **stderr**; all other levels write to **stdout**.
 

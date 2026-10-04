@@ -193,6 +193,22 @@ describe('ObjectUtils', () => {
                 }
             });
         });
+
+        it('does not mutate a class instance nested in target', () => {
+            class DbConfig {
+                host = 'localhost';
+                port = 27017;
+            }
+            const target = { db: new DbConfig() };
+            const source = { db: { host: 'mongo.prod' } };
+
+            const result = ObjectUtils.mergeDeep(target, source);
+
+            expect(result.db.host).toBe('mongo.prod');
+            expect(result.db).toBeInstanceOf(DbConfig);
+            expect(result.db).not.toBe(target.db);
+            expect(target.db.host).toBe('localhost');
+        });
     });
 
     describe('keys', () => {

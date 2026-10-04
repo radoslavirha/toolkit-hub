@@ -202,6 +202,10 @@ Request log output (error, status ≥ 400):
 }
 ```
 
+If the handler threw something that isn't an `Error` (a string, or a plain object without a
+`message`), `error_name` and `error_stack` are omitted and `error_message` holds the thrown value
+as a string (JSON for objects).
+
 ### 6. Disable or selectively suppress request logging
 
 Control what is included in request log entries via in configuration JSON file:

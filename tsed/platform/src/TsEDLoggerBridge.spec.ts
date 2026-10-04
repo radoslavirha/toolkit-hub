@@ -89,21 +89,34 @@ describe('TsEDLoggerBridge', () => {
         expect(logSpy.mock.calls[0][1]).toContain('boom');
     });
 
-    it('should keep an Error nested in a structured Ts.ED log object', () => {
+    it('should not throw and keep the null when a Ts.ED log call has a null argument', () => {
         // arrange
         const logSpy = spyOnBridgeLog();
 
+        // act & assert
+        expect(() => $log.info('cached value:', null)).not.toThrow();
+        expect(logSpy).toHaveBeenCalledOnce();
+        expect(logSpy.mock.calls[0]).toEqual([LogLevel.INFO, 'cached value: null']);
+    });
+
+    it('should forward an Error nested in a structured Ts.ED log object as metadata', () => {
+        // arrange
+        const logSpy = spyOnBridgeLog();
+        const error = new Error('ENOENT views');
+
         // act — the shape Ts.ED itself logs, e.g. PlatformExpress PLATFORM_VIEWS_ERROR
-        $log.warn({ event: 'PLATFORM_VIEWS_ERROR', message: 'Unable to configure the PlatformViews service', error: new Error('ENOENT views') });
+        $log.warn({ event: 'PLATFORM_VIEWS_ERROR', message: 'Unable to configure the PlatformViews service', error });
 
         // assert
         expect(logSpy).toHaveBeenCalledOnce();
-        const message = logSpy.mock.calls[0][1] as string;
-        expect(message).toContain('Unable to configure the PlatformViews service');
-        expect(message).toContain('ENOENT views');
+        expect(logSpy.mock.calls[0]).toEqual([
+            LogLevel.WARN,
+            'Unable to configure the PlatformViews service',
+            { event: 'PLATFORM_VIEWS_ERROR', error }
+        ]);
     });
 
-    it('should keep plain object arguments', () => {
+    it('should forward plain object arguments as metadata', () => {
         // arrange
         const logSpy = spyOnBridgeLog();
 
@@ -112,24 +125,10 @@ describe('TsEDLoggerBridge', () => {
 
         // assert
         expect(logSpy).toHaveBeenCalledOnce();
-        expect(logSpy.mock.calls[0][1]).toBe('Payment failed {"orderId":"ord_42"}');
+        expect(logSpy.mock.calls[0]).toEqual([LogLevel.ERROR, 'Payment failed', { orderId: 'ord_42' }]);
     });
 
-    it('should keep an Error nested in a plain object argument', () => {
-        // arrange
-        const logSpy = spyOnBridgeLog();
-
-        // act
-        $log.error('Payment failed', { orderId: 'ord_42', error: new Error('card declined') });
-
-        // assert
-        expect(logSpy).toHaveBeenCalledOnce();
-        const message = logSpy.mock.calls[0][1] as string;
-        expect(message).toContain('ord_42');
-        expect(message).toContain('card declined');
-    });
-
-    it('should keep array arguments', () => {
+    it('should forward array arguments as metadata data', () => {
         // arrange
         const logSpy = spyOnBridgeLog();
 
@@ -138,7 +137,28 @@ describe('TsEDLoggerBridge', () => {
 
         // assert
         expect(logSpy).toHaveBeenCalledOnce();
-        expect(logSpy.mock.calls[0][1]).toBe('Skipped ids ["a1","b2"]');
+        expect(logSpy.mock.calls[0]).toEqual([LogLevel.INFO, 'Skipped ids', { data: ['a1', 'b2'] }]);
+    });
+
+    it('should not let object arguments overwrite the toolkit logger fields', () => {
+        // arrange
+        const logSpy = spyOnBridgeLog();
+
+        // act
+        $log.info('Cache warmed', { level: 'x', scope: 'y', timestamp: 'z', keys: 3 });
+
+        // assert
+        expect(logSpy).toHaveBeenCalledOnce();
+        expect(logSpy.mock.calls[0]).toEqual([LogLevel.INFO, 'Cache warmed', { keys: 3 }]);
+    });
+
+    it('should write the nested Error to the log output', () => {
+        // act
+        $log.warn({ event: 'PLATFORM_VIEWS_ERROR', message: 'Unable to configure the PlatformViews service', error: new Error('ENOENT views') });
+
+        // assert
+        const log = parseLogs(stdoutSpy).find((entry) => entry.event === 'PLATFORM_VIEWS_ERROR');
+        expect(log).toMatchObject({ scope: 'TSED', message: 'Unable to configure the PlatformViews service', error: { message: 'ENOENT views' } });
     });
 
     it('should not throw on non-string message or data', async () => {

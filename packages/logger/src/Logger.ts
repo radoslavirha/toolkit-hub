@@ -24,6 +24,9 @@ const WINSTON_COLORS: Record<LogLevel, string> = {
     [LogLevel.TRACE]: 'grey'
 };
 
+/** Fields the logger sets itself; a metadata key with one of these names is emitted as `meta_<key>`. */
+const RESERVED_KEYS: readonly string[] = ['timestamp', 'level', 'message', 'scope'];
+
 /**
  * Unique symbol used as a brand key on {@link ChildConfig}.
  * Not exported — external code cannot construct a valid ChildConfig.
@@ -142,15 +145,24 @@ export class Logger<T extends object = object> {
         }
 
         const baseMeta = this.metaProvider?.();
-        const metadata = CommonUtils.notUndefined(baseMeta) || CommonUtils.notUndefined(meta)
-            ? { ...baseMeta, ...Logger.serializeMeta(meta) }
-            : undefined;
+        const metadata = { ...baseMeta, ...Logger.serializeMeta(meta) };
 
-        if (CommonUtils.notUndefined(metadata)) {
-            this.logger.log(level, body, metadata);
-        } else {
-            this.logger.log(level, body);
+        // Single-object form: the (level, msg, meta) form appends `meta.message` to the body.
+        this.logger.log({ ...Logger.renameReservedKeys(metadata), level, message: body });
+    }
+
+    /**
+     * Moves metadata keys that clash with system fields to `meta_<key>`, so the system
+     * value (`timestamp`, `level`, `message`, pinned `scope`) always wins and the caller's
+     * value is kept.
+     */
+    private static renameReservedKeys(metadata: object): object {
+        if (!RESERVED_KEYS.some((key) => key in metadata)) {
+            return metadata;
         }
+        return Object.fromEntries(
+            Object.entries(metadata).map(([key, value]) => [RESERVED_KEYS.includes(key) ? `meta_${ key }` : key, value])
+        );
     }
 
     /**

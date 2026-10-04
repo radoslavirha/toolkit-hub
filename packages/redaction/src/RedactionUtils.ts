@@ -1,5 +1,5 @@
 import fastRedact from 'fast-redact';
-import { CommonUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
+import { CommonUtils, StringUtils } from '@radoslavirha/utils';
 
 /** A compiled redactor: serialises its input, censoring any configured paths. */
 export type RedactorFunction = (value: unknown) => string;
@@ -57,9 +57,12 @@ export class RedactionUtils {
      * - `["set-cookie"]` → bracket notation, **required** for names containing
      *   characters that are not valid identifiers (e.g. a hyphen)
      *
-     * Frozen input is redacted too: `fast-redact` censors by assigning in place,
-     * which a frozen object silently ignores, so a value containing a frozen
-     * object is redacted on a JSON copy instead. The input is never modified.
+     * Values are always redacted on a JSON copy, never on the input itself:
+     * `fast-redact` censors by assigning in place, which frozen objects,
+     * non-writable and getter-only properties silently ignore, and a `toJSON()`
+     * method would serialise a different object than the one censored. The
+     * copy has exactly the shape the serialiser emits, so every enabled field
+     * in it is redacted. The input is never modified.
      *
      * @param redactPaths Selectors to censor. An empty list yields a redactor
      *   that only serialises.
@@ -76,23 +79,7 @@ export class RedactionUtils {
             return redactor;
         }
 
-        return (value: unknown): string => redactor(
-            RedactionUtils.containsFrozen(value, new Set()) ? RedactionUtils.toWritableCopy(value) : value
-        );
-    }
-
-    private static containsFrozen(value: unknown, seen: Set<object>): boolean {
-        if (!ObjectUtils.isObject(value) || seen.has(value)) {
-            return false;
-        }
-
-        if (Object.isFrozen(value)) {
-            return true;
-        }
-
-        seen.add(value);
-
-        return Object.values(value).some((child) => RedactionUtils.containsFrozen(child, seen));
+        return (value: unknown): string => redactor(RedactionUtils.toWritableCopy(value));
     }
 
     /**

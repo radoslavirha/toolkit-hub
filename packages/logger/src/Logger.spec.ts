@@ -275,4 +275,69 @@ describe('Logger', () => {
             expect(getLine()).toMatchObject({ requestId: 'req-1', error_message: 'card declined' });
         });
     });
+
+    describe('reserved metadata keys', () => {
+        it('keeps the body as message when meta carries a message key', () => {
+            const logger = new Logger();
+            logger.warn('Upstream call failed', { message: 'Service Unavailable' });
+
+            const line = getLine();
+            expect(line['message']).toBe('Upstream call failed');
+            expect(line['meta_message']).toBe('Service Unavailable');
+        });
+
+        it('keeps the pinned child scope when meta carries a scope key', () => {
+            const log = new Logger().child('AUTH');
+            log.info('Token issued', { scope: 'read:items' });
+
+            const line = getLine();
+            expect(line['scope']).toBe('AUTH');
+            expect(line['meta_scope']).toBe('read:items');
+        });
+
+        it('keeps the pinned child scope when metaProvider returns a scope key', () => {
+            const log = new Logger<object>({ metaProvider: () => ({ scope: 'read:items' }) }).child('AUTH');
+            log.info('Token issued');
+
+            expect(getLine()).toMatchObject({ scope: 'AUTH', meta_scope: 'read:items' });
+        });
+
+        it('keeps the generated timestamp when meta carries a timestamp key', () => {
+            const logger = new Logger();
+            logger.info('Event received', { timestamp: 'T' });
+
+            const line = getLine();
+            expect(line['timestamp']).not.toBe('T');
+            expect(new Date(line['timestamp'] as string).toISOString()).toBe(line['timestamp']);
+            expect(line['meta_timestamp']).toBe('T');
+        });
+
+        it('keeps the log level when meta carries a level key', () => {
+            const logger = new Logger();
+            logger.info('Battery reading', { level: 42 });
+
+            const line = getLine();
+            expect(line['level']).toBe('info');
+            expect(line['meta_level']).toBe(42);
+        });
+
+        it('renames reserved keys carried by an Error passed as meta', () => {
+            const logger = new Logger().child('PAYMENT');
+            logger.error('Payment failed', Object.assign(new Error('card declined'), { scope: 'checkout' }));
+
+            expect(getLine()).toMatchObject({
+                message: 'Payment failed',
+                scope: 'PAYMENT',
+                meta_scope: 'checkout',
+                error_message: 'card declined'
+            });
+        });
+
+        it('keeps a stack key in meta as a plain field', () => {
+            const logger = new Logger();
+            logger.info('Parsed', { stack: 'parser' });
+
+            expect(getLine()).toMatchObject({ message: 'Parsed', stack: 'parser' });
+        });
+    });
 });

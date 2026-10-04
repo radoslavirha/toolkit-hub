@@ -7,13 +7,16 @@ import { BaseModel } from '@radoslavirha/tsed-common';
 import { TestModel } from '../test/TestModel.js';
 import { TestMongoMapper } from '../test/TestMongoMapper.js';
 import { TestModelChildMongo, TestModelMongo } from '../test/TestMongoModel.js';
+import { TestMongoRepository } from '../test/TestMongoRepository.js';
 
 describe('MongoMapper', () => {
     let mapper: TestMongoMapper;
+    let repository: TestMongoRepository;
 
     beforeEach(() => TestContainersMongo.create());
     beforeEach(() => {
         mapper = PlatformTest.get<TestMongoMapper>(TestMongoMapper);
+        repository = PlatformTest.get<TestMongoRepository>(TestMongoRepository);
     });
     afterEach(() => TestContainersMongo.reset());
 
@@ -156,6 +159,68 @@ describe('MongoMapper', () => {
         expect(response).toStrictEqual(childId);
     });
 
+    describe('populated refs read via lean() + deserialize()', () => {
+        async function findPopulatedLean(): Promise<{ mongo: TestModelMongo; childId: string }> {
+            const Child = PlatformTest.get<MongooseModel<TestModelChildMongo>>(TestModelChildMongo);
+            const child = await Child.create({ label: 'child' });
+            const parent = await repository.create({ label: 'parent', child_id: String(child._id) });
+
+            // @ts-expect-error protected member
+            const lean = await repository.model.findById(parent._id).populate('child_id').lean<TestModelMongo>();
+            // @ts-expect-error protected method
+            const mongo = repository.deserialize(lean)!;
+
+            return { mongo, childId: String(child._id) };
+        }
+
+        it('canBePopulated - returns true', async () => {
+            const { mongo } = await findPopulatedLean();
+
+            expect.assertions(1);
+
+            // @ts-expect-error protected method
+            expect(mapper.canBePopulated(mongo.child_id)).toBe(true);
+        });
+
+        it('getPopulated - returns the populated document', async () => {
+            const { mongo, childId } = await findPopulatedLean();
+
+            expect.assertions(2);
+
+            // @ts-expect-error protected method
+            const response = mapper.getPopulated(mongo.child_id);
+
+            expect(response).toBeInstanceOf(TestModelChildMongo);
+            expect(String(response._id)).toBe(childId);
+        });
+
+        it('getIdFromPotentiallyPopulated - returns the child id', async () => {
+            const { mongo, childId } = await findPopulatedLean();
+
+            expect.assertions(1);
+
+            expect(mapper.mongoToModel(mongo).child_id).toBe(childId);
+        });
+    });
+
+    it('getIdFromPotentiallyPopulated - unset optional ref maps to undefined, not the string "undefined"', async () => {
+        const doc = await repository.create({ label: 'no-child' });
+        const mongo = (await repository.findById(doc._id))!;
+
+        expect.assertions(1);
+
+        expect(mapper.mongoToModel(mongo).child_id).toBeUndefined();
+    });
+
+    it('getIdFromPotentiallyPopulated - null ref returns undefined, not the string "null"', async () => {
+        expect.assertions(1);
+
+        // @ts-expect-error protected method
+        const response = mapper.getIdFromPotentiallyPopulated(null);
+
+        expect(response).toBeUndefined();
+    });
+
     it('getModelValue - POST with value', async () => {
         const model = new TestModel();
         model.label = 'tester';
@@ -178,7 +243,7 @@ describe('MongoMapper', () => {
         const response = mapper.getModelValue(model, 'label');
 
         expect(response).toStrictEqual('mocked');
-        expect(spy).toHaveBeenCalledWith(model, 'label');
+        expect(spy).toHaveBeenCalledWith('label');
     });
 
     it('getModelValue - PATCH with value', async () => {
@@ -206,24 +271,30 @@ describe('MongoMapper', () => {
         expect(spy).not.toHaveBeenCalled();
     });
 
-    it('getModelDefault', async () => {
-        const model = new TestModel();
+    it('getModelValue - POST with undefined on a plain-object model resolves @Default', async () => {
+        const model = { ...new TestModel(), child_id: 'abc' } as TestModel;
 
         expect.assertions(1);
 
+        const response = mapper.getModelValue(model, 'label');
+
+        expect(response).toStrictEqual('label');
+    });
+
+    it('getModelDefault', async () => {
+        expect.assertions(1);
+
         // @ts-expect-error protected method
-        const response = mapper.getModelDefault(model, 'label');
+        const response = mapper.getModelDefault('label');
 
         expect(response).toStrictEqual('label');
     });
 
     it('getModelDefault - no default value', async () => {
-        const model = new TestModel();
-
         expect.assertions(1);
 
         // @ts-expect-error protected method
-        const response = mapper.getModelDefault(model, 'child_id');
+        const response = mapper.getModelDefault('child_id');
 
         expect(response).toBeUndefined();
     });
