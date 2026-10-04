@@ -1,7 +1,8 @@
 import { BaseModel } from '@radoslavirha/tsed-common';
 import { Type } from '@tsed/core';
-import { CommonUtils, MappingUtils } from '@radoslavirha/utils';
+import { CommonUtils, MappingUtils, ObjectUtils } from '@radoslavirha/utils';
 import { MongooseDocumentMethods, Ref } from '@tsed/mongoose';
+import { Types } from 'mongoose';
 import { SpecTypes, getJsonSchema } from '@tsed/schema';
 import { BaseMongo } from '../models/BaseMongo.js';
 import { MongoCreate } from '../types/MongoCreate.js';
@@ -127,7 +128,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      */
     protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T>): string {
         return this.canBePopulated(value)
-            ? (value as unknown as MongooseDocumentMethods<T>).toClass()._id
+            ? String((value as unknown as T)._id)
             : String(value);
     }
 
@@ -136,6 +137,8 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * 
      * Assumes the reference has been populated. Use canBePopulated() first
      * to check if the reference is populated before calling this method.
+     * Hydrated documents are converted with `toClass()`; documents populated
+     * through `.lean()` (and `deserialize()`) are returned as they are.
      * 
      * @template T The type of the referenced document
      * @param value The populated Mongoose reference
@@ -151,14 +154,19 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * ```
      */
     protected getPopulated<T>(value: Ref<T>): T {
-        return (value as MongooseDocumentMethods<T>).toClass();
+        const document = value as Partial<MongooseDocumentMethods<T>>;
+
+        return typeof document.toClass === 'function'
+            ? document.toClass()
+            : value as T;
     }
 
     /**
      * Checks whether a Mongoose reference has been populated.
      * 
-     * Attempts to call toClass() on the reference. If successful, the reference
-     * is populated; if it throws an error, it's just an ID.
+     * A reference is populated when it is an object other than an `ObjectId` —
+     * either a hydrated document or a plain object read through `.lean()`.
+     * An unpopulated reference is just the ID (`ObjectId` or string).
      * 
      * @template T The type of the referenced document
      * @param value The Mongoose reference to check
@@ -177,13 +185,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * ```
      */
     protected canBePopulated<T>(value: Ref<T>): boolean {
-        try {
-            (value as MongooseDocumentMethods<T>).toClass();
-            return true;
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-            return false;
-        }
+        return ObjectUtils.isObject(value) && !(value instanceof Types.ObjectId);
     }
 
     /**
