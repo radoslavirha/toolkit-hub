@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { describe, expect, expectTypeOf, it, vi, beforeEach, afterEach } from 'vitest';
 import { ZodValidator } from './ZodValidator.js';
 
 const ValidSchema = z.object({
@@ -21,6 +21,24 @@ describe('ZodValidator', () => {
     });
 
     describe('validate', () => {
+        it('infers the return type from the schema', () => {
+            const result = ZodValidator.validate(ValidSchema, { name: 'Alice' });
+
+            expectTypeOf(result).toEqualTypeOf<ValidType>();
+        });
+
+        it('rejects an explicit type argument that does not match the schema', () => {
+            // @ts-expect-error { other: number } is not the output of ValidSchema
+            expect(() => ZodValidator.validate<{ other: number }>(ValidSchema, { name: 'Alice' })).not.toThrow();
+        });
+
+        it('accepts a primitive schema', () => {
+            const result = ZodValidator.validate(z.string(), 'abc');
+
+            expectTypeOf(result).toBeString();
+            expect(result).toBe('abc');
+        });
+
         it('returns validated value when input is valid', () => {
             const result = ZodValidator.validate<ValidType>(ValidSchema, { name: 'Alice', age: 30 });
 
