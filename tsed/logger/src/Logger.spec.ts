@@ -112,6 +112,39 @@ describe('Logger (tsed-logger)', () => {
         expect(args[1]['response']).toBe('{"ok":true}');
     });
 
+    describe('response content-type', () => {
+        it.each([
+            'application/problem+json',
+            'application/vnd.api+json',
+            'application/hal+json; charset=utf-8',
+            'application/atom+xml'
+        ])('logs the response body for structured-syntax suffix %s', async (contentType) => {
+            const logger = buildLogger();
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+            $ctx.response.setHeader('content-type', contentType);
+
+            await respond(logger, $ctx);
+
+            const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
+            expect(args[1]['response']).toBe('{"ok":true}');
+        });
+
+        it.each([
+            'application/octet-stream',
+            'application/jsonp',
+            'application/vnd.ms-excel'
+        ])('logs [[ BINARY ]] for non-text type %s', async (contentType) => {
+            const logger = buildLogger();
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+            $ctx.response.setHeader('content-type', contentType);
+
+            await respond(logger, $ctx);
+
+            const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
+            expect(args[1]['response']).toBe('[[ BINARY ]]');
+        });
+    });
+
     describe('requests.ignorePaths', () => {
         const buildIgnoringLogger = (ignorePaths?: string[]): LoggerInternal =>
             buildLogger({ requests: { enabled: true, ...(ignorePaths ? { ignorePaths } : {}) } });
