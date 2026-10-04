@@ -198,6 +198,46 @@ describe('Logger (tsed-logger)', () => {
         });
     });
 
+    describe('failed request error fields', () => {
+        const failWith = async (thrown: unknown): Promise<Record<string, unknown>> => {
+            const logger = buildLogger({ requests: { enabled: true } });
+            const errorSpy = vi.spyOn(logger.httpLog, 'error');
+
+            $ctx.response.status(500);
+            ($ctx as unknown as { error: unknown }).error = thrown;
+            await respond(logger, $ctx);
+
+            return (errorSpy.mock.calls[0] as [string, Record<string, unknown>])[1];
+        };
+
+        it('keeps the message of a thrown string', async () => {
+            const meta = await failWith('upstream timed out');
+
+            expect(meta['error_message']).toBe('upstream timed out');
+        });
+
+        it('serialises a thrown plain object without a message', async () => {
+            const meta = await failWith({ reason: 'upstream timed out' });
+
+            expect(meta['error_message']).toBe('{"reason":"upstream timed out"}');
+        });
+
+        it('reads name and message from a thrown error-like object', async () => {
+            const meta = await failWith({ name: 'UpstreamError', message: 'upstream timed out' });
+
+            expect(meta['error_name']).toBe('UpstreamError');
+            expect(meta['error_message']).toBe('upstream timed out');
+        });
+
+        it('reads name, message and stack from a thrown Error', async () => {
+            const meta = await failWith(new TypeError('boom'));
+
+            expect(meta['error_name']).toBe('TypeError');
+            expect(meta['error_message']).toBe('boom');
+            expect(meta['error_stack']).toContain('TypeError: boom');
+        });
+    });
+
     describe('url field', () => {
         it('does not leak query string values via url', async () => {
             const logger = buildLogger({
