@@ -1,6 +1,6 @@
 import { getJsonSchema, Property } from '@tsed/schema';
 import { describe, expect, it } from 'vitest';
-import { ResourceId } from './ResourceId.js';
+import { ResourceId, ResourceIdPattern } from './ResourceId.js';
 
 class Target {
     @Property()
@@ -12,7 +12,17 @@ class Target {
     code!: string;
 }
 
+class Preset {
+    @Property()
+    @ResourceId(ResourceIdPattern.UUID)
+    id!: string;
+}
+
 describe('ResourceId', () => {
+    it('accepts a ResourceIdPattern preset', () => {
+        expect(getJsonSchema(Preset).properties.id.pattern).toBe(ResourceIdPattern.UUID);
+    });
+
     it('adds the supplied pattern and a neutral description to the schema', () => {
         const schema = getJsonSchema(Target);
 

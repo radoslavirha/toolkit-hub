@@ -2,6 +2,18 @@ import { useDecorators } from '@tsed/core';
 import { Description, Pattern } from '@tsed/schema';
 
 /**
+ * Ready-made id patterns for {@link ResourceId}. Values are flag-free regular expression sources.
+ */
+export enum ResourceIdPattern {
+    /** 24 hexadecimal characters (e.g. MongoDB ObjectId). */
+    HEX_24 = '^[a-fA-F0-9]{24}$',
+    /** Canonical UUID, any version. */
+    UUID = '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$',
+    /** Positive integer (e.g. auto-increment key). */
+    NUMERIC = '^[0-9]+$'
+}
+
+/**
  * Validates the format of a resource id (path param, query param, body property) against a
  * pattern supplied by the caller, so it works for any storage (or none).
  *
@@ -11,17 +23,16 @@ import { Description, Pattern } from '@tsed/schema';
  * The pattern is passed to the schema as a string without flags (a RegExp with flags would be
  * emitted as `/.../i`, which AJV reads literally), so put case handling inside the pattern.
  *
- * @param pattern - Regular expression (or its source string) a valid id must match.
+ * @param pattern - A {@link ResourceIdPattern}, or a custom regular expression (or its source string)
+ * a valid id must match.
  *
  * @example
  * ```ts
- * const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
- *
  * @Get('/:id')
- * get(@PathParams('id') @ResourceId(UUID) id: string) {}
+ * get(@PathParams('id') @ResourceId(ResourceIdPattern.UUID) id: string) {}
  * ```
  */
-export function ResourceId(pattern: RegExp | string): ParameterDecorator & PropertyDecorator {
+export function ResourceId(pattern: ResourceIdPattern | RegExp | string): ParameterDecorator & PropertyDecorator {
     if (pattern instanceof RegExp && pattern.flags) {
         throw new Error(`ResourceId pattern must not use flags (got /${pattern.source}/${pattern.flags}); encode them in the pattern.`);
     }

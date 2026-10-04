@@ -125,13 +125,11 @@ Runtime validation of arbitrary input using any Zod schema instance.
 A storage-neutral decorator that validates the format of a resource id against a pattern **you supply**, so it fits any database or none. Ts.ED's schema validation rejects a malformed id with **400** before it reaches the service layer. The generated OpenAPI schema carries only the `pattern` and a neutral `description`.
 
 ```typescript
-const OBJECT_ID = /^[a-fA-F0-9]{24}$/; // or a UUID, numeric id, ...
-
 @Get('/:id')
-get(@PathParams('id') @ResourceId(OBJECT_ID) id: string) { ... }
+get(@PathParams('id') @ResourceId(ResourceIdPattern.UUID) id: string) { ... }
 ```
 
-Pass a `RegExp` without flags (or a string); flags are rejected because AJV would read them literally. A well-formed id that matches nothing still resolves to 404 in the service.
+Pick a preset from the exported `ResourceIdPattern` enum (`HEX_24`, `UUID`, `NUMERIC`), or pass your own `RegExp` without flags (or a string); flags are rejected because AJV would read them literally. A well-formed id that matches nothing still resolves to 404 in the service.
 
 ## Usage
 
