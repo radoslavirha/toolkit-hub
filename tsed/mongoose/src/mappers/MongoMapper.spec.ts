@@ -203,6 +203,24 @@ describe('MongoMapper', () => {
         });
     });
 
+    it('getIdFromPotentiallyPopulated - unset optional ref maps to undefined, not the string "undefined"', async () => {
+        const doc = await repository.create({ label: 'no-child' });
+        const mongo = (await repository.findById(doc._id))!;
+
+        expect.assertions(1);
+
+        expect(mapper.mongoToModel(mongo).child_id).toBeUndefined();
+    });
+
+    it('getIdFromPotentiallyPopulated - null ref returns undefined, not the string "null"', async () => {
+        expect.assertions(1);
+
+        // @ts-expect-error protected method
+        const response = mapper.getIdFromPotentiallyPopulated(null);
+
+        expect(response).toBeUndefined();
+    });
+
     it('getModelValue - POST with value', async () => {
         const model = new TestModel();
         model.label = 'tester';

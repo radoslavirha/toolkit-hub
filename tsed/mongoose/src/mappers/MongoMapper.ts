@@ -113,7 +113,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * 
      * @template T The type of the referenced document extending BaseMongo
      * @param value The Mongoose reference (populated or unpopulated)
-     * @returns The string representation of the document ID
+     * @returns The string representation of the document ID, or `undefined` when the reference is unset (`null`/`undefined`)
      * @protected
      * 
      * @example
@@ -126,7 +126,13 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * }
      * ```
      */
-    protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T>): string {
+    protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T>): string;
+    protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T> | null | undefined): string | undefined;
+    protected getIdFromPotentiallyPopulated<T extends BaseMongo>(value: Ref<T> | null | undefined): string | undefined {
+        if (CommonUtils.isNil(value)) {
+            return undefined;
+        }
+
         return this.canBePopulated(value)
             ? String((value as unknown as T)._id)
             : String(value);
