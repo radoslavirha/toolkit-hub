@@ -46,3 +46,11 @@ configuration or third-party payloads.
 
 Both throw on failure and return the typed value on success, so there is no separate "is it
 valid" step to forget.
+
+## ResourceId
+
+Put `@ResourceId()` on `:id` path params, query params and body properties
+(`@PathParams('id') @ResourceId() id: string`). A malformed id is rejected with 400 at the API
+edge; a well-formed id that matches nothing is still a 404 from the service. The schema it
+emits is a neutral `pattern` plus a description — it does not reveal the storage engine.
+`isValidResourceId(id)` is the same check as a function, so the format is defined in one place.

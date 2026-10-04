@@ -53,6 +53,8 @@ const zodValidated = ZodValidator.validate(UserSchema, rawPayload);
 - `Serializer` - Typed wrappers for `@tsed/json-mapper`'s `serialize`/`deserialize`
 - `JSONSchemaValidator` - AJV-based schema validation of arbitrary input against a Ts.ED model
 - `ZodValidator` - Zod-based runtime validation for arbitrary input using any Zod schema
+- `ResourceId` - Decorator validating the id format of a path/query param or body property (malformed → 400)
+- `isValidResourceId` / `RESOURCE_ID_PATTERN` - The id format check, defined once
 - `SerializeOptions` / `DeserializeOptions` - Option types (omit `type`, which is a required parameter)
 
 **Full documentation below** ↓
@@ -118,6 +120,17 @@ Runtime validation of arbitrary input using any Zod schema instance.
 - Returns typed parsed data when validation succeeds
 - Throws `ZodError` (with `.issues`) when validation fails
 - Optional debug mode logs the raw input
+
+### ResourceId
+
+A storage-neutral decorator that validates the format of a resource id (24 hexadecimal characters). Ts.ED's schema validation rejects a malformed id with **400** before it reaches the service layer. The generated OpenAPI schema carries only a neutral `pattern` and `description`.
+
+```typescript
+@Get('/:id')
+get(@PathParams('id') @ResourceId() id: string) { ... }
+```
+
+A well-formed id that matches nothing still resolves to 404 in the service. `isValidResourceId(id)` exposes the same check for non-decorator code.
 
 ## Usage
 
