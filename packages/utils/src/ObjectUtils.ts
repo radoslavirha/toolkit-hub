@@ -151,7 +151,7 @@ export class ObjectUtils {
      * // Arrays are concatenated, nested properties are merged
      */
     public static mergeDeep<T extends object, S extends object>(target: T, source: S): T & S {
-        return _.mergeWith(_.cloneDeep(target), source, (targetValue, sourceValue) => {
+        return _.mergeWith(_.cloneDeep(target), _.cloneDeep(source), (targetValue, sourceValue) => {
             if (ArrayUtils.isArray(targetValue) && ArrayUtils.isArray(sourceValue)) {
                 return [...targetValue, ...sourceValue];
             }
