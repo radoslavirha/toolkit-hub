@@ -49,8 +49,8 @@ valid" step to forget.
 
 ## ResourceId
 
-Put `@ResourceId()` on `:id` path params, query params and body properties
-(`@PathParams('id') @ResourceId() id: string`). A malformed id is rejected with 400 at the API
-edge; a well-formed id that matches nothing is still a 404 from the service. The schema it
-emits is a neutral `pattern` plus a description — it does not reveal the storage engine.
-`isValidResourceId(id)` is the same check as a function, so the format is defined in one place.
+Put `@ResourceId(pattern)` on `:id` path params, query params and body properties
+(`@PathParams('id') @ResourceId(MY_ID_PATTERN) id: string`). You supply the pattern, so it suits
+any id format or storage. A malformed id is rejected with 400 at the API edge; a well-formed id
+that matches nothing is still a 404 from the service. The pattern must have no regex flags —
+encode case handling inside it. The schema it emits is the `pattern` plus a neutral description.

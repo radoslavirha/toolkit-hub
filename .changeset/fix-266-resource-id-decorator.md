@@ -2,4 +2,4 @@
 "@radoslavirha/tsed-common": minor
 ---
 
-Add storage-neutral `@ResourceId()` decorator (and `isValidResourceId`) to reject malformed ids with 400 at the API edge.
+Add storage-neutral `@ResourceId(pattern)` decorator to reject malformed ids with 400 at the API edge.

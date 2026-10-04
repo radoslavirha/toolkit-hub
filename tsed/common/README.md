@@ -53,8 +53,7 @@ const zodValidated = ZodValidator.validate(UserSchema, rawPayload);
 - `Serializer` - Typed wrappers for `@tsed/json-mapper`'s `serialize`/`deserialize`
 - `JSONSchemaValidator` - AJV-based schema validation of arbitrary input against a Ts.ED model
 - `ZodValidator` - Zod-based runtime validation for arbitrary input using any Zod schema
-- `ResourceId` - Decorator validating the id format of a path/query param or body property (malformed → 400)
-- `isValidResourceId` / `RESOURCE_ID_PATTERN` - The id format check, defined once
+- `ResourceId` - Decorator validating the id format (caller-supplied pattern) of a path/query param or body property (malformed → 400)
 - `SerializeOptions` / `DeserializeOptions` - Option types (omit `type`, which is a required parameter)
 
 **Full documentation below** ↓
@@ -123,14 +122,16 @@ Runtime validation of arbitrary input using any Zod schema instance.
 
 ### ResourceId
 
-A storage-neutral decorator that validates the format of a resource id (24 hexadecimal characters). Ts.ED's schema validation rejects a malformed id with **400** before it reaches the service layer. The generated OpenAPI schema carries only a neutral `pattern` and `description`.
+A storage-neutral decorator that validates the format of a resource id against a pattern **you supply**, so it fits any database or none. Ts.ED's schema validation rejects a malformed id with **400** before it reaches the service layer. The generated OpenAPI schema carries only the `pattern` and a neutral `description`.
 
 ```typescript
+const OBJECT_ID = /^[a-fA-F0-9]{24}$/; // or a UUID, numeric id, ...
+
 @Get('/:id')
-get(@PathParams('id') @ResourceId() id: string) { ... }
+get(@PathParams('id') @ResourceId(OBJECT_ID) id: string) { ... }
 ```
 
-A well-formed id that matches nothing still resolves to 404 in the service. `isValidResourceId(id)` exposes the same check for non-decorator code.
+Pass a `RegExp` without flags (or a string); flags are rejected because AJV would read them literally. A well-formed id that matches nothing still resolves to 404 in the service.
 
 ## Usage
 
