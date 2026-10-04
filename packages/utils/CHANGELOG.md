@@ -1,5 +1,11 @@
 # @radoslavirha/utils
 
+## 0.9.4
+
+### Patch Changes
+
+- [#265](https://github.com/radoslavirha/toolkit-hub/pull/265) [`eee3673`](https://github.com/radoslavirha/toolkit-hub/commit/eee3673b6486ce94e4d2e44a5c12f0c4c2321bb0) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ObjectUtils.mergeDeep` now deep-merges class instances in the source into the target subtree instead of replacing it.
+
 ## 0.9.3
 
 ### Patch Changes
