@@ -1,5 +1,13 @@
 # @radoslavirha/tsed-common
 
+## 0.5.11
+
+### Patch Changes
+
+- [#229](https://github.com/radoslavirha/toolkit-hub/pull/229) [`c033bdb`](https://github.com/radoslavirha/toolkit-hub/commit/c033bdbc0664285f0a9b578787727625e616744b) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `JSONSchemaValidator` now validates `BaseModel` subclasses (and any model using `@Format`) instead of throwing `unknown format "date-time"`: it registers the standard `ajv-formats` formats and validates the raw input before deserializing it, so wrong-typed input is no longer coerced into passing. `BaseModel.createdAt`/`updatedAt` now declare `@Property(Date)`, so the published build emits `{ type: 'string', format: 'date-time' }` for them instead of `{ type: 'object' }`.
+- Updated dependencies [[`13ca524`](https://github.com/radoslavirha/toolkit-hub/commit/13ca52450814163eb5f694f1cc9b7b4d98f4f6c8), [`ad3a682`](https://github.com/radoslavirha/toolkit-hub/commit/ad3a682a226c392fe7b649306971bf8185c07520)]:
+  - @radoslavirha/utils@0.9.3
+
 ## 0.5.10
 
 ### Patch Changes

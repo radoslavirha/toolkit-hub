@@ -1,5 +1,25 @@
 # @radoslavirha/tsed-swagger
 
+## 9.1.11
+
+### Patch Changes
+
+- [#206](https://github.com/radoslavirha/toolkit-hub/pull/206) [`b1dcb2d`](https://github.com/radoslavirha/toolkit-hub/commit/b1dcb2dce0fc91c22c720e7d31d1e2dd57a95e07) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `SwaggerDocumentConfig.security` now defaults to `[]`, so a document config without `security` no longer crashes `SwaggerProvider` with "security is not iterable".
+
+- [#212](https://github.com/radoslavirha/toolkit-hub/pull/212) [`57e8b87`](https://github.com/radoslavirha/toolkit-hub/commit/57e8b87b989cf3b5d47ae22a0513f78e63019188) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Docs landing page links now use the first (client-facing) `X-Forwarded-Proto` value when chained proxies send a comma-separated list, instead of rendering `https,http://…`.
+
+- [#209](https://github.com/radoslavirha/toolkit-hub/pull/209) [`b5195e2`](https://github.com/radoslavirha/toolkit-hub/commit/b5195e2d7f5a79995fbb05a85cd028b36aa24767) Thanks [@radoslavirha](https://github.com/radoslavirha)! - A trailing slash on `serverUrl` / `api.publicURL` no longer produces `//v1/docs` URLs (404) in Swagger UI and the landing page.
+
+- [#211](https://github.com/radoslavirha/toolkit-hub/pull/211) [`e55c5ba`](https://github.com/radoslavirha/toolkit-hub/commit/e55c5bab5aa48b51b3e924fcb33521d47716e0e9) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `serverUrl` is now published as the spec's `servers` entry, so Swagger UI "Try it out" keeps a reverse-proxy path prefix instead of dropping it.
+
+- [#214](https://github.com/radoslavirha/toolkit-hub/pull/214) [`0230a6b`](https://github.com/radoslavirha/toolkit-hub/commit/0230a6b250d7ff716526b5139ac551b6cd2adc51) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `SwaggerProvider` no longer crashes when `serverUrl` is set and `swaggerUIOptions` is `undefined`; it now treats the options as `{}` and auto-populates `urls`.
+- Updated dependencies [[`d9f643b`](https://github.com/radoslavirha/toolkit-hub/commit/d9f643b8fa594db3f96ed34bda20f9fd15457cf4), [`b8a2bbb`](https://github.com/radoslavirha/toolkit-hub/commit/b8a2bbb76c13b7467a49eb5055eb796e21111e08), [`13ca524`](https://github.com/radoslavirha/toolkit-hub/commit/13ca52450814163eb5f694f1cc9b7b4d98f4f6c8), [`ad3a682`](https://github.com/radoslavirha/toolkit-hub/commit/ad3a682a226c392fe7b649306971bf8185c07520), [`0a40938`](https://github.com/radoslavirha/toolkit-hub/commit/0a40938caf4ea5291fd7fc8279a9f76cfac45735), [`3bb4131`](https://github.com/radoslavirha/toolkit-hub/commit/3bb413173f0e374ca052c5c5901c8a8590cb6155), [`4171e73`](https://github.com/radoslavirha/toolkit-hub/commit/4171e733f87323d05c1b6737823ff608a72ec9a3), [`f50b1ff`](https://github.com/radoslavirha/toolkit-hub/commit/f50b1ff1867aa34d1a035d5cd00c5c1a7af1e09a), [`b9e06b5`](https://github.com/radoslavirha/toolkit-hub/commit/b9e06b50a9d1d5a99fde84e43f2b838841fdce70)]:
+  - @radoslavirha/tsed-platform@5.0.7
+  - @radoslavirha/types@0.4.7
+  - @radoslavirha/utils@0.9.3
+  - @radoslavirha/tsed-configuration@0.9.0
+  - @radoslavirha/tsed-logger@0.7.4
+
 ## 9.1.10
 
 ### Patch Changes

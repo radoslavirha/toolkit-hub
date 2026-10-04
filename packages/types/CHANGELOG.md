@@ -1,5 +1,11 @@
 # @radoslavirha/types
 
+## 0.4.7
+
+### Patch Changes
+
+- [#232](https://github.com/radoslavirha/toolkit-hub/pull/232) [`b8a2bbb`](https://github.com/radoslavirha/toolkit-hub/commit/b8a2bbb76c13b7467a49eb5055eb796e21111e08) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `FullPartial` now also makes optional (`X | undefined`) and nullable (`X | null`) nested objects partial, instead of leaving their fields required.
+
 ## 0.4.6
 
 ### Patch Changes
