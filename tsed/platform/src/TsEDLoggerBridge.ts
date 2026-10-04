@@ -10,22 +10,29 @@ const LAYOUT_NAME = 'radoslavirha-tsed-logger-bridge';
  * Ts.ED's default `object` layout `Object.assign`s every object argument onto the log object and keeps only
  * non-object arguments in `data`. `Error#message` and `Error#stack` are non-enumerable, so an `Error` passed as
  * `logger.error('msg', error)` disappeared. This layout keeps `Error` arguments in `data`, in their original position.
+ * `logEventToObject` also throws on a `null` argument (`typeof null === 'object'`), so nulls are kept out of it and
+ * kept in `data` instead.
  */
 class TsEDLoggerBridgeLayout {
     public transform(loggingEvent: LogEvent): Record<string, unknown> {
         const data = (loggingEvent.data as unknown[]).reduce<unknown[]>((acc, current) => {
-            if (current instanceof Error) {
+            if (current instanceof Error || CommonUtils.isNull(current)) {
                 return [...acc, current];
             }
             // Mirrors `logEventToObject`: objects are already merged onto the log, only their nested `data` is kept.
             if (typeof current === 'object') {
-                const nested = (current as { data?: unknown } | null)?.data;
+                const nested = (current as { data?: unknown }).data;
                 return nested ? acc.concat(nested) : acc;
             }
             return [...acc, current];
         }, []);
 
-        return { ...logEventToObject(loggingEvent), data };
+        // Copy keeps the prototype, so `logEventToObject` still sees the `startTime` getter.
+        const withoutNulls: LogEvent = Object.assign(Object.create(Object.getPrototypeOf(loggingEvent) as object) as LogEvent, loggingEvent, {
+            data: (loggingEvent.data as unknown[]).filter((current) => CommonUtils.notNull(current))
+        });
+
+        return { ...logEventToObject(withoutNulls), data };
     }
 }
 
