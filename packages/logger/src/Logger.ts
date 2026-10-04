@@ -24,8 +24,11 @@ const WINSTON_COLORS: Record<LogLevel, string> = {
     [LogLevel.TRACE]: 'grey'
 };
 
-/** Fields the logger sets itself; a metadata key with one of these names is emitted as `meta_<key>`. */
-const RESERVED_KEYS: readonly string[] = ['timestamp', 'level', 'message', 'scope'];
+/**
+ * Fields the logger sets itself, plus `exception` (Winston's transports drop any record with
+ * `exception: true`); a metadata key with one of these names is emitted as `meta_<key>`.
+ */
+const RESERVED_KEYS: readonly string[] = ['timestamp', 'level', 'message', 'scope', 'exception'];
 
 /**
  * Unique symbol used as a brand key on {@link ChildConfig}.
@@ -154,7 +157,7 @@ export class Logger<T extends object = object> {
     /**
      * Moves metadata keys that clash with system fields to `meta_<key>`, so the system
      * value (`timestamp`, `level`, `message`, pinned `scope`) always wins and the caller's
-     * value is kept.
+     * value is kept. `exception` is moved too, so Winston doesn't discard the line.
      */
     private static renameReservedKeys(metadata: object): object {
         if (!RESERVED_KEYS.some((key) => key in metadata)) {

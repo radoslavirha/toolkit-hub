@@ -321,6 +321,14 @@ describe('Logger', () => {
             expect(line['meta_level']).toBe(42);
         });
 
+        it('emits the line when meta carries exception: true', () => {
+            const logger = new Logger();
+            logger.error('Request failed', { exception: true, path: '/api/users' });
+
+            expect(capturedLines).toHaveLength(1);
+            expect(getLine()).toMatchObject({ message: 'Request failed', meta_exception: true, path: '/api/users' });
+        });
+
         it('renames reserved keys carried by an Error passed as meta', () => {
             const logger = new Logger().child('PAYMENT');
             logger.error('Payment failed', Object.assign(new Error('card declined'), { scope: 'checkout' }));

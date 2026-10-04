@@ -48,7 +48,8 @@ flat fields, spread `LogErrorUtils.toFields(error)` into the metadata. Don't cop
 
 `timestamp`, `level`, `message` and `scope` are reserved. A metadata key with one of those names
 is emitted as `meta_<key>` (`{ message: res.statusText }` → `meta_message`) and the logger's own
-value wins, so a child's `scope` can't be overwritten. Query the caller's value under `meta_<key>`.
+value wins, so a child's `scope` can't be overwritten. `exception` is renamed the same way
+(Winston drops records with `exception: true`). Query the caller's value under `meta_<key>`.
 
 ## Framework-free packages take a port, not a logger
 
