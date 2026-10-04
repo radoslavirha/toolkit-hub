@@ -38,10 +38,9 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.AGENT_APP_ID }}
+          client-id: ${{ vars.AGENT_APP_CLIENT_ID }}
           private-key: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: toolkit-hub,homelab-apps
       - name: Acknowledge comment
         if: github.event_name == 'issue_comment'
         env:
@@ -84,6 +83,7 @@ jobs:
           github_token: ${{ steps.app-token.outputs.token }}
           bot_id: ${{ steps.setup.outputs.bot-id }}
           bot_name: ${{ steps.setup.outputs.bot-name }}
+          display_report: true
           prompt: |
             ${{ steps.setup.outputs.prompt }}
 

@@ -23,10 +23,9 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ vars.AGENT_APP_ID }}
+          client-id: ${{ vars.AGENT_APP_CLIENT_ID }}
           private-key: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: toolkit-hub,homelab-apps
       - name: Checkout repository
         uses: actions/checkout@v7
         with:
@@ -48,6 +47,7 @@ jobs:
           github_token: ${{ steps.app-token.outputs.token }}
           bot_id: ${{ steps.setup.outputs.bot-id }}
           bot_name: ${{ steps.setup.outputs.bot-name }}
+          display_report: true
           prompt: ${{ steps.setup.outputs.prompt }}
           settings: '{"env":{"BASH_DEFAULT_TIMEOUT_MS":"600000"}}'
           claude_args: |
