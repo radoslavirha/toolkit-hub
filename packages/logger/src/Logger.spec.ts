@@ -268,6 +268,16 @@ describe('Logger', () => {
             expect(line['error']).toEqual({ name: 'TypeError', message: 'card declined', stack: error.stack });
         });
 
+        it('keeps the error name, message and stack of an Error held in an own property of an Error passed as meta', () => {
+            const logger = new Logger();
+            const inner = new Error('connection refused');
+            logger.error('Payment failed', Object.assign(new Error('Query failed'), { originalError: inner }));
+
+            const line = getLine();
+            expect(line['error_message']).toBe('Query failed');
+            expect(line['originalError']).toEqual({ name: 'Error', message: 'connection refused', stack: inner.stack });
+        });
+
         it('merges metaProvider fields with an Error passed as meta', () => {
             const logger = new Logger<object>({ metaProvider: () => ({ requestId: 'req-1' }) });
             logger.error('Payment failed', new Error('card declined'));

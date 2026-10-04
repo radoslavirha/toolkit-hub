@@ -233,7 +233,8 @@ Every log line is a single JSON object:
 | `meta_timestamp`, `meta_level`, `meta_message`, `meta_scope`, `meta_exception` | `metaProvider` or `meta` uses a reserved key | The caller's value for that key (see below) |
 
 An `Error` passed as `meta` is flattened into the `error_*` fields above. An `Error` held in a
-top-level `meta` key (`{ error }`) is emitted as `{ name, message, stack }` instead of `{}`.
+top-level `meta` key (`{ error }`), or in an own property of an `Error` passed as `meta`
+(`originalError`, `inner`), is emitted as `{ name, message, stack }` instead of `{}`.
 
 `timestamp`, `level`, `message` and `scope` are reserved: the logger's own value always wins, and
 a metadata key with one of these names (from `meta`, `metaProvider` or an `Error`'s own
