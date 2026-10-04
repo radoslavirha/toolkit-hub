@@ -257,6 +257,7 @@ if (ObjectUtils.isEnabled(p.child)) {
 ```
 
 **Note:** Unlike lodash's `merge`, `mergeDeep` concatenates arrays instead of replacing them.
+Class instances in `source` are merged into the target subtree like plain objects (their own enumerable properties); `Date`, `Map`, `Set` etc. still replace.
 
 ---
 
