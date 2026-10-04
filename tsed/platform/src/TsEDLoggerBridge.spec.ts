@@ -89,6 +89,58 @@ describe('TsEDLoggerBridge', () => {
         expect(logSpy.mock.calls[0][1]).toContain('boom');
     });
 
+    it('should keep an Error nested in a structured Ts.ED log object', () => {
+        // arrange
+        const logSpy = spyOnBridgeLog();
+
+        // act — the shape Ts.ED itself logs, e.g. PlatformExpress PLATFORM_VIEWS_ERROR
+        $log.warn({ event: 'PLATFORM_VIEWS_ERROR', message: 'Unable to configure the PlatformViews service', error: new Error('ENOENT views') });
+
+        // assert
+        expect(logSpy).toHaveBeenCalledOnce();
+        const message = logSpy.mock.calls[0][1] as string;
+        expect(message).toContain('Unable to configure the PlatformViews service');
+        expect(message).toContain('ENOENT views');
+    });
+
+    it('should keep plain object arguments', () => {
+        // arrange
+        const logSpy = spyOnBridgeLog();
+
+        // act
+        $log.error('Payment failed', { orderId: 'ord_42' });
+
+        // assert
+        expect(logSpy).toHaveBeenCalledOnce();
+        expect(logSpy.mock.calls[0][1]).toBe('Payment failed {"orderId":"ord_42"}');
+    });
+
+    it('should keep an Error nested in a plain object argument', () => {
+        // arrange
+        const logSpy = spyOnBridgeLog();
+
+        // act
+        $log.error('Payment failed', { orderId: 'ord_42', error: new Error('card declined') });
+
+        // assert
+        expect(logSpy).toHaveBeenCalledOnce();
+        const message = logSpy.mock.calls[0][1] as string;
+        expect(message).toContain('ord_42');
+        expect(message).toContain('card declined');
+    });
+
+    it('should keep array arguments', () => {
+        // arrange
+        const logSpy = spyOnBridgeLog();
+
+        // act
+        $log.info('Skipped ids', ['a1', 'b2']);
+
+        // assert
+        expect(logSpy).toHaveBeenCalledOnce();
+        expect(logSpy.mock.calls[0][1]).toBe('Skipped ids ["a1","b2"]');
+    });
+
     it('should not throw on non-string message or data', async () => {
         // arrange
         const process = (event: Record<string, unknown>): void =>
