@@ -117,7 +117,7 @@ A `Ref<T>` may hold an id or a populated document. Do not test for that by hand:
 
 - `canBePopulated(value)` — is it safe to treat as populated?
 - `getPopulated(value)` — the populated document
-- `getIdFromPotentiallyPopulated(value)` — the id, either way
+- `getIdFromPotentiallyPopulated(value)` — the id, either way; `undefined` for an unset ref
 
 ## Migration traps
 
