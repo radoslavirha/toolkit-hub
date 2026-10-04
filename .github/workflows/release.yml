@@ -1,4 +1,4 @@
-name: Release packages to GitHub Packages
+name: Release packages
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
 
 jobs:
   release:
+    name: Release packages
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -45,6 +46,8 @@ jobs:
         id: changesets
         uses: changesets/action@v2
         with:
+          pr-title: Publish packages
+          commit-message: Publish packages
           version-script: pnpm run version
           publish-script: pnpm changeset publish
           github-token: ${{ secrets.GITHUB_TOKEN }}
