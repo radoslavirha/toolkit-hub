@@ -58,6 +58,7 @@ class EntityRepository extends MongoRepository<EntityMongo> {
   protected mongo = EntityMongo;  // ← formerly called 'type'
 
   async findById(id: string): Promise<EntityMongo | null> {
+    if (!this.isValidId(id)) return null;  // malformed id → null, not CastError
     return this.deserialize(await this.model.findById(id).lean<EntityMongo>());
   }
   async find(): Promise<EntityMongo[]> {
@@ -337,6 +338,9 @@ export class UserRepository extends MongoRepository<UserMongo> {
     protected mongo = UserMongo;
 
     async findById(id: string): Promise<UserMongo | null> {
+        if (!this.isValidId(id)) {
+            return null;
+        }
         const result = await this.model.findById(id).lean<UserMongo>();
         return this.deserialize(result);
     }
@@ -353,6 +357,9 @@ export class UserRepository extends MongoRepository<UserMongo> {
     }
 
     async findByIdAndUpdate(id: string, data: MongoUpdate<UserMongo>): Promise<UserMongo | null> {
+        if (!this.isValidId(id)) {
+            return null;
+        }
         const result = await this.model
             .findByIdAndUpdate(id, { $set: data }, { new: true })
             .lean<UserMongo>();
@@ -360,6 +367,9 @@ export class UserRepository extends MongoRepository<UserMongo> {
     }
 
     async deleteById(id: string): Promise<MongoDeleteResult> {
+        if (!this.isValidId(id)) {
+            return { deleted: false, deletedCount: 0 };
+        }
         const result = await this.model.deleteOne({ _id: id } satisfies MongoFilter<UserMongo>);
         return { deleted: result.deletedCount > 0, deletedCount: result.deletedCount };
     }
@@ -371,6 +381,7 @@ export class UserRepository extends MongoRepository<UserMongo> {
 - Use `.lean()` on all read queries for performance — results are plain objects
 - Call `deserialize()` / `deserializeArray()` to reconstruct typed class instances
 - Call `convertHydratedDocumentToObject()` after `model.create()` (which doesn't support `.lean()`)
+- Guard every by-id query with `isValidId()` — a malformed id resolves `null` (or a no-op delete) instead of throwing a Mongoose `CastError`
 - Business/mapping logic does NOT belong here — keep queries data-access only
 
 ### 5. Implement Service (Business Logic Layer)
@@ -671,6 +682,9 @@ protected mongo = UserMongo;
 ```
 
 **Helper Methods:**
+
+#### `protected isValidId(id: string): boolean`
+Returns `true` when `id` can be cast to an ObjectId. Call it before every by-id query (`findById`, `findByIdAndUpdate`, `findByIdAndDelete`, `deleteOne({ _id: id })`, …) and resolve `null` / a no-op when it returns `false`. Without it, a malformed id such as `not-an-id` makes Mongoose throw a `CastError`, which escapes services that only map `null` to `NotFound` — a malformed id can never match a document, so it is "not found".
 
 #### `protected deserialize(data: MONGO | null): MONGO | null`
 Deserializes a lean/plain query result into a typed `MONGO` instance using Ts.ED. Returns `null` when input is `null`.

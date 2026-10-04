@@ -93,6 +93,13 @@ class ItemRepository extends MongoRepository<ItemMongo> {
     public async findAll(): Promise<ItemMongo[]> {
         return this.deserializeArray(await this.model.find().lean().exec());
     }
+
+    public async findById(id: string): Promise<ItemMongo | null> {
+        if (!this.isValidId(id)) {
+            return null;
+        }
+        return this.deserialize(await this.model.findById(id).lean<ItemMongo>().exec());
+    }
 }
 ```
 
@@ -110,6 +117,12 @@ deserialization helpers (`deserialize`, `deserializeArray`,
 `convertHydratedDocumentToObject`). Every `find`, `create`, `update` and `delete` is written by
 the subclass. Always pass lean/plain results through the deserialize helpers so callers get
 typed class instances rather than plain objects.
+
+Guard every by-id query (`findById`, `findByIdAndUpdate`, `findByIdAndDelete`,
+`deleteOne({ _id: id })`) with the protected `isValidId(id)` helper and resolve `null` — or a
+no-op delete result — when it returns `false`. A caller-supplied id such as `not-an-id` otherwise
+makes Mongoose throw a `CastError`, which escapes a service that only maps `null` to `NotFound`.
+Do not hand-write `Types.ObjectId.isValid` in each repository.
 
 ## References and populated fields
 
