@@ -5,6 +5,8 @@ import '@tsed/logger-connect';
 import { ArrayUtils, CommonUtils, StringUtils } from '@radoslavirha/utils';
 
 const LAYOUT_NAME = 'radoslavirha-tsed-logger-bridge';
+/** Fields the bridge turns into the log message, or that would overwrite the toolkit logger's own fields. */
+const CONSUMED_KEYS = new Set(['message', 'data', 'level', 'scope', 'timestamp']);
 
 /**
  * Ts.ED's default `object` layout `Object.assign`s every object argument onto the log object and keeps only
@@ -12,6 +14,9 @@ const LAYOUT_NAME = 'radoslavirha-tsed-logger-bridge';
  * `logger.error('msg', error)` disappeared. This layout keeps `Error` arguments in `data`, in their original position.
  * `logEventToObject` also throws on a `null` argument (`typeof null === 'object'`), so nulls are kept out of it and
  * kept in `data` instead.
+ * The bridge reads only `message`, `event` and `data`, so the other fields merged onto the log were dropped. Fields of
+ * object arguments (minus `CONSUMED_KEYS`) are therefore collected into `meta`, array arguments into `meta.data`, and
+ * forwarded to the toolkit logger as metadata. The toolkit logger serialises nested `Error`s.
  */
 class TsEDLoggerBridgeLayout {
     public transform(loggingEvent: LogEvent): Record<string, unknown> {
@@ -32,7 +37,18 @@ class TsEDLoggerBridgeLayout {
             data: (loggingEvent.data as unknown[]).filter((current) => CommonUtils.notNull(current))
         });
 
-        return { ...logEventToObject(withoutNulls), data };
+        const meta = (loggingEvent.data as unknown[]).reduce<Record<string, unknown>>((acc, current) => {
+            if (ArrayUtils.isArray(current)) {
+                return { ...acc, data: [...(acc.data as unknown[] | undefined ?? []), ...current] };
+            }
+            if (CommonUtils.isNil(current) || typeof current !== 'object' || current instanceof Error) {
+                return acc;
+            }
+            const fields = Object.entries(current as object).filter(([key]) => !CONSUMED_KEYS.has(key));
+            return { ...acc, ...Object.fromEntries(fields) };
+        }, {});
+
+        return { ...logEventToObject(withoutNulls), data, meta };
     }
 }
 
@@ -91,7 +107,13 @@ export class TsEDLoggerBridge {
                 .map((item) => this.sanitizeString(item))
                 .join(' ');
         }
-        this.logger.log(level, message);
+        const meta = event.meta as Record<string, unknown> | undefined;
+
+        if (meta && Object.keys(meta).length > 0) {
+            this.logger.log(level, message, meta);
+        } else {
+            this.logger.log(level, message);
+        }
     }
 
     private parseTsEDEvent(event: Record<string, unknown>): string | undefined {
