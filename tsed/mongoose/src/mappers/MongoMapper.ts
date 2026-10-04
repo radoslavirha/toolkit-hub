@@ -279,7 +279,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
         if (!CommonUtils.isUndefined(model[property])) {
             return model[property];
         } else if (!patch) {
-            return this.getModelDefault(model, property);
+            return this.getModelDefault(property);
         }
         return undefined;
     }
@@ -287,18 +287,18 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
     /**
      * Retrieves the default value for a model property from its JSON Schema.
      * 
-     * Extracts the default value defined in the model's @tsed/schema decorators.
+     * Extracts the default value defined in the @tsed/schema decorators of the mapper's
+     * declared `model` class, so it also works when the value is a plain object (e.g. a spread copy).
      * Used internally by getModelValue().
      * 
      * @template PROPERTY The property key of the model
-     * @param model The application model
      * @param property The property name to get the default for
      * @returns The default value from schema, or undefined if no default is defined
      * @private
      */
-    private getModelDefault<PROPERTY extends keyof MODEL>(model: MODEL, property: PROPERTY): MODEL[PROPERTY] | undefined {
-        const spec = getJsonSchema(model as unknown as Type<MODEL>, { specType: SpecTypes.JSON });
+    private getModelDefault<PROPERTY extends keyof MODEL>(property: PROPERTY): MODEL[PROPERTY] | undefined {
+        const spec = getJsonSchema(this.model, { specType: SpecTypes.JSON });
 
-        return spec?.properties[property]?.default ?? undefined;
+        return spec?.properties?.[property]?.default ?? undefined;
     }
 }

@@ -225,7 +225,7 @@ describe('MongoMapper', () => {
         const response = mapper.getModelValue(model, 'label');
 
         expect(response).toStrictEqual('mocked');
-        expect(spy).toHaveBeenCalledWith(model, 'label');
+        expect(spy).toHaveBeenCalledWith('label');
     });
 
     it('getModelValue - PATCH with value', async () => {
@@ -253,24 +253,30 @@ describe('MongoMapper', () => {
         expect(spy).not.toHaveBeenCalled();
     });
 
-    it('getModelDefault', async () => {
-        const model = new TestModel();
+    it('getModelValue - POST with undefined on a plain-object model resolves @Default', async () => {
+        const model = { ...new TestModel(), child_id: 'abc' } as TestModel;
 
         expect.assertions(1);
 
+        const response = mapper.getModelValue(model, 'label');
+
+        expect(response).toStrictEqual('label');
+    });
+
+    it('getModelDefault', async () => {
+        expect.assertions(1);
+
         // @ts-expect-error protected method
-        const response = mapper.getModelDefault(model, 'label');
+        const response = mapper.getModelDefault('label');
 
         expect(response).toStrictEqual('label');
     });
 
     it('getModelDefault - no default value', async () => {
-        const model = new TestModel();
-
         expect.assertions(1);
 
         // @ts-expect-error protected method
-        const response = mapper.getModelDefault(model, 'child_id');
+        const response = mapper.getModelDefault('child_id');
 
         expect(response).toBeUndefined();
     });
