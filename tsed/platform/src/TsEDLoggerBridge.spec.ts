@@ -89,6 +89,16 @@ describe('TsEDLoggerBridge', () => {
         expect(logSpy.mock.calls[0][1]).toContain('boom');
     });
 
+    it('should not throw and keep the null when a Ts.ED log call has a null argument', () => {
+        // arrange
+        const logSpy = spyOnBridgeLog();
+
+        // act & assert
+        expect(() => $log.info('cached value:', null)).not.toThrow();
+        expect(logSpy).toHaveBeenCalledOnce();
+        expect(logSpy.mock.calls[0]).toEqual([LogLevel.INFO, 'cached value: null']);
+    });
+
     it('should not throw on non-string message or data', async () => {
         // arrange
         const process = (event: Record<string, unknown>): void =>
