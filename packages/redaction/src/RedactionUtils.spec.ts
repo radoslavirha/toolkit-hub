@@ -146,6 +146,33 @@ describe('RedactionUtils', () => {
             expect(redactor(Object.freeze({ toJSON: () => undefined }))).toBe('[object Object]');
         });
 
+        it('redacts a non-writable own property', () => {
+            const value = { user: 'ada' };
+            Object.defineProperty(value, 'password', { value: 'hunter2', enumerable: true, writable: false });
+            const redactor = RedactionUtils.compileRedactor(['password']);
+
+            expect(redactor(value)).toBe('{"user":"ada","password":"***"}');
+        });
+
+        it('redacts a getter-only own property', () => {
+            const value = {
+                user: 'ada',
+                get password() {
+                    return 'hunter2';
+                }
+            };
+            const redactor = RedactionUtils.compileRedactor(['password']);
+
+            expect(redactor(value)).toBe('{"user":"ada","password":"***"}');
+        });
+
+        it('redacts the output of toJSON', () => {
+            const value = { toJSON: () => ({ user: 'ada', password: 'hunter2' }) };
+            const redactor = RedactionUtils.compileRedactor(['password']);
+
+            expect(redactor(value)).toBe('{"user":"ada","password":"***"}');
+        });
+
         it('handles recursive array and object references while traversing matching paths', () => {
             const cyclicArray: unknown[] = [];
             cyclicArray.push(cyclicArray);
