@@ -106,13 +106,13 @@ The configuration system follows a layered approach:
 ```
 ConfigProvider (Orchestrator)
     ├─> ConfigJsonProvider (config/*.json files + Zod validation)
-    ├─> EnvironmentVariablesProvider (process.env + .env file)
+    ├─> EnvironmentVariablesProvider (process.env)
     ├─> PackageJsonProvider (package.json metadata)
     └─> Combines all → outputs: api, config, server, envs
 ```
 
 **Flow:**
-1. Load environment variables (`NODE_ENV`, custom vars, `.env` file)
+1. Load environment variables (`NODE_ENV`, custom vars) from `process.env`
 2. Load `package.json` (name, version, description)
 3. Load `config/{default,production,development}.json` based on `NODE_ENV`
 4. Validate JSON config against your Zod schema
@@ -176,15 +176,9 @@ config/
 
 ### 3. Setup Environment Variables
 
-Create `.env` file (for local development):
+Environment variables are read from `process.env` only — `.env` files are not loaded. Set them in
+whatever starts the process (Kubernetes, Docker, your shell):
 
-```env
-NODE_ENV=development
-DATABASE_URL=mongodb://localhost:27017
-LOG_LEVEL=debug
-```
-
-**In production:**
 ```bash
 export NODE_ENV=production
 export DATABASE_URL=mongodb://prod-server:27017
