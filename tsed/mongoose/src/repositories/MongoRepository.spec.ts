@@ -40,6 +40,40 @@ describe('MongoRepository', () => {
         });
     });
 
+    describe('isValidId — via by-id queries', () => {
+        const malformedId = 'not-an-id';
+
+        it('resolves null from findById for a malformed id', async () => {
+            expect.assertions(1);
+
+            const result = await repository.findById(malformedId);
+
+            expect(result).toBeNull();
+        });
+
+        it('resolves null from findByIdAndUpdate for a malformed id and updates nothing', async () => {
+            const doc = await repository.create({ label: 'untouched' });
+
+            expect.assertions(2);
+
+            const result = await repository.findByIdAndUpdate(malformedId, { label: 'changed' });
+
+            expect(result).toBeNull();
+            expect((await repository.findById(doc._id))!.label).toBe('untouched');
+        });
+
+        it('resolves null from findByIdAndDelete for a malformed id and deletes nothing', async () => {
+            await repository.create({ label: 'kept' });
+
+            expect.assertions(2);
+
+            const result = await repository.findByIdAndDelete(malformedId);
+
+            expect(result).toBeNull();
+            expect(await repository.countDocuments()).toBe(1);
+        });
+    });
+
     describe('deserializeArray — via find', () => {
         it('returns TestModelMongo instances for all results', async () => {
             await repository.create({ label: 'first' });

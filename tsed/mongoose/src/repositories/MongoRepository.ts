@@ -2,7 +2,7 @@ import type { MongooseModel } from '@tsed/mongoose';
 import { Type } from '@tsed/core';
 import { CommonUtils } from '@radoslavirha/utils';
 import { Serializer } from '@radoslavirha/tsed-common';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, isValidObjectId } from 'mongoose';
 import { BaseMongo } from '../models/BaseMongo.js';
 
 /**
@@ -19,6 +19,10 @@ import { BaseMongo } from '../models/BaseMongo.js';
  * the queries your domain needs.  The helper methods and the ready-to-use types
  * (`MongoCreate`, `MongoUpdate`, `MongoDeleteResult`, `MongoUpdateResult`) are
  * provided by the package and available to every subclass.
+ *
+ * By-id queries should guard the caller-supplied id with `isValidId()` first:
+ * a malformed id can never match a document, so it resolves `null` instead of
+ * letting Mongoose throw a `CastError`.
  *
  * Mapper / business logic does NOT belong in this layer — it lives in
  * `MongoMapper`.
@@ -46,6 +50,7 @@ import { BaseMongo } from '../models/BaseMongo.js';
  *   protected mongo = Item;
  *
  *   async findById(id: string): Promise<Item | null> {
+ *     if (!this.isValidId(id)) return null;
  *     const result = await this.model.findById(id).lean<Item>() as Item | null;
  *     return this.deserialize(result);
  *   }
@@ -62,6 +67,7 @@ import { BaseMongo } from '../models/BaseMongo.js';
  *   }
  *
  *   async findByIdAndUpdate(id: string, data: MongoUpdate<Item>): Promise<Item | null> {
+ *     if (!this.isValidId(id)) return null;
  *     const result = await this.model.findByIdAndUpdate(id, { $set: data }, { new: true }).lean<Item>() as Item | null;
  *     return this.deserialize(result);
  *   }
@@ -97,6 +103,18 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
      * @example `protected mongo = User;`
      */
     protected abstract mongo: Type<MONGO>;
+
+    /**
+     * Returns `true` when `id` can be cast to an ObjectId.
+     *
+     * Call it before every by-id query (`findById`, `findByIdAndUpdate`,
+     * `findByIdAndDelete`, …) and resolve `null` / no-op when it returns `false`.
+     * Mongoose otherwise throws a `CastError` for a malformed id, which escapes
+     * services that only map `null` to `NotFound`.
+     */
+    protected isValidId(id: string): boolean {
+        return isValidObjectId(id);
+    }
 
     /**
      * Converts a Mongoose `HydratedDocument` to a plain object via `.toObject()`.

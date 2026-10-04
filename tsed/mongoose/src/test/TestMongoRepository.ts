@@ -17,6 +17,10 @@ export class TestMongoRepository extends MongoRepository<TestModelMongo> {
     protected mongo = TestModelMongo;
 
     async findById(id: string): Promise<TestModelMongo | null> {
+        if (!this.isValidId(id)) {
+            return null;
+        }
+
         const result = await this.model.findById(id).lean<TestModelMongo>();
 
         return this.deserialize(result);
@@ -56,6 +60,10 @@ export class TestMongoRepository extends MongoRepository<TestModelMongo> {
     }
 
     async findByIdAndUpdate(id: string, data: MongoUpdate<TestModelMongo>): Promise<TestModelMongo | null> {
+        if (!this.isValidId(id)) {
+            return null;
+        }
+
         const result = await this.model.findByIdAndUpdate(id, { $set: data }, { new: true }).lean<TestModelMongo>();
 
         return this.deserialize(result);
@@ -90,6 +98,10 @@ export class TestMongoRepository extends MongoRepository<TestModelMongo> {
     }
 
     async findByIdAndDelete(id: string): Promise<TestModelMongo | null> {
+        if (!this.isValidId(id)) {
+            return null;
+        }
+
         const result = await this.model.findByIdAndDelete(id).lean<TestModelMongo>();
 
         return this.deserialize(result);
