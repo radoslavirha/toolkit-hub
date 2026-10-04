@@ -34,6 +34,12 @@ describe('GeoUtils', () => {
 
             expect(result).toBe(713.4275);
         });
+
+        it('should return half the earth circumference for antipodal points', async () => {
+            const result = GeoUtils.calculateKmBetweenCoordinates(-87.5, -180, 87.5, 0);
+
+            expect(result).toBeCloseTo(Math.PI * 6371, 0);
+        });
     });
 
     describe('degToRad', () => {
