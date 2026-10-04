@@ -328,7 +328,7 @@ Static utility class wrapping `@tsed/json-mapper`.
 
 **Methods:**
 
-- `validate<T extends object>(schema: ZodType<T>, input: unknown, debug?: boolean): T`
+- `validate<T>(schema: ZodType<T>, input: unknown, debug?: boolean): T`
   Validates `input` against the provided Zod `schema`. Returns parsed `T` on success; throws `ZodError` on failure.
 
 **Parameters:**

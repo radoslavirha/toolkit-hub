@@ -27,11 +27,10 @@ export class ZodValidator {
      * type MqttConfig = z.infer<typeof MqttConfigSchema>;
      *
      * // Valid – full TS narrowing after validation:
-     * ZodValidator.validate(MqttConfigSchema, { enabled: true, url: 'mqtt://host' });
+     * const config: MqttConfig = ZodValidator.validate(MqttConfigSchema, { enabled: true, url: 'mqtt://host' });
      * ```
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public static validate<T extends object>(schema: ZodType<any>, input: unknown, debug = false): T {
+    public static validate<T>(schema: ZodType<T>, input: unknown, debug = false): T {
         if (debug) {
             console.log('Raw data:', JSON.stringify(input, null, 2));
         }
