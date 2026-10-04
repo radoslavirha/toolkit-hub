@@ -156,6 +156,16 @@ export class ObjectUtils {
                 return [...targetValue, ...sourceValue];
             }
 
+            // lodash only deep-merges plain-object sources; class instances would replace the target subtree.
+            if (
+                _.isObject(targetValue) &&
+                !ArrayUtils.isArray(targetValue) &&
+                !_.isPlainObject(sourceValue) &&
+                Object.prototype.toString.call(sourceValue) === '[object Object]'
+            ) {
+                return ObjectUtils.mergeDeep(targetValue, { ...sourceValue });
+            }
+
             return undefined;
         });
     }

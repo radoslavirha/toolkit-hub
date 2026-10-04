@@ -82,6 +82,20 @@ describe('ObjectUtils', () => {
     });
 
     describe('mergeDeep', () => {
+        it('deep merges a class instance nested in source into the target subtree', () => {
+            class DatabaseConfig {
+                port: number = 27018;
+                options: string[] = ['tls'];
+            }
+            const target = { db: { host: 'localhost', port: 27017, options: ['retryWrites'] } };
+            const source = { db: new DatabaseConfig() };
+
+            const result = ObjectUtils.mergeDeep(target, source);
+
+            expect(result.db).toStrictEqual({ host: 'localhost', port: 27018, options: ['retryWrites', 'tls'] });
+            expect(result.db).not.toBe(source.db);
+        });
+
         it('should deep merge two objects', () => {
             interface TestObj {
                 a: number;
