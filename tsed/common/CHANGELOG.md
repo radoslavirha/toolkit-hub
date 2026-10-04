@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-common
 
+## 0.6.0
+
+### Minor Changes
+
+- [#268](https://github.com/radoslavirha/toolkit-hub/pull/268) [`c5b57c6`](https://github.com/radoslavirha/toolkit-hub/commit/c5b57c627321ba0b10c11a5004a405f91c6a4d99) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Add storage-neutral `@ResourceId(pattern)` decorator and `ResourceIdPattern` presets to reject malformed ids with 400 at the API edge.
+
+### Patch Changes
+
+- [#270](https://github.com/radoslavirha/toolkit-hub/pull/270) [`83d64e2`](https://github.com/radoslavirha/toolkit-hub/commit/83d64e2b42a14c34146dab90b686c11f92dc9aeb) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ZodValidator.validate` now infers its return type from the schema and rejects a mismatching explicit type argument; primitive and array schemas are accepted.
+- Updated dependencies [[`eee3673`](https://github.com/radoslavirha/toolkit-hub/commit/eee3673b6486ce94e4d2e44a5c12f0c4c2321bb0)]:
+  - @radoslavirha/utils@0.9.4
+
 ## 0.5.11
 
 ### Patch Changes
