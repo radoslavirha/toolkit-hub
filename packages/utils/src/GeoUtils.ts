@@ -23,10 +23,12 @@ export class GeoUtils {
         const R = 6371; // Radius of the Earth in kilometers
         const dLatitude = GeoUtils.degToRad(latitude2 - latitude1);
         const dLongitude = GeoUtils.degToRad(longitude2 - longitude1);
-        const a = 
+        const haversine =
             Math.sin(dLatitude / 2) * Math.sin(dLatitude / 2) +
-            Math.cos(GeoUtils.degToRad(latitude1)) * Math.cos(GeoUtils.degToRad(latitude2)) * 
+            Math.cos(GeoUtils.degToRad(latitude1)) * Math.cos(GeoUtils.degToRad(latitude2)) *
             Math.sin(dLongitude / 2) * Math.sin(dLongitude / 2);
+        // Rounding can push near-antipodal values just past 1, which makes Math.sqrt(1 - a) NaN
+        const a = Math.min(1, Math.max(0, haversine));
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         
         return NumberUtils.round(R * c, 4);
