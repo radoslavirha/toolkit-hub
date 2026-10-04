@@ -75,6 +75,12 @@ reuse it for the lifetime of the process.
 JSON-stringifies — falling back to `String(value)` when that yields `undefined` (e.g. symbols)
 and to `[[ UNSERIALIZABLE ]]` on circular references.
 
+A redactor with configured paths also accepts a payload that arrives as JSON **text**: a string
+that parses as a JSON object or array is redacted as that value and re-serialised compactly, so
+`'{"access_token":"x"}'` logs as `{"access_token":"***"}`. Any other string — plain text, a raw
+query string such as `a=1&token=x`, a JSON primitive — cannot be addressed by path selectors and
+is logged unchanged. Parse such payloads into an object before redacting them.
+
 ## Configuration
 
 ```typescript

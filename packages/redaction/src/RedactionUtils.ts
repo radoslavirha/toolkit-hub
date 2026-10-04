@@ -1,5 +1,5 @@
 import fastRedact from 'fast-redact';
-import { CommonUtils, StringUtils } from '@radoslavirha/utils';
+import { CommonUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
 
 /** A compiled redactor: serialises its input, censoring any configured paths. */
 export type RedactorFunction = (value: unknown) => string;
@@ -64,6 +64,11 @@ export class RedactionUtils {
      * copy has exactly the shape the serialiser emits, so every enabled field
      * in it is redacted. The input is never modified.
      *
+     * A string input that parses as a JSON object or array is redacted as that
+     * value and re-serialised compactly. Any other string — plain text, a raw
+     * query string, a JSON primitive — cannot be addressed by path selectors and
+     * is returned unchanged; parse such payloads before redacting them.
+     *
      * @param redactPaths Selectors to censor. An empty list yields a redactor
      *   that only serialises.
      */
@@ -84,13 +89,30 @@ export class RedactionUtils {
 
     /**
      * A writable copy with the shape the serialiser would emit. Returns the
-     * value itself when it has no JSON form, so it serialises as before.
+     * value itself when it has no JSON form, so it serialises as before. A
+     * string holding a JSON object or array is parsed, so its paths can be
+     * redacted; any other string is returned as is.
      */
     private static toWritableCopy(value: unknown): unknown {
+        if (StringUtils.isString(value)) {
+            return RedactionUtils.parseJsonContainer(value);
+        }
+
         try {
             const serialized = JSON.stringify(value);
 
             return StringUtils.isString(serialized) ? JSON.parse(serialized) as unknown : value;
+        } catch {
+            return value;
+        }
+    }
+
+    /** The parsed value when `value` is JSON text for an object or array, else `value` itself. */
+    private static parseJsonContainer(value: string): unknown {
+        try {
+            const parsed = JSON.parse(value) as unknown;
+
+            return ObjectUtils.isObject(parsed) ? parsed : value;
         } catch {
             return value;
         }

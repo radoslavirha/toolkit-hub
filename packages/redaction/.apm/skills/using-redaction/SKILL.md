@@ -38,6 +38,10 @@ const meta = profile.collect({ request: { user: 'ada', password: 'hunter2' } });
 // meta.request has password redacted; disabled fields are absent
 ```
 
+A payload that is already JSON text (e.g. a proxied `await res.text()`) is parsed and redacted
+too. Any other string — plain text, a raw query string like `a=1&token=x` — passes through
+**unredacted**, because path selectors have nothing to address. Parse it into an object first.
+
 ## Redact before the logger, never inside it
 
 `@radoslavirha/logger` is a pure transport: it does not inspect or sanitise what it is given.
