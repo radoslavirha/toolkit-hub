@@ -111,6 +111,14 @@ export class Logger extends BaseLogger<LoggerMetadata> {
     }
 
     /**
+     * A `Buffer` / `Uint8Array` body would serialise as `{"type":"Buffer","data":[…]}`, which hides
+     * the payload's keys from `redactPaths`. Decode it to UTF-8 so JSON text is redacted like any other.
+     */
+    private static decodeBinary(body: unknown): unknown {
+        return body instanceof Uint8Array ? Buffer.from(body).toString('utf8') : body;
+    }
+
+    /**
      * `$ctx.error` is whatever the handler threw, unwrapped — not necessarily an `Error`.
      * Error-like values keep `name` / `message` / `stack`; anything else (a string, a plain
      * object without `message`) is stringified into `error_message` so the failure isn't lost.
@@ -153,8 +161,8 @@ export class Logger extends BaseLogger<LoggerMetadata> {
         Object.assign(meta, this.redaction.collect({
             headers: $ctx.request.headers,
             query: $ctx.request.query,
-            request: $ctx.request.body,
-            ...(isTextSafe ? { response: $ctx.data } : {})
+            request: Logger.decodeBinary($ctx.request.body),
+            ...(isTextSafe ? { response: Logger.decodeBinary($ctx.data) } : {})
         }));
 
         if (!isTextSafe && this.redaction.isEnabled('response')) {
