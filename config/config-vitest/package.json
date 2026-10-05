@@ -36,7 +36,7 @@
         "lint:fix": "eslint --fix ."
     },
     "dependencies": {
-        "unplugin-swc": "1.6.0"
+        "unplugin-swc": "2.0.0"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",

@@ -41,7 +41,7 @@
         "@radoslavirha/tsed-configuration": "workspace:*",
         "@radoslavirha/utils": "workspace:*",
         "@tsed/logger": "catalog:tsed",
-        "@tsed/logger-connect": "8.0.5",
+        "@tsed/logger-connect": "catalog:tsed",
         "body-parser": "catalog:express",
         "compression": "catalog:express",
         "cookie-parser": "catalog:express"

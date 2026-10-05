@@ -33,6 +33,7 @@
         "prepare": "husky",
         "sync:apm-versions": "bash scripts/sync-apm-versions.sh",
         "test": "pnpm --stream --recursive --sequential run test",
+        "verify": "pnpm run lint && pnpm run build && pnpm run test",
         "version": "changeset version && pnpm sync:apm-versions && pnpm build:marketplace"
     },
     "dependencies": {
@@ -40,7 +41,7 @@
     },
     "devDependencies": {
         "@changesets/changelog-github": "1.0.1",
-        "@changesets/cli": "3.0.2"
+        "@changesets/cli": "3.0.3"
     },
     "engines": {
         "node": ">= 24",

@@ -13,21 +13,21 @@ allowBuilds:
 
 catalog:
   '@types/fast-redact': 3.0.4
-  '@swc/core': 1.16.2
+  '@swc/core': 1.16.13
   '@swc/helpers': 0.5.23
-  '@types/node': 26.2.0
+  '@types/node': 26.6.4
   '@types/supertest': 7.2.1
-  '@vitest/coverage-v8': 5.0.0
-  eslint: 10.10.0
+  '@vitest/coverage-v8': 5.0.3
+  eslint: 10.12.0
   fast-redact: 3.5.0
-  mongoose: 9.9.5
-  supertest: 7.2.2
+  mongoose: 9.10.4
+  supertest: 7.3.1
   tsdown: 0.23.0
   tslib: 2.8.1
   typescript: 6.0.3
-  vitest: 5.0.0
+  vitest: 5.0.3
   winston: 3.19.0
-  zod: 4.6.0
+  zod: 4.6.5
 
 catalogs:
   express:
@@ -37,26 +37,27 @@ catalogs:
     '@types/cors': 2.8.19
     '@types/method-override': 3.0.0
     body-parser: 2.3.0
-    compression: 1.8.1
+    compression: 1.8.2
     cookie-parser: 1.4.7
     cors: 2.8.6
     method-override: 3.0.0
   tsed:
-    '@tsed/ajv': 8.38.4
-    '@tsed/core': 8.38.4
-    '@tsed/di': 8.38.4
-    '@tsed/json-mapper': 8.38.4
-    '@tsed/logger': 8.0.5
-    '@tsed/mongoose': 8.38.4
-    '@tsed/openspec': 8.38.4
-    '@tsed/platform-express': 8.38.4
-    '@tsed/platform-http': 8.38.4
-    '@tsed/platform-log-request': 8.38.4
-    '@tsed/platform-params': 8.38.4
-    '@tsed/platform-views': 8.38.4
-    '@tsed/schema': 8.38.4
-    '@tsed/swagger': 8.38.4
-    '@tsed/testcontainers-mongo': 8.38.4
+    '@tsed/ajv': 8.41.2
+    '@tsed/core': 8.41.2
+    '@tsed/di': 8.41.2
+    '@tsed/json-mapper': 8.41.2
+    '@tsed/logger': 8.0.7
+    '@tsed/logger-connect': 8.0.7
+    '@tsed/mongoose': 8.41.2
+    '@tsed/openspec': 8.41.2
+    '@tsed/platform-express': 8.41.2
+    '@tsed/platform-http': 8.41.2
+    '@tsed/platform-log-request': 8.41.2
+    '@tsed/platform-params': 8.41.2
+    '@tsed/platform-views': 8.41.2
+    '@tsed/schema': 8.41.2
+    '@tsed/swagger': 8.41.2
+    '@tsed/testcontainers-mongo': 8.41.2
     ajv: 8.20.0
     ajv-formats: 3.0.1
 
