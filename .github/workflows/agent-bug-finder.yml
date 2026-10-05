@@ -3,7 +3,8 @@ name: Agent bug finder
 
 on:
   schedule:
-    - cron: '0 */4 * * *'
+    # Nightly, before the resolver: 00:00 and 01:00 CEST / 23:00 and 00:00 CET.
+    - cron: '0 22,23 * * *'
   workflow_dispatch:
 
 # A run that outlasts its slot queues the next one instead of overlapping it.
@@ -26,12 +27,29 @@ jobs:
           client-id: ${{ vars.AGENT_APP_CLIENT_ID }}
           private-key: ${{ secrets.AGENT_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+      # The schedule is a ceiling: skip while 6+ issues (two days of resolver
+      # budget) already wait. Manual runs always go.
+      - name: Check backlog
+        id: backlog
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          waiting=$(gh issue list -R "$GITHUB_REPOSITORY" --label agent-found --state open -L 200 \
+            --json labels --jq '[.[] | select([.labels[].name] | any(. == "agent-in-progress"
+              or . == "agent-needs-human" or . == "agent-cannot-reproduce" or . == "agent-upstream") | not)]
+              | length')
+          if [ "$EVENT" = schedule ] && [ "$waiting" -ge 6 ]; then skip=true; else skip=false; fi
+          echo "Issues waiting for the resolver: $waiting -> skip=$skip"
+          echo "skip=$skip" >> "$GITHUB_OUTPUT"
       - name: Checkout repository
+        if: steps.backlog.outputs.skip != 'true'
         uses: actions/checkout@v7
         with:
           token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
       - name: Agent setup
+        if: steps.backlog.outputs.skip != 'true'
         id: setup
         uses: ./.github/actions/agent-setup
         with:
@@ -39,6 +57,7 @@ jobs:
           app-slug: ${{ steps.app-token.outputs.app-slug }}
           prompt: bug-finder.md
       - name: Run Claude
+        if: steps.backlog.outputs.skip != 'true'
         uses: anthropics/claude-code-action@v1
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
