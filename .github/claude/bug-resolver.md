@@ -93,6 +93,12 @@ All of these must pass:
   pnpm build
   pnpm test
   pnpm lint
+Then prove the regression test: `bash scripts/check-regression-test.sh` must
+pass. It runs your changed specs with and without your source changes; a test
+that passes either way doesn't detect the bug — rewrite it until the check
+passes. For a fix that genuinely needs no test (AGENTS.md or the testing
+instructions say so), add the `no-regression-test` label to the PR and say why
+in its Background.
 If anything fails and you can't fix it within the scope above, handle it like an
 ambiguous fix in step 4.
 
