@@ -145,6 +145,44 @@ describe('Logger (tsed-logger)', () => {
         });
     });
 
+    describe('Buffer bodies', () => {
+        it('logs a text-safe Buffer response as text, not a JSON byte array', async () => {
+            const logger = buildLogger({ requests: { enabled: true, response: { enabled: true } } });
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+            $ctx.response.setHeader('content-type', 'text/csv; charset=utf-8');
+            $ctx.data = Buffer.from('id,email\n1,a@b.c\n');
+
+            await respond(logger, $ctx);
+
+            const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
+            expect(args[1]['response']).not.toContain('"type":"Buffer"');
+            expect(args[1]['response']).toContain('a@b.c');
+        });
+
+        it('applies response redactPaths to a JSON body returned as a Buffer', async () => {
+            const logger = buildLogger({ requests: { enabled: true, response: { enabled: true, redactPaths: ['token'] } } });
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+            $ctx.response.setHeader('content-type', 'application/json');
+            $ctx.data = Buffer.from('{"token":"s3cret"}');
+
+            await respond(logger, $ctx);
+
+            const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
+            expect(args[1]['response']).toBe('{"token":"***"}');
+        });
+
+        it('applies request redactPaths to a JSON body parsed as a Buffer', async () => {
+            const logger = buildLogger({ requests: { enabled: true, request: { enabled: true, redactPaths: ['token'] } } });
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+            $ctx.request.raw.body = Buffer.from('{"token":"s3cret"}');
+
+            await respond(logger, $ctx);
+
+            const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
+            expect(args[1]['request']).toBe('{"token":"***"}');
+        });
+    });
+
     describe('requests.ignorePaths', () => {
         const buildIgnoringLogger = (ignorePaths?: string[]): LoggerInternal =>
             buildLogger({ requests: { enabled: true, ...(ignorePaths ? { ignorePaths } : {}) } });
