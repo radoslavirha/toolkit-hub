@@ -8,7 +8,7 @@ import { Serializer } from '../serializer/Serializer.js';
 const addFormats = formatsPlugin as unknown as typeof formatsPlugin.default;
 
 export class JSONSchemaValidator {
-    private static readonly AJV_OPTIONS: Options = { allErrors: true };
+    private static readonly AJV_OPTIONS: Options = { allErrors: true, discriminator: true };
 
     /**
      * Validates and deserializes arbitrary input against the JSON Schema derived

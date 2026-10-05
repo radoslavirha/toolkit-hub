@@ -107,6 +107,7 @@ AJV-based runtime validation of arbitrary input against a Ts.ED model. Useful fo
 
 - Derives a JSON Schema from `@tsed/schema` decorators at runtime
 - Validates the raw input with AJV (`allErrors: true`), with the standard [`ajv-formats`](https://github.com/ajv-validator/ajv-formats) formats (`date-time`, `email`, `uri`, …) registered — so `BaseModel` subclasses validate
+- Supports polymorphic models (`@DiscriminatorKey` / `@DiscriminatorValue` with `@OneOf`) via AJV's `discriminator` keyword
 - Does not coerce values: wrong-typed input (e.g. `"30"` for a `number`) is rejected
 - Deserializes the validated input via `Serializer` into a typed model instance
 - Throws an `ErrorObject[]` array on failure so all violations are surfaced at once
