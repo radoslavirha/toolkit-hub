@@ -103,6 +103,22 @@ describe('RedactionProfile', () => {
             expect(redacted).toBe('{"Authorization":"***","X-API-Key":"***","Accept":"application/json"}');
         });
 
+        it('applies case-insensitivity to headers only when collecting several fields', () => {
+            const profile = new RedactionProfile<Field>({
+                headers: { enabled: true, redactPaths: ['authorization'] },
+                query: { enabled: true, redactPaths: ['authorization'] }
+            });
+
+            const collected = profile.collect({ headers: { Authorization: 'a' }, query: { Authorization: 'b' } });
+
+            expect(collected).toStrictEqual({
+                headers: '{"Authorization":"***"}',
+                query: '{"Authorization":"b"}'
+            });
+        });
+    });
+
+    describe('non-header field name case', () => {
         it('keeps non-header fields case-sensitive', () => {
             const profile = new RedactionProfile<Field>(CONFIG);
 
@@ -131,20 +147,6 @@ describe('RedactionProfile', () => {
             expect(collected).toStrictEqual({
                 request: '{"password":"***","PASSWORD":"b"}',
                 response: '{"access_token":"***","Access_Token":"d"}'
-            });
-        });
-
-        it('applies case-insensitivity to headers only when collecting several fields', () => {
-            const profile = new RedactionProfile<Field>({
-                headers: { enabled: true, redactPaths: ['authorization'] },
-                query: { enabled: true, redactPaths: ['authorization'] }
-            });
-
-            const collected = profile.collect({ headers: { Authorization: 'a' }, query: { Authorization: 'b' } });
-
-            expect(collected).toStrictEqual({
-                headers: '{"Authorization":"***"}',
-                query: '{"Authorization":"b"}'
             });
         });
     });
