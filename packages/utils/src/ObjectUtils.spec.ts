@@ -82,6 +82,17 @@ describe('ObjectUtils', () => {
     });
 
     describe('mergeDeep', () => {
+        it('returns a result that shares no references with source', () => {
+            const source = { items: [{ name: 'b' }], nested: { list: [{ name: 'c' }] } };
+            const result = ObjectUtils.mergeDeep({ items: [{ name: 'a' }], nested: { list: [] as { name: string }[] } }, source);
+
+            result.items[1].name = 'mutated';
+            result.nested.list[0].name = 'mutated';
+
+            expect(source.items[0].name).toBe('b');
+            expect(source.nested.list[0].name).toBe('c');
+        });
+
         it('deep merges a class instance nested in source into the target subtree', () => {
             class DatabaseConfig {
                 port: number = 27018;
