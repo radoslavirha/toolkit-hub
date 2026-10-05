@@ -176,6 +176,11 @@ export class ObjectUtils {
      * // Arrays are concatenated, nested properties are merged
      */
     public static mergeDeep<T extends object, S extends object>(target: T, source: S): T & S {
+        // lodash never calls the customizer for root values, so concatenate root arrays here
+        if (ArrayUtils.isArray(target) && ArrayUtils.isArray(source)) {
+            return [..._.cloneDeep(target), ..._.cloneDeep(source)] as T & S;
+        }
+
         return _.mergeWith(_.cloneDeep(target), _.cloneDeep(source), (targetValue, sourceValue) => {
             if (ArrayUtils.isArray(targetValue) && ArrayUtils.isArray(sourceValue)) {
                 return [...targetValue, ...sourceValue];

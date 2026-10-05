@@ -128,6 +128,12 @@ describe('ObjectUtils', () => {
     });
 
     describe('mergeDeep', () => {
+        it('concatenates arrays passed as target and source', () => {
+            const result = ObjectUtils.mergeDeep([1, 2], [3]);
+
+            expect(result).toEqual([1, 2, 3]);
+        });
+
         it('returns a result that shares no references with source', () => {
             const source = { items: [{ name: 'b' }], nested: { list: [{ name: 'c' }] } };
             const result = ObjectUtils.mergeDeep({ items: [{ name: 'a' }], nested: { list: [] as { name: string }[] } }, source);
