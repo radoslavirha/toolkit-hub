@@ -107,10 +107,13 @@ export class RedactionUtils {
         }
     }
 
-    /** The parsed value when `value` is JSON text for an object or array, else `value` itself. */
+    /**
+     * The parsed value when `value` is JSON text for an object or array, else `value` itself.
+     * A leading byte order mark is not part of the JSON value (RFC 8259 §8.1), so it is ignored.
+     */
     private static parseJsonContainer(value: string): unknown {
         try {
-            const parsed = JSON.parse(value) as unknown;
+            const parsed = JSON.parse(value.charCodeAt(0) === 0xFEFF ? value.slice(1) : value) as unknown;
 
             return ObjectUtils.isObject(parsed) ? parsed : value;
         } catch {
