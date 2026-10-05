@@ -30,6 +30,12 @@ describe('RedactionUtils', () => {
             expect(redactor('text')).toBe('text');
         });
 
+        it('redacts configured paths inside BOM-prefixed JSON text', () => {
+            const redactor = RedactionUtils.compileRedactor(['access_token']);
+
+            expect(redactor('\uFEFF{"access_token":"live-secret"}')).toBe('{"access_token":"***"}');
+        });
+
         it('rejects malformed selectors', () => {
             expect(() => {
                 RedactionUtils.compileRedactor(['user..id']);
