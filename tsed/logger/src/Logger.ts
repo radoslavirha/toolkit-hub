@@ -92,7 +92,8 @@ export class Logger extends BaseLogger<LoggerMetadata> {
             response: resolved.requests.response
         });
         // Resolved once here — never per request.
-        this.ignorePaths = resolved.requests.ignorePaths;
+        // Trailing slashes are dropped so `/metrics/` behaves like `/metrics`; `/` becomes `''`, matching every path.
+        this.ignorePaths = resolved.requests.ignorePaths.map((entry) => entry.replace(/\/+$/, ''));
     }
 
     /**

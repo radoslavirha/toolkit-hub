@@ -233,7 +233,8 @@ Control what is included in request log entries via in configuration JSON file:
 `ignorePaths` suppresses request/response logging for the listed paths. Matching is an
 anchored, case-sensitive prefix on a path-segment boundary against the pathname (query
 string stripped): `/health` suppresses `/health`, `/health/live` and `/health/ready?x=1`,
-but not `/healthchecks-admin`. Suppression happens before any redaction work and applies
+but not `/healthchecks-admin`. A trailing slash on an entry is ignored (`/metrics/` ≡
+`/metrics`), and `/` suppresses every path. Suppression happens before any redaction work and applies
 to failed responses too — the filter is about the path, not the outcome.
 
 Kubernetes probe endpoints (`/health`, `/healthz`) are excluded **by default**. Set
