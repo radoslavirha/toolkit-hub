@@ -8,6 +8,8 @@ description: Use when writing or changing a `*.spec.ts` file in toolkit-hub, add
 - **Convention:** `*.spec.ts` — always `spec`, never `test`
 - **Location:** Co-located with source files inside `src/`, e.g. `src/CommonUtils.spec.ts` next to `src/CommonUtils.ts`
 - **Integration tests:** Use `.integration.spec.ts` suffix to distinguish from unit tests
+- **One spec per source file:** new tests for `src/Foo.ts` go into the existing `src/Foo.spec.ts`, inside the
+  matching `describe`. Never add a second spec for the same source file (`Foo.bug.spec.ts`, `Foo.alg.spec.ts`, ...)
 - **Test helpers/fixtures:** Place in `src/test/` subdirectory per-package (e.g. `src/test/TestMongoModel.ts`). These are excluded from coverage automatically.
 
 ---
