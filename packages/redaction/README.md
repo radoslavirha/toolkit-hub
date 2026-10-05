@@ -69,6 +69,11 @@ reuse it for the lifetime of the process.
 
 `fast-redact` throws on `set-cookie` written bare — use the bracket form.
 
+**Case:** selectors are exact, with one exception. In a `RedactionProfile`, the field named
+`headers` matches **root-level** selectors case-insensitively (HTTP header names are), so
+`authorization` also redacts `Authorization`; the original spelling is kept in the output.
+Nested and wildcard selectors, and every other field (body, query, …), stay case-sensitive.
+
 ### Serialisation fallbacks
 
 `stringifyForLog` returns strings unchanged, `undefined` as `'undefined'`, and otherwise
