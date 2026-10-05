@@ -121,7 +121,9 @@ export class ObjectUtils {
      * Creates a deep clone of an object, recursively copying all nested properties.
      * The cloned object is completely independent from the original.
      * @template T The type of the object to clone, must be an object.
-     * @param object The object to clone. Can be any object type including arrays, class instances, dates, maps, sets.
+     * @param object The object to clone. Can be any object type including arrays, class instances, dates, maps, sets, errors.
+     * Errors are rebuilt with the same prototype, `message`, `stack`, `cause` and own properties.
+     * Functions and WeakMaps are still not cloneable and are returned by reference when nested.
      * @returns A deep clone of the object with no shared references.
      * @example
      * const original = { a: 1, b: { c: 2 } };
@@ -132,7 +134,30 @@ export class ObjectUtils {
      * const clonedArr = ObjectUtils.cloneDeep(arr); // [1, [2, 3]] (fully independent)
      */
     public static cloneDeep<T extends object>(object: T): T {
-        return _.cloneDeep(object);
+        const seen = new WeakMap<Error, Error>();
+        const customizer = (value: unknown): unknown => {
+            if (!(value instanceof Error)) {
+                return undefined;
+            }
+            const existing = seen.get(value);
+            if (existing) {
+                return existing;
+            }
+            // lodash treats Error as uncloneable, so rebuild it with the same prototype and own properties
+            const clone = Object.create(Object.getPrototypeOf(value)) as Error;
+            seen.set(value, clone);
+            for (const key of Object.getOwnPropertyNames(value)) {
+                // read through the property so runtimes exposing `stack` as an accessor still copy it
+                Object.defineProperty(clone, key, {
+                    value: _.cloneDeepWith((value as unknown as Dictionary<unknown>)[key], customizer),
+                    writable: true,
+                    configurable: true,
+                    enumerable: Object.prototype.propertyIsEnumerable.call(value, key)
+                });
+            }
+            return clone;
+        };
+        return _.cloneDeepWith(object, customizer);
     }
 
     /**
