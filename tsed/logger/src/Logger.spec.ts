@@ -267,6 +267,48 @@ describe('Logger (tsed-logger)', () => {
 
             expect(errorSpy).not.toHaveBeenCalled();
         });
+
+        it('suppresses paths under an entry written with a trailing slash', async () => {
+            const logger = buildIgnoringLogger(['/metrics/']);
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            $ctx.request.raw.url = '/metrics/prometheus';
+            await respond(logger, $ctx);
+
+            expect(infoSpy).not.toHaveBeenCalled();
+        });
+
+        it('suppresses the entry path itself for a trailing-slash entry', async () => {
+            const logger = buildIgnoringLogger(['/metrics/']);
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            $ctx.request.raw.url = '/metrics';
+            await respond(logger, $ctx);
+
+            expect(infoSpy).not.toHaveBeenCalled();
+        });
+
+        it('keeps the segment boundary for a trailing-slash entry', async () => {
+            const logger = buildIgnoringLogger(['/metrics/']);
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            $ctx.request.raw.url = '/metrics-admin';
+            await respond(logger, $ctx);
+
+            expect(infoSpy).toHaveBeenCalledTimes(1);
+        });
+
+        it('treats "/" as matching every path', async () => {
+            const logger = buildIgnoringLogger(['/']);
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+
+            $ctx.request.raw.url = '/anything/here';
+            await respond(logger, $ctx);
+            $ctx.request.raw.url = '/';
+            await respond(logger, $ctx);
+
+            expect(infoSpy).not.toHaveBeenCalled();
+        });
     });
 
     describe('failed request error fields', () => {
