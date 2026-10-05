@@ -26,8 +26,9 @@ two drift and validation stops matching the type.
 
 `BaseConfig` is exported as both the Zod object and the type inferred from it, so
 `BaseConfig.extend({...})` and `BaseConfig` as a type both work. It already carries `server`,
-`serviceName`, `version`, `description` and `publicURL` — extend it, do not restate those
-fields.
+`serviceName` and `publicURL` — extend it, do not restate those fields. `version` and
+`description` are not config fields: they always come from `package.json` (into `config.api`),
+and a `version`/`description` key in a config file is silently stripped.
 
 ## Wrap it in a provider
 
