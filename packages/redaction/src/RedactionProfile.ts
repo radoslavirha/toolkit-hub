@@ -11,6 +11,10 @@ import { CommonUtils } from '@radoslavirha/utils';
  * {@link redact} on every request; those only invoke the already-compiled
  * functions.
  *
+ * A field named `headers` matches its root-level selectors case-insensitively (HTTP
+ * header names are case-insensitive) and keeps the original key spelling in the output.
+ * Every other field, and every nested selector, matches exactly.
+ *
  * The profile deliberately returns data rather than logging it: the caller owns
  * the log structure, this only sanitises the values that go into it.
  *
@@ -32,6 +36,9 @@ import { CommonUtils } from '@radoslavirha/utils';
  * ```
  */
 export class RedactionProfile<K extends string = string> {
+    /** The field whose root-level selectors match header names case-insensitively. */
+    public static readonly HEADERS_FIELD = 'headers';
+
     private readonly redactors: Map<K, RedactorFunction>;
 
     /**
@@ -43,7 +50,7 @@ export class RedactionProfile<K extends string = string> {
 
         for (const [field, options] of Object.entries(config) as [K, RedactionConfig<K>[K] | undefined][]) {
             if (CommonUtils.notUndefined(options) && options.enabled !== false) {
-                this.redactors.set(field, RedactionUtils.compileRedactor(options.redactPaths));
+                this.redactors.set(field, RedactionUtils.compileRedactor(options.redactPaths, { caseInsensitiveRoot: field === RedactionProfile.HEADERS_FIELD }));
             }
         }
     }

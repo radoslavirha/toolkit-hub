@@ -1,5 +1,5 @@
 import fastRedact from 'fast-redact';
-import { CommonUtils, NumberUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
+import { ArrayUtils, CommonUtils, NumberUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
 
 /** A compiled redactor: serialises its input, censoring any configured paths. */
 export type RedactorFunction = (value: unknown) => string;
@@ -71,8 +71,12 @@ export class RedactionUtils {
      *
      * @param redactPaths Selectors to censor. An empty list yields a redactor
      *   that only serialises.
+     * @param options `caseInsensitiveRoot` makes root-level selectors (`authorization`,
+     *   `["x-api-key"]`) match property names regardless of case, keeping the original
+     *   spelling in the output — for HTTP header names (RFC 9110 §5.1). Nested and
+     *   wildcard selectors stay exact.
      */
-    public static compileRedactor(redactPaths: string[]): RedactorFunction {
+    public static compileRedactor(redactPaths: string[], options: { caseInsensitiveRoot?: boolean } = {}): RedactorFunction {
         const redactor = fastRedact({
             paths: redactPaths,
             censor: RedactionUtils.REDACTED_VALUE,
@@ -84,7 +88,39 @@ export class RedactionUtils {
             return redactor;
         }
 
-        return (value: unknown): string => redactor(RedactionUtils.toWritableCopy(value));
+        const rootNames = options.caseInsensitiveRoot === true ? RedactionUtils.rootNames(redactPaths) : undefined;
+
+        return (value: unknown): string => {
+            const copy = RedactionUtils.toWritableCopy(value);
+
+            if (CommonUtils.notUndefined(rootNames) && rootNames.size > 0 && ObjectUtils.isObject(copy) && !ArrayUtils.isArray(copy)) {
+                const record = copy as Record<string, unknown>;
+
+                for (const key of Object.keys(record)) {
+                    if (rootNames.has(key.toLowerCase())) {
+                        record[key] = RedactionUtils.REDACTED_VALUE;
+                    }
+                }
+            }
+
+            return redactor(copy);
+        };
+    }
+
+    /** Lowercased property names of the root-level selectors (`name`, `["name"]`, `['name']`). */
+    private static rootNames(redactPaths: string[]): Set<string> {
+        const names = new Set<string>();
+
+        for (const path of redactPaths) {
+            const match = /^([A-Za-z_$][\w$]*)$|^\[(["'])([^"'\\]+)\2\]$/.exec(path);
+            const name = match?.[1] ?? match?.[3];
+
+            if (CommonUtils.notUndefined(name)) {
+                names.add(name.toLowerCase());
+            }
+        }
+
+        return names;
     }
 
     /**

@@ -1,3 +1,4 @@
+import { SENSITIVE_HEADER_SELECTORS } from './RedactionOptions.schema.js';
 import { describe, expect, it } from 'vitest';
 import { RedactionProfile } from './RedactionProfile.js';
 
@@ -89,6 +90,23 @@ describe('RedactionProfile', () => {
             const redacted = profile.redact('request', Object.freeze({ user: 'ada', password: 'hunter2' }));
 
             expect(redacted).toBe('{"user":"ada","password":"***"}');
+        });
+    });
+
+    describe('header names', () => {
+        it('redacts root-level header selectors regardless of header-name case', () => {
+            const profile = new RedactionProfile({
+                headers: { enabled: true, redactPaths: [...SENSITIVE_HEADER_SELECTORS] }
+            });
+
+            expect(profile.redact('headers', { Authorization: 'Bearer live-token', 'X-API-Key': 'k-123', 'Set-Cookie': 's', Accept: 'application/json' }))
+                .toBe('{"Authorization":"***","X-API-Key":"***","Set-Cookie":"***","Accept":"application/json"}');
+        });
+
+        it('keeps other fields case-sensitive', () => {
+            const profile = new RedactionProfile({ request: { enabled: true, redactPaths: ['password'] } });
+
+            expect(profile.redact('request', { Password: 'x', password: 'y' })).toBe('{"Password":"x","password":"***"}');
         });
     });
 

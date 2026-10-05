@@ -8,6 +8,10 @@ description: Use when logging anything that may contain secrets — request or r
 Redaction is **compiled once and applied per call**. The cost is paid at construction so the
 hot path stays cheap.
 
+**Header names match case-insensitively.** In a profile field named `headers`, root-level selectors
+(`authorization`, `["x-api-key"]`) ignore case, so `Authorization` is redacted. Nested/wildcard
+selectors and all other fields (body, query) are exact.
+
 ## Build the profile once
 
 ```ts
