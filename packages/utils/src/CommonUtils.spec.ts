@@ -361,6 +361,22 @@ describe('CommonUtils', () => {
             expect((model as TestModel).updatedAt).toBeUndefined();
         });
 
+        it('should not assign auto-generated fields present on the data object', () => {
+            const incoming: TestModel = {
+                id: 'client-id',
+                _id: 'client-_id',
+                createdAt: new Date(0),
+                updatedAt: new Date(0),
+                name: 'Alice',
+                email: 'alice@example.com',
+                count: 5
+            };
+
+            const model = CommonUtils.buildModelCore(TestModel, incoming);
+
+            expect(Object.keys(model).sort()).toStrictEqual(['count', 'email', 'name']);
+        });
+
         it('should support optional domain properties', () => {
             const modelWithout = CommonUtils.buildModelCore(TestModel, { name: 'Alice', email: 'alice@example.com', count: 1 });
             const modelWith    = CommonUtils.buildModelCore(TestModel, { name: 'Bob', email: 'bob@example.com', count: 2, optional: true });

@@ -39,6 +39,52 @@ describe('ObjectUtils', () => {
             expect(cloned instanceof TestClass).toBe(true); // Ensure the cloned object is still an instance of TestClass
         });
 
+        it('should clone an Error instance', () => {
+            const error = new Error('boom', { cause: { code: 1 } });
+
+            const cloned = ObjectUtils.cloneDeep(error);
+
+            expect(cloned).toBeInstanceOf(Error);
+            expect(cloned).not.toBe(error);
+            expect(cloned.message).toBe('boom');
+            expect(cloned.stack).toBe(error.stack);
+            expect(cloned.cause).toStrictEqual({ code: 1 });
+            expect(cloned.cause).not.toBe(error.cause);
+        });
+
+        it('should clone Error subclasses with their own properties', () => {
+            class HttpError extends Error {
+                details = { status: 404 };
+            }
+            const error = new HttpError('missing');
+
+            const cloned = ObjectUtils.cloneDeep(error);
+
+            expect(cloned).toBeInstanceOf(HttpError);
+            expect(cloned.details).toStrictEqual({ status: 404 });
+            expect(cloned.details).not.toBe(error.details);
+        });
+
+        it('should clone a nested Error without sharing the reference', () => {
+            const original = { err: new Error('x') };
+
+            const cloned = ObjectUtils.cloneDeep(original);
+
+            expect(cloned.err).toBeInstanceOf(Error);
+            expect(cloned.err).not.toBe(original.err);
+            expect(cloned.err.message).toBe('x');
+        });
+
+        it('should clone an Error with a circular cause', () => {
+            const error = new Error('loop');
+            error.cause = error;
+
+            const cloned = ObjectUtils.cloneDeep(error);
+
+            expect(cloned).not.toBe(error);
+            expect(cloned.cause).toBe(cloned);
+        });
+
         it('should handle null values', () => {
             const original = { a: null, b: { c: null } };
             const cloned = ObjectUtils.cloneDeep(original);
@@ -82,6 +128,17 @@ describe('ObjectUtils', () => {
     });
 
     describe('mergeDeep', () => {
+        it('returns a result that shares no references with source', () => {
+            const source = { items: [{ name: 'b' }], nested: { list: [{ name: 'c' }] } };
+            const result = ObjectUtils.mergeDeep({ items: [{ name: 'a' }], nested: { list: [] as { name: string }[] } }, source);
+
+            result.items[1].name = 'mutated';
+            result.nested.list[0].name = 'mutated';
+
+            expect(source.items[0].name).toBe('b');
+            expect(source.nested.list[0].name).toBe('c');
+        });
+
         it('deep merges a class instance nested in source into the target subtree', () => {
             class DatabaseConfig {
                 port: number = 27018;

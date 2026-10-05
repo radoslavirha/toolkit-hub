@@ -224,7 +224,7 @@ const merged = ObjectUtils.mergeDeep(target, source);
 - `keys<T>(object: Dictionary<T> | null | undefined): string[]` - Returns dictionary keys
 - `values<T extends object>(object: T | null | undefined): Array<T[keyof T]>` - Returns typed object/enum values
 - `values<T>(object: Dictionary<T> | null | undefined): T[]` - Returns dictionary values
-- `cloneDeep<T>(object: T): T` - Creates a deep clone
+- `cloneDeep<T>(object: T): T` - Creates a deep clone (arrays, class instances, dates, maps, sets and errors; functions and WeakMaps are not cloneable)
 - `mergeDeep<T>(target: T, source: FullPartial<T>): T` - Deep merge with array concatenation
 - `isEnabled<T extends { enabled?: boolean }>(value: T | null | undefined): value is Enabled<T>` - Type guard: returns `true` when value is non-null/undefined and `enabled === true`, narrowing to `Enabled<T>`
 - `Enabled<T>` *(type)* - T with `enabled` narrowed to literal `true`; produced by `isEnabled`

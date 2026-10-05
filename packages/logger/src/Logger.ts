@@ -174,7 +174,7 @@ export class Logger<T extends object = object> {
      * an `Error` value one level down becomes `{ name, message, stack }`.
      */
     private static serializeMeta(meta?: object | null): object | undefined {
-        if (meta instanceof Error) {
+        if (Error.isError(meta)) {
             return { ...Logger.serializeNestedErrors(meta), ...LogErrorUtils.toFields(meta) };
         }
         return Logger.serializeNestedErrors(meta);
@@ -185,13 +185,13 @@ export class Logger<T extends object = object> {
         if (CommonUtils.isNil(meta)) {
             return undefined;
         }
-        if (!Object.values(meta).some((value) => value instanceof Error)) {
+        if (!Object.values(meta).some((value) => Error.isError(value))) {
             return meta;
         }
         return Object.fromEntries(
             Object.entries(meta).map(([key, value]) => [
                 key,
-                value instanceof Error ? { ...value, name: value.name, message: value.message, stack: value.stack } : value
+                Error.isError(value) ? { ...value, name: value.name, message: value.message, stack: value.stack } : value
             ])
         );
     }

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import vm from 'node:vm';
 import winston from 'winston';
 import { Logger } from './Logger.js';
 import { LogLevel } from './LogLevel.enum.js';
@@ -276,6 +277,22 @@ describe('Logger', () => {
             const line = getLine();
             expect(line['error_message']).toBe('Query failed');
             expect(line['originalError']).toEqual({ name: 'Error', message: 'connection refused', stack: inner.stack });
+        });
+
+        it('keeps the error name, message and stack of an Error created in another realm', () => {
+            const logger = new Logger();
+            const error = vm.runInNewContext('new Error("boom")') as Error;
+            logger.error('Script failed', error);
+
+            expect(getLine()).toMatchObject({ error_name: 'Error', error_message: 'boom', error_stack: error.stack });
+        });
+
+        it('keeps an Error from another realm nested in meta', () => {
+            const logger = new Logger();
+            const error = vm.runInNewContext('new Error("boom")') as Error;
+            logger.error('Script failed', { error });
+
+            expect(getLine()['error']).toEqual({ name: 'Error', message: 'boom', stack: error.stack });
         });
 
         it('merges metaProvider fields with an Error passed as meta', () => {
