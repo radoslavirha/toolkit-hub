@@ -374,5 +374,14 @@ describe('Logger', () => {
 
             expect(getLine()).toMatchObject({ message: 'Parsed', stack: 'parser' });
         });
+
+        it('logs the line instead of throwing when meta is null', () => {
+            const logger = new Logger();
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            expect(() => logger.error('Request failed', null as any)).not.toThrow();
+            expect(capturedLines).toHaveLength(1);
+            expect(getLine()).toMatchObject({ message: 'Request failed' });
+        });
     });
 });
