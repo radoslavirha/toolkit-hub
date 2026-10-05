@@ -216,5 +216,18 @@ describe('RedactionUtils', () => {
                 node: cyclicObject
             })).toBe('[[ UNSERIALIZABLE ]]');
         });
+
+        it('preserves integers beyond Number.MAX_SAFE_INTEGER in JSON text', () => {
+            const redactor = RedactionUtils.compileRedactor(['token']);
+
+            expect(redactor('{"id":1234567890123456789,"token":"x","n":[9007199254740993,1.5,2]}'))
+                .toBe('{"id":1234567890123456789,"token":"***","n":[9007199254740993,1.5,2]}');
+        });
+
+        it('still redacts an unsafe integer that is itself selected', () => {
+            const redactor = RedactionUtils.compileRedactor(['id']);
+
+            expect(redactor('{"id":1234567890123456789}')).toBe('{"id":"***"}');
+        });
     });
 });

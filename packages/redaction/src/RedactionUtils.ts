@@ -1,5 +1,5 @@
 import fastRedact from 'fast-redact';
-import { CommonUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
+import { CommonUtils, NumberUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
 
 /** A compiled redactor: serialises its input, censoring any configured paths. */
 export type RedactorFunction = (value: unknown) => string;
@@ -113,11 +113,26 @@ export class RedactionUtils {
      */
     private static parseJsonContainer(value: string): unknown {
         try {
-            const parsed = JSON.parse(value.charCodeAt(0) === 0xFEFF ? value.slice(1) : value) as unknown;
+            const parsed = JSON.parse(value.charCodeAt(0) === 0xFEFF ? value.slice(1) : value, RedactionUtils.keepUnsafeIntegers) as unknown;
 
             return ObjectUtils.isObject(parsed) ? parsed : value;
         } catch {
             return value;
         }
+    }
+
+    /**
+     * `JSON.parse` reviver that keeps integer literals a double cannot hold
+     * exactly (above `Number.MAX_SAFE_INTEGER`) as raw JSON, so re-serialising
+     * writes the original digits instead of a rounded value.
+     */
+    private static keepUnsafeIntegers(_key: string, value: unknown, context?: { source?: string }): unknown {
+        const source = context?.source;
+
+        if (NumberUtils.isNumber(value) && StringUtils.isString(source) && /^-?\d+$/.test(source) && !Number.isSafeInteger(value)) {
+            return (JSON as unknown as { rawJSON(text: string): unknown }).rawJSON(source);
+        }
+
+        return value;
     }
 }
