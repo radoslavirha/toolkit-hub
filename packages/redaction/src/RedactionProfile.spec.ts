@@ -108,6 +108,45 @@ describe('RedactionProfile', () => {
 
             expect(profile.redact('request', { Password: 'x' })).toBe('{"Password":"x"}');
         });
+
+        it('keeps query case-sensitive', () => {
+            const profile = new RedactionProfile<Field>({
+                query: { enabled: true, redactPaths: ['token'] }
+            });
+
+            expect(profile.redact('query', { token: 'a', Token: 'b' })).toBe('{"token":"***","Token":"b"}');
+        });
+
+        it('keeps request and response payloads case-sensitive', () => {
+            const profile = new RedactionProfile<Field>({
+                request: { enabled: true, redactPaths: ['password'] },
+                response: { enabled: true, redactPaths: ['access_token'] }
+            });
+
+            const collected = profile.collect({
+                request: { password: 'a', PASSWORD: 'b' },
+                response: { access_token: 'c', Access_Token: 'd' }
+            });
+
+            expect(collected).toStrictEqual({
+                request: '{"password":"***","PASSWORD":"b"}',
+                response: '{"access_token":"***","Access_Token":"d"}'
+            });
+        });
+
+        it('applies case-insensitivity to headers only when collecting several fields', () => {
+            const profile = new RedactionProfile<Field>({
+                headers: { enabled: true, redactPaths: ['authorization'] },
+                query: { enabled: true, redactPaths: ['authorization'] }
+            });
+
+            const collected = profile.collect({ headers: { Authorization: 'a' }, query: { Authorization: 'b' } });
+
+            expect(collected).toStrictEqual({
+                headers: '{"Authorization":"***"}',
+                query: '{"Authorization":"b"}'
+            });
+        });
     });
 
     describe('isEnabled', () => {
