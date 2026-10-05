@@ -1,5 +1,17 @@
 # @radoslavirha/redaction
 
+## 0.3.5
+
+### Patch Changes
+
+- [#290](https://github.com/radoslavirha/toolkit-hub/pull/290) [`91d5115`](https://github.com/radoslavirha/toolkit-hub/commit/91d5115b6f206a9c10d55f9b56b367870765726b) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Redact JSON text that starts with a UTF-8 byte order mark instead of logging it unredacted.
+
+- [#291](https://github.com/radoslavirha/toolkit-hub/pull/291) [`871821a`](https://github.com/radoslavirha/toolkit-hub/commit/871821a3238510580789809689c23577131e9a0c) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Redacting JSON text no longer rounds integers above `Number.MAX_SAFE_INTEGER`; unredacted IDs keep their original digits.
+
+- [`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+- Updated dependencies [[`2b5679a`](https://github.com/radoslavirha/toolkit-hub/commit/2b5679a3d30ee4dfa9db9d0ea4da73241a12ba46), [`c15879b`](https://github.com/radoslavirha/toolkit-hub/commit/c15879b40409decebf6ce44638151ef6ca3b8778), [`14f4409`](https://github.com/radoslavirha/toolkit-hub/commit/14f4409812be67337859b9389438a3b6c1c5493b), [`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb)]:
+  - @radoslavirha/utils@0.9.5
+
 ## 0.3.4
 
 ### Patch Changes

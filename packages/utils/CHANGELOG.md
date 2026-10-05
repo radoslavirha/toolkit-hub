@@ -1,5 +1,19 @@
 # @radoslavirha/utils
 
+## 0.9.5
+
+### Patch Changes
+
+- [#272](https://github.com/radoslavirha/toolkit-hub/pull/272) [`2b5679a`](https://github.com/radoslavirha/toolkit-hub/commit/2b5679a3d30ee4dfa9db9d0ea4da73241a12ba46) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ObjectUtils.mergeDeep` no longer shares array elements or nested values with `source`, so mutating the result cannot mutate the caller's input.
+
+- [#273](https://github.com/radoslavirha/toolkit-hub/pull/273) [`c15879b`](https://github.com/radoslavirha/toolkit-hub/commit/c15879b40409decebf6ce44638151ef6ca3b8778) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `CommonUtils.buildModelCore` now drops `id`, `_id`, `createdAt` and `updatedAt` from the data at runtime, as documented, instead of only in the type.
+
+- [#275](https://github.com/radoslavirha/toolkit-hub/pull/275) [`14f4409`](https://github.com/radoslavirha/toolkit-hub/commit/14f4409812be67337859b9389438a3b6c1c5493b) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ObjectUtils.cloneDeep` now clones `Error` instances (including nested ones) instead of returning `{}` or a shared reference.
+
+- [`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+- Updated dependencies [[`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb)]:
+  - @radoslavirha/types@0.4.8
+
 ## 0.9.4
 
 ### Patch Changes

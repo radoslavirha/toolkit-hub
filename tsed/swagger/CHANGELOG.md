@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-swagger
 
+## 9.1.13
+
+### Patch Changes
+
+- [`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+- Updated dependencies [[`2b5679a`](https://github.com/radoslavirha/toolkit-hub/commit/2b5679a3d30ee4dfa9db9d0ea4da73241a12ba46), [`c15879b`](https://github.com/radoslavirha/toolkit-hub/commit/c15879b40409decebf6ce44638151ef6ca3b8778), [`14f4409`](https://github.com/radoslavirha/toolkit-hub/commit/14f4409812be67337859b9389438a3b6c1c5493b), [`5ca942c`](https://github.com/radoslavirha/toolkit-hub/commit/5ca942cfe04b8f7c07983e75f98f106cbd5c0d7a), [`f9f055f`](https://github.com/radoslavirha/toolkit-hub/commit/f9f055fa6057da99ffff2dae5a8cb97449865c1b), [`63717ae`](https://github.com/radoslavirha/toolkit-hub/commit/63717ae1735f276f2d8989d75961cdb945637319), [`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb)]:
+  - @radoslavirha/utils@0.9.5
+  - @radoslavirha/tsed-configuration@0.9.2
+  - @radoslavirha/tsed-logger@0.7.6
+  - @radoslavirha/tsed-platform@5.0.9
+  - @radoslavirha/types@0.4.8
+
 ## 9.1.12
 
 ### Patch Changes

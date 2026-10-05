@@ -1,5 +1,19 @@
 # @radoslavirha/tsed-logger
 
+## 0.7.6
+
+### Patch Changes
+
+- [#280](https://github.com/radoslavirha/toolkit-hub/pull/280) [`f9f055f`](https://github.com/radoslavirha/toolkit-hub/commit/f9f055fa6057da99ffff2dae5a8cb97449865c1b) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Buffer request/response bodies are now decoded to text before logging, so `redactPaths` applies to them and they are no longer logged as JSON byte arrays.
+
+- [#281](https://github.com/radoslavirha/toolkit-hub/pull/281) [`63717ae`](https://github.com/radoslavirha/toolkit-hub/commit/63717ae1735f276f2d8989d75961cdb945637319) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `requests.ignorePaths` entries written with a trailing slash (e.g. `/metrics/`) now suppress the path and everything beneath it; `/` suppresses all request logging.
+
+- [`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+- Updated dependencies [[`2b5679a`](https://github.com/radoslavirha/toolkit-hub/commit/2b5679a3d30ee4dfa9db9d0ea4da73241a12ba46), [`c15879b`](https://github.com/radoslavirha/toolkit-hub/commit/c15879b40409decebf6ce44638151ef6ca3b8778), [`14f4409`](https://github.com/radoslavirha/toolkit-hub/commit/14f4409812be67337859b9389438a3b6c1c5493b), [`e83c3a0`](https://github.com/radoslavirha/toolkit-hub/commit/e83c3a0f8426e5060aae25289ee141c712f91455), [`481dbdb`](https://github.com/radoslavirha/toolkit-hub/commit/481dbdbf3d174959846f82b9af22af70ddc45528), [`91d5115`](https://github.com/radoslavirha/toolkit-hub/commit/91d5115b6f206a9c10d55f9b56b367870765726b), [`871821a`](https://github.com/radoslavirha/toolkit-hub/commit/871821a3238510580789809689c23577131e9a0c), [`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb)]:
+  - @radoslavirha/utils@0.9.5
+  - @radoslavirha/logger@0.4.8
+  - @radoslavirha/redaction@0.3.5
+
 ## 0.7.5
 
 ### Patch Changes
