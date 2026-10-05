@@ -1,5 +1,17 @@
 # @radoslavirha/logger
 
+## 0.4.8
+
+### Patch Changes
+
+- [#285](https://github.com/radoslavirha/toolkit-hub/pull/285) [`e83c3a0`](https://github.com/radoslavirha/toolkit-hub/commit/e83c3a0f8426e5060aae25289ee141c712f91455) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - An `Error` created in another realm (`node:vm`, jsdom) passed as meta is now logged with its `error_*` fields instead of none.
+
+- [#286](https://github.com/radoslavirha/toolkit-hub/pull/286) [`481dbdb`](https://github.com/radoslavirha/toolkit-hub/commit/481dbdbf3d174959846f82b9af22af70ddc45528) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Logging with `null` metadata (e.g. a caught `null`) now logs the line instead of throwing a TypeError.
+
+- [`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+- Updated dependencies [[`2b5679a`](https://github.com/radoslavirha/toolkit-hub/commit/2b5679a3d30ee4dfa9db9d0ea4da73241a12ba46), [`c15879b`](https://github.com/radoslavirha/toolkit-hub/commit/c15879b40409decebf6ce44638151ef6ca3b8778), [`14f4409`](https://github.com/radoslavirha/toolkit-hub/commit/14f4409812be67337859b9389438a3b6c1c5493b), [`c71ecb6`](https://github.com/radoslavirha/toolkit-hub/commit/c71ecb6c83130add1a2e41c8713cdd3e2639addb)]:
+  - @radoslavirha/utils@0.9.5
+
 ## 0.4.7
 
 ### Patch Changes
