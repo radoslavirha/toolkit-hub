@@ -53,7 +53,8 @@ If a payload reaches the logger unredacted, it is in the log. The order is alway
 `RedactionConfig` is Zod-validated; `createRedactionSchema` builds a schema for a specific set
 of field names so a service's configuration file is checked at startup rather than failing
 when the first secret leaks. `redactPaths` uses the selector syntax documented in the package
-README — read it before inventing a path expression.
+README — read it before inventing a path expression. Selectors are case-sensitive, except
+root-level selectors in the field named `headers`, which ignore case.
 
 Give every field that can hold a credential a **default** selector list, so forgetting to
 configure it is safe rather than silent. For HTTP headers the list already exists:

@@ -92,6 +92,24 @@ describe('RedactionProfile', () => {
         });
     });
 
+    describe('header name case', () => {
+        it('redacts headers regardless of case, keeping the original spelling', () => {
+            const profile = new RedactionProfile<Field>({
+                headers: { enabled: true, redactPaths: ['authorization', '["x-api-key"]'] }
+            });
+
+            const redacted = profile.redact('headers', { Authorization: 'Bearer live-token', 'X-API-Key': 'k-123', Accept: 'application/json' });
+
+            expect(redacted).toBe('{"Authorization":"***","X-API-Key":"***","Accept":"application/json"}');
+        });
+
+        it('keeps non-header fields case-sensitive', () => {
+            const profile = new RedactionProfile<Field>(CONFIG);
+
+            expect(profile.redact('request', { Password: 'x' })).toBe('{"Password":"x"}');
+        });
+    });
+
     describe('isEnabled', () => {
         it('reports configured and enabled fields', () => {
             const profile = new RedactionProfile<Field>(CONFIG);

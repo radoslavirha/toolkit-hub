@@ -35,7 +35,9 @@ export class RedactionProfile<K extends string = string> {
     private readonly redactors: Map<K, RedactorFunction>;
 
     /**
-     * @param config Per-field options. Disabled fields are skipped entirely — no
+     * @param config Per-field options. The `headers` field matches root-level
+     *   selectors case-insensitively, as HTTP header names are; every other
+     *   field is exact. Disabled fields are skipped entirely — no
      *   redactor is compiled for them.
      */
     public constructor(config: Partial<RedactionConfig<K>>) {
@@ -43,7 +45,7 @@ export class RedactionProfile<K extends string = string> {
 
         for (const [field, options] of Object.entries(config) as [K, RedactionConfig<K>[K] | undefined][]) {
             if (CommonUtils.notUndefined(options) && options.enabled !== false) {
-                this.redactors.set(field, RedactionUtils.compileRedactor(options.redactPaths));
+                this.redactors.set(field, RedactionUtils.compileRedactor(options.redactPaths, { caseInsensitiveRoot: field === 'headers' }));
             }
         }
     }

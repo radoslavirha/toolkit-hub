@@ -71,8 +71,12 @@ export class RedactionUtils {
      *
      * @param redactPaths Selectors to censor. An empty list yields a redactor
      *   that only serialises.
+     * @param options `caseInsensitiveRoot` makes root-level selectors match
+     *   property names regardless of case (HTTP header names are
+     *   case-insensitive), keeping the original spelling in the output.
+     *   Nested and wildcard selectors stay exact.
      */
-    public static compileRedactor(redactPaths: string[]): RedactorFunction {
+    public static compileRedactor(redactPaths: string[], options: { caseInsensitiveRoot?: boolean } = {}): RedactorFunction {
         const redactor = fastRedact({
             paths: redactPaths,
             censor: RedactionUtils.REDACTED_VALUE,
@@ -84,7 +88,46 @@ export class RedactionUtils {
             return redactor;
         }
 
-        return (value: unknown): string => redactor(RedactionUtils.toWritableCopy(value));
+        const rootNames = options.caseInsensitiveRoot === true ? RedactionUtils.rootNames(redactPaths) : new Set<string>();
+
+        return (value: unknown): string => {
+            const copy = RedactionUtils.toWritableCopy(value);
+
+            RedactionUtils.censorRootNames(copy, rootNames);
+
+            return redactor(copy);
+        };
+    }
+
+    /** Lowercased property names of the plain (`name`) and bracket (`["name"]`) root-level selectors. */
+    private static rootNames(redactPaths: string[]): Set<string> {
+        const names = new Set<string>();
+
+        for (const path of redactPaths) {
+            const match = /^(?:([A-Za-z_$][\w$]*)|\[(["'])(.+)\2\])$/.exec(path);
+            const name = match?.[1] ?? match?.[3];
+
+            if (CommonUtils.notUndefined(name)) {
+                names.add(name.toLowerCase());
+            }
+        }
+
+        return names;
+    }
+
+    /** Censors, in place, root properties of a writable copy whose lowercased name is in `names`. */
+    private static censorRootNames(copy: unknown, names: Set<string>): void {
+        if (names.size === 0 || !ObjectUtils.isObject(copy) || Array.isArray(copy)) {
+            return;
+        }
+
+        const record = copy as Record<string, unknown>;
+
+        for (const key of Object.keys(record)) {
+            if (names.has(key.toLowerCase())) {
+                record[key] = RedactionUtils.REDACTED_VALUE;
+            }
+        }
     }
 
     /**
