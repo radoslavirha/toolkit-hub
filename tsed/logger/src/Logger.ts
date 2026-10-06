@@ -1,4 +1,6 @@
+import { isSerializable } from '@tsed/core';
 import { Injectable, ProviderScope, Scope } from '@tsed/di';
+import { serialize } from '@tsed/json-mapper';
 import { PlatformContext } from '@tsed/platform-http';
 import { Logger as BaseLogger, LogErrorUtils } from '@radoslavirha/logger';
 import { CommonUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
@@ -120,6 +122,29 @@ export class Logger extends BaseLogger<LoggerMetadata> {
     }
 
     /**
+     * `$ctx.data` is the handler's raw return value; Ts.ED serialises it only when flushing and never
+     * writes the result back. Apply the same serialisation (`@Ignore`, `@Name`, `@Groups`) so the log
+     * shows what the client receives and `redactPaths` match wire names.
+     */
+    private static serializeResponse($ctx: PlatformContext): unknown {
+        const data = $ctx.data;
+
+        if (!$ctx.endpoint || $ctx.endpoint.view || !isSerializable(data)) {
+            return Logger.serializePlain(data);
+        }
+
+        const { response, endpoint } = $ctx;
+        const include = $ctx.request.query.includes;
+        const includes = include ? ([] as string[]).concat(include as string | string[]).flatMap((entry) => entry.split(',')) : undefined;
+
+        return serialize(data, { useAlias: true, ...endpoint.getResponseOptions(response.statusCode, { includes }), endpoint: true });
+    }
+
+    private static serializePlain(data: unknown): unknown {
+        return isSerializable(data) ? serialize(data, { useAlias: true }) : data;
+    }
+
+    /**
      * `$ctx.error` is whatever the handler threw, unwrapped — not necessarily an `Error`.
      * Error-like values keep `name` / `message` / `stack`; anything else (a string, a plain
      * object without `message`) is stringified into `error_message` so the failure isn't lost.
@@ -163,7 +188,7 @@ export class Logger extends BaseLogger<LoggerMetadata> {
             headers: $ctx.request.headers,
             query: $ctx.request.query,
             request: Logger.decodeBinary($ctx.request.body),
-            ...(isTextSafe ? { response: Logger.decodeBinary($ctx.data) } : {})
+            ...(isTextSafe ? { response: Logger.decodeBinary(Logger.serializeResponse($ctx)) } : {})
         }));
 
         if (!isTextSafe && this.redaction.isEnabled('response')) {
