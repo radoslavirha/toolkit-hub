@@ -303,7 +303,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * @private
      */
     private getModelDefault<PROPERTY extends keyof MODEL>(property: PROPERTY): MODEL[PROPERTY] | undefined {
-        const spec = getJsonSchema(this.model, { specType: SpecTypes.JSON });
+        const spec = getJsonSchema(this.model, { specType: SpecTypes.JSON, useAlias: false });
 
         return spec?.properties?.[property]?.default ?? undefined;
     }

@@ -4,7 +4,9 @@ import { TestContainersMongo } from '@tsed/testcontainers-mongo';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Types } from 'mongoose';
 import { BaseModel } from '@radoslavirha/tsed-common';
+import { Default, Name, Property } from '@tsed/schema';
 import { TestModel } from '../test/TestModel.js';
+import { MongoMapper } from './MongoMapper.js';
 import { TestMongoMapper } from '../test/TestMongoMapper.js';
 import { TestModelChildMongo, TestModelMongo } from '../test/TestMongoModel.js';
 import { TestMongoRepository } from '../test/TestMongoRepository.js';
@@ -297,6 +299,26 @@ describe('MongoMapper', () => {
         const response = mapper.getModelDefault('child_id');
 
         expect(response).toBeUndefined();
+    });
+
+    it('getModelValue - POST with undefined resolves @Default of a property renamed with @Name', () => {
+        class AliasedModel extends BaseModel {
+            @Name('display_name')
+            @Property(String)
+            @Default('anonymous')
+            displayName!: string;
+        }
+
+        class AliasedMapper extends MongoMapper<TestModelMongo, AliasedModel> {
+            protected mongo = TestModelMongo;
+            protected model = AliasedModel;
+        }
+
+        expect.assertions(1);
+
+        const response = new AliasedMapper().getModelValue(new AliasedModel(), 'displayName');
+
+        expect(response).toStrictEqual('anonymous');
     });
 
     describe('mongoToModel', () => {
