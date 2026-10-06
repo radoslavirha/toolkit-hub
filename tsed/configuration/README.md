@@ -4,6 +4,17 @@ Central configuration provider for Ts.ED microservices. Aggregates configuration
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Architecture Pattern](#architecture-pattern)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Type-safe configuration management with Zod validation for Ts.ED applications.

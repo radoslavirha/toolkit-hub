@@ -4,6 +4,18 @@ Mongoose integration utilities for Ts.ED applications providing a clean architec
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Architecture Pattern](#architecture-pattern)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Advanced Patterns](#advanced-patterns)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Clean architecture MongoDB integration with Mongoose for Ts.ED applications.

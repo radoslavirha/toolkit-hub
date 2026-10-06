@@ -173,3 +173,6 @@ export default defineConfig(...Config, ...PreferUtils);
 
 Everything warns rather than errors, spec files are excluded, and `x == null` is left alone.
 Enable it in any package that depends on `@radoslavirha/utils`.
+
+After writing code, run the package's `lint` script, replace each hand-rolled check it
+warns about with the utility the message names, and rerun until no such warning remains.

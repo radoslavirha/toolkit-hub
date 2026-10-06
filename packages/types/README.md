@@ -4,6 +4,16 @@ TypeScript utility types for enhanced type safety and reusability. Provides spec
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** TypeScript utility types for dictionaries, enums, nullable properties, and deep partials.

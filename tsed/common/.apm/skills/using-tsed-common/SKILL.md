@@ -5,8 +5,8 @@ description: Use when defining an API model, serializing or deserializing betwee
 
 # Using @radoslavirha/tsed-common
 
-Four pieces: `BaseModel` for API models, `Serializer` for converting between plain data and
-model instances, and two validators for untrusted input.
+`BaseModel` for API models, `Serializer` for converting between plain data and model
+instances, validators for untrusted input, and `@ResourceId` for id parameters.
 
 ## BaseModel
 

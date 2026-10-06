@@ -1,21 +1,25 @@
 ---
-name: package-readme
+name: writing-package-readmes
 description: Use when creating a README for a new toolkit-hub package, or after changing a package's public exports so its README no longer matches the code. Says which sections a package README must have and which are optional, how examples are written, and how to check a README against the real exports.
 ---
 
 # Writing a toolkit-hub package README
 
 A package README is the human-facing document. Agent-facing guidance goes in that package's
-`.apm/skills/` (see `package-skill-authoring`), and cross-package guidance goes in
-`AGENTS.md` at the repo root (see `agents-md`). Do not duplicate between them — duplicated facts drift.
+`.apm/skills/` (see `authoring-skills`), and cross-package guidance goes in `AGENTS.md` at
+the repo root (see `maintaining-agents-md`). Do not duplicate between them — duplicated facts
+drift.
 
 ## Required core
 
 Every package README has:
 
 1. `# @radoslavirha/<name>` + a one-line description
-2. `## 🤖 Quick Reference for AI Agents` — the shortest path to correct usage: install command, main exports, a minimal example
-3. `## See Also` — link to `AGENTS.md` at the repo root and to related packages
+2. `## Contents` — when the README is over 100 lines, a list of every `##` section, before
+   the first one. Agents preview long files with partial reads; this shows them the whole
+   scope. Generate it with `pnpm check:agent-docs --fix` rather than by hand.
+3. `## 🤖 Quick Reference for AI Agents` — the shortest path to correct usage: install command, main exports, a minimal example
+4. `## See Also` — link to `AGENTS.md` at the repo root and to related packages
 
 ## Optional, per package
 
@@ -41,8 +45,8 @@ Prefer the shape that explains the package over the shape that matches its neigh
 
       ```ts check
 
-  Run `pnpm check:doc-snippets` locally. Untagged blocks are ignored, so an example that
-  drifts silently is a choice, not an accident.
+  Untagged blocks are ignored, so an example that drifts silently is a choice, not an
+  accident.
 - **Installation** uses pnpm with a filter:
   ```bash
   pnpm --filter YOUR_SERVICE add @radoslavirha/package-name
@@ -50,20 +54,28 @@ Prefer the shape that explains the package over the shape that matches its neigh
 
 ## Do not restate what the types already say
 
-Never write a method count ("36 utilities", "all 39 methods"). It is derivable from the
-code, nobody updates it, and it is wrong within two releases — this exact claim was
-simultaneously 36 in one place and 39 in another while reality was 41. Describe what a
-class is *for* and when to reach for it; let `.d.ts` carry the inventory.
+Never write a method count ("all 39 methods") — it is derivable and wrong within two
+releases. Describe what a class is *for* and when to reach for it; let `.d.ts` carry the
+inventory.
 
 Never document a method that does not exist. Verify names and signatures against
 `src/index.ts` and the class source before writing them down.
 
 ## Before you finish
 
+Run the checks, fix every reported problem, and rerun until all three are clean
+(`check:doc-snippets` compiles against `dist/`, so build first):
+
+```bash
+pnpm check:agent-docs --fix
+pnpm check:doc-links
+pnpm build && pnpm check:doc-snippets
+```
+
+Then confirm what the checks cannot:
+
 - [ ] Quick Reference matches the actual exports of `src/index.ts`
-- [ ] Every code block compiles against the current package
 - [ ] Examples use generic names
 - [ ] Install command uses `pnpm --filter`
 - [ ] No invented methods, no hand-maintained counts
-- [ ] `See Also` links resolve
 - [ ] If the package ships a skill, the README and the skill do not contradict each other

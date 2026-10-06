@@ -9,6 +9,9 @@ token also reaches radoslavirha/homelab-apps.
 
 Read AGENTS.md first and follow it.
 
+Steps: 0 Budget → 1 Pick → 2 Claim → 3 Reproduce → 4 Fix → 5 Verify →
+6 Changeset → 7 PR. Copy them into TodoWrite and tick each one off.
+
 # 0. Budget
 The owner reviews at most about 3 agent PRs a day, opened overnight. The Budget section at the
 end of this prompt gives today's mode:
@@ -57,16 +60,11 @@ Create a branch: `claude/fix-<N>-<short-slug>`.
 
 # 3. Reproduce
 Add the failing test from the issue (or write one if it has none), following the
-`tests` skill; if it isn't available, read .apm/skills/tests/SKILL.md.
+`writing-tests` skill; if it isn't available, read
+.apm/skills/writing-tests/SKILL.md. Put it in the source file's existing spec,
+even if the issue's test names another file — one spec per source file.
 Run `pnpm --filter <package-name> test` and confirm it fails for the reason the
 issue claims.
-
-Put the test in the source file's spec, even if the issue's test names another
-file: a test for `<File>.ts` goes in `<File>.spec.ts` next to it
-(`<File>.spec.tsx` for a component, `<File>.integration.spec.ts` for an
-integration test). If that spec exists, add the test to it, inside the matching
-`describe`; create the spec only if it doesn't exist. Never create a second spec
-for the same source file (`<File>.bug.spec.ts`, `<File>.alg.spec.ts`, ...).
 
 If it passes, or fails for a different reason: comment on the issue with what you
 ran and saw, replace `agent-in-progress` with `agent-cannot-reproduce`, and stop.
@@ -81,8 +79,8 @@ stay additive — no breaking change to an exported API. Never edit
 .github/claude/ or .github/workflows/.
 Don't edit AGENTS.md unless the owner explicitly asks for it.
 If the fix changes documented behavior, update the package README and its skill
-(<package>/.apm/skills/) to match — see the `package-readme` and
-`package-skill-authoring` skills.
+(<package>/.apm/skills/) to match — see the `writing-package-readmes` and
+`authoring-skills` skills.
 If the right fix is ambiguous, needs an API break, or touches more than the one
 package: comment on the issue with your analysis and options, replace
 `agent-in-progress` with `agent-needs-human`, and stop without a PR.
@@ -96,22 +94,17 @@ All of these must pass:
 Then prove the regression test: `bash scripts/check-regression-test.sh` must
 pass. It runs your changed specs with and without your source changes; a test
 that passes either way doesn't detect the bug — rewrite it until the check
-passes. For a fix that genuinely needs no test (AGENTS.md or the testing
-instructions say so), add the `no-regression-test` label to the PR and say why
+passes. For a fix that genuinely needs no test (the `writing-tests` skill
+lists the only cases), add the `no-regression-test` label to the PR and say why
 in its Background.
 If anything fails and you can't fix it within the scope above, handle it like an
 ambiguous fix in step 4.
 
 # 6. Changeset
-Add a changeset for each published package you changed (see the
-`release-flow` skill): `patch` for a fix, `minor` for a feature. Write the file
-by hand — the changeset CLI is interactive:
-  .changeset/fix-<N>-<short-slug>.md
-  ---
-  "@radoslavirha/<package>": patch
-  ---
-
-  <one line describing the fix from a consumer's point of view>
+Add a changeset for each published package you changed: `patch` for a fix,
+`minor` for a feature. Write it by hand as `.changeset/fix-<N>-<short-slug>.md`
+in the format the `releasing-packages` skill gives (if it isn't available, read
+.apm/skills/releasing-packages/SKILL.md) — the changeset CLI is interactive.
 
 # 7. Commit, push, open PR
 Commit message: `fix(<package>): <what was wrong>`, or

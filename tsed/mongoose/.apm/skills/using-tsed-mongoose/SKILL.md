@@ -5,7 +5,7 @@ description: Use when writing or changing a Mongoose document, mapper or reposit
 
 # Using @radoslavirha/tsed-mongoose
 
-Three types per entity, each with one job:
+Each entity gets one class per layer, each with one job:
 
 | Layer | Base class | Owns |
 |---|---|---|
@@ -16,6 +16,17 @@ Three types per entity, each with one job:
 
 Never let a document type reach a controller, and never let an API model reach Mongoose.
 The mapper is the only place the two meet.
+
+Adding an entity — copy and tick off:
+
+```
+- [ ] Document class extends BaseMongo, decorated with @Model({ collection, schemaOptions: { timestamps: true } })
+- [ ] API model extends BaseModel, declares only its own fields
+- [ ] Mapper sets `mongo` and `model`, implements mongoToModel, buildMongoCreate, buildMongoUpdate
+- [ ] Repository sets `model` and `mongo`; every by-id query guarded with isValidId
+- [ ] Service uses repository + mapper; nothing above it imports the document class
+- [ ] Tests pass - with MongoDB testcontainers, Docker must be running (`docker info`)
+```
 
 ## The members each base class requires
 

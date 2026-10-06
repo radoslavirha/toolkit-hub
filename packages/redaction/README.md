@@ -8,6 +8,14 @@ Backed by [`fast-redact`](https://github.com/davidmarkclements/fast-redact).
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Why a profile](#why-a-profile)
+- [API](#api)
+- [Configuration](#configuration)
+- [Notes](#notes)
+
 ## 🤖 Quick Reference for AI Agents
 
 ```typescript

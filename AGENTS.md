@@ -56,18 +56,13 @@ Scope naming is `SUBSYSTEM` or `SUBSYSTEM:instance` — e.g. `HTTP_REQUEST` (inb
 ### Layer Separation (Clean Architecture)
 
 ```
-Controllers (API Layer)
-    ↓ depends on
-Handlers (API Layer)
-    ↓ depends on
-Services (Business Logic)
-    ↓ depends on
-Mappers (Transformation Layer)
-    ↓ depends on
-Mongoose Models (Data Layer)
+Controller  →  Handler  →  Service  ─┬→  Mapper      (document ↔ model)
+                                     └→  Repository  →  Mongoose
 ```
 
-**Key Principle:** Each layer only knows about the layer below it, not above.
+**Key Principle:** Each layer only knows about the layers below it, not above. The service
+calls the repository for documents and the mapper to turn them into models; the mapper and
+the repository never call each other.
 
 ### Dependency Injection Flow
 
@@ -168,8 +163,7 @@ calculation.
 
 Method lists and signatures deliberately live outside this file — in the type declarations,
 [the package README](packages/utils/README.md), and the `using-utils` skill that consuming
-repos install. Restating them here is how this section came to claim 36 methods in one place
-and 39 in another while the real number was 41.
+repos install.
 
 ---
 
@@ -225,8 +219,9 @@ What are you building?
 
 ## 📚 Maintenance
 
-What belongs in this file versus a skill is decided by the `agents-md` skill
-(`.apm/skills/agents-md/SKILL.md`). Update this file when:
+What belongs in this file versus a skill is decided by the `maintaining-agents-md` skill
+(`.apm/skills/maintaining-agents-md/SKILL.md`); how to write a skill or an agent prompt, by
+`authoring-skills` (`.apm/skills/authoring-skills/SKILL.md`). Update this file when:
 
 - A package is added, removed or renamed → Package Overview table
 - A repo-wide rule changes → Architecture Patterns / Anti-Patterns table

@@ -42,4 +42,9 @@ advised to call something its installed version does not have.
 export default defineConfig(...Config, ...PreferUtils);
 ```
 
-Enable it in any package that depends on `utils`. See the `using-utils` skill.
+Enable it in any package that depends on `utils`. The `using-utils` skill explains the rules;
+if it is not installed, read `node_modules/@radoslavirha/utils/README.md` (section
+*ESLint rules*).
+
+After changing an `eslint.config.mjs`, run the package's `lint` script, fix what it reports,
+and rerun until it is clean.
