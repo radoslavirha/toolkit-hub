@@ -53,7 +53,9 @@
         "@radoslavirha/config-vitest": "workspace:*",
         "@swc/core": "catalog:",
         "@swc/helpers": "catalog:",
+        "@tsed/core": "catalog:tsed",
         "@tsed/di": "catalog:tsed",
+        "@tsed/json-mapper": "catalog:tsed",
         "@tsed/platform-express": "catalog:tsed",
         "@tsed/platform-http": "catalog:tsed",
         "@tsed/platform-params": "catalog:tsed",
@@ -73,7 +75,9 @@
         "vitest": "catalog:"
     },
     "peerDependencies": {
+        "@tsed/core": "catalog:tsed",
         "@tsed/di": "catalog:tsed",
+        "@tsed/json-mapper": "catalog:tsed",
         "@tsed/platform-http": "catalog:tsed"
     },
     "engines": {

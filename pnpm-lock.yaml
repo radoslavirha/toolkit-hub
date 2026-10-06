@@ -565,9 +565,15 @@ importers:
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.23
+      '@tsed/core':
+        specifier: catalog:tsed
+        version: 8.41.2
       '@tsed/di':
         specifier: catalog:tsed
         version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
+      '@tsed/json-mapper':
+        specifier: catalog:tsed
+        version: 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
       '@tsed/platform-express':
         specifier: catalog:tsed
         version: 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))(@tsed/platform-views@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(body-parser@2.3.0(supports-color@7.2.0))(express@5.2.1(supports-color@7.2.0))(multer@2.4.0)

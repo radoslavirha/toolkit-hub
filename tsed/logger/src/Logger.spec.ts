@@ -3,6 +3,7 @@ import { Logger as BaseLogger, LogLevel } from '@radoslavirha/logger';
 import { runInContext } from '@tsed/di';
 import type { PlatformContext } from '@tsed/platform-http';
 import { PlatformTest } from '@tsed/platform-http/testing';
+import { Ignore, Name, Property } from '@tsed/schema';
 
 import { LoggerOptionsSchema } from './RequestLogOptions.schema.js';
 import type { LoggerOptions, LoggerOptionsInput } from './RequestLogOptions.schema.js';
@@ -142,6 +143,47 @@ describe('Logger (tsed-logger)', () => {
 
             const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
             expect(args[1]['response']).toBe('[[ BINARY ]]');
+        });
+    });
+
+    describe('response serialisation', () => {
+        class UserResponse {
+            @Property(String)
+            public email: string;
+
+            @Ignore()
+            public passwordHash: string;
+
+            @Name('access_token')
+            public accessToken: string;
+        }
+
+        it('logs the response as sent, without fields the model excludes from serialisation', async () => {
+            const logger = buildLogger({ requests: { enabled: true, response: { enabled: true, redactPaths: ['access_token'] } } });
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+            $ctx.response.setHeader('content-type', 'application/json');
+            $ctx.data = Object.assign(new UserResponse(), { email: 'a@b.c', passwordHash: '$2b$10$hash', accessToken: 's3cret' });
+
+            await respond(logger, $ctx);
+
+            const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
+            expect(args[1]['response']).toBe('{"email":"a@b.c","access_token":"***"}');
+        });
+
+        it('serialises through the endpoint response options, honouring ?includes', async () => {
+            const logger = buildLogger({ requests: { enabled: true, response: { enabled: true } } });
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+            const getResponseOptions = vi.fn().mockReturnValue({ type: UserResponse });
+            $ctx.response.setHeader('content-type', 'application/json');
+            $ctx.request.raw.query = { includes: ['a,b', 'c'] };
+            Object.defineProperty($ctx, 'endpoint', { value: { getResponseOptions }, configurable: true });
+            $ctx.data = Object.assign(new UserResponse(), { email: 'a@b.c', passwordHash: 'h', accessToken: 't' });
+
+            await respond(logger, $ctx);
+
+            const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
+            expect(getResponseOptions).toHaveBeenCalledWith($ctx.response.statusCode, { includes: ['a', 'b', 'c'] });
+            expect(args[1]['response']).toBe('{"email":"a@b.c","access_token":"t"}');
         });
     });
 

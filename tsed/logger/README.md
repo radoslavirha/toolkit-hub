@@ -248,6 +248,8 @@ emitter — `@radoslavirha/tsed-configuration`'s `getServerDefaultConfig()` sile
 - `items.*.token` redacts wildcard path matches.
 - `["x-api-key"]` — the bracket form is **required** for names containing a hyphen.
 
+The logged `response` is the serialised payload, as the client receives it: `@Ignore`d and out-of-`@Groups` fields are absent, and `response.redactPaths` refer to wire names (`@Name` aliases).
+
 ### Header redaction is on by default
 
 `requests.headers.redactPaths` defaults to the credential-bearing header names
