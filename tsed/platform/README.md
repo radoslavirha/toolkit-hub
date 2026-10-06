@@ -272,8 +272,8 @@ Pre-configured Express server class with standard middleware stack.
 
 1. **cookie-parser** - Parse Cookie header and populate `req.cookies`
 2. **compression** - gzip/deflate response compression
-3. **body-parser.json()** - Parse `application/json` request bodies
-4. **body-parser.urlencoded()** - Parse `application/x-www-form-urlencoded` bodies (extended: true)
+3. **JSON body parser** - Parse `application/json` request bodies; built through the platform adapter, so `rawBody` (`req.rawBody`) and `express.bodyParser.json` apply. Skipped when you configure `json-parser` in `middlewares` (e.g. to set `limit`)
+4. **URL-encoded body parser** - Parse `application/x-www-form-urlencoded` bodies (extended: true); skipped when `urlencoded-parser` is configured in `middlewares`
 
 > **CORS and method override are not registered.** Services are expected to run behind a gateway (e.g. Traefik) that owns CORS; the app emits no `Access-Control-*` headers and ignores `X-HTTP-Method-Override`.
 

@@ -135,3 +135,46 @@ describe('ServerBase registerMiddlewares override', () => {
         expect(response.headers['x-custom']).toBe('yes');
     });
 });
+
+
+class EchoServer extends BaseServer {
+    public $afterRoutesInit(): void {
+        this.app.use('/echo', (req: { rawBody?: Buffer; body?: unknown }, res: { json: (b: unknown) => void }) => {
+            res.json({ raw: req.rawBody?.toString() ?? null, body: req.body });
+        });
+    }
+}
+
+describe('ServerBase body parser configuration', () => {
+    beforeEach(() => {
+        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+        vi.spyOn(Logger.prototype, 'info').mockImplementation(vi.fn());
+    });
+
+    beforeEach(PlatformTest.bootstrap(EchoServer, {
+        rawBody: true,
+        middlewares: [{ use: 'json-parser', options: { limit: '1mb' } }],
+        mount: { '/': [TestController] }
+    }));
+
+    afterEach(PlatformTest.reset);
+    afterEach(() => vi.restoreAllMocks());
+
+    it('exposes req.rawBody when rawBody is enabled', async () => {
+        const payload = '{"event":"paid","amount":10}';
+
+        const response = await SuperTest(PlatformTest.callback()).post('/echo').set('Content-Type', 'application/json').send(payload);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toStrictEqual({ raw: payload, body: { event: 'paid', amount: 10 } });
+    });
+
+    it('honours the json-parser limit configured in middlewares', async () => {
+        const payload = JSON.stringify({ blob: 'x'.repeat(200 * 1024) });
+
+        const response = await SuperTest(PlatformTest.callback()).post('/echo').set('Content-Type', 'application/json').send(payload);
+
+        expect(response.status).toBe(200);
+    });
+});
