@@ -48,7 +48,7 @@ const platform = await Platform.bootstrap({
 ```
 
 **Configuration Sources (priority order):**
-1. Environment variables (e.g., `PORT=3000`)
+1. Environment variables, mapped to config keys through `config/custom-environment-variables.json` (e.g., `{"server":{"httpPort":"PORT"}}` with `PORT=3000`)
 2. JSON config files (`config/default.json`, `config/{env}.json`)
 3. package.json (`name`, `version`)
 
@@ -90,7 +90,7 @@ See [root README](../../README.md#-installation) for registry setup and monorepo
 ### Schemas & Models
 
 - **`BaseConfig`** — Base Zod schema for JSON configuration files (all custom config schemas should extend this via `.extend()`)
-- **`ServerConfig`** — Zod schema for the `server` block in config files (requires `httpPort`; accepts any additional TsED `Configuration` properties via `z.looseObject`)
+- **`ServerConfig`** — Zod schema for the `server` block in config files (requires `httpPort`, which may be a numeric string such as one supplied by an environment variable mapping; accepts any additional TsED `Configuration` properties via `z.looseObject`)
 - **`APIInformation`** — Composite model aggregating service metadata from multiple providers (for logging, monitoring, etc.)
 - **`getServerDefaultConfig()`** — Returns sensible Ts.ED server defaults
 - **`getHelmetDefaultDirectives()`** — Swagger-compatible Helmet CSP directives
