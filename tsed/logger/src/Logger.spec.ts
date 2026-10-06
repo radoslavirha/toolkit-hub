@@ -225,6 +225,20 @@ describe('Logger (tsed-logger)', () => {
         });
     });
 
+    describe('binary request bodies', () => {
+        it('logs [[ BINARY ]] for a request body whose Content-Type is not text', async () => {
+            const logger = buildLogger();
+            const infoSpy = vi.spyOn(logger.httpLog, 'info');
+            $ctx.request.raw.headers['content-type'] = 'image/png';
+            $ctx.request.raw.body = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0xff, 0xfe]);
+
+            await respond(logger, $ctx);
+
+            const args = infoSpy.mock.calls[0] as [string, Record<string, unknown>];
+            expect(args[1]['request']).toBe('[[ BINARY ]]');
+        });
+    });
+
     describe('requests.ignorePaths', () => {
         const buildIgnoringLogger = (ignorePaths?: string[]): LoggerInternal =>
             buildLogger({ requests: { enabled: true, ...(ignorePaths ? { ignorePaths } : {}) } });
