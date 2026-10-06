@@ -70,6 +70,9 @@ jobs:
       # Relative links and heading anchors across READMEs, AGENTS.md and skills.
       - name: Check documentation links
         run: pnpm check:doc-links
+      # Skill frontmatter and size limits, and Contents sections in long READMEs.
+      - name: Check agent documentation structure
+        run: pnpm check:agent-docs
       # Type-check the TypeScript in skills (all blocks) and READMEs (tagged blocks).
       - name: Check documentation snippets
         run: pnpm check:doc-snippets

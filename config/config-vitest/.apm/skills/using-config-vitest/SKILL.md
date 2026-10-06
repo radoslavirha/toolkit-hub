@@ -41,7 +41,9 @@ export default defineConfig(mergeConfig(defaultConfig, {
 - Packages with Ts.ED DI models or test helpers exclude `src/models`, `src/test`, `src/types`
   from coverage — decorated declarations have no meaningful branches to cover.
 - Packages touching MongoDB add the testcontainers `globalSetup`, resolved through
-  `import.meta.resolve` so it works from both source and build output.
+  `import.meta.resolve` so it works from both source and build output. It starts MongoDB in
+  a container, so **Docker must be running** wherever those tests run — check with
+  `docker info`; without it the setup fails before any test starts.
 
 Never edit the shared base config to satisfy one package. If a change genuinely belongs to
 every package, change the base deliberately and release it.

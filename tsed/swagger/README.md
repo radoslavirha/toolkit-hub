@@ -4,6 +4,18 @@ Automated OpenAPI/Swagger documentation for Ts.ED applications with multi-versio
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Architecture Pattern](#architecture-pattern)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Advanced Patterns](#advanced-patterns)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Automated OpenAPI/Swagger documentation with multi-version support for Ts.ED applications.

@@ -4,6 +4,20 @@ Shareable ESLint configuration for TypeScript projects using ESLint v9 with Type
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Usage](#usage)
+- [Extending Configuration](#extending-configuration)
+- [Code Style Examples](#code-style-examples)
+- [Integration with IDEs](#integration-with-ides)
+- [CI/CD Integration](#cicd-integration)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+- [Reuse rules live with the code they describe](#reuse-rules-live-with-the-code-they-describe)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Shared ESLint configuration for TypeScript projects.

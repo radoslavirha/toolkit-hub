@@ -17,3 +17,6 @@ apm_modules/
 .agents
 .claude
 .doccheck
+
+# claude plugin eval output
+**/evals/results/

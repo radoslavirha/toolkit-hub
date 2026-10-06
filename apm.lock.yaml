@@ -95,7 +95,7 @@ deployments:
   content_hash: sha256:a88d2d1e0e521666185d990ce1bfbf33b5b116cd8343c86e0f23b077fb7bf1c2
 - kind: project-relative
   target: claude
-  value: .claude/skills/agents-md
+  value: .claude/skills/authoring-skills
   runtime: null
   scope: project
   owners:
@@ -104,16 +104,16 @@ deployments:
   content_hash: null
 - kind: project-relative
   target: claude
-  value: .claude/skills/agents-md/SKILL.md
+  value: .claude/skills/authoring-skills/SKILL.md
   runtime: null
   scope: project
   owners:
   - .
   active_owner: .
-  content_hash: sha256:a375bb0d591e2faea1e422b8d740be9efeb002fe24b4afa4e4fd99237417aaf3
+  content_hash: sha256:242a5cbab94aa1e9de4f71ac35243e6bedc61b3b445ff7ed0238f0811f1e2523
 - kind: project-relative
   target: claude
-  value: .claude/skills/package-readme
+  value: .claude/skills/maintaining-agents-md
   runtime: null
   scope: project
   owners:
@@ -122,16 +122,16 @@ deployments:
   content_hash: null
 - kind: project-relative
   target: claude
-  value: .claude/skills/package-readme/SKILL.md
+  value: .claude/skills/maintaining-agents-md/SKILL.md
   runtime: null
   scope: project
   owners:
   - .
   active_owner: .
-  content_hash: sha256:0f30c8013480c4c5852d1453ee7afda243db525d97537d96a37c087fa6bb48a6
+  content_hash: sha256:b6397f9ccc2dd5068e89e81109ad6a2b3aeb7094c65f0b49c7929b4f670363ff
 - kind: project-relative
   target: claude
-  value: .claude/skills/package-skill-authoring
+  value: .claude/skills/releasing-packages
   runtime: null
   scope: project
   owners:
@@ -140,16 +140,16 @@ deployments:
   content_hash: null
 - kind: project-relative
   target: claude
-  value: .claude/skills/package-skill-authoring/SKILL.md
+  value: .claude/skills/releasing-packages/SKILL.md
   runtime: null
   scope: project
   owners:
   - .
   active_owner: .
-  content_hash: sha256:d9dc5c8b5cc5cc22d0f6afb04072d4ff2f210342eb3aeb1851dce700c01c1456
+  content_hash: sha256:ef415f13a9797096559e2b1515e8a89f24d069e4373844a2c9068265028f8cc6
 - kind: project-relative
   target: claude
-  value: .claude/skills/release-flow
+  value: .claude/skills/writing-package-readmes
   runtime: null
   scope: project
   owners:
@@ -158,16 +158,16 @@ deployments:
   content_hash: null
 - kind: project-relative
   target: claude
-  value: .claude/skills/release-flow/SKILL.md
+  value: .claude/skills/writing-package-readmes/SKILL.md
   runtime: null
   scope: project
   owners:
   - .
   active_owner: .
-  content_hash: sha256:65cfa6229b162e28a87fd985f5115726a292f30783d4906d699058793853ff48
+  content_hash: sha256:64f0837b26be1bbf698688d80f8650feb9c438002697202c183b5a326502b104
 - kind: project-relative
   target: claude
-  value: .claude/skills/tests
+  value: .claude/skills/writing-tests
   runtime: null
   scope: project
   owners:
@@ -176,13 +176,13 @@ deployments:
   content_hash: null
 - kind: project-relative
   target: claude
-  value: .claude/skills/tests/SKILL.md
+  value: .claude/skills/writing-tests/SKILL.md
   runtime: null
   scope: project
   owners:
   - .
   active_owner: .
-  content_hash: sha256:a88d2d1e0e521666185d990ce1bfbf33b5b116cd8343c86e0f23b077fb7bf1c2
+  content_hash: sha256:23decd8f5ea4ecb13edaf3b0645c6ad8324c07d2897870048067ef8b027b62f2
 local_deployed_files:
 - .agents/skills/agents-md
 - .agents/skills/agents-md/SKILL.md
@@ -194,24 +194,24 @@ local_deployed_files:
 - .agents/skills/release-flow/SKILL.md
 - .agents/skills/tests
 - .agents/skills/tests/SKILL.md
-- .claude/skills/agents-md
-- .claude/skills/agents-md/SKILL.md
-- .claude/skills/package-readme
-- .claude/skills/package-readme/SKILL.md
-- .claude/skills/package-skill-authoring
-- .claude/skills/package-skill-authoring/SKILL.md
-- .claude/skills/release-flow
-- .claude/skills/release-flow/SKILL.md
-- .claude/skills/tests
-- .claude/skills/tests/SKILL.md
+- .claude/skills/authoring-skills
+- .claude/skills/authoring-skills/SKILL.md
+- .claude/skills/maintaining-agents-md
+- .claude/skills/maintaining-agents-md/SKILL.md
+- .claude/skills/releasing-packages
+- .claude/skills/releasing-packages/SKILL.md
+- .claude/skills/writing-package-readmes
+- .claude/skills/writing-package-readmes/SKILL.md
+- .claude/skills/writing-tests
+- .claude/skills/writing-tests/SKILL.md
 local_deployed_file_hashes:
   .agents/skills/agents-md/SKILL.md: sha256:a375bb0d591e2faea1e422b8d740be9efeb002fe24b4afa4e4fd99237417aaf3
   .agents/skills/package-readme/SKILL.md: sha256:0f30c8013480c4c5852d1453ee7afda243db525d97537d96a37c087fa6bb48a6
   .agents/skills/package-skill-authoring/SKILL.md: sha256:d9dc5c8b5cc5cc22d0f6afb04072d4ff2f210342eb3aeb1851dce700c01c1456
   .agents/skills/release-flow/SKILL.md: sha256:65cfa6229b162e28a87fd985f5115726a292f30783d4906d699058793853ff48
   .agents/skills/tests/SKILL.md: sha256:a88d2d1e0e521666185d990ce1bfbf33b5b116cd8343c86e0f23b077fb7bf1c2
-  .claude/skills/agents-md/SKILL.md: sha256:a375bb0d591e2faea1e422b8d740be9efeb002fe24b4afa4e4fd99237417aaf3
-  .claude/skills/package-readme/SKILL.md: sha256:0f30c8013480c4c5852d1453ee7afda243db525d97537d96a37c087fa6bb48a6
-  .claude/skills/package-skill-authoring/SKILL.md: sha256:d9dc5c8b5cc5cc22d0f6afb04072d4ff2f210342eb3aeb1851dce700c01c1456
-  .claude/skills/release-flow/SKILL.md: sha256:65cfa6229b162e28a87fd985f5115726a292f30783d4906d699058793853ff48
-  .claude/skills/tests/SKILL.md: sha256:a88d2d1e0e521666185d990ce1bfbf33b5b116cd8343c86e0f23b077fb7bf1c2
+  .claude/skills/authoring-skills/SKILL.md: sha256:242a5cbab94aa1e9de4f71ac35243e6bedc61b3b445ff7ed0238f0811f1e2523
+  .claude/skills/maintaining-agents-md/SKILL.md: sha256:b6397f9ccc2dd5068e89e81109ad6a2b3aeb7094c65f0b49c7929b4f670363ff
+  .claude/skills/releasing-packages/SKILL.md: sha256:ef415f13a9797096559e2b1515e8a89f24d069e4373844a2c9068265028f8cc6
+  .claude/skills/writing-package-readmes/SKILL.md: sha256:64f0837b26be1bbf698688d80f8650feb9c438002697202c183b5a326502b104
+  .claude/skills/writing-tests/SKILL.md: sha256:23decd8f5ea4ecb13edaf3b0645c6ad8324c07d2897870048067ef8b027b62f2

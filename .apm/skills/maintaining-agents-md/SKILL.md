@@ -1,5 +1,5 @@
 ---
-name: agents-md
+name: maintaining-agents-md
 description: Use when editing AGENTS.md in toolkit-hub, when a new cross-package pattern emerges and you have to decide where it belongs, or when guidance seems to exist in two places. Says what earns a place in the always-on document, what belongs in a skill instead, and why AGENTS.md must never restate facts derivable from code.
 ---
 
@@ -27,7 +27,8 @@ Things needed to orient on *any* task here:
 
 There is a second, decisive reason: **consuming repos never see this file.** They receive
 skills through APM; `AGENTS.md` stays here. Any guidance a consumer needs must be in a
-skill, or it is invisible to the audience it was written for.
+skill, or it is invisible to the audience it was written for. When a fact must appear in both
+— the layer order, the package shapes — the two copies must say the same thing.
 
 ## Never restate what code already says
 
@@ -39,7 +40,7 @@ the summary numbers were wrong because they looked cheap to state.
 
 If a number feels useful, link to the source file instead.
 
-## AGENTS.md is currently hand-written — keep it that way deliberately
+## AGENTS.md is hand-written — keep it that way deliberately
 
 There is no `.apm/instructions/` in this repo, so `apm compile` has nothing to compile and
 this file is the source.
@@ -53,5 +54,12 @@ instruction file and running compile will replace this document with that file's
 
 - A package is added, removed, or renamed → package map
 - A repo-wide rule changes → architecture / anti-patterns
+- An anti-pattern moves to a different package's skill → its row in the anti-patterns table
 - The same package combination keeps recurring in real work → consider a skill, not a new
   section here
+
+## Before you finish
+
+Run `pnpm check:doc-links`, fix every broken link or anchor it reports, and rerun until it
+reports zero problems — `AGENTS.md` links into READMEs and skills by path, and a renamed
+skill or heading breaks them silently.

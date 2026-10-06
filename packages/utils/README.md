@@ -4,6 +4,17 @@ A collection of TypeScript utility functions providing common operations, object
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [ESLint rules](#eslint-rules)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Common utility functions - ALWAYS use instead of reimplementing.

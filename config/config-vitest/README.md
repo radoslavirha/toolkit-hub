@@ -4,6 +4,16 @@ Pre-configured Vitest test runner with SWC for blazing-fast TypeScript testing. 
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Usage](#usage)
+- [Customization](#customization)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Fast TypeScript testing with Vitest + SWC.

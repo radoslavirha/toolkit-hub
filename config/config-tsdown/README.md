@@ -4,6 +4,22 @@ Pre-configured tsdown build configurations for TypeScript libraries with dual ES
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Usage](#usage)
+- [Configuration Reference](#configuration-reference)
+- [Customization](#customization)
+- [Advanced Patterns](#advanced-patterns)
+- [Output Structure](#output-structure)
+- [Integration Examples](#integration-examples)
+- [Why Dual Format?](#why-dual-format)
+- [Troubleshooting](#troubleshooting)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Pre-configured TypeScript library builds with dual ESM/CJS output.

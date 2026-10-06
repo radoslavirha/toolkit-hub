@@ -6,6 +6,17 @@ Provides a Ts.ED `@Injectable()` `Logger` class that extends the OTEL-compliant 
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Usage](#usage)
+- [Testing](#testing)
+- [API Reference](#api-reference)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Ts.ED injectable wrapper for `@radoslavirha/logger` with HTTP request logging.

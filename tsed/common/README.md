@@ -4,6 +4,16 @@ Base models and common utilities for Ts.ED applications. Provides standardized m
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [What's Included](#whats-included)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Base models with standard fields and typed serialization for Ts.ED applications.

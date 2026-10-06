@@ -23,8 +23,8 @@ Pick the package with the review log — never by date arithmetic or your own ch
    (`date -u +%FT%TZ`). This claims the package.
 Review that package in depth — all of its source, not just recent changes.
 Read its README and its skill (<package>/.apm/skills/) to learn the intended
-contract. If you finish with budget left, also check code changed in the last
-7 days anywhere under tsed/ or packages/.
+contract. If you finish with time left (the job stops after 90 minutes), also
+check code changed in the last 7 days anywhere under tsed/ or packages/.
 
 # What counts as a bug
 Wrong behavior a consumer of the package would hit: logic errors, unhandled
@@ -39,14 +39,11 @@ Skip a candidate if an open issue or PR covers it, or a closed issue covers it
 with reason "not planned" (it was rejected).
 
 # Prove it
-For each candidate, write a failing Vitest test. Follow the `tests` skill; if it
-isn't available, read .apm/skills/tests/SKILL.md. Run it with
+For each candidate, write a failing Vitest test following the `writing-tests`
+skill (if it isn't available, read .apm/skills/writing-tests/SKILL.md) — above
+all its one-spec-per-source-file rule: the test goes into the existing spec next
+to the source file, never into a second spec for it. Run it with
 `pnpm --filter <package-name> test`. It must fail for the reason you claim.
-One spec per source file: a test for `<File>.ts` goes in `<File>.spec.ts` next
-to it (`<File>.spec.tsx` for a component, `<File>.integration.spec.ts` for an
-integration test). If that spec exists, add the test to it, inside the matching
-`describe`; create the spec only if it doesn't exist. Never create a second spec
-for the same source file (`<File>.bug.spec.ts`, `<File>.alg.spec.ts`, ...).
 If you can't write a failing test, file only if the argument is airtight, with
 confidence low or med. Drop everything else.
 When done, restore the working tree: `git checkout -- <spec>` for a spec that

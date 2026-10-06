@@ -4,6 +4,14 @@ Base TypeScript compiler configurations for strict, modern projects. Provides ta
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [Installation](#installation)
+- [Presets](#presets)
+- [See Also](#see-also)
+- [Related Packages](#related-packages)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Shared TypeScript compiler configurations — pick the preset that matches your package type.

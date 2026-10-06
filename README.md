@@ -4,6 +4,17 @@ A comprehensive monorepo of TypeScript utilities, configurations, and Ts.ED fram
 
 ---
 
+## Contents
+
+- [🤖 Quick Reference for AI Agents](#-quick-reference-for-ai-agents)
+- [📦 Packages at a Glance](#-packages-at-a-glance)
+- [🏗️ Architecture](#-architecture)
+- [🚀 Quick Start](#-quick-start)
+- [📚 Installation](#-installation)
+- [🔧 Development](#-development)
+- [🤖 Development Guidelines](#-development-guidelines)
+- [📖 Documentation Structure](#-documentation-structure)
+
 ## 🤖 Quick Reference for AI Agents
 
 **Purpose:** Monorepo of TypeScript utilities, configs, and Ts.ED framework extensions for microservices.

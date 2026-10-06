@@ -1,6 +1,6 @@
 ---
 name: adopting-toolkit-hub
-description: Use when adding, updating or removing a @radoslavirha/* toolkit dependency in a pnpm project, when an install fails with 401/404 from GitHub Packages, or when deciding whether a toolkit package also ships agent skills and how to install them. Covers the pnpm install, the marketplace lookup, and keeping the npm dependency and its skill in step.
+description: Use when adding, updating or removing a @radoslavirha/* toolkit dependency in a pnpm project, when an install fails with 401/404 from GitHub Packages, or when deciding whether a toolkit package also ships agent skills and how to install them. Covers the prerequisites, the pnpm install, the marketplace lookup, and keeping the npm dependency and its skill in step.
 ---
 
 # Adopting toolkit-hub packages and their skills
@@ -8,6 +8,29 @@ description: Use when adding, updating or removing a @radoslavirha/* toolkit dep
 Two things travel together: the **npm package** (code, from GitHub Packages) and its
 **agent skill** (guidance, from the APM marketplace in `radoslavirha/toolkit-hub`).
 Adopt both, or an agent works against the package without knowing how it is meant to be used.
+
+Copy this checklist and tick it off:
+
+```
+- [ ] 0. Prerequisites pass their checks
+- [ ] 1. Registry access configured (once per repo)
+- [ ] 2. Package installed - pnpm exits 0
+- [ ] 3. Marketplace checked for a matching skill
+- [ ] 4. Skill installed - apm deps list shows it
+- [ ] 5. apm.yml, apm.lock.yaml and deployed skill directories committed
+```
+
+## 0. Prerequisites
+
+| Tool | Check | Why |
+|---|---|---|
+| Node.js 24+ | `node --version` | toolkit packages declare `engines.node >= 24` |
+| pnpm 11.26+ | `pnpm --version` | `engines.pnpm >= 11.26`, and the `registries` setting below is pnpm 11 |
+| APM CLI 0.28+ | `apm --version` | installs the skills — `brew install apm`, or `pip install apm-cli` (Python 3.10+) |
+| A GitHub token with `read:packages` | `apm doctor` also reports auth | GitHub Packages refuses anonymous installs |
+
+Fix whatever is missing before continuing; `apm doctor` diagnoses git, network and auth
+problems in one run.
 
 ## 1. Registry access (once per repo)
 
@@ -31,9 +54,9 @@ The token must stay user-level: pnpm ignores `${...}` in a project-level `.npmrc
 because a checked-out repo could otherwise send your environment's secrets to a registry it
 names.
 
-The token needs `read:packages`. In GitHub Actions, `secrets.GITHUB_TOKEN` is enough:
-`actions/setup-node` with `registry-url: https://npm.pkg.github.com/` writes a user-level
-config that reads it from `NODE_AUTH_TOKEN`.
+In GitHub Actions, `secrets.GITHUB_TOKEN` is enough: `actions/setup-node` with
+`registry-url: https://npm.pkg.github.com/` writes a user-level config that reads it from
+`NODE_AUTH_TOKEN`.
 
 ## 2. Install the package
 
@@ -47,6 +70,14 @@ pnpm --filter YOUR_SERVICE add @radoslavirha/utils@latest
 # Root-level tooling (configs) goes to the root as a dev dependency
 pnpm add -Dw @radoslavirha/config-eslint@latest
 ```
+
+If it fails, match the status and rerun until it succeeds:
+
+| Error | Cause | Fix |
+|---|---|---|
+| `404 Not Found` | no scope mapping | add the `registries` entry from step 1 |
+| `401 Unauthorized` | no token, or token lacks `read:packages` | fix the user-level auth file from step 1 |
+| `Unsupported engine` warning or `ERR_PNPM_UNSUPPORTED_ENGINE` | Node or pnpm too old | see step 0 |
 
 If the repo uses a pnpm catalog, add the version to the catalog in `pnpm-workspace.yaml`
 and reference `catalog:` from the member instead of pinning per package.
@@ -68,12 +99,13 @@ apm marketplace browse toolkit-hub
 
 The `Version` column is the package version the skill describes, so it should match the
 version you just installed. A package absent from that list simply has no skill yet; use
-its README.
+its README at `node_modules/@radoslavirha/<package>/README.md`.
 
 ## 4. Install the skill
 
 ```bash
 apm install utils@toolkit-hub --target claude,copilot
+apm deps list       # must now list the package and its skill
 ```
 
 Skills land in `.agents/skills/<name>/` (Copilot and the shared agent path) and
