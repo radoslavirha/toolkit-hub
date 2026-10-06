@@ -128,6 +128,25 @@ describe('ObjectUtils', () => {
     });
 
     describe('mergeDeep', () => {
+        it('does not mutate an Error nested in target', () => {
+            const error = new Error('boom');
+
+            const result = ObjectUtils.mergeDeep({ error }, { error: { code: 'E_BOOM' } });
+
+            expect(error).not.toHaveProperty('code');
+            expect(result.error).not.toBe(error);
+            expect(result.error).toHaveProperty('code', 'E_BOOM');
+        });
+
+        it('does not alias an Error nested in source', () => {
+            const error = new Error('boom');
+
+            const result = ObjectUtils.mergeDeep({ a: 1 }, { error });
+
+            expect(result.error).not.toBe(error);
+            expect(result.error.message).toBe('boom');
+        });
+
         it('concatenates arrays passed as target and source', () => {
             const result = ObjectUtils.mergeDeep([1, 2], [3]);
 
