@@ -122,6 +122,16 @@ export class Logger extends BaseLogger<LoggerMetadata> {
     }
 
     /**
+     * Structured-syntax suffixes (RFC 6839): application/problem+json, application/vnd.api+json, …
+     * A missing content type counts as text.
+     */
+    private static isTextSafe(contentType: unknown): boolean {
+        const mediaType = String(contentType ?? '').split(';')[0]!.trim();
+
+        return !mediaType || /^(text\/|application\/(json|xml|graphql|javascript|x-www-form-urlencoded)$|application\/[\w.+-]+\+(json|xml)$)/i.test(mediaType);
+    }
+
+    /**
      * `$ctx.data` is the handler's raw return value; Ts.ED serialises it only when flushing and never
      * writes the result back. Apply the same serialisation (`@Ignore`, `@Name`, `@Groups`) so the log
      * shows what the client receives and `redactPaths` match wire names.
@@ -180,16 +190,19 @@ export class Logger extends BaseLogger<LoggerMetadata> {
             duration
         };
 
-        const mediaType = String($ctx.response.getHeaders()['content-type'] ?? '').split(';')[0]!.trim();
-        // Structured-syntax suffixes (RFC 6839): application/problem+json, application/vnd.api+json, …
-        const isTextSafe = !mediaType || /^(text\/|application\/(json|xml|graphql|javascript|x-www-form-urlencoded)$|application\/[\w.+-]+\+(json|xml)$)/i.test(mediaType);
+        const isTextSafe = Logger.isTextSafe($ctx.response.getHeaders()['content-type']);
+        const isRequestTextSafe = Logger.isTextSafe($ctx.request.headers['content-type']);
 
         Object.assign(meta, this.redaction.collect({
             headers: $ctx.request.headers,
             query: $ctx.request.query,
-            request: Logger.decodeBinary($ctx.request.body),
+            ...(isRequestTextSafe ? { request: Logger.decodeBinary($ctx.request.body) } : {}),
             ...(isTextSafe ? { response: Logger.decodeBinary(Logger.serializeResponse($ctx)) } : {})
         }));
+
+        if (!isRequestTextSafe && this.redaction.isEnabled('request')) {
+            meta.request = '[[ BINARY ]]';
+        }
 
         if (!isTextSafe && this.redaction.isEnabled('response')) {
             meta.response = '[[ BINARY ]]';
