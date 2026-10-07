@@ -367,7 +367,7 @@ Abstract handler class providing performance tracking and error handling wrapper
 
 *Error:*
 ```json
-{"timestamp":"...","level":"error","message":"execute() threw the following error: ValidationError: Invalid input","scope":"Handler"}
+{"timestamp":"...","level":"error","message":"execute() threw an error","scope":"Handler","error":{"name":"ValidationError","message":"Invalid input","stack":"..."}}
 ```
 
 **Example without request (query pattern):**
