@@ -118,7 +118,9 @@ export class SwaggerController {
         host: string
     ) {
         // behind chained proxies the header is a list (`https, http`); the first entry is the client-facing one
-        const clientProtocol = protocol?.split(',')[0]?.trim() || 'http';
+        // only http(s) is accepted; anything else would end up as the scheme of every link on the page
+        const forwardedProtocol = protocol?.split(',')[0]?.trim().toLowerCase();
+        const clientProtocol = forwardedProtocol === 'https' ? 'https' : 'http';
         const hostUrl = (this.api.publicURL ?? `${ clientProtocol }://${ host }`).replace(/\/+$/, '');
 
         const _dirname = typeof __dirname !== 'undefined'
