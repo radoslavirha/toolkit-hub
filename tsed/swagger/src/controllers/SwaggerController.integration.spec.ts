@@ -186,4 +186,38 @@ describe('SwaggerController', () => {
         expect(minified).toContain(`<li><a href="https://api.example.com/v1/docs/"><span>API v1</span> <span>OpenSpec 3.0.3</span></a></li>`);
         expect(response.status).toStrictEqual(200);
     });
+
+    it('Should ignore an x-forwarded-proto value that is not http or https', async () => {
+        await PlatformTest.bootstrap(BaseServer, <ServerConfiguration>{
+            mount: {
+                '/': [SwaggerController]
+            },
+            swagger: [
+                {
+                    path: '/v1/docs',
+                    doc: 'v1',
+                    specVersion: '3.0.3',
+                    spec: {
+                        info: {
+                            title: 'My API - v1',
+                            version: '1.0.0'
+                        }
+                    }
+                }
+            ],
+            api: <APIInformation>{
+                service: 'My API',
+                version: '1.0.0'
+            }
+        })();
+        request = SuperTest(PlatformTest.callback());
+
+        const response = await request.get('/').set('Host', 'api.example.com').set('X-Forwarded-Proto', 'javascript:alert(document.domain)//');
+
+        const minified = await minify(response.text, { collapseWhitespace: true });
+
+        expect(minified).not.toContain('href="javascript:');
+        expect(minified).toContain(`<li><a href="http://api.example.com/v1/docs/"><span>API v1</span> <span>OpenSpec 3.0.3</span></a></li>`);
+        expect(response.status).toStrictEqual(200);
+    });
 });
