@@ -1,12 +1,11 @@
-import { configuration, Configuration, Inject } from '@tsed/di';
-import { application } from '@tsed/platform-http';
+import { configuration, Configuration, Inject, inject } from '@tsed/di';
+import { application, PlatformAdapter } from '@tsed/platform-http';
 import '@tsed/platform-express';
 import '@tsed/ajv';
 import '@tsed/platform-log-request';
 import { APIInformation, getServerDefaultConfig } from '@radoslavirha/tsed-configuration';
 import { Logger } from '@radoslavirha/tsed-logger';
 import { TsEDLoggerBridge } from './TsEDLoggerBridge.js';
-import bodyParser from 'body-parser';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
 
@@ -176,14 +175,20 @@ export class BaseServer {
     protected registerMiddlewares(): void {
         this.logger.info('Registering common middlewares...');
 
-        this.app
-            .use(cookieParser())
-            .use(compress({}))
-            .use(bodyParser.json())
-            .use(
-                bodyParser.urlencoded({
-                    extended: true
-                })
-            );
+        // Built through the platform adapter so `rawBody`, `express.bodyParser.*` apply
+        const adapter = inject(PlatformAdapter);
+        // A body parser the consumer configured in `middlewares` is already mounted and must not be shadowed
+        const configured = new Set(
+            (this.settings.get<{ use?: unknown }[]>('middlewares') ?? []).map(({ use }) => (use as { name?: string })?.name)
+        );
+
+        this.app.use(cookieParser()).use(compress({}));
+
+        if (!configured.has('jsonParser')) {
+            this.app.use(adapter.bodyParser('json'));
+        }
+        if (!configured.has('urlencodedParser')) {
+            this.app.use(adapter.bodyParser('urlencoded'));
+        }
     }
 }
