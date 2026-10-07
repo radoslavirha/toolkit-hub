@@ -67,4 +67,27 @@ describe('BaseHandler', () => {
             expect(error).toStrictEqual(new Error('test'));
         }
     });
+
+    it('Should log the stack of the error thrown by performOperation', async () => {
+        const error = vi.fn();
+        vi.spyOn(Logger.prototype, 'child').mockReturnValue({ debug: vi.fn(), error } as never);
+        const thrown = new Error('db down');
+        vi.spyOn(handler, 'performOperation').mockRejectedValue(thrown);
+
+        await expect(handler.execute({ key: 'value' })).rejects.toBe(thrown);
+
+        expect(error).toHaveBeenCalledOnce();
+        expect(JSON.stringify(error.mock.calls[0], (_key, value: unknown) => value instanceof Error ? value.stack : value))
+            .toContain('BaseHandler.spec.ts');
+    });
+
+    it('Should log the details of a non-Error value thrown by performOperation', async () => {
+        const error = vi.fn();
+        vi.spyOn(Logger.prototype, 'child').mockReturnValue({ debug: vi.fn(), error } as never);
+        vi.spyOn(handler, 'performOperation').mockRejectedValue({ code: 'E_QUOTA', detail: 'limit reached' });
+
+        await expect(handler.execute({ key: 'value' })).rejects.toBeDefined();
+
+        expect(JSON.stringify(error.mock.calls[0])).toContain('E_QUOTA');
+    });
 });

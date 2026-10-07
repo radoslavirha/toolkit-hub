@@ -86,7 +86,7 @@ import { Logger } from '@radoslavirha/tsed-logger';
  * ```
  * 
  * @see Performance tracking logs at debug level: `HandlerName.execute() took +123.45 ms to execute!`
- * @see Error logs include handler name for easy debugging: `HandlerName.execute() threw the following error: ...`
+ * @see Error logs include the handler name and the thrown value (with stack) as metadata for easy debugging
  */
 export abstract class BaseHandler<IRequest, IResponse> {
     @Inject(Logger)
@@ -142,7 +142,7 @@ export abstract class BaseHandler<IRequest, IResponse> {
 
             return response;
         } catch (error) {
-            this.logger?.child(this.constructor.name).error(`execute() threw the following error: ${ error }`);
+            this.logger?.child(this.constructor.name).error('execute() threw an error', { error });
 
             throw error;
         }
