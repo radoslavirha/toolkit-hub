@@ -135,8 +135,21 @@ export class ObjectUtils {
      */
     public static cloneDeep<T extends object>(object: T): T {
         const seen = new WeakMap<Error, Error>();
-        const customizer = (value: unknown): unknown => {
+        // every lodash call keeps its own source -> clone stack; collect them so that objects cloned in one call are reused by the others
+        const stacks = new Set<{ get(key: unknown): unknown }>();
+        const customizer = (value: unknown, _key?: unknown, _parent?: unknown, stack?: { get(key: unknown): unknown }): unknown => {
+            if (stack) {
+                stacks.add(stack);
+            }
             if (!(value instanceof Error)) {
+                if (_.isObject(value)) {
+                    for (const known of stacks) {
+                        const clone = known.get(value);
+                        if (clone !== undefined) {
+                            return clone;
+                        }
+                    }
+                }
                 return undefined;
             }
             const existing = seen.get(value);

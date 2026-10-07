@@ -4,6 +4,36 @@ import { ObjectUtils } from './ObjectUtils.js';
 
 describe('ObjectUtils', () => {
     describe('cloneDeep', () => {
+        it('should preserve shared references reachable through an Error', () => {
+            const shared = { value: 1 };
+            const error = Object.assign(new Error('boom'), { context: shared });
+            const original = { shared, error };
+
+            const cloned = ObjectUtils.cloneDeep(original);
+
+            expect(cloned.error.context).toBe(cloned.shared);
+            expect(cloned.shared).not.toBe(shared);
+        });
+
+        it('should preserve shared references when the Error is visited first', () => {
+            const shared = { value: 1 };
+            const error = Object.assign(new Error('boom'), { context: shared });
+            const original = { error, shared };
+
+            const cloned = ObjectUtils.cloneDeep(original);
+
+            expect(cloned.error.context).toBe(cloned.shared);
+        });
+
+        it('should preserve a cycle that passes through an Error', () => {
+            const original: { error?: Error & { owner?: unknown } } = {};
+            original.error = Object.assign(new Error('boom'), { owner: original });
+
+            const cloned = ObjectUtils.cloneDeep(original);
+
+            expect(cloned.error!.owner).toBe(cloned);
+        });
+
         it('should deep clone an object', () => {
             const original = {
                 a: 1,
