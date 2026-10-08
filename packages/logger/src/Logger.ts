@@ -148,7 +148,7 @@ export class Logger<T extends object = object> {
         }
 
         const baseMeta = this.metaProvider?.();
-        const metadata = { ...baseMeta, ...Logger.serializeMeta(meta) };
+        const metadata = { ...Logger.serializeNestedErrors(baseMeta), ...Logger.serializeMeta(meta) };
 
         // Single-object form: the (level, msg, meta) form appends `meta.message` to the body.
         this.logger.log({ ...Logger.renameReservedKeys(metadata), level, message: body });
