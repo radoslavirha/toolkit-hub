@@ -295,6 +295,14 @@ describe('Logger', () => {
             expect(getLine()['error']).toEqual({ name: 'Error', message: 'boom', stack: error.stack });
         });
 
+        it('keeps the error name, message and stack of an Error returned by metaProvider', () => {
+            const error = new Error('last sync failed');
+            const logger = new Logger<object>({ metaProvider: () => ({ lastError: error }) });
+            logger.warn('Sync retry');
+
+            expect(getLine()['lastError']).toEqual({ name: 'Error', message: 'last sync failed', stack: error.stack });
+        });
+
         it('merges metaProvider fields with an Error passed as meta', () => {
             const logger = new Logger<object>({ metaProvider: () => ({ requestId: 'req-1' }) });
             logger.error('Payment failed', new Error('card declined'));
