@@ -224,6 +224,13 @@ describe('RedactionUtils', () => {
                 .toBe('{"id":1234567890123456789,"token":"***","n":[9007199254740993,1.5,2]}');
         });
 
+        it('preserves non-integer and out-of-range numbers in JSON text', () => {
+            const redactor = RedactionUtils.compileRedactor(['token']);
+
+            expect(redactor('{"token":"x","price":1234567890123456.78,"rate":0.12345678901234567890,"huge":1e400}'))
+                .toBe('{"token":"***","price":1234567890123456.78,"rate":0.12345678901234567890,"huge":1e400}');
+        });
+
         it('still redacts an unsafe integer that is itself selected', () => {
             const redactor = RedactionUtils.compileRedactor(['id']);
 

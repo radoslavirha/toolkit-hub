@@ -156,7 +156,7 @@ export class RedactionUtils {
      */
     private static parseJsonContainer(value: string): unknown {
         try {
-            const parsed = JSON.parse(value.charCodeAt(0) === 0xFEFF ? value.slice(1) : value, RedactionUtils.keepUnsafeIntegers) as unknown;
+            const parsed = JSON.parse(value.charCodeAt(0) === 0xFEFF ? value.slice(1) : value, RedactionUtils.keepNumberText) as unknown;
 
             return ObjectUtils.isObject(parsed) ? parsed : value;
         } catch {
@@ -165,14 +165,14 @@ export class RedactionUtils {
     }
 
     /**
-     * `JSON.parse` reviver that keeps integer literals a double cannot hold
-     * exactly (above `Number.MAX_SAFE_INTEGER`) as raw JSON, so re-serialising
-     * writes the original digits instead of a rounded value.
+     * `JSON.parse` reviver that keeps number literals a double cannot round-trip
+     * (large integers, high-precision decimals, out-of-range values) as raw JSON,
+     * so re-serialising writes the original text instead of a rounded value or `null`.
      */
-    private static keepUnsafeIntegers(_key: string, value: unknown, context?: { source?: string }): unknown {
+    private static keepNumberText(_key: string, value: unknown, context?: { source?: string }): unknown {
         const source = context?.source;
 
-        if (NumberUtils.isNumber(value) && StringUtils.isString(source) && /^-?\d+$/.test(source) && !Number.isSafeInteger(value)) {
+        if (NumberUtils.isNumber(value) && StringUtils.isString(source) && JSON.stringify(value) !== source) {
             return (JSON as unknown as { rawJSON(text: string): unknown }).rawJSON(source);
         }
 
