@@ -73,12 +73,12 @@ class Handler extends BaseHandler<Request, Response> {
 ```bash
 # Install with required peer dependencies
 pnpm add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration @radoslavirha/tsed-logger \
-  @tsed/di @tsed/platform-express @tsed/platform-http @tsed/ajv \
+  @tsed/di @tsed/platform-express @tsed/platform-http @tsed/platform-params @tsed/schema @tsed/ajv \
   body-parser compression cookie-parser
 
 # Monorepo - install in specific workspace package
 pnpm --filter my-service add @radoslavirha/tsed-platform @radoslavirha/tsed-configuration @radoslavirha/tsed-logger \
-  @tsed/di @tsed/platform-express @tsed/platform-http @tsed/ajv \
+  @tsed/di @tsed/platform-express @tsed/platform-http @tsed/platform-params @tsed/schema @tsed/ajv \
   body-parser compression cookie-parser
 ```
 
@@ -400,6 +400,38 @@ async update(
     return this.handler.execute(request, id);
 }
 ```
+
+## Strict request validation
+
+Ts.ED's Ajv coerces every parameter (`coerceTypes: true`, coerced values returned), so a JSON
+body `null` on a non-nullable `number` reaches the handler as `0`, `"42"` becomes `42`, and
+`?b=foo` becomes `true`. `BaseServer` registers a `ValidationPipe` override that can turn this off.
+It is **opt-in**: with the flag unset or `false` behaviour is identical to plain Ts.ED.
+
+```ts ignore
+@Configuration({
+    requestValidation: { strict: true }
+})
+export class Server extends BaseServer {}
+```
+
+With `requestValidation.strict` on:
+
+- **Body** is validated by a non-coercing Ajv built from the same Ajv (same options, `ajv-errors`,
+  formats and `@Formats`). `null` passes only where the model is nullable; any wrong JSON type is a 400.
+- **Query / path / header** keep coercion (values are strings), except that the text `null` becomes
+  `null` only for nullable parameters, booleans accept only `true|false|1|0`, and an explicit
+  `null` on a nullable parameter is accepted before the required check.
+
+| | missing | `null` | valid | wrong JSON type |
+|---|---|---|---|---|
+| required | 400 | 400 | value | 400 |
+| required + nullable | 400 | `null` | value | 400 |
+| optional | absent | 400 | value | 400 |
+| optional + nullable | absent | `null` | value | 400 |
+
+A required string still rejects `""` (Ts.ED `@Required` implies `minLength: 1`). Limitation:
+urlencoded and multipart bodies are validated strictly too, so their string values are not coerced.
 
 ## See Also
 
