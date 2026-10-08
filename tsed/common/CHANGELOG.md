@@ -1,5 +1,13 @@
 # @radoslavirha/tsed-common
 
+## 0.6.2
+
+### Patch Changes
+
+- [#312](https://github.com/radoslavirha/toolkit-hub/pull/312) [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Agent skills only, no runtime code changed: name the Docker prerequisite for MongoDB testcontainers, add run-fix-rerun loops after linting, add an entity checklist to tsed-mongoose, inline the redaction selector syntax instead of pointing at the README, and stop stating section counts that had drifted.
+- Updated dependencies [[`18615e6`](https://github.com/radoslavirha/toolkit-hub/commit/18615e60439f1a35b3b01fc6c9b3174d92a77d18), [`126c4b7`](https://github.com/radoslavirha/toolkit-hub/commit/126c4b7fb387cd4e811c6a5581ec5a1e31461c71), [`f753994`](https://github.com/radoslavirha/toolkit-hub/commit/f753994504a9f402891b39622b8c93b398ed8f81), [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42)]:
+  - @radoslavirha/utils@0.9.6
+
 ## 0.6.1
 
 ### Patch Changes

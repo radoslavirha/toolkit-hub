@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-logger
 
+## 0.7.7
+
+### Patch Changes
+
+- [#306](https://github.com/radoslavirha/toolkit-hub/pull/306) [`3540efe`](https://github.com/radoslavirha/toolkit-hub/commit/3540efe5382ac5b44b619b45a818d007fdd9b5c4) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - The logged `response` is now serialised the way Ts.ED sends it, so `@Ignore`d fields no longer leak into logs and `response.redactPaths` match `@Name` aliases.
+
+- [#308](https://github.com/radoslavirha/toolkit-hub/pull/308) [`ce825ee`](https://github.com/radoslavirha/toolkit-hub/commit/ce825ee036f3c4f5a55741cf37fa06ec01b46f81) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Request bodies with a non-text `Content-Type` (e.g. `image/png`) are now logged as `[[ BINARY ]]` instead of being decoded into mojibake.
+- Updated dependencies [[`682b94b`](https://github.com/radoslavirha/toolkit-hub/commit/682b94bbe8389c2e5bd502dec279ffd68911c4d5), [`18615e6`](https://github.com/radoslavirha/toolkit-hub/commit/18615e60439f1a35b3b01fc6c9b3174d92a77d18), [`126c4b7`](https://github.com/radoslavirha/toolkit-hub/commit/126c4b7fb387cd4e811c6a5581ec5a1e31461c71), [`f753994`](https://github.com/radoslavirha/toolkit-hub/commit/f753994504a9f402891b39622b8c93b398ed8f81), [`c4ee4ea`](https://github.com/radoslavirha/toolkit-hub/commit/c4ee4eaf5e3df14f363cfd4048f2f448821d0a5f), [`86c4e7e`](https://github.com/radoslavirha/toolkit-hub/commit/86c4e7eb29cdcbac0aad270c69e5283c6f21ad1b), [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42)]:
+  - @radoslavirha/redaction@0.3.6
+  - @radoslavirha/utils@0.9.6
+  - @radoslavirha/logger@0.4.9
+
 ## 0.7.6
 
 ### Patch Changes

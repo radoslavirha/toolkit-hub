@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-platform
 
+## 5.0.10
+
+### Patch Changes
+
+- [#311](https://github.com/radoslavirha/toolkit-hub/pull/311) [`a99ab10`](https://github.com/radoslavirha/toolkit-hub/commit/a99ab1036bf6f5ab58ceec60d2b185b3546207fc) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `BaseServer` now builds its JSON/URL-encoded body parsers through the platform adapter, so `rawBody: true` populates `req.rawBody`, and a `json-parser`/`urlencoded-parser` configured in `middlewares` (e.g. a larger `limit`) is no longer shadowed.
+
+- [#314](https://github.com/radoslavirha/toolkit-hub/pull/314) [`1705546`](https://github.com/radoslavirha/toolkit-hub/commit/17055467a53c88d302759b12c54048af5384b360) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `BaseHandler.execute()` now logs the thrown value as structured metadata, so `Error` stacks and the fields of non-Error rejections are no longer lost.
+- Updated dependencies [[`18615e6`](https://github.com/radoslavirha/toolkit-hub/commit/18615e60439f1a35b3b01fc6c9b3174d92a77d18), [`126c4b7`](https://github.com/radoslavirha/toolkit-hub/commit/126c4b7fb387cd4e811c6a5581ec5a1e31461c71), [`f753994`](https://github.com/radoslavirha/toolkit-hub/commit/f753994504a9f402891b39622b8c93b398ed8f81), [`84749f1`](https://github.com/radoslavirha/toolkit-hub/commit/84749f14611b1a947521da7943491dcc9714e864), [`3540efe`](https://github.com/radoslavirha/toolkit-hub/commit/3540efe5382ac5b44b619b45a818d007fdd9b5c4), [`ce825ee`](https://github.com/radoslavirha/toolkit-hub/commit/ce825ee036f3c4f5a55741cf37fa06ec01b46f81), [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42)]:
+  - @radoslavirha/utils@0.9.6
+  - @radoslavirha/tsed-configuration@0.9.3
+  - @radoslavirha/tsed-logger@0.7.7
+
 ## 5.0.9
 
 ### Patch Changes

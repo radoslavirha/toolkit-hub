@@ -1,5 +1,11 @@
 # @radoslavirha/config-vitest
 
+## 0.4.9
+
+### Patch Changes
+
+- [#312](https://github.com/radoslavirha/toolkit-hub/pull/312) [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Agent skills only, no runtime code changed: name the Docker prerequisite for MongoDB testcontainers, add run-fix-rerun loops after linting, add an entity checklist to tsed-mongoose, inline the redaction selector syntax instead of pointing at the README, and stop stating section counts that had drifted.
+
 ## 0.4.8
 
 ### Patch Changes
