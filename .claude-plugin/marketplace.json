@@ -20,7 +20,7 @@
     {
       "name": "config-eslint",
       "description": "Agent guidance for @radoslavirha/config-eslint - shared flat config",
-      "version": "0.4.10",
+      "version": "0.4.11",
       "source": "./config/config-eslint"
     },
     {
@@ -38,31 +38,31 @@
     {
       "name": "config-vitest",
       "description": "Agent guidance for @radoslavirha/config-vitest - test config and coverage",
-      "version": "0.4.8",
+      "version": "0.4.9",
       "source": "./config/config-vitest"
     },
     {
       "name": "logger",
       "description": "Agent guidance for @radoslavirha/logger - scoped structured logging",
-      "version": "0.4.8",
+      "version": "0.4.9",
       "source": "./packages/logger"
     },
     {
       "name": "redaction",
       "description": "Agent guidance for @radoslavirha/redaction - compiled redaction profiles",
-      "version": "0.3.5",
+      "version": "0.3.6",
       "source": "./packages/redaction"
     },
     {
       "name": "tsed-logger",
       "description": "Agent guidance for @radoslavirha/tsed-logger - DI logger and scopes",
-      "version": "0.7.6",
+      "version": "0.7.7",
       "source": "./tsed/logger"
     },
     {
       "name": "tsed-swagger",
       "description": "Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI",
-      "version": "9.1.13",
+      "version": "9.1.14",
       "source": "./tsed/swagger"
     },
     {
@@ -74,31 +74,31 @@
     {
       "name": "tsed-common",
       "description": "Agent guidance for @radoslavirha/tsed-common - models, serialization, validation",
-      "version": "0.6.1",
+      "version": "0.6.2",
       "source": "./tsed/common"
     },
     {
       "name": "tsed-configuration",
       "description": "Agent guidance for @radoslavirha/tsed-configuration - schema-validated config",
-      "version": "0.9.2",
+      "version": "0.9.3",
       "source": "./tsed/configuration"
     },
     {
       "name": "tsed-platform",
       "description": "Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers",
-      "version": "5.0.9",
+      "version": "5.0.10",
       "source": "./tsed/platform"
     },
     {
       "name": "tsed-mongoose",
       "description": "Agent guidance for @radoslavirha/tsed-mongoose - mapper and repository pattern",
-      "version": "5.0.14",
+      "version": "5.0.15",
       "source": "./tsed/mongoose"
     },
     {
       "name": "utils",
       "description": "Agent guidance for @radoslavirha/utils - guards, model building and mapping",
-      "version": "0.9.5",
+      "version": "0.9.6",
       "source": "./packages/utils"
     }
   ]

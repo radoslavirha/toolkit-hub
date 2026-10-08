@@ -1,5 +1,13 @@
 # @radoslavirha/logger
 
+## 0.4.9
+
+### Patch Changes
+
+- [#319](https://github.com/radoslavirha/toolkit-hub/pull/319) [`c4ee4ea`](https://github.com/radoslavirha/toolkit-hub/commit/c4ee4eaf5e3df14f363cfd4048f2f448821d0a5f) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - An `Error` returned by `metaProvider` is now logged as `{ name, message, stack }` instead of `{}`, matching per-call `meta`.
+- Updated dependencies [[`18615e6`](https://github.com/radoslavirha/toolkit-hub/commit/18615e60439f1a35b3b01fc6c9b3174d92a77d18), [`126c4b7`](https://github.com/radoslavirha/toolkit-hub/commit/126c4b7fb387cd4e811c6a5581ec5a1e31461c71), [`f753994`](https://github.com/radoslavirha/toolkit-hub/commit/f753994504a9f402891b39622b8c93b398ed8f81), [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42)]:
+  - @radoslavirha/utils@0.9.6
+
 ## 0.4.8
 
 ### Patch Changes
