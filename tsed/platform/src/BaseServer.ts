@@ -6,6 +6,7 @@ import '@tsed/platform-log-request';
 import { APIInformation, getServerDefaultConfig } from '@radoslavirha/tsed-configuration';
 import { Logger } from '@radoslavirha/tsed-logger';
 import { TsEDLoggerBridge } from './TsEDLoggerBridge.js';
+import './RequestValidationPipe.js';
 import compress from 'compression';
 import cookieParser from 'cookie-parser';
 
