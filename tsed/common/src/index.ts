@@ -4,3 +4,6 @@ export * from './models/BaseModel.js';
 export * from './serializer/Serializer.js';
 export * from './validators/JSONSchemaValidator.js';
 export * from './validators/ZodValidator.js';
+export * from './decorators/ArrayOf.js';
+export * from './decorators/EnumMapOf.js';
+export * from './decorators/MapOf.js';

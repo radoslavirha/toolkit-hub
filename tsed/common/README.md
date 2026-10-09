@@ -63,6 +63,7 @@ const zodValidated = ZodValidator.validate(UserSchema, rawPayload);
 - `Serializer` - Typed wrappers for `@tsed/json-mapper`'s `serialize`/`deserialize`
 - `JSONSchemaValidator` - AJV-based schema validation of arbitrary input against a Ts.ED model
 - `ZodValidator` - Zod-based runtime validation for arbitrary input using any Zod schema
+- `ArrayOf` / `MapOf` / `EnumMapOf` - Collection decorators with an explicit collection type, nullable collections/values and enum-restricted keys
 - `ResourceId` - Decorator validating the id format (caller-supplied pattern) of a path/query param or body property (malformed → 400)
 - `SerializeOptions` / `DeserializeOptions` - Option types (omit `type`, which is a required parameter)
 
@@ -130,6 +131,23 @@ Runtime validation of arbitrary input using any Zod schema instance.
 - Returns typed parsed data when validation succeeds
 - Throws `ZodError` (with `.issues`) when validation fails
 - Optional debug mode logs the raw input
+
+### ArrayOf / MapOf / EnumMapOf
+
+Collection decorators that set the collection type explicitly instead of relying on `design:type` (which SWC emits as `Object` for any `X | null`, so `@CollectionOf` silently stops working on nullable collections). Items deserialize to class instances, maps to `Map`; OAS 3.0 output uses `nullable: true`.
+
+```typescript
+@ArrayOf(Child, { nullable: true })            // Child[] | null
+children!: Child[] | null;
+
+@MapOf(Number, { mongoSafeKeys: true })        // Map<string, number>, keys without '.' or leading '$'
+scores!: Map<string, number>;
+
+@EnumMapOf(Color, Number, { exhaustive: true }) // keys must be Color values, all present
+counts!: Map<Color, number>;
+```
+
+Options: `nullable` (whole collection), `nullableValues` (`MapOf` / `EnumMapOf`, scalar value types only - a model class throws at decoration time because Ts.ED 8.x cannot emit a valid nullable `$ref`), `mongoSafeKeys` (`MapOf`), `exhaustive` (`EnumMapOf`, implemented as `minProperties`).
 
 ### ResourceId
 
