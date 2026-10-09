@@ -54,3 +54,19 @@ Put `@ResourceId(pattern)` on `:id` path params, query params and body propertie
 preset (`HEX_24`, `UUID`) or supply your own, so it suits any id format or storage. A malformed id is rejected with 400 at the API edge; a well-formed id
 that matches nothing is still a 404 from the service. The pattern must have no regex flags —
 encode case handling inside it. The schema it emits is the `pattern` plus a neutral description.
+
+## ArrayOf, MapOf, EnumMapOf
+
+Use these instead of `@CollectionOf` whenever a collection is nullable, a map, or enum-keyed.
+SWC emits `design:type = Object` for `X | null`, so `@CollectionOf(Child)` on `Child[] | null`
+stops being a collection and real arrays are rejected; these decorators set the collection type
+explicitly.
+
+- `@ArrayOf(Child, { nullable? })` → `Child[]` / `Child[] | null`
+- `@MapOf(V, { nullable?, nullableValues?, mongoSafeKeys? })` → `Map<string, V>`; `mongoSafeKeys` rejects keys with `.` or a leading `$` (Mongoose fails with a 500 on them)
+- `@EnumMapOf(Enum, V, { nullable?, nullableValues?, exhaustive? })` → keys limited to enum values; `exhaustive` requires every one
+
+`nullableValues` works for scalar value types only (`String`, `Number`, `Boolean`, `Date`);
+with a model class it throws when the decorator is applied. Models in a collection
+deserialize to class instances, maps to `Map`. Pair with `@Required()` when the property must
+be present.
