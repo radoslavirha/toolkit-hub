@@ -1,3 +1,4 @@
+export * from './decorators/NoDefault.js';
 export * from './mappers/MongoMapper.js';
 export * from './models/BaseMongo.js';
 export * from './models/ConfigSchema.js';
