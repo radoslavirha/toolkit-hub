@@ -63,6 +63,7 @@ const zodValidated = ZodValidator.validate(UserSchema, rawPayload);
 - `Serializer` - Typed wrappers for `@tsed/json-mapper`'s `serialize`/`deserialize`
 - `JSONSchemaValidator` - AJV-based schema validation of arbitrary input against a Ts.ED model
 - `ZodValidator` - Zod-based runtime validation for arbitrary input using any Zod schema
+- `NullableEnum` / `NullableDateTime` - Decorators for an enum or date-time property that may be `null` (the native combinations silently reject `null` or skip date validation)
 - `ResourceId` - Decorator validating the id format (caller-supplied pattern) of a path/query param or body property (malformed → 400)
 - `SerializeOptions` / `DeserializeOptions` - Option types (omit `type`, which is a required parameter)
 
@@ -141,6 +142,18 @@ get(@PathParams('id') @ResourceId(ResourceIdPattern.UUID) id: string) { ... }
 ```
 
 Pick a preset from the exported `ResourceIdPattern` enum (`HEX_24`, `UUID`), or pass your own `RegExp` without flags (or a string); flags are rejected because AJV would read them literally. A well-formed id that matches nothing still resolves to 404 in the service.
+
+### NullableEnum / NullableDateTime
+
+Ts.ED 8.41 has traps when modelling `null`: `@Nullable(String) @Enum(E)` leaves `null` out of `enum` (so `null` is rejected), and `@Nullable(Date)` / `@Property(Date)` without `@DateTime()` accept any string. These helpers wrap the working combinations.
+
+```typescript
+@NullableEnum(Color)    // = @Nullable(String | Number) @Enum(Color, null)
+color?: Color | null;
+
+@NullableDateTime()     // = @Nullable(Date) @DateTime()
+deletedAt?: Date | null;
+```
 
 ## Usage
 
