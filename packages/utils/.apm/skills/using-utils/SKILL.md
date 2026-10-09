@@ -124,6 +124,18 @@ async function example(model: Model | null): Promise<DTO | null> {
 Available: `mapOptionalModel`, `mapArray`, `mapOptionalArray`, `mapMap`, `mapOptionalMap`
 (all `async`), plus `mapEnum` and `mapOptionalEnum` (sync).
 
+### Reading nullable fields from storage
+
+A stored field is a value, `null`, or missing (legacy documents, `lean()` applies no
+defaults). The domain keeps one "no value": `null`, never `undefined`.
+
+| Field kind | On read | On write (`buildMongoUpdatePayload`) |
+|---|---|---|
+| Nullable scalar | `mapping.toNullable(doc.x)` | `null` is stored; `undefined` is dropped by Mongoose = keep |
+| Non-nullable array | `ArrayUtils.toArray(doc.x)` | whole value replaced |
+| Nullable array | `mapping.toNullable(doc.x)` (`null` stays `null`) | `null` is stored |
+| Map | `new Map(...)` from the document value | whole value replaced |
+
 ## The rest
 
 - `ArrayUtils.toArray(value)` — normalise `T | T[] | null | undefined` to `T[]`.

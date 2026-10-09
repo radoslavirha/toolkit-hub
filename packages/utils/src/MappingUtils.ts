@@ -29,6 +29,16 @@ export type MapValue<T> = T extends Map<unknown, infer V> ? V : never;
 
 export class MappingUtils {
     /**
+     * Normalises a value read from storage to the domain's single "no value": `null`.
+     * - Input: T → Output: T
+     * - Input: T | null | undefined → Output: T | null
+     * @param value Value that may be null or missing (e.g. a field absent from a legacy document).
+     */
+    public toNullable<T>(value: T | null | undefined): T | null {
+        return CommonUtils.isNil(value) ? null : value;
+    }
+
+    /**
      * Resolves mapping between types. Preserves nullability from input type.
      * - Input: T → Output: T
      * - Input: T | null → Output: T | null
