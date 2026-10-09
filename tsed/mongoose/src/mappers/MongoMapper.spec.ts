@@ -442,6 +442,18 @@ describe('MongoMapper', () => {
             expect(result['label']).toBeUndefined();
         });
 
+        it('keeps null so that it is stored', () => {
+            const model = new TestModel();
+            (model as { label: unknown }).label = null;
+
+            expect.assertions(2);
+
+            const result = mapper.buildMongoUpdate(model);
+
+            expect(result).toHaveProperty('label');
+            expect(result.label).toBeNull();
+        });
+
         it('does not include base fields', () => {
             const model = new TestModel();
             model.label = 'test';

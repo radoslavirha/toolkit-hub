@@ -121,6 +121,18 @@ compiler rejects an attempt to write a field the database owns. `MongoFilter<T>`
 for queries. Use them as the return types of your mapper's build methods — that is what keeps
 the repository free of casts.
 
+## Null and missing values
+
+A stored field is a value, `null`, or missing (legacy documents; `lean()` applies no
+defaults). The domain keeps one "no value": `null`, never `undefined`.
+
+| Field kind | In `mongoToModel` | In `buildMongoUpdatePayload` |
+|---|---|---|
+| Nullable scalar | `MappingUtils.toNullable(mongo.x)` | `null` is stored; an `undefined` key is dropped by Mongoose = keep |
+| Non-nullable array | `ArrayUtils.toArray(mongo.x)` | whole value replaced |
+| Nullable array | `MappingUtils.toNullable(mongo.x)` — `null` stays `null` | `null` is stored |
+| Map | `new Map(...)` from the document value | whole value replaced |
+
 ## The repository owns its queries
 
 `MongoRepository` enforces nothing: it supplies the injection point, the document type, and

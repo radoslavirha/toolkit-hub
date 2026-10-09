@@ -255,4 +255,18 @@ describe('MappingUtils', () => {
             expect(result).toBeUndefined();
         });
     });
+
+    describe('toNullable', () => {
+        it('turns undefined into null', () => {
+            expect(mappingUtils.toNullable(undefined)).toBeNull();
+        });
+
+        it('keeps null', () => {
+            expect(mappingUtils.toNullable(null)).toBeNull();
+        });
+
+        it.each([['text'], [0], [false], ['']])('keeps the value %j', (value) => {
+            expect(mappingUtils.toNullable(value)).toBe(value);
+        });
+    });
 });
