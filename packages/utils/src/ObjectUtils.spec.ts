@@ -335,6 +335,20 @@ describe('ObjectUtils', () => {
             expect(result.db).not.toBe(target.db);
             expect(target.db.host).toBe('localhost');
         });
+
+        it('replaces a typed array nested in an object when target and source both hold one', () => {
+            const result = ObjectUtils.mergeDeep({ tls: { ca: new Uint16Array([1, 2]) } }, { tls: { ca: new Uint16Array([7]) } });
+
+            expect(result.tls.ca).toBeInstanceOf(Uint16Array);
+            expect(result.tls.ca).toStrictEqual(new Uint16Array([7]));
+        });
+
+        it('keeps a typed array typed when target and source both hold one', () => {
+            const result = ObjectUtils.mergeDeep({ data: new Uint8Array([1, 2, 3]) }, { data: new Uint8Array([9]) });
+
+            expect(result.data).toBeInstanceOf(Uint8Array);
+            expect(result.data).toStrictEqual(new Uint8Array([9]));
+        });
     });
 
     describe('keys', () => {

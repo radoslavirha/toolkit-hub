@@ -175,7 +175,7 @@ export class ObjectUtils {
 
     /**
      * Performs a deep merge of two objects, combining properties recursively.
-     * Arrays are concatenated rather than replaced. Returns a new object without mutating inputs.
+     * Arrays are concatenated rather than replaced; binary values (Buffer, typed arrays) in the source replace the target. Returns a new object without mutating inputs.
      * @template T The type of the target object, must be an object.
      * @template S The type of the source object.
      * @param target The target object to merge into. This object is not mutated.
@@ -197,6 +197,11 @@ export class ObjectUtils {
         return _.mergeWith(ObjectUtils.cloneDeep(target), ObjectUtils.cloneDeep(source), (targetValue, sourceValue) => {
             if (ArrayUtils.isArray(targetValue) && ArrayUtils.isArray(sourceValue)) {
                 return [...targetValue, ...sourceValue];
+            }
+
+            // lodash would copy the target into a plain Array; binary values replace the target like Date/Map/Set
+            if (ArrayBuffer.isView(sourceValue)) {
+                return sourceValue;
             }
 
             // lodash only deep-merges plain-object sources; class instances would replace the target subtree.
