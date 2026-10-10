@@ -135,6 +135,17 @@ no-op delete result — when it returns `false`. A caller-supplied id such as `n
 makes Mongoose throw a `CastError`, which escapes a service that only maps `null` to `NotFound`.
 Do not hand-write `Types.ObjectId.isValid` in each repository.
 
+## Lost updates: optimistic concurrency
+
+Plain updates are last-write-wins. When two clients may edit the same document, expose a
+repository method over the protected `updateByIdIfUnmodified(id, expectedUpdatedAt, data)`. It
+applies `$set` only if `updatedAt` still equals the value the caller read, and resolves
+`{ status: 'updated', value }`, `{ status: 'conflict' }` or `{ status: 'not-found' }`. Have the
+service map `conflict` to 409/412 and `not-found` to 404. Over HTTP, send `updatedAt` as the
+`ETag` and take the precondition from `If-Match` / `If-Unmodified-Since`. It needs
+`timestamps: true`; precision is one millisecond. Opt-in per method — existing updates are
+unchanged.
+
 ## References and populated fields
 
 A `Ref<T>` may hold an id or a populated document. Do not test for that by hand:
