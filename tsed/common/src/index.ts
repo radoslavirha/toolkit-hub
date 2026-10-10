@@ -1,3 +1,4 @@
+export * from './decorators/NullableOf.js';
 export * from './decorators/ResourceId.js';
 export * from './decorators/ResourceIdPattern.js';
 export * from './models/BaseModel.js';

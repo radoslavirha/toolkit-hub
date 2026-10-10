@@ -142,6 +142,15 @@ get(@PathParams('id') @ResourceId(ResourceIdPattern.UUID) id: string) { ... }
 
 Pick a preset from the exported `ResourceIdPattern` enum (`HEX_24`, `UUID`), or pass your own `RegExp` without flags (or a string); flags are rejected because AJV would read them literally. A well-formed id that matches nothing still resolves to 404 in the service.
 
+### NullableOf
+
+`@Nullable(Child)` validates correctly, but Ts.ED documents it in OpenAPI 3.0 as `oneOf: [{ $ref }, { nullable: true }]`, which matches anything and gives generated clients odd types. `@NullableOf(Child)` validates the same way (`oneOf: [{ type: "null" }, { $ref }]` in JSON Schema), documents as `allOf: [{ $ref }], nullable: true` in OpenAPI 3.0, and deserializes to a `Child` instance.
+
+```typescript
+@NullableOf(Address)
+address?: Address | null;
+```
+
 ## Usage
 
 ### JSONSchemaValidator Usage

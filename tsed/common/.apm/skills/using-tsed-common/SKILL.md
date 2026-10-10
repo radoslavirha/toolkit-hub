@@ -54,3 +54,9 @@ Put `@ResourceId(pattern)` on `:id` path params, query params and body propertie
 preset (`HEX_24`, `UUID`) or supply your own, so it suits any id format or storage. A malformed id is rejected with 400 at the API edge; a well-formed id
 that matches nothing is still a 404 from the service. The pattern must have no regex flags —
 encode case handling inside it. The schema it emits is the `pattern` plus a neutral description.
+
+## NullableOf
+
+Use `@NullableOf(Model)` instead of `@Nullable(Model)` for a nullable nested model. Validation and
+deserialization are the same, but OpenAPI 3.0 gets `allOf: [{ $ref }], nullable: true` instead of
+`oneOf: [{ $ref }, { nullable: true }]`, where the typeless `{ nullable: true }` branch matches anything.
