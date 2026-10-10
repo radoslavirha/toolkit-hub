@@ -7,6 +7,7 @@ import { MongoUpdate } from '../types/MongoUpdate.js';
 import { MongoDeleteResult } from '../types/MongoDeleteResult.js';
 import { MongoUpdateResult } from '../types/MongoUpdateResult.js';
 import { TestModelMongo } from './TestMongoModel.js';
+import { MongoConcurrentUpdateResult } from '../types/MongoConcurrentUpdateResult.js';
 import { CommonUtils } from '@radoslavirha/utils';
 
 @Injectable()
@@ -67,6 +68,10 @@ export class TestMongoRepository extends MongoRepository<TestModelMongo> {
         const result = await this.model.findByIdAndUpdate(id, { $set: data }, { new: true }).lean<TestModelMongo>();
 
         return this.deserialize(result);
+    }
+
+    async updateByIdIfUnmodified(id: string, expectedUpdatedAt: Date, data: MongoUpdate<TestModelMongo>): Promise<MongoConcurrentUpdateResult<TestModelMongo>> {
+        return super.updateByIdIfUnmodified(id, expectedUpdatedAt, data);
     }
 
     async findOneAndUpdate(filter: MongoFilter<TestModelMongo>, data: MongoUpdate<TestModelMongo>): Promise<TestModelMongo | null> {

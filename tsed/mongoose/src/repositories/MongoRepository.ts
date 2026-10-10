@@ -4,6 +4,8 @@ import { CommonUtils } from '@radoslavirha/utils';
 import { Serializer } from '@radoslavirha/tsed-common';
 import { HydratedDocument, isValidObjectId } from 'mongoose';
 import { BaseMongo } from '../models/BaseMongo.js';
+import { MongoConcurrentUpdateResult } from '../types/MongoConcurrentUpdateResult.js';
+import { MongoUpdate } from '../types/MongoUpdate.js';
 
 /**
  * Abstract base repository for MongoDB operations in Ts.ED applications.
@@ -114,6 +116,40 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
      */
     protected isValidId(id: string): boolean {
         return isValidObjectId(id);
+    }
+
+    /**
+     * Opt-in optimistic-concurrency update: applies `data` with `$set` only if the
+     * document's `updatedAt` still equals `expectedUpdatedAt` (the value the caller read).
+     *
+     * Resolves a distinguishable {@link MongoConcurrentUpdateResult} instead of throwing:
+     * `updated`, `conflict` (document changed since it was read) or `not-found`
+     * (including a malformed id). The service maps `conflict` to 409/412.
+     *
+     * Requires `timestamps: true` on the schema. `updatedAt` has millisecond
+     * precision, so two writes within the same millisecond are indistinguishable.
+     * Existing update methods are unaffected.
+     */
+    protected async updateByIdIfUnmodified(
+        id: string,
+        expectedUpdatedAt: Date,
+        data: MongoUpdate<MONGO>
+    ): Promise<MongoConcurrentUpdateResult<MONGO>> {
+        if (!this.isValidId(id)) {
+            return { status: 'not-found' };
+        }
+
+        const updated = await this.model
+            .findOneAndUpdate({ _id: id, updatedAt: expectedUpdatedAt } as never, { $set: data } as never, { new: true })
+            .lean<MONGO>() as MONGO | null;
+
+        if (CommonUtils.notNull(updated)) {
+            return { status: 'updated', value: this.deserialize(updated) };
+        }
+
+        const exists = await this.model.exists({ _id: id } as never);
+
+        return CommonUtils.notNull(exists) ? { status: 'conflict' } : { status: 'not-found' };
     }
 
     /**

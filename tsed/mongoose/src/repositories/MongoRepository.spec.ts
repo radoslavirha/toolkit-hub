@@ -117,4 +117,52 @@ describe('MongoRepository', () => {
             expect(result.updatedAt).toBeInstanceOf(Date);
         });
     });
+
+    describe('updateByIdIfUnmodified', () => {
+        it('applies a fresh update and returns the new document', async () => {
+            const doc = await repository.create({ label: 'a' });
+
+            expect.assertions(3);
+
+            const result = await repository.updateByIdIfUnmodified(doc._id, doc.updatedAt, { label: 'b' });
+
+            expect(result.status).toBe('updated');
+            expect(result.status === 'updated' && result.value).toBeInstanceOf(TestModelMongo);
+            expect(result.status === 'updated' && result.value.label).toBe('b');
+        });
+
+        it('rejects a stale update with conflict and leaves the document untouched', async () => {
+            const doc = await repository.create({ label: 'a' });
+            await new Promise(resolve => setTimeout(resolve, 5));
+            await repository.findByIdAndUpdate(doc._id, { label: 'winner' });
+
+            expect.assertions(2);
+
+            const result = await repository.updateByIdIfUnmodified(doc._id, doc.updatedAt, { label: 'loser' });
+
+            expect(result).toEqual({ status: 'conflict' });
+            expect((await repository.findById(doc._id))!.label).toBe('winner');
+        });
+
+        it('resolves not-found for a missing or malformed id', async () => {
+            expect.assertions(2);
+
+            const missing = await repository.updateByIdIfUnmodified(new Types.ObjectId().toHexString(), new Date(), { label: 'x' });
+            const malformed = await repository.updateByIdIfUnmodified('not-an-id', new Date(), { label: 'x' });
+
+            expect(missing).toEqual({ status: 'not-found' });
+            expect(malformed).toEqual({ status: 'not-found' });
+        });
+
+        it('leaves the unconditional findByIdAndUpdate path last-write-wins', async () => {
+            const doc = await repository.create({ label: 'a' });
+            await repository.findByIdAndUpdate(doc._id, { label: 'b' });
+
+            expect.assertions(1);
+
+            const result = await repository.findByIdAndUpdate(doc._id, { label: 'c' });
+
+            expect(result!.label).toBe('c');
+        });
+    });
 });
