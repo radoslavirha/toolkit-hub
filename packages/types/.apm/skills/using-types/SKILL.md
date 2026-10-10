@@ -34,7 +34,7 @@ const patch: FullPartial<{ a: string; b: number }> = { a: 'x' };
   handled. A `Record<string, T>` will not do that for you.
 - **`NullableProperty<T>`** — `T | null`. Use it where null is a meaningful value rather than
   an accident, so intent is visible at the call site.
-- **`FullPartial<T>`** — everything optional. Suited to patch payloads and partial updates.
+- **`FullPartial<T>`** — everything optional, recursively. `Date` and function fields stay as they are. Suited to patch payloads and partial updates.
 
 These are types only — no runtime code ships. Importing them costs nothing at runtime, so
 there is no reason to hand-roll a local equivalent.

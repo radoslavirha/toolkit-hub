@@ -57,7 +57,7 @@ const partial: FullPartial<Config> = {
 - `Dictionary<T>` - Generic string-keyed dictionary (replaces `lodash.Dictionary`)
 - `EnumDictionary<TKey, TType>` - Type-safe enum-to-value mappings
 - `NullableProperty<T>` - Explicit `T | null` alias
-- `FullPartial<T>` - Recursive partial type
+- `FullPartial<T>` - Recursive partial type (`Date` and function members are kept as they are)
 
 **Full documentation below** ↓
 
