@@ -153,6 +153,10 @@ See [root README](../../README.md#-installation) for registry setup and monorepo
 - **`MongoMapper<MONGO, MODEL>`** - Abstract mapper for bidirectional conversions with payload-building helpers
 - **`MongoRepository<MONGO>`** - Abstract base repository for DB operations
 
+### Decorators
+
+- **`@NoDefault()`** - Removes the implicit `[]` default of a Mongoose array so `null` / absent stays distinct from empty
+
 ### Type Utilities
 
 - **`MongoCreate<T>`** - Strictly-typed create payload (strictly forbids `id`, `_id`, `createdAt`, `updatedAt`)
@@ -706,6 +710,22 @@ Deserializes an array of lean/plain query results into typed `MONGO` instances.
 
 #### `protected convertHydratedDocumentToObject(document: HydratedDocument<MONGO>): MONGO`
 Converts a Mongoose `HydratedDocument` (returned by `model.create()`) to a plain object. Use this when `.lean()` is not available.
+
+---
+
+### Decorators
+
+#### `@NoDefault()`
+Disables the implicit `[]` default Mongoose applies to array paths. Use it on nullable arrays where `null` or absent must not become `[]`:
+
+```typescript
+@Schema({ nullable: true })
+@CollectionOf(String, Array)
+@NoDefault()
+tags?: string[] | null;
+```
+
+See the skill's *Storage DTOs: null and collections* section for the other storage rules (no `@Nullable` on scalars, `runValidators: true`, map keys, sparse unique indexes).
 
 ---
 

@@ -78,7 +78,7 @@ DefaultsUtil.number(value, 0);               // Returns default if value is nil
 - **ArrayUtils:** isArray, toArray
 - **StringUtils:** isString, isNotEmpty
 - **BooleanUtils:** isBoolean
-- **MappingUtils** *(instance methods — construct it)*: mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum
+- **MappingUtils** *(instance methods — construct it)*: mapOptionalModel, mapArray, mapOptionalArray, mapMap, mapOptionalMap, mapEnum, mapOptionalEnum, toNullable
 - **NumberUtils:** isNumber, isFiniteNumber, getPercentFromValue, getValueFromPercent, mean, round, floor, ceil, min, max
 - **GeoUtils:** calculateKmBetweenCoordinates, degToRad
 - **DefaultsUtil:** string, number
@@ -268,7 +268,7 @@ if (ObjectUtils.isEnabled(p.child)) {
 ```
 
 **Note:** Unlike lodash's `merge`, `mergeDeep` concatenates arrays instead of replacing them.
-Class instances in `source` are merged into the target subtree like plain objects (their own enumerable properties); `Date`, `Map`, `Set` etc. still replace.
+Class instances in `source` are merged into the target subtree like plain objects (their own enumerable properties); `Date`, `Map`, `Set`, `Buffer` and typed arrays etc. still replace.
 
 ---
 
@@ -289,9 +289,14 @@ const items = await mappingUtils.mapArray([1, 2, 3], async (value) => value * 2)
 enum SourceEnum { A = 'A', B = 'B' }
 enum TargetEnum { A = 'ONE', B = 'TWO' }
 const enumValue = mappingUtils.mapEnum({ SourceEnum }, { TargetEnum }, SourceEnum.A); // 'ONE'
+
+// Normalise a value read from storage (null or missing) to null
+mappingUtils.toNullable(undefined); // null
+mappingUtils.toNullable('x');       // 'x'
 ```
 
 **API:**
+- `toNullable<T>(value: T | null | undefined): T | null`
 - `mapOptionalModel<TValue extends object | null | undefined, TOut, TArgs extends unknown[] = []>(model: TValue, mapper: (model: NonNullable<TValue>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut>>`
 - `mapArray<TValue extends unknown[] | null, TOut, TArgs extends unknown[] = []>(models: TValue, mapper: (model: ArrayElement<NonNullable<TValue>>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut[]>>`
 - `mapOptionalArray<TValue extends unknown[] | null | undefined, TOut, TArgs extends unknown[] = []>(models: TValue, mapper: (model: ArrayElement<NonNullable<TValue>>, ...mapperArgs: TArgs) => Promise<TOut>, ...mapperArgs: TArgs): Promise<Result<TValue, TOut[]>>`

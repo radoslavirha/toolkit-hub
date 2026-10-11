@@ -359,6 +359,30 @@ describe('MongoMapper', () => {
         expect(response).toStrictEqual({ a: 'b' });
     });
 
+    it('getModelValue - POST with undefined returns a fresh copy of an object @Default', () => {
+        class SettingsModel extends BaseModel {
+            @Property(Object)
+            @Default({ theme: 'light' })
+            settings!: Record<string, string>;
+        }
+
+        class SettingsMapper extends MongoMapper<TestModelMongo, SettingsModel> {
+            protected mongo = TestModelMongo;
+            protected model = SettingsModel;
+        }
+
+        const settingsMapper = new SettingsMapper();
+
+        expect.assertions(1);
+
+        const first = settingsMapper.getModelValue(new SettingsModel(), 'settings')!;
+        first.owner = 'tenant-a';
+
+        const second = settingsMapper.getModelValue(new SettingsModel(), 'settings');
+
+        expect(second).toStrictEqual({ theme: 'light' });
+    });
+
     describe('mongoToModel', () => {
         it('maps all fields from a mongo document', async () => {
             const childId = '654bcd82bba81536a4ed4df3';
@@ -478,6 +502,18 @@ describe('MongoMapper', () => {
             const result = mapper.buildMongoUpdate(model);
 
             expect(result['label']).toBeUndefined();
+        });
+
+        it('keeps null so that it is stored', () => {
+            const model = new TestModel();
+            (model as { label: unknown }).label = null;
+
+            expect.assertions(2);
+
+            const result = mapper.buildMongoUpdate(model);
+
+            expect(result).toHaveProperty('label');
+            expect(result.label).toBeNull();
         });
 
         it('does not include base fields', () => {
