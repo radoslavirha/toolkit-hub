@@ -95,6 +95,16 @@ describe('ObjectUtils', () => {
             expect(cloned.details).not.toBe(error.details);
         });
 
+        it('should clone symbol-keyed own properties of an Error', () => {
+            const labels = Symbol('labels');
+            const error = Object.assign(new Error('boom'), { [labels]: new Set(['retryable']) });
+
+            const cloned = ObjectUtils.cloneDeep(error);
+
+            expect(cloned[labels]).toStrictEqual(new Set(['retryable']));
+            expect(cloned[labels]).not.toBe(error[labels]);
+        });
+
         it('should clone a nested Error without sharing the reference', () => {
             const original = { err: new Error('x') };
 
@@ -334,6 +344,20 @@ describe('ObjectUtils', () => {
             expect(result.db).toBeInstanceOf(DbConfig);
             expect(result.db).not.toBe(target.db);
             expect(target.db.host).toBe('localhost');
+        });
+
+        it('replaces a typed array nested in an object when target and source both hold one', () => {
+            const result = ObjectUtils.mergeDeep({ tls: { ca: new Uint16Array([1, 2]) } }, { tls: { ca: new Uint16Array([7]) } });
+
+            expect(result.tls.ca).toBeInstanceOf(Uint16Array);
+            expect(result.tls.ca).toStrictEqual(new Uint16Array([7]));
+        });
+
+        it('keeps a typed array typed when target and source both hold one', () => {
+            const result = ObjectUtils.mergeDeep({ data: new Uint8Array([1, 2, 3]) }, { data: new Uint8Array([9]) });
+
+            expect(result.data).toBeInstanceOf(Uint8Array);
+            expect(result.data).toStrictEqual(new Uint8Array([9]));
         });
     });
 

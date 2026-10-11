@@ -1,4 +1,5 @@
 import { beforeEach, afterEach, describe, expect, it, vi, MockInstance } from 'vitest';
+import { PlatformApplication } from '@tsed/platform-http';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import SuperTest from 'supertest';
 
@@ -297,6 +298,25 @@ describe('Logger (integration)', () => {
 
             expect(typeof responseBody).toBe('string');
             expect(JSON.parse(String(responseBody))).toMatchObject({ ok: true });
+        });
+
+        it('logs the request without rejecting when the includes query parameter is an object', async () => {
+            PlatformTest.get<PlatformApplication>(PlatformApplication).getApp().set('query parser', 'extended');
+            const rejections: unknown[] = [];
+            const onRejection = (reason: unknown): void => {
+                rejections.push(reason);
+            };
+            process.on('unhandledRejection', onRejection);
+
+            await request.get('/test/success?includes[a]=b');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            process.off('unhandledRejection', onRejection);
+
+            const logs = parseLogs(stdoutSpy).concat(parseLogs(stderrSpy));
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['scope'] === 'HTTP_REQUEST');
+
+            expect(rejections).toEqual([]);
+            expect(entry).toBeDefined();
         });
     });
 

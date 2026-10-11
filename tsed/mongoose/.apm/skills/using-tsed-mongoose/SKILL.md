@@ -121,6 +121,18 @@ compiler rejects an attempt to write a field the database owns. `MongoFilter<T>`
 for queries. Use them as the return types of your mapper's build methods — that is what keeps
 the repository free of casts.
 
+## Null and missing values
+
+A stored field is a value, `null`, or missing (legacy documents; `lean()` applies no
+defaults). The domain keeps one "no value": `null`, never `undefined`.
+
+| Field kind | In `mongoToModel` | In `buildMongoUpdatePayload` |
+|---|---|---|
+| Nullable scalar | `MappingUtils.toNullable(mongo.x)` | `null` is stored; an `undefined` key is dropped by Mongoose = keep |
+| Non-nullable array | `ArrayUtils.toArray(mongo.x)` | whole value replaced |
+| Nullable array | `MappingUtils.toNullable(mongo.x)` — `null` stays `null` | `null` is stored |
+| Map | `new Map(...)` from the document value | whole value replaced |
+
 ## The repository owns its queries
 
 `MongoRepository` enforces nothing: it supplies the injection point, the document type, and
@@ -142,6 +154,26 @@ A `Ref<T>` may hold an id or a populated document. Do not test for that by hand:
 - `canBePopulated(value)` — is it safe to treat as populated?
 - `getPopulated(value)` — the populated document
 - `getIdFromPotentiallyPopulated(value)` — the id, either way; `undefined` for an unset ref
+
+## Storage DTOs: null and collections
+
+Pinned by `src/storage.integration.spec.ts` (Mongoose 9, @tsed/mongoose 8, real MongoDB):
+
+- Never put `@Nullable(String)` / `@Nullable(Date)` on a scalar — Mongoose makes the path `Mixed`:
+  no casting, no validation, date strings stored as strings. Use `@Property(T)` with TS `x?: T | null`.
+- Declare collections explicitly: `@CollectionOf(X, Array | Map)`. Make them nullable with
+  `@Schema({ nullable: true })`; that keeps the `Array` / `Map` types, stores `null` and validates subdocuments.
+- Arrays get an implicit `[]` default, so "not provided" becomes "empty" on create. Where `null` or
+  absent must differ from `[]`, add `@NoDefault()`. `@MongooseSchema({ default: undefined })` is silently stripped.
+- Store `null` for "no value". Indexed fields are required and non-nullable: a sparse unique index
+  allows two missing values but two `null` values collide (E11000).
+- Updates do not validate by default: `$set: { required: null }` and `$unset` persist. Pass
+  `{ runValidators: true }`; valid updates still pass. `$set: { x: undefined }` is stripped, `null` is stored.
+- Updates replace whole values (`$set: { field: value }`). Per-key writes into nested models or maps are
+  unsafe: a partial subdocument missing required fields is persisted, and a `null` parent gives a 500.
+- Map keys containing `.` or starting with `$` throw a cast error — reject them at the API edge.
+  Enum keys are not enforced by Mongo.
+- `lean()` returns maps as plain objects; `MongoRepository.deserialize` restores `Map` and class instances.
 
 ## Migration traps
 
