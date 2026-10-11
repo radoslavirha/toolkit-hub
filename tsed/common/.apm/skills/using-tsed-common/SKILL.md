@@ -54,3 +54,21 @@ Put `@ResourceId(pattern)` on `:id` path params, query params and body propertie
 preset (`HEX_24`, `UUID`) or supply your own, so it suits any id format or storage. A malformed id is rejected with 400 at the API edge; a well-formed id
 that matches nothing is still a 404 from the service. The pattern must have no regex flags —
 encode case handling inside it. The schema it emits is the `pattern` plus a neutral description.
+
+## Modelling null
+
+Ts.ED 8.41 gets several obvious nullable declarations silently wrong. Use these:
+
+| type | non-nullable | nullable |
+|---|---|---|
+| string / number / boolean | `@Property(T)` | `@Nullable(T)` |
+| integer | `@Integer()` | `@Nullable(Number) @Integer()` |
+| date-time | `@Property(Date) @DateTime()` | `@NullableDateTime()` |
+| enum | `@Enum(E)` | `@NullableEnum(E)` |
+| model | `@Property(Child)` | `@Nullable(Child)` |
+
+- Always pass explicit types: `X | null` makes `design:type` `Object`, so a bare `@Property()` emits `{"type":"object"}`.
+- `@Nullable(String) @Enum(E)`, `s.enums(E).nullable()` and `@Allow(null) @Enum(E)` reject `null`; use `@NullableEnum(E)`.
+- `@Property(Date)` / `@Nullable(Date)` without `@DateTime()` accept any string; `@Allow(null)` silently makes the property required.
+- A required string is non-empty (`@Required()` adds `minLength: 1`); use `@MinLength`/`@MaxLength` on optional strings. Do not use `@Required(true, '')`.
+- Update semantics: absent = keep, `null` = clear, present = replace the whole value (objects, maps, arrays too). Per-key edits belong on dedicated sub-resource endpoints.
