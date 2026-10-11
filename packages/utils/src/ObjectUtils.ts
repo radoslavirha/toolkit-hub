@@ -159,10 +159,10 @@ export class ObjectUtils {
             // lodash treats Error as uncloneable, so rebuild it with the same prototype and own properties
             const clone = Object.create(Object.getPrototypeOf(value)) as Error;
             seen.set(value, clone);
-            for (const key of Object.getOwnPropertyNames(value)) {
+            for (const key of Reflect.ownKeys(value)) {
                 // read through the property so runtimes exposing `stack` as an accessor still copy it
                 Object.defineProperty(clone, key, {
-                    value: _.cloneDeepWith((value as unknown as Dictionary<unknown>)[key], customizer),
+                    value: _.cloneDeepWith((value as unknown as Record<PropertyKey, unknown>)[key], customizer),
                     writable: true,
                     configurable: true,
                     enumerable: Object.prototype.propertyIsEnumerable.call(value, key)

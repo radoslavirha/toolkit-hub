@@ -95,6 +95,16 @@ describe('ObjectUtils', () => {
             expect(cloned.details).not.toBe(error.details);
         });
 
+        it('should clone symbol-keyed own properties of an Error', () => {
+            const labels = Symbol('labels');
+            const error = Object.assign(new Error('boom'), { [labels]: new Set(['retryable']) });
+
+            const cloned = ObjectUtils.cloneDeep(error);
+
+            expect(cloned[labels]).toStrictEqual(new Set(['retryable']));
+            expect(cloned[labels]).not.toBe(error[labels]);
+        });
+
         it('should clone a nested Error without sharing the reference', () => {
             const original = { err: new Error('x') };
 
