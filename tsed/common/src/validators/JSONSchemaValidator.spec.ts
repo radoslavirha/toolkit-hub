@@ -134,8 +134,15 @@ describe('JSONSchemaValidator', () => {
         it('logs raw data and JSON Schema when debug is true', () => {
             JSONSchemaValidator.validate(ValidModel, { name: 'Bob' }, true);
 
-            expect(consoleLogSpy).toHaveBeenCalledWith('Raw data:', expect.any(String));
+            expect(consoleLogSpy).toHaveBeenCalledWith('Raw data:', { name: 'Bob' });
             expect(consoleLogSpy).toHaveBeenCalledWith('Generated JSON Schema:', expect.any(String));
+        });
+
+        it('does not throw from debug logging for a circular input', () => {
+            const input: Record<string, unknown> = { name: 'Bob' };
+            input.self = input;
+
+            expect(() => JSONSchemaValidator.validate(ValidModel, input, true)).not.toThrow(TypeError);
         });
 
         it('does not log when debug is false', () => {

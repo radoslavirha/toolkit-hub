@@ -84,7 +84,18 @@ describe('ZodValidator', () => {
 
             ZodValidator.validate<ValidType>(schema, { name: 'Bob' }, true);
 
-            expect(consoleLogSpy).toHaveBeenCalledWith('Raw data:', expect.any(String));
+            expect(consoleLogSpy).toHaveBeenCalledWith('Raw data:', { name: 'Bob' });
+        });
+
+        it('validates a bigint input when debug is true', () => {
+            expect(ZodValidator.validate(z.bigint(), 10n, true)).toBe(10n);
+        });
+
+        it('validates a circular input when debug is true', () => {
+            const input: Record<string, unknown> = {};
+            input.self = input;
+
+            expect(ZodValidator.validate(z.any(), input, true)).toBe(input);
         });
 
         it('works with z.union for conditional required fields', () => {
