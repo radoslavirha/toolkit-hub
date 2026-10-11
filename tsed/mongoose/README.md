@@ -153,6 +153,10 @@ See [root README](../../README.md#-installation) for registry setup and monorepo
 - **`MongoMapper<MONGO, MODEL>`** - Abstract mapper for bidirectional conversions with payload-building helpers
 - **`MongoRepository<MONGO>`** - Abstract base repository for DB operations
 
+### Decorators
+
+- **`@NoDefault()`** - Removes the implicit `[]` default of a Mongoose array so `null` / absent stays distinct from empty
+
 ### Type Utilities
 
 - **`MongoCreate<T>`** - Strictly-typed create payload (strictly forbids `id`, `_id`, `createdAt`, `updatedAt`)
@@ -712,6 +716,22 @@ Converts a Mongoose `HydratedDocument` (returned by `model.create()`) to a plain
 Opt-in optimistic concurrency. Applies `data` with `$set` only if the document's `updatedAt` still equals `expectedUpdatedAt` (the value the caller read). Resolves `{ status: MongoOperationStatus.UPDATED, value }`, `{ status: MongoOperationStatus.CONFLICT }` (changed since read — map to 409/412) or `{ status: MongoOperationStatus.NOT_FOUND }` (missing or malformed id). Requires `timestamps: true`; `updatedAt` has millisecond precision. Existing update methods stay last-write-wins.
 
 To wire it to HTTP, return `updatedAt` as the `ETag`, read it back from `If-Match` / `If-Unmodified-Since`, and answer `412` (or `409`) on `conflict`.
+
+---
+
+### Decorators
+
+#### `@NoDefault()`
+Disables the implicit `[]` default Mongoose applies to array paths. Use it on nullable arrays where `null` or absent must not become `[]`:
+
+```typescript
+@Schema({ nullable: true })
+@CollectionOf(String, Array)
+@NoDefault()
+tags?: string[] | null;
+```
+
+See the skill's *Storage DTOs: null and collections* section for the other storage rules (no `@Nullable` on scalars, `runValidators: true`, map keys, sparse unique indexes).
 
 ---
 
