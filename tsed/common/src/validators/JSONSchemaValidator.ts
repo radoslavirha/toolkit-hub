@@ -59,7 +59,7 @@ export class JSONSchemaValidator {
         addFormats(ajv);
 
         if (debug) {
-            console.log('Raw data:', JSON.stringify(input, null, 2));
+            console.log('Raw data:', input);
         }
 
         // Generate JSON Schema from model decorators

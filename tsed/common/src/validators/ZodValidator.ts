@@ -32,7 +32,7 @@ export class ZodValidator {
      */
     public static validate<T>(schema: ZodType<T>, input: unknown, debug = false): T {
         if (debug) {
-            console.log('Raw data:', JSON.stringify(input, null, 2));
+            console.log('Raw data:', input);
         }
 
         const result = schema.safeParse(input);
