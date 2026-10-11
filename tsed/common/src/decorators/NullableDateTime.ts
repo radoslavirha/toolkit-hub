@@ -13,6 +13,6 @@ import { DateTime, Nullable } from '@tsed/schema';
  * deletedAt!: Date | null;
  * ```
  */
-export function NullableDateTime(): PropertyDecorator {
+export function NullableDateTime(): PropertyDecorator & ParameterDecorator {
     return useDecorators(Nullable(Date), DateTime());
 }

@@ -51,6 +51,7 @@
         "@radoslavirha/config-tsdown": "workspace:*",
         "@radoslavirha/config-typescript": "workspace:*",
         "@radoslavirha/config-vitest": "workspace:*",
+        "@radoslavirha/tsed-common": "workspace:*",
         "@radoslavirha/tsed-logger": "workspace:*",
         "@swc/core": "catalog:",
         "@swc/helpers": "catalog:",
