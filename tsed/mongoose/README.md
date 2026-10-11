@@ -164,6 +164,7 @@ See [root README](../../README.md#-installation) for registry setup and monorepo
 - **`MongoFilter<T>`** - Filter type for repository queries
 - **`MongoDeleteResult`** - Typed result from delete operations
 - **`MongoUpdateResult`** - Typed result from count-based update operations
+- **`MongoConcurrentUpdateResult<T>`** - Result of an optimistic-concurrency update (`MongoOperationStatus.UPDATED` / `CONFLICT` / `NOT_FOUND`)
 - **`MongoConfigSchema`** / **`MongoConfig`** - Zod schema and TypeScript type for MongoDB connection config
 
 ## Architecture Pattern
@@ -711,6 +712,11 @@ Deserializes an array of lean/plain query results into typed `MONGO` instances.
 #### `protected convertHydratedDocumentToObject(document: HydratedDocument<MONGO>): MONGO`
 Converts a Mongoose `HydratedDocument` (returned by `model.create()`) to a plain object. Use this when `.lean()` is not available.
 
+#### `protected updateByIdIfUnmodified(id: string, expectedUpdatedAt: Date, data: MongoUpdate<MONGO>): Promise<MongoConcurrentUpdateResult<MONGO>>`
+Opt-in optimistic concurrency. Applies `data` with `$set` only if the document's `updatedAt` still equals `expectedUpdatedAt` (the value the caller read). Resolves `{ status: MongoOperationStatus.UPDATED, value }`, `{ status: MongoOperationStatus.CONFLICT }` (changed since read — map to 409/412) or `{ status: MongoOperationStatus.NOT_FOUND }` (missing or malformed id). Requires `timestamps: true`; `updatedAt` has millisecond precision. Existing update methods stay last-write-wins.
+
+To wire it to HTTP, return `updatedAt` as the `ETag`, read it back from `If-Match` / `If-Unmodified-Since`, and answer `412` (or `409`) on `conflict`.
+
 ---
 
 ### Decorators
@@ -777,6 +783,12 @@ Typed result from count-based MongoDB update operations.
 - `modified: number` - Number of documents actually modified
 - `upserted: boolean` - Whether a new document was inserted (upsert)
 - `upsertedId: string | null` - The `_id` of the upserted document, or `null`
+
+#### `MongoConcurrentUpdateResult<T>`
+Discriminated union on `status` (a subset of `MongoOperationStatus`): `{ status: UPDATED; value: T }`, `{ status: CONFLICT }`, `{ status: NOT_FOUND }`.
+
+#### `MongoOperationStatus`
+Shared enum of operation outcomes (`UPDATED`, `CONFLICT`, `NOT_FOUND`) reused by result types.
 
 #### `MongoConfigSchema` / `MongoConfig`
 Zod schema and TypeScript type for MongoDB connection configuration. Use with `@radoslavirha/tsed-configuration` when adding MongoDB support.

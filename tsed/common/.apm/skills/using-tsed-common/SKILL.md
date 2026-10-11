@@ -78,3 +78,19 @@ Ts.ED 8.41 gets several obvious nullable declarations silently wrong. Use these:
 Use `@NullableOf(Model)` instead of `@Nullable(Model)` for a nullable nested model. Validation and
 deserialization are the same, but OpenAPI 3.0 gets `allOf: [{ $ref }], nullable: true` instead of
 `oneOf: [{ $ref }, { nullable: true }]`, where the typeless `{ nullable: true }` branch matches anything.
+
+## ArrayOf, MapOf, EnumMapOf
+
+Use these instead of `@CollectionOf` whenever a collection is nullable, a map, or enum-keyed.
+SWC emits `design:type = Object` for `X | null`, so `@CollectionOf(Child)` on `Child[] | null`
+stops being a collection and real arrays are rejected; these decorators set the collection type
+explicitly.
+
+- `@ArrayOf(Child, { nullable? })` → `Child[]` / `Child[] | null`
+- `@MapOf(V, { nullable?, nullableValues?, mongoSafeKeys? })` → `Map<string, V>`; `mongoSafeKeys` rejects keys with `.` or a leading `$` (Mongoose fails with a 500 on them)
+- `@EnumMapOf(Enum, V, { nullable?, nullableValues?, partial? })` → keys limited to enum values; every one is required unless `partial`
+
+`nullableValues` works for scalar value types only (`String`, `Number`, `Boolean`, `Date`);
+with a model class it throws when the decorator is applied. Models in a collection
+deserialize to class instances, maps to `Map`. Pair with `@Required()` when the property must
+be present.
