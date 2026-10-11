@@ -1,5 +1,5 @@
 import { Type } from '@tsed/core';
-import { getJsonSchema } from '@tsed/schema';
+import { getJsonSchema, JsonEntityStore, OneOf, Required } from '@tsed/schema';
 import { Ajv, Options } from 'ajv';
 import formatsPlugin from 'ajv-formats';
 import { Serializer } from '../serializer/Serializer.js';
@@ -63,8 +63,8 @@ export class JSONSchemaValidator {
         }
 
         // Generate JSON Schema from model decorators
-        const schema = getJsonSchema(model);
-        
+        const schema = JSONSchemaValidator.buildSchema(model);
+
         if (debug) {
             console.log('Generated JSON Schema:', JSON.stringify(schema, null, 2));
         }
@@ -79,5 +79,29 @@ export class JSONSchemaValidator {
 
         // Deserialize once to get typed instance
         return Serializer.deserialize<T>(input as T, model);
+    }
+
+    /**
+     * The schema of a discriminator base model only describes the base properties,
+     * yet deserialization resolves the subtype. Validate such input against the
+     * `oneOf` of its subtypes (the shape Ts.ED emits for a `@OneOf` property).
+     */
+    private static buildSchema(model: Type<object>): ReturnType<typeof getJsonSchema> {
+        const { schema } = JsonEntityStore.from(model);
+        const children = schema.isDiscriminator ? schema.discriminator().children() : [];
+
+        if (children.length === 0) {
+            return getJsonSchema(model);
+        }
+
+        class Holder {
+            value!: unknown;
+        }
+        OneOf(...children)(Holder.prototype, 'value');
+        Required()(Holder.prototype, 'value');
+
+        const { properties, definitions } = getJsonSchema(Holder);
+
+        return { ...(properties?.value as object), ...(definitions ? { definitions } : {}) };
     }
 }

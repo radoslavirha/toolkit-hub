@@ -145,7 +145,7 @@ export class Logger extends BaseLogger<LoggerMetadata> {
 
         const { response, endpoint } = $ctx;
         const include = $ctx.request.query.includes;
-        const includes = include ? ([] as string[]).concat(include as string | string[]).flatMap((entry) => entry.split(',')) : undefined;
+        const includes = include ? ([] as string[]).concat(include as string | string[]).filter(StringUtils.isString).flatMap((entry) => entry.split(',')) : undefined;
 
         return serialize(data, { useAlias: true, ...endpoint.getResponseOptions(response.statusCode, { includes }), endpoint: true });
     }

@@ -115,6 +115,22 @@ describe('JSONSchemaValidator', () => {
                 .toThrow(expect.arrayContaining([expect.objectContaining({ instancePath: '/event' })]) as never);
         });
 
+        it('throws AJV errors when a discriminated subtype misses a required field and the base model is validated', () => {
+            expect(() => JSONSchemaValidator.validate(Event, { type: 'click' }))
+                .toThrow(expect.arrayContaining([expect.objectContaining({ keyword: 'required' })]) as never);
+        });
+
+        it('returns the discriminated subtype when the base model is validated with valid input', () => {
+            const result = JSONSchemaValidator.validate(Event, { type: 'click', x: 1 });
+
+            expect(result).toBeInstanceOf(ClickEvent);
+        });
+
+        it('throws AJV errors when a discriminated subtype field has the wrong type and the base model is validated', () => {
+            expect(() => JSONSchemaValidator.validate(Event, { type: 'click', x: 'abc' }))
+                .toThrow(expect.arrayContaining([expect.objectContaining({ keyword: 'type' })]) as never);
+        });
+
         it('logs raw data and JSON Schema when debug is true', () => {
             JSONSchemaValidator.validate(ValidModel, { name: 'Bob' }, true);
 

@@ -1,3 +1,5 @@
+export * from './decorators/NullableDateTime.js';
+export * from './decorators/NullableEnum.js';
 export * from './decorators/NullableOf.js';
 export * from './decorators/ResourceId.js';
 export * from './decorators/ResourceIdPattern.js';
