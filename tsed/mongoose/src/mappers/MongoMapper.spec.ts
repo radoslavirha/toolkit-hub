@@ -4,7 +4,7 @@ import { TestContainersMongo } from '@tsed/testcontainers-mongo';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Types } from 'mongoose';
 import { BaseModel } from '@radoslavirha/tsed-common';
-import { Default, Name, Property } from '@tsed/schema';
+import { CollectionOf, Default, Name, Property } from '@tsed/schema';
 import { TestModel } from '../test/TestModel.js';
 import { MongoMapper } from './MongoMapper.js';
 import { TestMongoMapper } from '../test/TestMongoMapper.js';
@@ -319,6 +319,44 @@ describe('MongoMapper', () => {
         const response = new AliasedMapper().getModelValue(new AliasedModel(), 'displayName');
 
         expect(response).toStrictEqual('anonymous');
+    });
+
+    it('getModelValue - POST with undefined resolves @Default of an array property', () => {
+        class TaggedModel extends BaseModel {
+            @CollectionOf(String)
+            @Default(['new'])
+            tags!: string[];
+        }
+
+        class TaggedMapper extends MongoMapper<TestModelMongo, TaggedModel> {
+            protected mongo = TestModelMongo;
+            protected model = TaggedModel;
+        }
+
+        expect.assertions(1);
+
+        const response = new TaggedMapper().getModelValue(new TaggedModel(), 'tags');
+
+        expect(response).toStrictEqual(['new']);
+    });
+
+    it('getModelValue - POST with undefined resolves @Default of a Map property', () => {
+        class LabelledModel extends BaseModel {
+            @CollectionOf(String)
+            @Default({ a: 'b' })
+            labels!: Map<string, string>;
+        }
+
+        class LabelledMapper extends MongoMapper<TestModelMongo, LabelledModel> {
+            protected mongo = TestModelMongo;
+            protected model = LabelledModel;
+        }
+
+        expect.assertions(1);
+
+        const response = new LabelledMapper().getModelValue(new LabelledModel(), 'labels');
+
+        expect(response).toStrictEqual({ a: 'b' });
     });
 
     describe('mongoToModel', () => {

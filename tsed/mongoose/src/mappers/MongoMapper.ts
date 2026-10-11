@@ -305,6 +305,9 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
     private getModelDefault<PROPERTY extends keyof MODEL>(property: PROPERTY): MODEL[PROPERTY] | undefined {
         const spec = getJsonSchema(this.model, { specType: SpecTypes.JSON, useAlias: false });
 
-        return spec?.properties?.[property]?.default ?? undefined;
+        const schema = spec?.properties?.[property];
+
+        // Ts.ED nests the @Default of a @CollectionOf property under `items` (arrays) or `additionalProperties` (maps)
+        return schema?.default ?? schema?.items?.default ?? schema?.additionalProperties?.default ?? undefined;
     }
 }
