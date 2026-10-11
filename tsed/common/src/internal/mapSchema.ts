@@ -1,4 +1,3 @@
-import { CommonUtils } from '@radoslavirha/utils';
 import { Type, useDecorators } from '@tsed/core';
 import { CollectionOf, JsonEntityFn, Schema } from '@tsed/schema';
 
@@ -8,11 +7,10 @@ export interface MapSchemaOptions {
     nullable?: boolean;
     nullableValues?: boolean;
     propertyNames?: Record<string, unknown>;
-    minProperties?: number;
 }
 
 /**
- * Builds the decorator shared by `MapOf` and `EnumMapOf`: an explicit `Map` collection plus
+ * Builds the `MapOf` decorator: an explicit `Map` collection plus
  * a hand-written schema, since Ts.ED's own collection decorators cannot express these.
  */
 export function mapSchema(type: Type<unknown>, options: MapSchemaOptions): PropertyDecorator {
@@ -26,9 +24,6 @@ export function mapSchema(type: Type<unknown>, options: MapSchemaOptions): Prope
     }
     if (options.propertyNames) {
         schema.propertyNames = options.propertyNames;
-    }
-    if (CommonUtils.notUndefined(options.minProperties)) {
-        schema.minProperties = options.minProperties;
     }
     return useDecorators(
         CollectionOf(type, Map),

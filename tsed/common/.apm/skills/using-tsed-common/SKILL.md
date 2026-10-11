@@ -88,9 +88,10 @@ explicitly.
 
 - `@ArrayOf(Child, { nullable? })` → `Child[]` / `Child[] | null`
 - `@MapOf(V, { nullable?, nullableValues?, mongoSafeKeys? })` → `Map<string, V>`; `mongoSafeKeys` rejects keys with `.` or a leading `$` (Mongoose fails with a 500 on them)
-- `@EnumMapOf(Enum, V, { nullable?, nullableValues?, partial? })` → keys limited to enum values; every one is required unless `partial`
+- `@EnumMapOf(Enum, V, { name, nullable?, nullableValues?, partial? })` → **plain schema, not a `Map`**: a generated model `name` with one property per enum value, so Swagger lists every key; unknown keys are rejected and every key is required unless `partial`. Declare the property as `Record<E, V>` / `Partial<Record<E, V>>`. `name` is the OpenAPI component name and must be unique. Enum values must be identifier-like (`UPPER_SNAKE_CASE`) — numeric or hyphenated keys throw, because @tsed/json-mapper cannot map them.
 
-`nullableValues` works for scalar value types only (`String`, `Number`, `Boolean`, `Date`);
-with a model class it throws when the decorator is applied. Models in a collection
-deserialize to class instances, maps to `Map`. Pair with `@Required()` when the property must
+For `@MapOf`, `nullableValues` works for scalar value types only (`String`, `Number`, `Boolean`,
+`Date`); with a model class it throws when the decorator is applied. `@EnumMapOf` supports
+`nullableValues` for models too. Models in a collection deserialize to class instances, `@MapOf`
+to `Map`. Pair with `@Required()` when the property must
 be present.

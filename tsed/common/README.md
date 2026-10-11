@@ -135,7 +135,7 @@ Runtime validation of arbitrary input using any Zod schema instance.
 
 ### ArrayOf / MapOf / EnumMapOf
 
-Collection decorators that set the collection type explicitly instead of relying on `design:type` (which SWC emits as `Object` for any `X | null`, so `@CollectionOf` silently stops working on nullable collections). Items deserialize to class instances, maps to `Map`; OAS 3.0 output uses `nullable: true`.
+Collection decorators that set the collection type explicitly instead of relying on `design:type` (which SWC emits as `Object` for any `X | null`, so `@CollectionOf` silently stops working on nullable collections). Items deserialize to class instances, `MapOf` to `Map`; OAS 3.0 output uses `nullable: true`.
 
 ```typescript
 @ArrayOf(Child, { nullable: true })            // Child[] | null
@@ -144,12 +144,16 @@ children!: Child[] | null;
 @MapOf(Number, { mongoSafeKeys: true })        // Map<string, number>, keys without '.' or leading '$'
 scores!: Map<string, number>;
 
-@EnumMapOf(Color, Number)                      // keys must be Color values, all present
-@EnumMapOf(Color, Number, { partial: true })   // keys must be Color values, a subset is fine
-counts!: Map<Color, number>;
+@EnumMapOf(Color, Number, { name: 'ColorCounts' })                  // every Color value is a key
+counts!: Record<Color, number>;
+
+@EnumMapOf(Color, Child, { name: 'ColorChildren', partial: true, nullable: true, nullableValues: true })
+children?: Partial<Record<Color, Child | null>> | null;
 ```
 
-Options: `nullable` (whole collection), `nullableValues` (`MapOf` / `EnumMapOf`, scalar value types only - a model class throws at decoration time because Ts.ED 8.x cannot emit a valid nullable `$ref`), `mongoSafeKeys` (`MapOf`), `partial` (`EnumMapOf`; by default every enum value must be a key, implemented as `minProperties`).
+`MapOf` options: `nullable` (whole map), `nullableValues` (scalar value types only - a model class throws at decoration time because Ts.ED 8.x cannot emit a valid nullable `$ref` for an item schema), `mongoSafeKeys`.
+
+`EnumMapOf` is **plain schema, not a `Map`**: it generates a model named `name` with one property per enum value (`EnumMapModel` returns that class, e.g. for `@Returns`). OpenAPI lists every key, unknown keys are rejected, and every key is required unless `partial`. Options: `name` (required; the OpenAPI component name, reusing it for a different enum map throws), `nullable` (whole map, rendered like `@NullableOf`), `nullableValues` (scalars, `Date` and models), `partial`. The runtime value is an instance of the generated model - declare it as `Record<E, V>` / `Partial<Record<E, V>>`. Enum values must be identifier-like (`UPPER_SNAKE_CASE`): @tsed/json-mapper cannot map numeric or hyphenated property names, so those throw at decoration time.
 
 ### ResourceId
 
