@@ -79,6 +79,37 @@ const platform = await Platform.bootstrap(configuration);
 await platform.listen();
 ```
 
+## The null contract
+
+Four layers each represent "keep", "clear" and "no value" differently. Keep them aligned and
+a PUT/PATCH-like update behaves the same from request to response:
+
+| layer | keep | clear | "no value" read |
+|---|---|---|---|
+| request (PUT/PATCH-like) | key absent | `null` (only on nullable fields; otherwise 400) | — |
+| domain model / partial | `undefined` | `null` | `null` |
+| Mongo (`$set`) | `undefined` is stripped by Mongoose | `null` is stored | missing or `null` → mapper `MappingUtils.toNullable` |
+| response | — | — | `null` emitted, key present |
+
+Per layer, the detail lives in the package skills:
+
+- **Request.** Turn on strict validation with `requestValidation: { strict: true }` in the
+  server `@Configuration` — without it Ts.ED coerces body `null` to `0`/`false`/`""` and
+  `"42"` to `42` (`using-tsed-platform`).
+- **Declarations.** Scalars, integers, dates, enums and nested models use `@Nullable`,
+  `@NullableDateTime`, `@NullableEnum` and `@NullableOf`; collections use `@ArrayOf`, `@MapOf`
+  and `@EnumMapOf`, never a bare `@CollectionOf` on a nullable type. `@EnumMapOf` is a plain
+  schema with one property per enum key and a required `name`, not a `Map`
+  (`using-tsed-common`, "Modelling null" and "ArrayOf, MapOf, EnumMapOf").
+- **Update semantics.** Present replaces the whole value — objects, maps and arrays too.
+  Per-key edits go through sub-resource endpoints. Do not deep-merge a partial per key: a
+  partial subdocument missing required fields is persisted, and a `null` parent gives a 500.
+- **Storage.** No `@Nullable` scalars on a `@Model`, indexed fields required and
+  non-nullable, `{ runValidators: true }` on updates, `@NoDefault()` where absent must differ
+  from `[]` (`using-tsed-mongoose`, "Storage DTOs").
+- **Mapper reads.** `MappingUtils.toNullable` for nullable scalars and arrays,
+  `ArrayUtils.toArray` for non-nullable arrays (`using-utils`).
+
 ## Conventions that span the whole service
 
 - **Mount controllers by value**, never by glob — a glob resolves differently in `src` and
