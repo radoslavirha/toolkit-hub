@@ -143,11 +143,12 @@ children!: Child[] | null;
 @MapOf(Number, { mongoSafeKeys: true })        // Map<string, number>, keys without '.' or leading '$'
 scores!: Map<string, number>;
 
-@EnumMapOf(Color, Number, { exhaustive: true }) // keys must be Color values, all present
+@EnumMapOf(Color, Number)                      // keys must be Color values, all present
+@EnumMapOf(Color, Number, { partial: true })   // keys must be Color values, a subset is fine
 counts!: Map<Color, number>;
 ```
 
-Options: `nullable` (whole collection), `nullableValues` (`MapOf` / `EnumMapOf`, scalar value types only - a model class throws at decoration time because Ts.ED 8.x cannot emit a valid nullable `$ref`), `mongoSafeKeys` (`MapOf`), `exhaustive` (`EnumMapOf`, implemented as `minProperties`).
+Options: `nullable` (whole collection), `nullableValues` (`MapOf` / `EnumMapOf`, scalar value types only - a model class throws at decoration time because Ts.ED 8.x cannot emit a valid nullable `$ref`), `mongoSafeKeys` (`MapOf`), `partial` (`EnumMapOf`; by default every enum value must be a key, implemented as `minProperties`).
 
 ### ResourceId
 

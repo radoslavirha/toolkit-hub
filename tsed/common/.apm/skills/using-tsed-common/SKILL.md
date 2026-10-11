@@ -64,7 +64,7 @@ explicitly.
 
 - `@ArrayOf(Child, { nullable? })` → `Child[]` / `Child[] | null`
 - `@MapOf(V, { nullable?, nullableValues?, mongoSafeKeys? })` → `Map<string, V>`; `mongoSafeKeys` rejects keys with `.` or a leading `$` (Mongoose fails with a 500 on them)
-- `@EnumMapOf(Enum, V, { nullable?, nullableValues?, exhaustive? })` → keys limited to enum values; `exhaustive` requires every one
+- `@EnumMapOf(Enum, V, { nullable?, nullableValues?, partial? })` → keys limited to enum values; every one is required unless `partial`
 
 `nullableValues` works for scalar value types only (`String`, `Number`, `Boolean`, `Date`);
 with a model class it throws when the decorator is applied. Models in a collection

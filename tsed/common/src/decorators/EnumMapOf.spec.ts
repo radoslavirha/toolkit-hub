@@ -22,18 +22,18 @@ class Child {
 class Target {
     @Required()
     @EnumMapOf(Color, Number)
-    partial!: Map<Color, number>;
+    full!: Map<Color, number>;
 
-    @EnumMapOf(Color, Number, { exhaustive: true })
-    exhaustive?: Map<Color, number>;
+    @EnumMapOf(Color, Number, { partial: true })
+    partial?: Map<Color, number>;
 
-    @EnumMapOf(Color, Number, { nullable: true, nullableValues: true })
+    @EnumMapOf(Color, Number, { partial: true, nullable: true, nullableValues: true })
     nullable?: Map<Color, number | null> | null;
 
-    @EnumMapOf(Color, Child)
+    @EnumMapOf(Color, Child, { partial: true })
     children?: Map<Color, Child>;
 
-    @EnumMapOf(Level, String)
+    @EnumMapOf(Level, String, { partial: true })
     levels?: Map<Level, string>;
 }
 
@@ -42,17 +42,17 @@ describe('EnumMapOf', () => {
         it('restricts propertyNames to the enum values', () => {
             const schema = getJsonSchema(Target);
 
-            expect(schema.required).toStrictEqual(['partial']);
-            expect(schema.properties.partial).toStrictEqual({
+            expect(schema.required).toStrictEqual(['full']);
+            expect(schema.properties.full).toStrictEqual({
                 type: 'object',
                 additionalProperties: { type: 'number' },
-                propertyNames: { enum: ['red', 'blue'], type: 'string' }
+                propertyNames: { enum: ['red', 'blue'], type: 'string' },
+                minProperties: 2
             });
-            expect(schema.properties.partial.minProperties).toBeUndefined();
         });
 
-        it('uses minProperties for an exhaustive map', () => {
-            expect(getJsonSchema(Target).properties.exhaustive.minProperties).toBe(2);
+        it('omits minProperties for a partial map', () => {
+            expect(getJsonSchema(Target).properties.partial.minProperties).toBeUndefined();
         });
 
         it('skips reverse mappings of a numeric enum', () => {
@@ -69,23 +69,27 @@ describe('EnumMapOf', () => {
     });
 
     describe('validation', () => {
-        it('accepts a subset of keys, an empty map and an exhaustive map', () => {
-            expect(() => JSONSchemaValidator.validate(Target, { partial: {} })).not.toThrow();
-            expect(() => JSONSchemaValidator.validate(Target, { partial: { red: 1 }, exhaustive: { red: 1, blue: 2 } })).not.toThrow();
-            expect(() => JSONSchemaValidator.validate(Target, { partial: {}, nullable: null })).not.toThrow();
-            expect(() => JSONSchemaValidator.validate(Target, { partial: {}, nullable: { red: null } })).not.toThrow();
-            expect(() => JSONSchemaValidator.validate(Target, { partial: {}, levels: { 0: 'a' } })).not.toThrow();
+        const full = { red: 1, blue: 2 };
+
+        it('accepts a full map, and a subset, an empty map or null where partial / nullable', () => {
+            expect(() => JSONSchemaValidator.validate(Target, { full })).not.toThrow();
+            expect(() => JSONSchemaValidator.validate(Target, { full, partial: {} })).not.toThrow();
+            expect(() => JSONSchemaValidator.validate(Target, { full, partial: { red: 1 } })).not.toThrow();
+            expect(() => JSONSchemaValidator.validate(Target, { full, nullable: null })).not.toThrow();
+            expect(() => JSONSchemaValidator.validate(Target, { full, nullable: { red: null } })).not.toThrow();
+            expect(() => JSONSchemaValidator.validate(Target, { full, levels: { 0: 'a' } })).not.toThrow();
         });
 
         it.each([
-            ['an unknown enum key', { partial: { green: 1 } }],
-            ['missing keys when exhaustive', { partial: {}, exhaustive: { red: 1 } }],
-            ['an empty exhaustive map', { partial: {}, exhaustive: {} }],
-            ['a wrong value type', { partial: { red: 'x' } }],
-            ['null values without nullableValues', { partial: { red: null } }],
-            ['null on a non-nullable map', { partial: null }],
+            ['missing keys by default', { full: { red: 1 } }],
+            ['an empty map by default', { full: {} }],
+            ['an unknown enum key', { full: { ...full, green: 1 } }],
+            ['an unknown enum key in a partial map', { full, partial: { green: 1 } }],
+            ['a wrong value type', { full: { red: 'x', blue: 2 } }],
+            ['null values without nullableValues', { full: { red: null, blue: 2 } }],
+            ['null on a non-nullable map', { full: null }],
             ['a missing required map', {}],
-            ['a dotted key', { partial: { 'a.b': 1 } }]
+            ['a dotted key', { full, partial: { 'a.b': 1 } }]
         ])('rejects %s', (_label, input) => {
             expect(() => JSONSchemaValidator.validate(Target, input)).toThrow();
         });
@@ -93,16 +97,16 @@ describe('EnumMapOf', () => {
 
     describe('serialization', () => {
         it('deserializes to a Map with class instance values', () => {
-            const result = JSONSchemaValidator.validate(Target, { partial: { red: 1 }, children: { blue: { name: 'n' } } });
+            const result = JSONSchemaValidator.validate(Target, { full: { red: 1, blue: 2 }, children: { blue: { name: 'n' } } });
 
-            expect(result.partial).toStrictEqual(new Map([[Color.Red, 1]]));
+            expect(result.full).toStrictEqual(new Map([[Color.Red, 1], [Color.Blue, 2]]));
             expect(result.children?.get(Color.Blue)).toBeInstanceOf(Child);
         });
 
         it('serializes null and omits undefined', () => {
-            const model = Object.assign(new Target(), { partial: new Map([[Color.Red, 1]]), nullable: null });
+            const model = Object.assign(new Target(), { full: new Map([[Color.Red, 1]]), nullable: null });
 
-            expect(Serializer.serialize(model, Target)).toStrictEqual({ partial: { red: 1 }, nullable: null });
+            expect(Serializer.serialize(model, Target)).toStrictEqual({ full: { red: 1 }, nullable: null });
         });
     });
 });
