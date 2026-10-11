@@ -14,6 +14,7 @@ Express-based Ts.ED platform adapter providing standardized bootstrap, base serv
 - [Architecture Pattern](#architecture-pattern)
 - [Usage](#usage)
 - [API Reference](#api-reference)
+- [Strict request validation](#strict-request-validation)
 - [See Also](#see-also)
 - [Best Practices](#best-practices)
 - [Related Packages](#related-packages)
