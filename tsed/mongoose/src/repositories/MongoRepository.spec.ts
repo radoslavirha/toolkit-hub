@@ -2,6 +2,7 @@ import { PlatformTest } from '@tsed/platform-http/testing';
 import { TestContainersMongo } from '@tsed/testcontainers-mongo';
 import { Types } from 'mongoose';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { MongoOperationStatus } from '../enums/MongoOperationStatus.js';
 import { TestMongoRepository } from '../test/TestMongoRepository.js';
 import { TestModelMongo } from '../test/TestMongoModel.js';
 
@@ -126,9 +127,9 @@ describe('MongoRepository', () => {
 
             const result = await repository.updateByIdIfUnmodified(doc._id, doc.updatedAt, { label: 'b' });
 
-            expect(result.status).toBe('updated');
-            expect(result.status === 'updated' && result.value).toBeInstanceOf(TestModelMongo);
-            expect(result.status === 'updated' && result.value.label).toBe('b');
+            expect(result.status).toBe(MongoOperationStatus.UPDATED);
+            expect(result.status === MongoOperationStatus.UPDATED && result.value).toBeInstanceOf(TestModelMongo);
+            expect(result.status === MongoOperationStatus.UPDATED && result.value.label).toBe('b');
         });
 
         it('rejects a stale update with conflict and leaves the document untouched', async () => {
@@ -140,7 +141,7 @@ describe('MongoRepository', () => {
 
             const result = await repository.updateByIdIfUnmodified(doc._id, doc.updatedAt, { label: 'loser' });
 
-            expect(result).toEqual({ status: 'conflict' });
+            expect(result).toEqual({ status: MongoOperationStatus.CONFLICT });
             expect((await repository.findById(doc._id))!.label).toBe('winner');
         });
 
@@ -150,8 +151,8 @@ describe('MongoRepository', () => {
             const missing = await repository.updateByIdIfUnmodified(new Types.ObjectId().toHexString(), new Date(), { label: 'x' });
             const malformed = await repository.updateByIdIfUnmodified('not-an-id', new Date(), { label: 'x' });
 
-            expect(missing).toEqual({ status: 'not-found' });
-            expect(malformed).toEqual({ status: 'not-found' });
+            expect(missing).toEqual({ status: MongoOperationStatus.NOT_FOUND });
+            expect(malformed).toEqual({ status: MongoOperationStatus.NOT_FOUND });
         });
 
         it('leaves the unconditional findByIdAndUpdate path last-write-wins', async () => {

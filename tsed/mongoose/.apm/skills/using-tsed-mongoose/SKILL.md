@@ -140,8 +140,8 @@ Do not hand-write `Types.ObjectId.isValid` in each repository.
 Plain updates are last-write-wins. When two clients may edit the same document, expose a
 repository method over the protected `updateByIdIfUnmodified(id, expectedUpdatedAt, data)`. It
 applies `$set` only if `updatedAt` still equals the value the caller read, and resolves
-`{ status: 'updated', value }`, `{ status: 'conflict' }` or `{ status: 'not-found' }`. Have the
-service map `conflict` to 409/412 and `not-found` to 404. Over HTTP, send `updatedAt` as the
+`{ status: MongoOperationStatus.UPDATED, value }`, `{ status: MongoOperationStatus.CONFLICT }` or `{ status: MongoOperationStatus.NOT_FOUND }`. Have the
+service map `CONFLICT` to 409/412 and `NOT_FOUND` to 404. Over HTTP, send `updatedAt` as the
 `ETag` and take the precondition from `If-Match` / `If-Unmodified-Since`. It needs
 `timestamps: true`; precision is one millisecond. Opt-in per method — existing updates are
 unchanged.

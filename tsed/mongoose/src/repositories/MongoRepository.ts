@@ -4,6 +4,7 @@ import { CommonUtils } from '@radoslavirha/utils';
 import { Serializer } from '@radoslavirha/tsed-common';
 import { HydratedDocument, isValidObjectId } from 'mongoose';
 import { BaseMongo } from '../models/BaseMongo.js';
+import { MongoOperationStatus } from '../enums/MongoOperationStatus.js';
 import { MongoConcurrentUpdateResult } from '../types/MongoConcurrentUpdateResult.js';
 import { MongoUpdate } from '../types/MongoUpdate.js';
 
@@ -136,7 +137,7 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
         data: MongoUpdate<MONGO>
     ): Promise<MongoConcurrentUpdateResult<MONGO>> {
         if (!this.isValidId(id)) {
-            return { status: 'not-found' };
+            return { status: MongoOperationStatus.NOT_FOUND };
         }
 
         const updated = await this.model
@@ -144,12 +145,12 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
             .lean<MONGO>() as MONGO | null;
 
         if (CommonUtils.notNull(updated)) {
-            return { status: 'updated', value: this.deserialize(updated) };
+            return { status: MongoOperationStatus.UPDATED, value: this.deserialize(updated) };
         }
 
         const exists = await this.model.exists({ _id: id } as never);
 
-        return CommonUtils.notNull(exists) ? { status: 'conflict' } : { status: 'not-found' };
+        return CommonUtils.notNull(exists) ? { status: MongoOperationStatus.CONFLICT } : { status: MongoOperationStatus.NOT_FOUND };
     }
 
     /**
