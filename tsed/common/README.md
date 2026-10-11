@@ -174,6 +174,15 @@ color?: Color | null;
 deletedAt?: Date | null;
 ```
 
+### NullableOf
+
+`@Nullable(Child)` validates correctly, but Ts.ED documents it in OpenAPI 3.0 as `oneOf: [{ $ref }, { nullable: true }]`, which matches anything and gives generated clients odd types. `@NullableOf(Child)` validates the same way (`oneOf: [{ type: "null" }, { $ref }]` in JSON Schema), documents as `allOf: [{ $ref }], nullable: true` in OpenAPI 3.0, and deserializes to a `Child` instance.
+
+```typescript
+@NullableOf(Address)
+address?: Address | null;
+```
+
 ## Usage
 
 ### JSONSchemaValidator Usage
