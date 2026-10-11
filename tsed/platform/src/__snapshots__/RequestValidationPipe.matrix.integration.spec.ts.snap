@@ -1,0 +1,3084 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > boolean O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": false,
+    },
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid false": {
+    "echo": {
+      "v": false,
+    },
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid true": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "true"": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": false,
+    },
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "wrong 1": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > boolean ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid false": {
+    "echo": {
+      "v": false,
+    },
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid true": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong """: {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong "true"": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong 1": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > boolean R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": false,
+    },
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid false": {
+    "echo": {
+      "v": false,
+    },
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid true": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "true"": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": false,
+    },
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "wrong 1": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > boolean RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid false": {
+    "echo": {
+      "v": false,
+    },
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid true": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong """: {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong "true"": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong 1": {
+    "echo": {
+      "v": true,
+    },
+    "received": "boolean:true",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > dateTime O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid "2026-01-01T00:00:00.000Z"": {
+    "echo": {
+      "v": "2026-01-01T00:00:00.000Z",
+    },
+    "received": "Date(2026-01-01T00:00:00.000Z)",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "2026-01-01"": {
+    "status": 400,
+  },
+  "wrong "nope"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > dateTime ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid "2026-01-01T00:00:00.000Z"": {
+    "echo": {
+      "v": "2026-01-01T00:00:00.000Z",
+    },
+    "received": "Date(2026-01-01T00:00:00.000Z)",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "2026-01-01"": {
+    "status": 400,
+  },
+  "wrong "nope"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > dateTime R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid "2026-01-01T00:00:00.000Z"": {
+    "echo": {
+      "v": "2026-01-01T00:00:00.000Z",
+    },
+    "received": "Date(2026-01-01T00:00:00.000Z)",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "2026-01-01"": {
+    "status": 400,
+  },
+  "wrong "nope"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > dateTime RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid "2026-01-01T00:00:00.000Z"": {
+    "echo": {
+      "v": "2026-01-01T00:00:00.000Z",
+    },
+    "received": "Date(2026-01-01T00:00:00.000Z)",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "2026-01-01"": {
+    "status": 400,
+  },
+  "wrong "nope"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > enumMap O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid {"RED":1,"BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 1,
+      },
+    },
+    "received": "ColorCounts{RED:number:1,BLUE:number:2}",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"RED":"1","BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 1,
+      },
+    },
+    "received": "ColorCounts{RED:number:1,BLUE:number:2}",
+    "status": 200,
+  },
+  "wrong {"RED":1,"BLUE":2,"GREEN":3}": {
+    "status": 400,
+  },
+  "wrong {"RED":1}": {
+    "status": 400,
+  },
+  "wrong {"RED":null,"BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 0,
+      },
+    },
+    "received": "ColorCounts{RED:number:0,BLUE:number:2}",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > enumMap ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid {"RED":1,"BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 1,
+      },
+    },
+    "received": "ColorCounts{RED:number:1,BLUE:number:2}",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"RED":"1","BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 1,
+      },
+    },
+    "received": "ColorCounts{RED:number:1,BLUE:number:2}",
+    "status": 200,
+  },
+  "wrong {"RED":1,"BLUE":2,"GREEN":3}": {
+    "status": 400,
+  },
+  "wrong {"RED":1}": {
+    "status": 400,
+  },
+  "wrong {"RED":null,"BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 0,
+      },
+    },
+    "received": "ColorCounts{RED:number:0,BLUE:number:2}",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > enumMap R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid {"RED":1,"BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 1,
+      },
+    },
+    "received": "ColorCounts{RED:number:1,BLUE:number:2}",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"RED":"1","BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 1,
+      },
+    },
+    "received": "ColorCounts{RED:number:1,BLUE:number:2}",
+    "status": 200,
+  },
+  "wrong {"RED":1,"BLUE":2,"GREEN":3}": {
+    "status": 400,
+  },
+  "wrong {"RED":1}": {
+    "status": 400,
+  },
+  "wrong {"RED":null,"BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 0,
+      },
+    },
+    "received": "ColorCounts{RED:number:0,BLUE:number:2}",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > enumMap RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid {"RED":1,"BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 1,
+      },
+    },
+    "received": "ColorCounts{RED:number:1,BLUE:number:2}",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"RED":"1","BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 1,
+      },
+    },
+    "received": "ColorCounts{RED:number:1,BLUE:number:2}",
+    "status": 200,
+  },
+  "wrong {"RED":1,"BLUE":2,"GREEN":3}": {
+    "status": 400,
+  },
+  "wrong {"RED":1}": {
+    "status": 400,
+  },
+  "wrong {"RED":null,"BLUE":2}": {
+    "echo": {
+      "v": {
+        "BLUE": 2,
+        "RED": 0,
+      },
+    },
+    "received": "ColorCounts{RED:number:0,BLUE:number:2}",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > integer O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 0": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 2": {
+    "echo": {
+      "v": 2,
+    },
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong "2"": {
+    "echo": {
+      "v": 2,
+    },
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong 1.5": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > integer ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid 0": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 2": {
+    "echo": {
+      "v": 2,
+    },
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong "2"": {
+    "echo": {
+      "v": 2,
+    },
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong 1.5": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > integer R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 0": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 2": {
+    "echo": {
+      "v": 2,
+    },
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong "2"": {
+    "echo": {
+      "v": 2,
+    },
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong 1.5": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > integer RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid 0": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 2": {
+    "echo": {
+      "v": 2,
+    },
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong "2"": {
+    "echo": {
+      "v": 2,
+    },
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong 1.5": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > map O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid {"a":1}": {
+    "echo": {
+      "v": {
+        "a": 1,
+      },
+    },
+    "received": "Map{a:number:1}",
+    "status": 200,
+  },
+  "valid {}": {
+    "echo": {
+      "v": {},
+    },
+    "received": "Map{}",
+    "status": 200,
+  },
+  "wrong "x"": {
+    "status": 400,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"a":"1"}": {
+    "echo": {
+      "v": {
+        "a": 1,
+      },
+    },
+    "received": "Map{a:number:1}",
+    "status": 200,
+  },
+  "wrong {"a":null}": {
+    "echo": {
+      "v": {
+        "a": 0,
+      },
+    },
+    "received": "Map{a:number:0}",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > map ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid {"a":1}": {
+    "echo": {
+      "v": {
+        "a": 1,
+      },
+    },
+    "received": "Map{a:number:1}",
+    "status": 200,
+  },
+  "valid {}": {
+    "echo": {
+      "v": {},
+    },
+    "received": "Map{}",
+    "status": 200,
+  },
+  "wrong "x"": {
+    "status": 400,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"a":"1"}": {
+    "echo": {
+      "v": {
+        "a": 1,
+      },
+    },
+    "received": "Map{a:number:1}",
+    "status": 200,
+  },
+  "wrong {"a":null}": {
+    "echo": {
+      "v": {
+        "a": 0,
+      },
+    },
+    "received": "Map{a:number:0}",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > map R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid {"a":1}": {
+    "echo": {
+      "v": {
+        "a": 1,
+      },
+    },
+    "received": "Map{a:number:1}",
+    "status": 200,
+  },
+  "valid {}": {
+    "echo": {
+      "v": {},
+    },
+    "received": "Map{}",
+    "status": 200,
+  },
+  "wrong "x"": {
+    "status": 400,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"a":"1"}": {
+    "echo": {
+      "v": {
+        "a": 1,
+      },
+    },
+    "received": "Map{a:number:1}",
+    "status": 200,
+  },
+  "wrong {"a":null}": {
+    "echo": {
+      "v": {
+        "a": 0,
+      },
+    },
+    "received": "Map{a:number:0}",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > map RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid {"a":1}": {
+    "echo": {
+      "v": {
+        "a": 1,
+      },
+    },
+    "received": "Map{a:number:1}",
+    "status": 200,
+  },
+  "valid {}": {
+    "echo": {
+      "v": {},
+    },
+    "received": "Map{}",
+    "status": 200,
+  },
+  "wrong "x"": {
+    "status": 400,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"a":"1"}": {
+    "echo": {
+      "v": {
+        "a": 1,
+      },
+    },
+    "received": "Map{a:number:1}",
+    "status": 200,
+  },
+  "wrong {"a":null}": {
+    "echo": {
+      "v": {
+        "a": 0,
+      },
+    },
+    "received": "Map{a:number:0}",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > model O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid {"name":"x"}": {
+    "echo": {
+      "v": {
+        "name": "x",
+      },
+    },
+    "received": "Child{name:string:x}",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "x"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong false": {
+    "status": 400,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > model ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid {"name":"x"}": {
+    "echo": {
+      "v": {
+        "name": "x",
+      },
+    },
+    "received": "Child{name:string:x}",
+    "status": 200,
+  },
+  "wrong """: {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong "x"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > model R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid {"name":"x"}": {
+    "echo": {
+      "v": {
+        "name": "x",
+      },
+    },
+    "received": "Child{name:string:x}",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "x"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong false": {
+    "status": 400,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > model RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid {"name":"x"}": {
+    "echo": {
+      "v": {
+        "name": "x",
+      },
+    },
+    "received": "Child{name:string:x}",
+    "status": 200,
+  },
+  "wrong """: {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong "x"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > modelArray O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid []": {
+    "echo": {
+      "v": [],
+    },
+    "received": "[]",
+    "status": 200,
+  },
+  "valid [{"name":"x"}]": {
+    "echo": {
+      "v": [
+        {
+          "name": "x",
+        },
+      ],
+    },
+    "received": "[Child{name:string:x}]",
+    "status": 200,
+  },
+  "wrong "a"": {
+    "status": 400,
+  },
+  "wrong [1]": {
+    "status": 400,
+  },
+  "wrong [null]": {
+    "status": 400,
+  },
+  "wrong [{}]": {
+    "status": 400,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > modelArray ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid []": {
+    "echo": {
+      "v": [],
+    },
+    "received": "[]",
+    "status": 200,
+  },
+  "valid [{"name":"x"}]": {
+    "echo": {
+      "v": [
+        {
+          "name": "x",
+        },
+      ],
+    },
+    "received": "[Child{name:string:x}]",
+    "status": 200,
+  },
+  "wrong "a"": {
+    "status": 400,
+  },
+  "wrong [1]": {
+    "status": 400,
+  },
+  "wrong [null]": {
+    "status": 400,
+  },
+  "wrong [{}]": {
+    "status": 400,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > modelArray R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid []": {
+    "echo": {
+      "v": [],
+    },
+    "received": "[]",
+    "status": 200,
+  },
+  "valid [{"name":"x"}]": {
+    "echo": {
+      "v": [
+        {
+          "name": "x",
+        },
+      ],
+    },
+    "received": "[Child{name:string:x}]",
+    "status": 200,
+  },
+  "wrong "a"": {
+    "status": 400,
+  },
+  "wrong [1]": {
+    "status": 400,
+  },
+  "wrong [null]": {
+    "status": 400,
+  },
+  "wrong [{}]": {
+    "status": 400,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > modelArray RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid []": {
+    "echo": {
+      "v": [],
+    },
+    "received": "[]",
+    "status": 200,
+  },
+  "valid [{"name":"x"}]": {
+    "echo": {
+      "v": [
+        {
+          "name": "x",
+        },
+      ],
+    },
+    "received": "[Child{name:string:x}]",
+    "status": 200,
+  },
+  "wrong "a"": {
+    "status": 400,
+  },
+  "wrong [1]": {
+    "status": 400,
+  },
+  "wrong [null]": {
+    "status": 400,
+  },
+  "wrong [{}]": {
+    "status": 400,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > modelMap O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid {"a":{"name":"x"}}": {
+    "echo": {
+      "v": {
+        "a": {
+          "name": "x",
+        },
+      },
+    },
+    "received": "Map{a:Child{name:string:x}}",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"a":1}": {
+    "status": 400,
+  },
+  "wrong {"a":null}": {
+    "status": 400,
+  },
+  "wrong {"a":{}}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > modelMap ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid {"a":{"name":"x"}}": {
+    "echo": {
+      "v": {
+        "a": {
+          "name": "x",
+        },
+      },
+    },
+    "received": "Map{a:Child{name:string:x}}",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"a":1}": {
+    "status": 400,
+  },
+  "wrong {"a":null}": {
+    "status": 400,
+  },
+  "wrong {"a":{}}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > modelMap R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid {"a":{"name":"x"}}": {
+    "echo": {
+      "v": {
+        "a": {
+          "name": "x",
+        },
+      },
+    },
+    "received": "Map{a:Child{name:string:x}}",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"a":1}": {
+    "status": 400,
+  },
+  "wrong {"a":null}": {
+    "status": 400,
+  },
+  "wrong {"a":{}}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > modelMap RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid {"a":{"name":"x"}}": {
+    "echo": {
+      "v": {
+        "a": {
+          "name": "x",
+        },
+      },
+    },
+    "received": "Map{a:Child{name:string:x}}",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong {"a":1}": {
+    "status": 400,
+  },
+  "wrong {"a":null}": {
+    "status": 400,
+  },
+  "wrong {"a":{}}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > number O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 0": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 1.5": {
+    "echo": {
+      "v": 1.5,
+    },
+    "received": "number:1.5",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "5"": {
+    "echo": {
+      "v": 5,
+    },
+    "received": "number:5",
+    "status": 200,
+  },
+  "wrong false": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "wrong true": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > number ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid 0": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 1.5": {
+    "echo": {
+      "v": 1.5,
+    },
+    "received": "number:1.5",
+    "status": 200,
+  },
+  "wrong """: {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong "5"": {
+    "echo": {
+      "v": 5,
+    },
+    "received": "number:5",
+    "status": 200,
+  },
+  "wrong false": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong true": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > number R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 0": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 1.5": {
+    "echo": {
+      "v": 1.5,
+    },
+    "received": "number:1.5",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "5"": {
+    "echo": {
+      "v": 5,
+    },
+    "received": "number:5",
+    "status": 200,
+  },
+  "wrong false": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "wrong true": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > number RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid 0": {
+    "echo": {
+      "v": 0,
+    },
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 1.5": {
+    "echo": {
+      "v": 1.5,
+    },
+    "received": "number:1.5",
+    "status": 200,
+  },
+  "wrong """: {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong "5"": {
+    "echo": {
+      "v": 5,
+    },
+    "received": "number:5",
+    "status": 200,
+  },
+  "wrong false": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong true": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > numericEnum O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid 1": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong "1"": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+  "wrong 3": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > numericEnum ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid 1": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong "1"": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+  "wrong 3": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > numericEnum R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid 1": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong "1"": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+  "wrong 3": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > numericEnum RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid 1": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong "1"": {
+    "echo": {
+      "v": 1,
+    },
+    "received": "number:1",
+    "status": 200,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+  "wrong 3": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > string O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": "",
+    },
+    "received": "string:",
+    "status": 200,
+  },
+  "valid """: {
+    "echo": {
+      "v": "",
+    },
+    "received": "string:",
+    "status": 200,
+  },
+  "valid "x"": {
+    "echo": {
+      "v": "x",
+    },
+    "received": "string:x",
+    "status": 200,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": "0",
+    },
+    "received": "string:0",
+    "status": 200,
+  },
+  "wrong 42": {
+    "echo": {
+      "v": "42",
+    },
+    "received": "string:42",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": "false",
+    },
+    "received": "string:false",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > string ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid """: {
+    "echo": {
+      "v": "",
+    },
+    "received": "string:",
+    "status": 200,
+  },
+  "valid "x"": {
+    "echo": {
+      "v": "x",
+    },
+    "received": "string:x",
+    "status": 200,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong 42": {
+    "echo": {
+      "v": "42",
+    },
+    "received": "string:42",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > string R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid """: {
+    "status": 400,
+  },
+  "valid "x"": {
+    "echo": {
+      "v": "x",
+    },
+    "received": "string:x",
+    "status": 200,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": "0",
+    },
+    "received": "string:0",
+    "status": 200,
+  },
+  "wrong 42": {
+    "echo": {
+      "v": "42",
+    },
+    "received": "string:42",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": "false",
+    },
+    "received": "string:false",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > string RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid """: {
+    "status": 400,
+  },
+  "valid "x"": {
+    "echo": {
+      "v": "x",
+    },
+    "received": "string:x",
+    "status": 200,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong 42": {
+    "echo": {
+      "v": "42",
+    },
+    "received": "string:42",
+    "status": 200,
+  },
+  "wrong []": {
+    "status": 400,
+  },
+  "wrong false": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > stringArray O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid ["a"]": {
+    "echo": {
+      "v": [
+        "a",
+      ],
+    },
+    "received": "[string:a]",
+    "status": 200,
+  },
+  "valid []": {
+    "echo": {
+      "v": [],
+    },
+    "received": "[]",
+    "status": 200,
+  },
+  "wrong "a"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+  "wrong [1]": {
+    "echo": {
+      "v": [
+        "1",
+      ],
+    },
+    "received": "[string:1]",
+    "status": 200,
+  },
+  "wrong [null]": {
+    "echo": {
+      "v": [
+        "",
+      ],
+    },
+    "received": "[string:]",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > stringArray ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid ["a"]": {
+    "echo": {
+      "v": [
+        "a",
+      ],
+    },
+    "received": "[string:a]",
+    "status": 200,
+  },
+  "valid []": {
+    "echo": {
+      "v": [],
+    },
+    "received": "[]",
+    "status": 200,
+  },
+  "wrong "a"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong [1]": {
+    "echo": {
+      "v": [
+        "1",
+      ],
+    },
+    "received": "[string:1]",
+    "status": 200,
+  },
+  "wrong [null]": {
+    "echo": {
+      "v": [
+        "",
+      ],
+    },
+    "received": "[string:]",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > stringArray R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid ["a"]": {
+    "echo": {
+      "v": [
+        "a",
+      ],
+    },
+    "received": "[string:a]",
+    "status": 200,
+  },
+  "valid []": {
+    "echo": {
+      "v": [],
+    },
+    "received": "[]",
+    "status": 200,
+  },
+  "wrong "a"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+  "wrong [1]": {
+    "echo": {
+      "v": [
+        "1",
+      ],
+    },
+    "received": "[string:1]",
+    "status": 200,
+  },
+  "wrong [null]": {
+    "echo": {
+      "v": [
+        "",
+      ],
+    },
+    "received": "[string:]",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > stringArray RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid ["a"]": {
+    "echo": {
+      "v": [
+        "a",
+      ],
+    },
+    "received": "[string:a]",
+    "status": 200,
+  },
+  "valid []": {
+    "echo": {
+      "v": [],
+    },
+    "received": "[]",
+    "status": 200,
+  },
+  "wrong "a"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "wrong [1]": {
+    "echo": {
+      "v": [
+        "1",
+      ],
+    },
+    "received": "[string:1]",
+    "status": 200,
+  },
+  "wrong [null]": {
+    "echo": {
+      "v": [
+        "",
+      ],
+    },
+    "received": "[string:]",
+    "status": 200,
+  },
+  "wrong {}": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > stringEnum O 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid "RED"": {
+    "echo": {
+      "v": "RED",
+    },
+    "received": "string:RED",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "nope"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > stringEnum ON 1`] = `
+{
+  "missing": {
+    "echo": {},
+    "received": "<absent>",
+    "status": 200,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid "RED"": {
+    "echo": {
+      "v": "RED",
+    },
+    "received": "string:RED",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "nope"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > stringEnum R 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "status": 400,
+  },
+  "valid "RED"": {
+    "echo": {
+      "v": "RED",
+    },
+    "received": "string:RED",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "nope"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > body > stringEnum RN 1`] = `
+{
+  "missing": {
+    "status": 400,
+  },
+  "null": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+  "valid "RED"": {
+    "echo": {
+      "v": "RED",
+    },
+    "received": "string:RED",
+    "status": 200,
+  },
+  "wrong """: {
+    "status": 400,
+  },
+  "wrong "nope"": {
+    "status": 400,
+  },
+  "wrong 0": {
+    "echo": {
+      "v": null,
+    },
+    "received": "null",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > boolean O 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid 0": {
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid 1": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "valid false": {
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid true": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong TRUE": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong foo": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong yes": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > boolean ON 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid 0": {
+    "status": 400,
+  },
+  "valid 1": {
+    "status": 400,
+  },
+  "valid false": {
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid true": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong TRUE": {
+    "status": 400,
+  },
+  "wrong foo": {
+    "status": 400,
+  },
+  "wrong yes": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > boolean R 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid 0": {
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid 1": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "valid false": {
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid true": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong TRUE": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong foo": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong yes": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > boolean RN 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid 0": {
+    "status": 400,
+  },
+  "valid 1": {
+    "status": 400,
+  },
+  "valid false": {
+    "received": "boolean:false",
+    "status": 200,
+  },
+  "valid true": {
+    "received": "boolean:true",
+    "status": 200,
+  },
+  "wrong TRUE": {
+    "status": 400,
+  },
+  "wrong foo": {
+    "status": 400,
+  },
+  "wrong yes": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > dateTime O 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid 2026-01-01T00:00:00.000Z": {
+    "received": "Date(2026-01-01T00:00:00.000Z)",
+    "status": 200,
+  },
+  "wrong nope": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > dateTime ON 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid 2026-01-01T00:00:00.000Z": {
+    "received": "Date(2026-01-01T00:00:00.000Z)",
+    "status": 200,
+  },
+  "wrong nope": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > dateTime R 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid 2026-01-01T00:00:00.000Z": {
+    "received": "Date(2026-01-01T00:00:00.000Z)",
+    "status": 200,
+  },
+  "wrong nope": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > dateTime RN 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid 2026-01-01T00:00:00.000Z": {
+    "received": "Date(2026-01-01T00:00:00.000Z)",
+    "status": 200,
+  },
+  "wrong nope": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > integer O 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid 2": {
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong 1.5": {
+    "status": 400,
+  },
+  "wrong abc": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > integer ON 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid 2": {
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong 1.5": {
+    "status": 400,
+  },
+  "wrong abc": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > integer R 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid 2": {
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong 1.5": {
+    "status": 400,
+  },
+  "wrong abc": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > integer RN 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid 2": {
+    "received": "number:2",
+    "status": 200,
+  },
+  "wrong 1.5": {
+    "status": 400,
+  },
+  "wrong abc": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > number O 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid 0": {
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 1.5": {
+    "received": "number:1.5",
+    "status": 200,
+  },
+  "wrong abc": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > number ON 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid 0": {
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 1.5": {
+    "received": "number:1.5",
+    "status": 200,
+  },
+  "wrong abc": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > number R 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid 0": {
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 1.5": {
+    "received": "number:1.5",
+    "status": 200,
+  },
+  "wrong abc": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > number RN 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid 0": {
+    "received": "number:0",
+    "status": 200,
+  },
+  "valid 1.5": {
+    "received": "number:1.5",
+    "status": 200,
+  },
+  "wrong abc": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > string O 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "string:",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid x": {
+    "received": "string:x",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > string ON 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid x": {
+    "received": "string:x",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > string R 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid x": {
+    "received": "string:x",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > string RN 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid x": {
+    "received": "string:x",
+    "status": 200,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > stringEnum O 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid RED": {
+    "received": "string:RED",
+    "status": 200,
+  },
+  "wrong nope": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > stringEnum ON 1`] = `
+{
+  ""null"": {
+    "received": "null",
+    "status": 200,
+  },
+  "empty": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "missing": {
+    "received": "<undef>",
+    "status": 200,
+  },
+  "valid RED": {
+    "received": "string:RED",
+    "status": 200,
+  },
+  "wrong nope": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > stringEnum R 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid RED": {
+    "received": "string:RED",
+    "status": 200,
+  },
+  "wrong nope": {
+    "status": 400,
+  },
+}
+`;
+
+exports[`RequestValidationPipe matrix (requestValidation.strict = false) > query > stringEnum RN 1`] = `
+{
+  ""null"": {
+    "status": 400,
+  },
+  "empty": {
+    "status": 400,
+  },
+  "missing": {
+    "status": 400,
+  },
+  "valid RED": {
+    "received": "string:RED",
+    "status": 200,
+  },
+  "wrong nope": {
+    "status": 400,
+  },
+}
+`;

@@ -16,7 +16,7 @@ import { Enum, Nullable } from '@tsed/schema';
  * color!: Color | null;
  * ```
  */
-export function NullableEnum(enumType: object): PropertyDecorator {
+export function NullableEnum(enumType: object): PropertyDecorator & ParameterDecorator {
     const numeric = Object.values(enumType).some(value => Number.isFinite(value));
     return useDecorators(Nullable(numeric ? Number : String), Enum(enumType, null));
 }

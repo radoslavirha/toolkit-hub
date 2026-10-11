@@ -735,6 +735,9 @@ importers:
       '@radoslavirha/config-vitest':
         specifier: workspace:*
         version: link:../../config/config-vitest
+      '@radoslavirha/tsed-common':
+        specifier: workspace:*
+        version: link:../common
       '@radoslavirha/tsed-logger':
         specifier: workspace:*
         version: link:../logger
