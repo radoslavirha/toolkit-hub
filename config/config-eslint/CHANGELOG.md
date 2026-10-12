@@ -1,5 +1,15 @@
 # @radoslavirha/config-eslint
 
+## 0.5.0
+
+### Minor Changes
+
+- [#365](https://github.com/radoslavirha/toolkit-hub/pull/365) [`64c3695`](https://github.com/radoslavirha/toolkit-hub/commit/64c36952efb7e4eb07d37356b498d69627e17eca) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Add opt-in `@radoslavirha/config-eslint/nullable` rules that catch Ts.ED null-modelling traps: bare `@Property()` or one-argument `@CollectionOf` on `X | null`, `@Allow(null)`, `@Nullable(Array)`, and (via `storageDtoRules`) `@Nullable` on scalars in storage DTOs.
+
+### Patch Changes
+
+- [#312](https://github.com/radoslavirha/toolkit-hub/pull/312) [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Agent skills only, no runtime code changed: name the Docker prerequisite for MongoDB testcontainers, add run-fix-rerun loops after linting, add an entity checklist to tsed-mongoose, inline the redaction selector syntax instead of pointing at the README, and stop stating section counts that had drifted.
+
 ## 0.4.10
 
 ### Patch Changes

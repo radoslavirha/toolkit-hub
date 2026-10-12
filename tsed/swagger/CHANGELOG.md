@@ -1,5 +1,19 @@
 # @radoslavirha/tsed-swagger
 
+## 9.1.14
+
+### Patch Changes
+
+- [#316](https://github.com/radoslavirha/toolkit-hub/pull/316) [`a6ca2f9`](https://github.com/radoslavirha/toolkit-hub/commit/a6ca2f998e478a7176e7b829b14bbddb2871909f) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - The landing page now accepts only `http` or `https` from `X-Forwarded-Proto` and falls back to `http` otherwise, so a crafted header can no longer inject a `javascript:` scheme into the page's links.
+
+- [#366](https://github.com/radoslavirha/toolkit-hub/pull/366) [`6b5dab7`](https://github.com/radoslavirha/toolkit-hub/commit/6b5dab72a42f40851590401d465e7b096ef039b5) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Fix `GET /` returning 500 in the CommonJS build: import `PlatformViews` by name so the injection token is the class, not the module namespace.
+- Updated dependencies [[`cc55e0a`](https://github.com/radoslavirha/toolkit-hub/commit/cc55e0a39bc5b7f09534fcda1db3225a7dc0bb0b), [`9d2a763`](https://github.com/radoslavirha/toolkit-hub/commit/9d2a76339474e8842a743651cd474be164d10b72), [`18615e6`](https://github.com/radoslavirha/toolkit-hub/commit/18615e60439f1a35b3b01fc6c9b3174d92a77d18), [`126c4b7`](https://github.com/radoslavirha/toolkit-hub/commit/126c4b7fb387cd4e811c6a5581ec5a1e31461c71), [`f753994`](https://github.com/radoslavirha/toolkit-hub/commit/f753994504a9f402891b39622b8c93b398ed8f81), [`84749f1`](https://github.com/radoslavirha/toolkit-hub/commit/84749f14611b1a947521da7943491dcc9714e864), [`3540efe`](https://github.com/radoslavirha/toolkit-hub/commit/3540efe5382ac5b44b619b45a818d007fdd9b5c4), [`ce825ee`](https://github.com/radoslavirha/toolkit-hub/commit/ce825ee036f3c4f5a55741cf37fa06ec01b46f81), [`a99ab10`](https://github.com/radoslavirha/toolkit-hub/commit/a99ab1036bf6f5ab58ceec60d2b185b3546207fc), [`1705546`](https://github.com/radoslavirha/toolkit-hub/commit/17055467a53c88d302759b12c54048af5384b360), [`6f4848f`](https://github.com/radoslavirha/toolkit-hub/commit/6f4848f3b7de68ce3786b79a16f35808f680ac32), [`587cfcd`](https://github.com/radoslavirha/toolkit-hub/commit/587cfcd38efce491c81b1cc2fccb5a93459a6b23), [`385d03b`](https://github.com/radoslavirha/toolkit-hub/commit/385d03bff7b0efec7c0e628d83a8cb3ea3dfc806), [`0da927a`](https://github.com/radoslavirha/toolkit-hub/commit/0da927afa53e2211b80735eb35b2c2cebeb255a6), [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42)]:
+  - @radoslavirha/tsed-platform@5.1.0
+  - @radoslavirha/utils@0.10.0
+  - @radoslavirha/tsed-configuration@0.9.3
+  - @radoslavirha/tsed-logger@0.7.7
+  - @radoslavirha/types@0.4.9
+
 ## 9.1.13
 
 ### Patch Changes

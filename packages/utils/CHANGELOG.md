@@ -1,5 +1,27 @@
 # @radoslavirha/utils
 
+## 0.10.0
+
+### Minor Changes
+
+- [#340](https://github.com/radoslavirha/toolkit-hub/pull/340) [`9d2a763`](https://github.com/radoslavirha/toolkit-hub/commit/9d2a76339474e8842a743651cd474be164d10b72) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Add `MappingUtils.toNullable` to normalise `null`/missing values read from storage to `null`, and document the read/write rules for nullable fields in the `using-utils` and `using-tsed-mongoose` skills. `buildMongoUpdatePayload` keeping `null` is now pinned by a test.
+
+### Patch Changes
+
+- [#295](https://github.com/radoslavirha/toolkit-hub/pull/295) [`18615e6`](https://github.com/radoslavirha/toolkit-hub/commit/18615e60439f1a35b3b01fc6c9b3174d92a77d18) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ObjectUtils.mergeDeep` now concatenates arrays passed as the root target and source instead of overwriting by index.
+
+- [#304](https://github.com/radoslavirha/toolkit-hub/pull/304) [`126c4b7`](https://github.com/radoslavirha/toolkit-hub/commit/126c4b7fb387cd4e811c6a5581ec5a1e31461c71) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ObjectUtils.mergeDeep` no longer mutates or aliases an `Error` nested in its inputs.
+
+- [#315](https://github.com/radoslavirha/toolkit-hub/pull/315) [`f753994`](https://github.com/radoslavirha/toolkit-hub/commit/f753994504a9f402891b39622b8c93b398ed8f81) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Fix `ObjectUtils.cloneDeep` duplicating objects that are shared with, or form a cycle through, an `Error`; aliasing and cycles are now preserved.
+
+- [#347](https://github.com/radoslavirha/toolkit-hub/pull/347) [`6f4848f`](https://github.com/radoslavirha/toolkit-hub/commit/6f4848f3b7de68ce3786b79a16f35808f680ac32) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ObjectUtils.mergeDeep` keeps a `Buffer` or typed array a `Buffer` or typed array when target and source both hold one; the source value replaces the target instead of becoming a plain `Array`.
+
+- [#348](https://github.com/radoslavirha/toolkit-hub/pull/348) [`587cfcd`](https://github.com/radoslavirha/toolkit-hub/commit/587cfcd38efce491c81b1cc2fccb5a93459a6b23) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ObjectUtils.cloneDeep` now copies symbol-keyed own properties of an `Error`, so clones of errors that keep state under Symbol keys keep working.
+
+- [#312](https://github.com/radoslavirha/toolkit-hub/pull/312) [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Agent skills only, no runtime code changed: name the Docker prerequisite for MongoDB testcontainers, add run-fix-rerun loops after linting, add an entity checklist to tsed-mongoose, inline the redaction selector syntax instead of pointing at the README, and stop stating section counts that had drifted.
+- Updated dependencies [[`385d03b`](https://github.com/radoslavirha/toolkit-hub/commit/385d03bff7b0efec7c0e628d83a8cb3ea3dfc806)]:
+  - @radoslavirha/types@0.4.9
+
 ## 0.9.5
 
 ### Patch Changes
