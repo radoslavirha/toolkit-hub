@@ -1,7 +1,7 @@
 import { APIInformation } from '@radoslavirha/tsed-configuration';
 import { Constant, Controller, Inject } from '@tsed/di';
 import { HeaderParams } from '@tsed/platform-params';
-import PlatformViews from '@tsed/platform-views';
+import { PlatformViews } from '@tsed/platform-views';
 import { Get, Hidden, Returns } from '@tsed/schema';
 import { SwaggerSettings } from '@tsed/swagger';
 import path from 'path';

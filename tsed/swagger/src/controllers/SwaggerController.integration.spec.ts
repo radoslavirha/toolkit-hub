@@ -1,7 +1,11 @@
 import { BaseServer, ServerConfiguration } from '@radoslavirha/tsed-platform';
+import { copyFileSync, mkdirSync, mkdtempSync, readdirSync, rmSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import path from 'node:path';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { minify } from 'html-minifier-terser';
 import SuperTest from 'supertest';
+import { build } from 'tsdown';
 import { describe, beforeEach, afterEach, expect, it, vi } from 'vitest';
 import { SwaggerController } from './SwaggerController.js';
 import { APIInformation } from '@radoslavirha/tsed-configuration';
@@ -219,5 +223,54 @@ describe('SwaggerController', () => {
         expect(minified).not.toContain('href="javascript:');
         expect(minified).toContain(`<li><a href="http://api.example.com/v1/docs/"><span>API v1</span> <span>OpenSpec 3.0.3</span></a></li>`);
         expect(response.status).toStrictEqual(200);
+    });
+
+    it('Should call GET / with the CommonJS build of the controller', async () => {
+        // Bundle the current source as CommonJS, so the test does not depend on a possibly stale dist/
+        const outDir = mkdtempSync(path.join(process.cwd(), 'node_modules', '.cjs-build-'));
+        await build({
+            entry: ['src/controllers/SwaggerController.ts'],
+            format: 'cjs',
+            outDir,
+            dts: false,
+            clean: false,
+            tsconfig: './tsconfig.json',
+            deps: { neverBundle: true },
+            logLevel: 'silent'
+        });
+        mkdirSync(path.join(outDir, 'views'));
+        copyFileSync('src/controllers/views/swagger.ejs', path.join(outDir, 'views', 'swagger.ejs'));
+        const bundle = readdirSync(outDir).find((file) => file.endsWith('.cjs'))!;
+        const { SwaggerController: CjsSwaggerController } = createRequire(import.meta.url)(path.join(outDir, bundle));
+
+        await PlatformTest.bootstrap(BaseServer, <ServerConfiguration>{
+            mount: {
+                '/': [CjsSwaggerController]
+            },
+            swagger: [
+                {
+                    path: '/v1/docs',
+                    doc: 'v1',
+                    specVersion: '3.0.3',
+                    spec: {
+                        info: {
+                            title: 'My API - v1',
+                            version: '1.0.0'
+                        }
+                    }
+                }
+            ],
+            api: <APIInformation>{
+                service: 'My API',
+                version: '1.0.0'
+            }
+        })();
+        request = SuperTest(PlatformTest.callback());
+
+        const response = await request.get('/').set('Host', 'api.example.com');
+        rmSync(outDir, { recursive: true, force: true });
+
+        expect(response.status).toStrictEqual(200);
+        expect(response.text).toContain('href="http://api.example.com/v1/docs/"');
     });
 });
