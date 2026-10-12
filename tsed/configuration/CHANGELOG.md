@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-configuration
 
+## 0.9.3
+
+### Patch Changes
+
+- [#307](https://github.com/radoslavirha/toolkit-hub/pull/307) [`84749f1`](https://github.com/radoslavirha/toolkit-hub/commit/84749f14611b1a947521da7943491dcc9714e864) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ServerConfig` now accepts `httpPort` supplied as a numeric string, so mapping `PORT` through `custom-environment-variables.json` no longer fails validation at startup.
+- Updated dependencies [[`b6d77ac`](https://github.com/radoslavirha/toolkit-hub/commit/b6d77acb9b673e86ad0c26bd63603877d925d41c), [`49d9a1e`](https://github.com/radoslavirha/toolkit-hub/commit/49d9a1e953f92612dcd1d44908811f4945696675), [`9d2a763`](https://github.com/radoslavirha/toolkit-hub/commit/9d2a76339474e8842a743651cd474be164d10b72), [`18615e6`](https://github.com/radoslavirha/toolkit-hub/commit/18615e60439f1a35b3b01fc6c9b3174d92a77d18), [`126c4b7`](https://github.com/radoslavirha/toolkit-hub/commit/126c4b7fb387cd4e811c6a5581ec5a1e31461c71), [`f753994`](https://github.com/radoslavirha/toolkit-hub/commit/f753994504a9f402891b39622b8c93b398ed8f81), [`b30fdb9`](https://github.com/radoslavirha/toolkit-hub/commit/b30fdb9778c20591e5b938345e11294015b3efde), [`bb790e0`](https://github.com/radoslavirha/toolkit-hub/commit/bb790e031412a8d1bcbc88065ae774c4e6821b8e), [`6f4848f`](https://github.com/radoslavirha/toolkit-hub/commit/6f4848f3b7de68ce3786b79a16f35808f680ac32), [`587cfcd`](https://github.com/radoslavirha/toolkit-hub/commit/587cfcd38efce491c81b1cc2fccb5a93459a6b23), [`950976d`](https://github.com/radoslavirha/toolkit-hub/commit/950976d5c15a9bfeb307e95919798852c871c7c8), [`5b9fff3`](https://github.com/radoslavirha/toolkit-hub/commit/5b9fff36bbc453947bc3fdab6322f8e68d5179f2), [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42)]:
+  - @radoslavirha/tsed-common@0.7.0
+  - @radoslavirha/utils@0.10.0
+
 ## 0.9.2
 
 ### Patch Changes

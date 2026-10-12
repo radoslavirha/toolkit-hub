@@ -1,5 +1,11 @@
 # @radoslavirha/types
 
+## 0.4.9
+
+### Patch Changes
+
+- [#349](https://github.com/radoslavirha/toolkit-hub/pull/349) [`385d03b`](https://github.com/radoslavirha/toolkit-hub/commit/385d03bff7b0efec7c0e628d83a8cb3ea3dfc806) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Fix `FullPartial` accepting any value for `Date` and function members; they are now kept as they are instead of being mapped into a weak type.
+
 ## 0.4.8
 
 ### Patch Changes

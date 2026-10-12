@@ -1,5 +1,21 @@
 # @radoslavirha/tsed-platform
 
+## 5.1.0
+
+### Minor Changes
+
+- [#334](https://github.com/radoslavirha/toolkit-hub/pull/334) [`cc55e0a`](https://github.com/radoslavirha/toolkit-hub/commit/cc55e0a39bc5b7f09534fcda1db3225a7dc0bb0b) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Add opt-in strict request validation (`requestValidation.strict`): bodies are validated without type coercion and query `null`/boolean handling is stricter; off by default.
+
+### Patch Changes
+
+- [#311](https://github.com/radoslavirha/toolkit-hub/pull/311) [`a99ab10`](https://github.com/radoslavirha/toolkit-hub/commit/a99ab1036bf6f5ab58ceec60d2b185b3546207fc) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `BaseServer` now builds its JSON/URL-encoded body parsers through the platform adapter, so `rawBody: true` populates `req.rawBody`, and a `json-parser`/`urlencoded-parser` configured in `middlewares` (e.g. a larger `limit`) is no longer shadowed.
+
+- [#314](https://github.com/radoslavirha/toolkit-hub/pull/314) [`1705546`](https://github.com/radoslavirha/toolkit-hub/commit/17055467a53c88d302759b12c54048af5384b360) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `BaseHandler.execute()` now logs the thrown value as structured metadata, so `Error` stacks and the fields of non-Error rejections are no longer lost.
+- Updated dependencies [[`9d2a763`](https://github.com/radoslavirha/toolkit-hub/commit/9d2a76339474e8842a743651cd474be164d10b72), [`18615e6`](https://github.com/radoslavirha/toolkit-hub/commit/18615e60439f1a35b3b01fc6c9b3174d92a77d18), [`126c4b7`](https://github.com/radoslavirha/toolkit-hub/commit/126c4b7fb387cd4e811c6a5581ec5a1e31461c71), [`f753994`](https://github.com/radoslavirha/toolkit-hub/commit/f753994504a9f402891b39622b8c93b398ed8f81), [`84749f1`](https://github.com/radoslavirha/toolkit-hub/commit/84749f14611b1a947521da7943491dcc9714e864), [`3540efe`](https://github.com/radoslavirha/toolkit-hub/commit/3540efe5382ac5b44b619b45a818d007fdd9b5c4), [`ce825ee`](https://github.com/radoslavirha/toolkit-hub/commit/ce825ee036f3c4f5a55741cf37fa06ec01b46f81), [`6f4848f`](https://github.com/radoslavirha/toolkit-hub/commit/6f4848f3b7de68ce3786b79a16f35808f680ac32), [`587cfcd`](https://github.com/radoslavirha/toolkit-hub/commit/587cfcd38efce491c81b1cc2fccb5a93459a6b23), [`0da927a`](https://github.com/radoslavirha/toolkit-hub/commit/0da927afa53e2211b80735eb35b2c2cebeb255a6), [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42)]:
+  - @radoslavirha/utils@0.10.0
+  - @radoslavirha/tsed-configuration@0.9.3
+  - @radoslavirha/tsed-logger@0.7.7
+
 ## 5.0.9
 
 ### Patch Changes

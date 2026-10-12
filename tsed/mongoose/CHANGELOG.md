@@ -1,5 +1,28 @@
 # @radoslavirha/tsed-mongoose
 
+## 5.1.0
+
+### Minor Changes
+
+- [#340](https://github.com/radoslavirha/toolkit-hub/pull/340) [`9d2a763`](https://github.com/radoslavirha/toolkit-hub/commit/9d2a76339474e8842a743651cd474be164d10b72) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Add `MappingUtils.toNullable` to normalise `null`/missing values read from storage to `null`, and document the read/write rules for nullable fields in the `using-utils` and `using-tsed-mongoose` skills. `buildMongoUpdatePayload` keeping `null` is now pinned by a test.
+
+- [#341](https://github.com/radoslavirha/toolkit-hub/pull/341) [`e31be21`](https://github.com/radoslavirha/toolkit-hub/commit/e31be210b9fce985cf2e69d4ae800144d98585d4) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Add `@NoDefault()` to keep a nullable array distinct from an empty one, and pin Mongoose's null and collection storage behaviour with a testcontainers contract suite, documented in the README and skill.
+
+- [#345](https://github.com/radoslavirha/toolkit-hub/pull/345) [`7c3a315`](https://github.com/radoslavirha/toolkit-hub/commit/7c3a31528ef8f2d85b83ff38428874c556909d57) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Add opt-in optimistic concurrency: `MongoRepository.updateByIdIfUnmodified` applies an update only if `updatedAt` is unchanged and resolves a `MongoConcurrentUpdateResult` (`MongoOperationStatus.UPDATED` / `CONFLICT` / `NOT_FOUND`).
+
+### Patch Changes
+
+- [#305](https://github.com/radoslavirha/toolkit-hub/pull/305) [`9a86828`](https://github.com/radoslavirha/toolkit-hub/commit/9a868282e1d46e60eddeb21374ce6e9773476b9a) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `MongoMapper.getModelValue` now applies `@Default` to properties renamed with `@Name`.
+
+- [#355](https://github.com/radoslavirha/toolkit-hub/pull/355) [`d1ef424`](https://github.com/radoslavirha/toolkit-hub/commit/d1ef424e0e4f693b691a1e010e59c45c7a4f6775) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `MongoMapper.getModelValue` now applies `@Default` to `@CollectionOf` array and `Map` properties.
+
+- [#356](https://github.com/radoslavirha/toolkit-hub/pull/356) [`c61b7af`](https://github.com/radoslavirha/toolkit-hub/commit/c61b7aff1c979ae708f6df50a8e166996ebc7429) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `MongoMapper.getModelValue` now returns a fresh copy of an object or array `@Default`, so changing one create payload no longer changes the default for later creates.
+
+- [#312](https://github.com/radoslavirha/toolkit-hub/pull/312) [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Agent skills only, no runtime code changed: name the Docker prerequisite for MongoDB testcontainers, add run-fix-rerun loops after linting, add an entity checklist to tsed-mongoose, inline the redaction selector syntax instead of pointing at the README, and stop stating section counts that had drifted.
+- Updated dependencies [[`b6d77ac`](https://github.com/radoslavirha/toolkit-hub/commit/b6d77acb9b673e86ad0c26bd63603877d925d41c), [`49d9a1e`](https://github.com/radoslavirha/toolkit-hub/commit/49d9a1e953f92612dcd1d44908811f4945696675), [`9d2a763`](https://github.com/radoslavirha/toolkit-hub/commit/9d2a76339474e8842a743651cd474be164d10b72), [`18615e6`](https://github.com/radoslavirha/toolkit-hub/commit/18615e60439f1a35b3b01fc6c9b3174d92a77d18), [`126c4b7`](https://github.com/radoslavirha/toolkit-hub/commit/126c4b7fb387cd4e811c6a5581ec5a1e31461c71), [`f753994`](https://github.com/radoslavirha/toolkit-hub/commit/f753994504a9f402891b39622b8c93b398ed8f81), [`b30fdb9`](https://github.com/radoslavirha/toolkit-hub/commit/b30fdb9778c20591e5b938345e11294015b3efde), [`bb790e0`](https://github.com/radoslavirha/toolkit-hub/commit/bb790e031412a8d1bcbc88065ae774c4e6821b8e), [`6f4848f`](https://github.com/radoslavirha/toolkit-hub/commit/6f4848f3b7de68ce3786b79a16f35808f680ac32), [`587cfcd`](https://github.com/radoslavirha/toolkit-hub/commit/587cfcd38efce491c81b1cc2fccb5a93459a6b23), [`950976d`](https://github.com/radoslavirha/toolkit-hub/commit/950976d5c15a9bfeb307e95919798852c871c7c8), [`5b9fff3`](https://github.com/radoslavirha/toolkit-hub/commit/5b9fff36bbc453947bc3fdab6322f8e68d5179f2), [`ce5183f`](https://github.com/radoslavirha/toolkit-hub/commit/ce5183faa81078f9ba324e4abffd74388c814d42)]:
+  - @radoslavirha/tsed-common@0.7.0
+  - @radoslavirha/utils@0.10.0
+
 ## 5.0.14
 
 ### Patch Changes
