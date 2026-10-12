@@ -14,7 +14,8 @@
     "type": "module",
     "exports": {
         ".": "./src/index.mjs",
-        "./toolkit": "./src/toolkit.mjs"
+        "./toolkit": "./src/toolkit.mjs",
+        "./nullable": "./src/nullable.mjs"
     },
     "main": "src/index.mjs",
     "files": [
@@ -25,14 +26,17 @@
     "scripts": {
         "cleanup:modules": "rm -rf node_modules",
         "lint": "eslint .",
-        "lint:fix": "eslint --fix ."
+        "lint:fix": "eslint --fix .",
+        "test": "vitest run"
     },
     "dependencies": {
         "@stylistic/eslint-plugin": "5.10.0",
         "typescript-eslint": "8.71.0"
     },
     "devDependencies": {
-        "eslint": "catalog:"
+        "@vitest/coverage-v8": "catalog:",
+        "eslint": "catalog:",
+        "vitest": "catalog:"
     },
     "peerDependencies": {
         "eslint": "catalog:"
