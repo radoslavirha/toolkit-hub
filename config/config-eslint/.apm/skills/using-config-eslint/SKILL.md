@@ -31,6 +31,20 @@ package's own config hides the problem from everywhere else that shares the conf
 If a rule is wrong for the whole toolkit, change it in this package and release it — that is
 the point of sharing the config.
 
+## Nullable modelling rules
+
+In a package with Ts.ED models, append the opt-in rules that catch `X | null` traps (bare
+`@Property()`, one-argument `@CollectionOf`, `@Allow(null)`, `@Nullable(Array)`):
+
+```ts ignore
+import Nullable, { storageDtoRules } from '@radoslavirha/config-eslint/nullable';
+
+export default defineConfig(...Config, ...Nullable, ...storageDtoRules(['src/mongo/**/*.ts']));
+```
+
+`storageDtoRules(files)` additionally forbids `@Nullable` on scalars in the given storage DTO
+folders. Each message names the decorator to use instead.
+
 ## Reuse rules are not here
 
 The rules that flag hand-rolled `=== null`, `typeof` tests, `Array.isArray` and

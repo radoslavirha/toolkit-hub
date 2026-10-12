@@ -16,6 +16,7 @@ Shareable ESLint configuration for TypeScript projects using ESLint v9 with Type
 - [CI/CD Integration](#cicd-integration)
 - [See Also](#see-also)
 - [Related Packages](#related-packages)
+- [Nullable modelling rules](#nullable-modelling-rules)
 - [Reuse rules live with the code they describe](#reuse-rules-live-with-the-code-they-describe)
 
 ## 🤖 Quick Reference for AI Agents
@@ -315,6 +316,34 @@ For integration patterns and architecture guidance, see [AGENTS.md](../../AGENTS
 
 - [@radoslavirha/config-typescript](../config-typescript/) - TypeScript compiler configuration
 - [@radoslavirha/config-vitest](../config-vitest/) - Test runner configuration
+
+## Nullable modelling rules
+
+Opt-in rules for traps in Ts.ED models that the compiler cannot see and that produce a wrong
+schema instead of an error. Enable them in packages that declare `@tsed/schema` models:
+
+```js
+import { defineConfig } from 'eslint/config';
+import Config from '@radoslavirha/config-eslint';
+import Nullable, { storageDtoRules } from '@radoslavirha/config-eslint/nullable';
+
+export default defineConfig(
+    ...Config,
+    ...Nullable,
+    ...storageDtoRules(['src/mongo/**/*.ts'])   // optional: Mongoose storage DTOs
+);
+```
+
+| Rule (`toolkit-nullable/…`) | Reports | Use instead |
+|---|---|---|
+| `property-needs-type` | bare `@Property()` on `X \| null` (schema becomes `{type:"object"}`) | `NullableOf`, `NullableEnum`, `NullableDateTime`, `@Nullable(String)` |
+| `collection-of-needs-type` | `@CollectionOf(X)` with one argument on `X \| null` | `ArrayOf` / `MapOf` |
+| `no-allow-null` | `@Allow(null)` (silently required, `null` missing from enums) | the `Nullable*` decorators |
+| `no-nullable-array` | `@Nullable(Array)` (broken schema) | `ArrayOf({ nullable: true })` |
+| `no-nullable-scalar` | `@Nullable(String \| Number \| Boolean \| BigInt \| Date)` — only through `storageDtoRules(files)` | plain `@Property(String)`; Mongoose would store `Mixed` |
+
+All are `error`, skip `*.spec.ts`, and are custom rules, so they never replace the options of a
+`no-restricted-syntax` entry from `@radoslavirha/utils/eslint`.
 
 ## Reuse rules live with the code they describe
 
