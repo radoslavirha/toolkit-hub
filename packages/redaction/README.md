@@ -97,6 +97,9 @@ literals) keep their original text. Any other string — plain text, a raw
 query string such as `a=1&token=x`, a JSON primitive — cannot be addressed by path selectors and
 is logged unchanged. Parse such payloads into an object before redacting them.
 
+A `Uint8Array` (including `Buffer`) is decoded as UTF-8 text first and then handled as a string, so
+JSON held in bytes (e.g. `Buffer.from(await res.arrayBuffer())`) is redacted too.
+
 ## Configuration
 
 ```typescript

@@ -41,6 +41,7 @@ const meta = profile.collect({ request: { user: 'ada', password: 'hunter2' } });
 A payload that is already JSON text (e.g. a proxied `await res.text()`) is parsed and redacted
 too. Any other string — plain text, a raw query string like `a=1&token=x` — passes through
 **unredacted**, because path selectors have nothing to address. Parse it into an object first.
+A `Buffer` or `Uint8Array` is decoded as UTF-8 text first, so JSON held in bytes is redacted too.
 
 ## Redact before the logger, never inside it
 
