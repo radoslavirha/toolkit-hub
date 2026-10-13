@@ -127,6 +127,9 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
      * `updated`, `conflict` (document changed since it was read) or `not-found`
      * (including a malformed id). The service maps `conflict` to 409/412.
      *
+     * The update is validated against the schema (`runValidators: true`); a violation
+     * rejects with a Mongoose `ValidationError`.
+     *
      * Requires `timestamps: true` on the schema. `updatedAt` has millisecond
      * precision, so two writes within the same millisecond are indistinguishable.
      * Existing update methods are unaffected.
@@ -141,7 +144,7 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
         }
 
         const updated = await this.model
-            .findOneAndUpdate({ _id: id, updatedAt: expectedUpdatedAt } as never, { $set: data } as never, { new: true })
+            .findOneAndUpdate({ _id: id, updatedAt: expectedUpdatedAt } as never, { $set: data } as never, { new: true, runValidators: true })
             .lean<MONGO>() as MONGO | null;
 
         if (CommonUtils.notNull(updated)) {
