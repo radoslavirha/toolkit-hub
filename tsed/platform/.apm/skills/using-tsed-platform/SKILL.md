@@ -143,9 +143,18 @@ Header params are **not** validated: `@HeaderParams` defaults to `useValidation 
 `x-dry-run: false` reaches the handler as the truthy string `"false"`. Opt in per parameter, and
 the strict pipe then coerces and validates it like a query param:
 
-```typescript
-@Get('/')
-list(@HeaderParams({ expression: 'x-dry-run', useValidation: true }) dryRun?: boolean) {}
+```ts
+import { Controller } from '@tsed/di';
+import { HeaderParams } from '@tsed/platform-params';
+import { Get } from '@tsed/schema';
+
+@Controller('/items')
+export class ItemsController {
+  @Get('/')
+  list(@HeaderParams({ expression: 'x-dry-run', useValidation: true }) dryRun?: boolean) {
+    return { dryRun };
+  }
+}
 ```
 
 ## Logging
