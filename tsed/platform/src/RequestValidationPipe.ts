@@ -35,9 +35,12 @@ const BOOLEANS = new Map<string, boolean>([['true', true], ['false', false], ['1
  * With `requestValidation.strict` set to `false` it behaves exactly like Ts.ED. Strict is the default; with it on:
  * - **body** is validated by a non-coercing Ajv, so `null` passes only where the model is nullable
  *   and any wrong JSON type is a 400;
- * - **query / path / header** keep coercion (values are strings) except that the text `null` becomes
+ * - **query / path** keep coercion (values are strings) except that the text `null` becomes
  *   `null` only for nullable parameters, booleans accept only `true|false|1|0`, and an explicit
- *   `null` on a nullable parameter is accepted before the required check.
+ *   `null` on a nullable parameter is accepted before the required check;
+ * - **header** parameters only reach this pipe when declared with
+ *   `@HeaderParams({ expression, useValidation: true })` (Ts.ED defaults to no validation), and are then
+ *   treated like query parameters.
  */
 @OverrideProvider(ValidationPipe)
 export class RequestValidationPipe extends ValidationPipe {
