@@ -21,6 +21,17 @@ describe('RequestValidationPipe', () => {
         await PlatformTest.reset();
     });
 
+    describe('requestValidation.strict unset', () => {
+        it('should reject null in a required number body field (strict is the default)', async () => {
+            await PlatformTest.bootstrap(BaseServer, {
+                mount: { '/': [StrictController] }
+            } as Partial<TsED.Configuration>)();
+            const response = await SuperTest(PlatformTest.callback()).post('/strict/body').send({ ...VALID, rNumber: null });
+
+            expect(response.status).toBe(400);
+        });
+    });
+
     describe('requestValidation.strict off (Ts.ED behaviour)', () => {
         let request: SuperTest.Agent;
 

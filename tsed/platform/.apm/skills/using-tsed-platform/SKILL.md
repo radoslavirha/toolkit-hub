@@ -132,8 +132,9 @@ constructor(private config: ConfigService) {}
 ## Strict request validation
 
 Ts.ED coerces request values by default (body `null` → `0`/`false`/`""`, `"42"` → `42`,
-`?b=foo` → `true`). Opt in to strict validation with `requestValidation: { strict: true }` in the
-server `@Configuration`; the default (`false`) is byte-identical to Ts.ED. Strict mode validates
+`?b=foo` → `true`). `BaseServer` validates strictly by default; opt out with
+`requestValidation: { strict: false }` in the server `@Configuration`, which is byte-identical to
+Ts.ED. Strict mode validates
 the body without coercion (`null` only where the model is nullable, wrong JSON types → 400) and
 keeps coercion for query/path/header with `null` honoured only for nullable params and booleans
 limited to `true|false|1|0`.
