@@ -217,6 +217,14 @@ What are you building?
 
 ---
 
+## 🗂️ Design history
+
+Specs, past decisions and the reasons behind non-obvious code live in a private knowledge base, not
+in this repo. Use the global `knowledge-base` skill before changing anything that looks odd or
+re-proposing a design.
+
+---
+
 ## 📚 Maintenance
 
 What belongs in this file versus a skill is decided by the `maintaining-agents-md` skill
