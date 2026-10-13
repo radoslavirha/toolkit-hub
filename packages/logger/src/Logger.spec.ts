@@ -364,6 +364,21 @@ describe('Logger', () => {
             expect(getLine()).toMatchObject({ message: 'Request failed', meta_exception: true, path: '/api/users' });
         });
 
+        it('emits the line on a child logger when parsed meta carries a __proto__ key with exception: true', () => {
+            const logger = new Logger().child('WEBHOOK');
+            logger.info('Webhook received', JSON.parse('{"__proto__":{"exception":true},"event":"push"}') as object);
+
+            expect(capturedLines).toHaveLength(1);
+            expect(getLine()).toMatchObject({ message: 'Webhook received', scope: 'WEBHOOK', event: 'push' });
+        });
+
+        it('renames a __proto__ key from parsed meta to meta___proto__', () => {
+            const logger = new Logger();
+            logger.info('Webhook received', JSON.parse('{"__proto__":{"role":"admin"},"event":"push"}') as object);
+
+            expect(getLine()).toMatchObject({ event: 'push', meta___proto__: { role: 'admin' } });
+        });
+
         it('renames reserved keys carried by an Error passed as meta', () => {
             const logger = new Logger().child('PAYMENT');
             logger.error('Payment failed', Object.assign(new Error('card declined'), { scope: 'checkout' }));

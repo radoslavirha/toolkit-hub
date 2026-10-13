@@ -26,9 +26,9 @@ const WINSTON_COLORS: Record<LogLevel, string> = {
 
 /**
  * Fields the logger sets itself, plus `exception` (Winston's transports drop any record with
- * `exception: true`); a metadata key with one of these names is emitted as `meta_<key>`.
+ * `exception: true`; an own `__proto__` key from parsed JSON gets lost in Winston's record copy); a metadata key with one of these names is emitted as `meta_<key>`.
  */
-const RESERVED_KEYS: readonly string[] = ['timestamp', 'level', 'message', 'scope', 'exception'];
+const RESERVED_KEYS: readonly string[] = ['timestamp', 'level', 'message', 'scope', 'exception', '__proto__'];
 
 /**
  * Unique symbol used as a brand key on {@link ChildConfig}.
@@ -62,6 +62,7 @@ export class Logger<T extends object = object> {
     private readonly logger: winston.Logger;
     private readonly enabled: boolean;
     private readonly metaProvider?: () => Partial<T>;
+    private readonly scope?: string;
 
     public constructor(options?: LoggerOptions<T>);
     public constructor(childConfig: ChildConfig);
@@ -69,6 +70,7 @@ export class Logger<T extends object = object> {
         if (CommonUtils.notUndefined(optionsOrChild) && CHILD_LOGGER in optionsOrChild) {
             this.enabled = optionsOrChild.enabled;
             this.logger = optionsOrChild.logger;
+            this.scope = optionsOrChild.scope;
             this.metaProvider = optionsOrChild.metaProvider as (() => Partial<T>) | undefined;
         } else {
             this.enabled = optionsOrChild?.enabled ?? true;
@@ -105,7 +107,7 @@ export class Logger<T extends object = object> {
         const config: ChildConfig = {
             [CHILD_LOGGER]: true,
             enabled: this.enabled,
-            logger: this.logger.child({ scope }),
+            logger: this.logger,
             scope,
             metaProvider: mergedProvider
         };
@@ -151,7 +153,10 @@ export class Logger<T extends object = object> {
         const metadata = { ...Logger.serializeNestedErrors(baseMeta), ...Logger.serializeMeta(meta) };
 
         // Single-object form: the (level, msg, meta) form appends `meta.message` to the body.
-        this.logger.log({ ...Logger.renameReservedKeys(metadata), level, message: body });
+        // `scope` is added here, not through Winston's child(): its write copies the record with
+        // Object.assign, which turns a parsed own `__proto__` key into a prototype swap.
+        const scoped = CommonUtils.notUndefined(this.scope) ? { scope: this.scope } : {};
+        this.logger.log({ ...scoped, ...Logger.renameReservedKeys(metadata), level, message: body });
     }
 
     /**
@@ -160,7 +165,7 @@ export class Logger<T extends object = object> {
      * value is kept. `exception` is moved too, so Winston doesn't discard the line.
      */
     private static renameReservedKeys(metadata: object): object {
-        if (!RESERVED_KEYS.some((key) => key in metadata)) {
+        if (!RESERVED_KEYS.some((key) => Object.hasOwn(metadata, key))) {
             return metadata;
         }
         return Object.fromEntries(
