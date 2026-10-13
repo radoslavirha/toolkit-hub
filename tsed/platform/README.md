@@ -406,17 +406,22 @@ async update(
 
 Ts.ED's Ajv coerces every parameter (`coerceTypes: true`, coerced values returned), so a JSON
 body `null` on a non-nullable `number` reaches the handler as `0`, `"42"` becomes `42`, and
-`?b=foo` becomes `true`. `BaseServer` registers a `ValidationPipe` override that can turn this off.
-It is **opt-in**: with the flag unset or `false` behaviour is identical to plain Ts.ED.
+`?b=foo` becomes `true`. `BaseServer` registers a `ValidationPipe` override that turns this off. Strict validation is
+**on by default**; set `requestValidation.strict` to `false` to get plain Ts.ED behaviour back.
 
 ```ts ignore
 @Configuration({
-    requestValidation: { strict: true }
+    requestValidation: { strict: false } // escape hatch: Ts.ED coercion
 })
 export class Server extends BaseServer {}
 ```
 
-With `requestValidation.strict` on:
+Migrating from a version where strict was opt-in: requests that were silently coerced now
+return 400 — `null` on a non-nullable field, wrong JSON types (`"42"` or `1` for a boolean or
+number field), `?flag=foo`, `?n=null` on a non-nullable parameter. Mark fields `@Nullable()` where
+`null` is legitimate, or opt out with `strict: false`.
+
+With strict validation on (the default):
 
 - **Body** is validated by a non-coercing Ajv built from the same Ajv (same options, `ajv-errors`,
   formats and `@Formats`). `null` passes only where the model is nullable; any wrong JSON type is a 400.

@@ -32,7 +32,7 @@ const BOOLEANS = new Map<string, boolean>([['true', true], ['false', false], ['1
 /**
  * Replacement for Ts.ED's `ValidationPipe`, registered by {@link BaseServer}.
  *
- * With `requestValidation.strict` off (the default) it behaves exactly like Ts.ED. With it on:
+ * With `requestValidation.strict` set to `false` it behaves exactly like Ts.ED. Strict is the default; with it on:
  * - **body** is validated by a non-coercing Ajv, so `null` passes only where the model is nullable
  *   and any wrong JSON type is a 400;
  * - **query / path / header** keep coercion (values are strings) except that the text `null` becomes
@@ -44,7 +44,7 @@ export class RequestValidationPipe extends ValidationPipe {
     private readonly strictAjv = new StrictAjvService();
     private readonly coercingAjv = inject(AjvService);
     private readonly schemaTypes = new WeakMap<JsonParameterStore, string[]>();
-    private readonly strict = constant<boolean>('requestValidation.strict', false);
+    private readonly strict = constant<boolean>('requestValidation.strict', true);
 
     public override coerceTypes(value: unknown, metadata: JsonParameterStore): unknown {
         if (!this.strict) {
