@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-mongoose
 
+## 5.1.1
+
+### Patch Changes
+
+- [#373](https://github.com/radoslavirha/toolkit-hub/pull/373) [`ed2a39f`](https://github.com/radoslavirha/toolkit-hub/commit/ed2a39f44be5f0af1e85cc3c323e276fbb2cc2a7) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `MongoRepository.updateByIdIfUnmodified` now runs schema validators, so an update that violates the schema rejects instead of persisting.
+
 ## 5.1.0
 
 ### Minor Changes

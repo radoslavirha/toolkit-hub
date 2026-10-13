@@ -44,25 +44,25 @@
     {
       "name": "logger",
       "description": "Agent guidance for @radoslavirha/logger - scoped structured logging",
-      "version": "0.4.9",
+      "version": "0.4.10",
       "source": "./packages/logger"
     },
     {
       "name": "redaction",
       "description": "Agent guidance for @radoslavirha/redaction - compiled redaction profiles",
-      "version": "0.3.6",
+      "version": "0.3.7",
       "source": "./packages/redaction"
     },
     {
       "name": "tsed-logger",
       "description": "Agent guidance for @radoslavirha/tsed-logger - DI logger and scopes",
-      "version": "0.7.7",
+      "version": "0.7.8",
       "source": "./tsed/logger"
     },
     {
       "name": "tsed-swagger",
       "description": "Agent guidance for @radoslavirha/tsed-swagger - multi-version OpenAPI",
-      "version": "9.1.14",
+      "version": "9.1.15",
       "source": "./tsed/swagger"
     },
     {
@@ -86,13 +86,13 @@
     {
       "name": "tsed-platform",
       "description": "Agent guidance for @radoslavirha/tsed-platform - server bootstrap and handlers",
-      "version": "5.1.0",
+      "version": "6.0.0",
       "source": "./tsed/platform"
     },
     {
       "name": "tsed-mongoose",
       "description": "Agent guidance for @radoslavirha/tsed-mongoose - mapper and repository pattern",
-      "version": "5.1.0",
+      "version": "5.1.1",
       "source": "./tsed/mongoose"
     },
     {
