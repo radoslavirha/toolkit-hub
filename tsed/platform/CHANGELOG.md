@@ -1,5 +1,19 @@
 # @radoslavirha/tsed-platform
 
+## 6.0.0
+
+### Major Changes
+
+- [#375](https://github.com/radoslavirha/toolkit-hub/pull/375) [`f3a8708`](https://github.com/radoslavirha/toolkit-hub/commit/f3a87081820a2163aad118447a012e5bde4297a9) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `requestValidation.strict` now defaults to `true`. Requests that Ts.ED silently coerced now return 400: `null` on a non-nullable field, wrong JSON types (e.g. `"42"` or `1` for a boolean/number body field), `?flag=foo`, and `?n=null` on a non-nullable parameter. Mark fields `@Nullable()` where `null` is legitimate, or restore the old behaviour with `requestValidation: { strict: false }`.
+
+### Patch Changes
+
+- [#376](https://github.com/radoslavirha/toolkit-hub/pull/376) [`ac20467`](https://github.com/radoslavirha/toolkit-hub/commit/ac20467b1b4ca0d4d5dbe09fe5773a1e9b7fb44d) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Documented that strict request validation does not apply to `@HeaderParams` unless declared with `useValidation: true`.
+
+- [#370](https://github.com/radoslavirha/toolkit-hub/pull/370) [`acb5213`](https://github.com/radoslavirha/toolkit-hub/commit/acb52134a89a0df21da141b0d053dab1de09386e) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Strict request validation now accepts `1`/`0` for `boolean[]` query parameters, as it does for scalar booleans.
+- Updated dependencies []:
+  - @radoslavirha/tsed-logger@0.7.8
+
 ## 5.1.0
 
 ### Minor Changes

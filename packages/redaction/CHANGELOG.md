@@ -1,5 +1,11 @@
 # @radoslavirha/redaction
 
+## 0.3.7
+
+### Patch Changes
+
+- [#372](https://github.com/radoslavirha/toolkit-hub/pull/372) [`5ccb18f`](https://github.com/radoslavirha/toolkit-hub/commit/5ccb18f7277db4acc6f6c0783e3424440c00b7b9) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Redact JSON held in a `Buffer` or `Uint8Array`: binary input is now decoded as UTF-8 text before redaction instead of being serialised as a byte array that bypassed `redactPaths`.
+
 ## 0.3.6
 
 ### Patch Changes

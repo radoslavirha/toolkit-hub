@@ -1,5 +1,11 @@
 # @radoslavirha/logger
 
+## 0.4.10
+
+### Patch Changes
+
+- [#371](https://github.com/radoslavirha/toolkit-hub/pull/371) [`3d42698`](https://github.com/radoslavirha/toolkit-hub/commit/3d4269887e58a5c7e6a24ece84c6fae300448b89) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Fix a child logger dropping the whole line (or losing the field) when parsed meta carries an own `__proto__` key. The child now adds `scope` itself instead of going through Winston's `child()`.
+
 ## 0.4.9
 
 ### Patch Changes
