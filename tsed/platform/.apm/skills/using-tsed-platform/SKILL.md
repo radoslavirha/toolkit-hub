@@ -136,8 +136,17 @@ Ts.ED coerces request values by default (body `null` → `0`/`false`/`""`, `"42"
 `requestValidation: { strict: false }` in the server `@Configuration`, which is byte-identical to
 Ts.ED. Strict mode validates
 the body without coercion (`null` only where the model is nullable, wrong JSON types → 400) and
-keeps coercion for query/path/header with `null` honoured only for nullable params and booleans
+keeps coercion for query/path with `null` honoured only for nullable params and booleans
 limited to `true|false|1|0`.
+
+Header params are **not** validated: `@HeaderParams` defaults to `useValidation = false`, so
+`x-dry-run: false` reaches the handler as the truthy string `"false"`. Opt in per parameter, and
+the strict pipe then coerces and validates it like a query param:
+
+```typescript
+@Get('/')
+list(@HeaderParams({ expression: 'x-dry-run', useValidation: true }) dryRun?: boolean) {}
+```
 
 ## Logging
 

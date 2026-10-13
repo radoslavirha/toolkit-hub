@@ -425,9 +425,20 @@ With strict validation on (the default):
 
 - **Body** is validated by a non-coercing Ajv built from the same Ajv (same options, `ajv-errors`,
   formats and `@Formats`). `null` passes only where the model is nullable; any wrong JSON type is a 400.
-- **Query / path / header** keep coercion (values are strings), except that the text `null` becomes
+- **Query / path** keep coercion (values are strings), except that the text `null` becomes
   `null` only for nullable parameters, booleans accept only `true|false|1|0`, and an explicit
   `null` on a nullable parameter is accepted before the required check.
+- **Header** parameters are not validated: Ts.ED's `@HeaderParams` defaults to `useValidation = false`,
+  so the raw string reaches the handler (`x-dry-run: false` arrives as `"false"`, which is truthy).
+  Opt in per parameter with `useValidation: true`; the strict pipe then coerces and validates it
+  like a query parameter:
+
+  ```typescript
+  @Get('/')
+  list(@HeaderParams({ expression: 'x-dry-run', useValidation: true }) dryRun?: boolean) {
+    // 'false' -> false, 'foo' -> 400
+  }
+  ```
 
 | | missing | `null` | valid | wrong JSON type |
 |---|---|---|---|---|
