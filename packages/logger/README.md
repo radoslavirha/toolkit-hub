@@ -240,7 +240,7 @@ Every log line is a single JSON object:
 | `scope` | Child loggers only | Instrumentation scope (class/module name) |
 | Additional keys | `metaProvider` or per-call `meta` provided | Merged metadata fields |
 | `error_name`, `error_message`, `error_stack` | `meta` is an `Error` | The error's name, message and stack, plus its own enumerable properties (e.g. `code`) |
-| `meta_timestamp`, `meta_level`, `meta_message`, `meta_scope`, `meta_exception` | `metaProvider` or `meta` uses a reserved key | The caller's value for that key (see below) |
+| `meta_timestamp`, `meta_level`, `meta_message`, `meta_scope`, `meta_exception`, `meta___proto__` | `metaProvider` or `meta` uses a reserved key | The caller's value for that key (see below) |
 
 An `Error` passed as `meta` is flattened into the `error_*` fields above. An `Error` held in a
 top-level `meta` key (`{ error }`), or in an own property of an `Error` passed as `meta`
@@ -252,7 +252,9 @@ properties) is emitted as `meta_<key>`. `log.warn('Upstream call failed', { mess
 emits `"message":"Upstream call failed","meta_message":"Service Unavailable"`, and a child's pinned
 `scope` is never overwritten. The rename applies on root loggers too, so `scope` always means the
 instrumentation scope. `exception` is reserved as well: Winston silently drops any record carrying
-`exception: true`, so `{ exception: true }` is emitted as `"meta_exception":true`.
+`exception: true`, so `{ exception: true }` is emitted as `"meta_exception":true`. An own `__proto__` key (as `JSON.parse` creates) is
+renamed to `meta___proto__` for the same reason: left alone it would be lost, and could change
+the record's prototype.
 
 `fatal` and `error` levels write to **stderr**; all other levels write to **stdout**.
 
