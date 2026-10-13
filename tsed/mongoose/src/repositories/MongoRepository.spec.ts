@@ -1,3 +1,4 @@
+import type { MongooseModel } from '@tsed/mongoose';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import { TestContainersMongo } from '@tsed/testcontainers-mongo';
 import { Types } from 'mongoose';
@@ -5,6 +6,8 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { MongoOperationStatus } from '../enums/MongoOperationStatus.js';
 import { TestMongoRepository } from '../test/TestMongoRepository.js';
 import { TestModelMongo } from '../test/TestMongoModel.js';
+import { TestStorageMongo } from '../test/TestStorageModel.js';
+import { MongoRepository } from './MongoRepository.js';
 
 describe('MongoRepository', () => {
     let repository: TestMongoRepository;
@@ -153,6 +156,26 @@ describe('MongoRepository', () => {
 
             expect(missing).toEqual({ status: MongoOperationStatus.NOT_FOUND });
             expect(malformed).toEqual({ status: MongoOperationStatus.NOT_FOUND });
+        });
+
+        it('rejects an update that violates the schema instead of persisting it', async () => {
+            class StorageRepository extends MongoRepository<TestStorageMongo> {
+                protected mongo = TestStorageMongo;
+                public constructor(protected model: MongooseModel<TestStorageMongo>) {
+                    super();
+                }
+                public update(id: string, at: Date, data: object) {
+                    return this.updateByIdIfUnmodified(id, at, data as never);
+                }
+            }
+            const model = PlatformTest.get<MongooseModel<TestStorageMongo>>(TestStorageMongo);
+            const storage = new StorageRepository(model);
+            const doc = await model.create({ name: 'ada' });
+
+            expect.assertions(2);
+
+            await expect(storage.update(doc._id.toString(), doc.updatedAt, { name: null })).rejects.toThrow(/name/);
+            expect((await model.findById(doc._id).lean())!.name).toBe('ada');
         });
 
         it('leaves the unconditional findByIdAndUpdate path last-write-wins', async () => {

@@ -713,7 +713,7 @@ Deserializes an array of lean/plain query results into typed `MONGO` instances.
 Converts a Mongoose `HydratedDocument` (returned by `model.create()`) to a plain object. Use this when `.lean()` is not available.
 
 #### `protected updateByIdIfUnmodified(id: string, expectedUpdatedAt: Date, data: MongoUpdate<MONGO>): Promise<MongoConcurrentUpdateResult<MONGO>>`
-Opt-in optimistic concurrency. Applies `data` with `$set` only if the document's `updatedAt` still equals `expectedUpdatedAt` (the value the caller read). Resolves `{ status: MongoOperationStatus.UPDATED, value }`, `{ status: MongoOperationStatus.CONFLICT }` (changed since read — map to 409/412) or `{ status: MongoOperationStatus.NOT_FOUND }` (missing or malformed id). Requires `timestamps: true`; `updatedAt` has millisecond precision. Existing update methods stay last-write-wins.
+Opt-in optimistic concurrency. Applies `data` with `$set` only if the document's `updatedAt` still equals `expectedUpdatedAt` (the value the caller read). Resolves `{ status: MongoOperationStatus.UPDATED, value }`, `{ status: MongoOperationStatus.CONFLICT }` (changed since read — map to 409/412) or `{ status: MongoOperationStatus.NOT_FOUND }` (missing or malformed id). The update runs with `runValidators: true`, so a value the schema forbids rejects with a Mongoose `ValidationError`. Requires `timestamps: true`; `updatedAt` has millisecond precision. Existing update methods stay last-write-wins.
 
 To wire it to HTTP, return `updatedAt` as the `ETag`, read it back from `If-Match` / `If-Unmodified-Since`, and answer `412` (or `409`) on `conflict`.
 
