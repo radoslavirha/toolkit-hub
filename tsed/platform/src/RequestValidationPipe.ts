@@ -59,6 +59,9 @@ export class RequestValidationPipe extends ValidationPipe {
         if (StringUtils.isString(value) && this.allows(metadata, 'boolean')) {
             return BOOLEANS.get(value) ?? value;
         }
+        if (metadata.isArray && this.allows(metadata, 'boolean', true)) {
+            return ArrayUtils.toArray(value).map((item) => (StringUtils.isString(item) ? (BOOLEANS.get(item) ?? item) : item));
+        }
         return super.coerceTypes(value, metadata);
     }
 
@@ -85,13 +88,14 @@ export class RequestValidationPipe extends ValidationPipe {
         });
     }
 
-    private allows(metadata: JsonParameterStore, type: string): boolean {
+    private allows(metadata: JsonParameterStore, type: string, items = false): boolean {
         let types = this.schemaTypes.get(metadata);
         if (!types) {
-            const declared = (compile(metadata, { customKeys: true }) as { type?: string | string[] }).type;
-            types = ArrayUtils.toArray(declared as string | string[]);
+            const schema = compile(metadata, { customKeys: true }) as { type?: string | string[]; items?: { type?: string | string[] } };
+            const itemTypes = ArrayUtils.toArray(schema.items?.type as string | string[]).map((t) => `items:${t}`);
+            types = [...ArrayUtils.toArray(schema.type as string | string[]), ...itemTypes];
             this.schemaTypes.set(metadata, types);
         }
-        return types.includes(type);
+        return types.includes(items ? `items:${type}` : type);
     }
 }
