@@ -236,5 +236,18 @@ describe('RedactionUtils', () => {
 
             expect(redactor('{"id":1234567890123456789}')).toBe('{"id":"***"}');
         });
+
+        it('redacts configured paths inside JSON text held in a Uint8Array (which a Buffer is)', () => {
+            const redactor = RedactionUtils.compileRedactor(['password']);
+            const text = '{"user":"ada","password":"hunter2"}';
+
+            expect(redactor(new TextEncoder().encode(text))).toBe('{"user":"ada","password":"***"}');
+        });
+
+        it('decodes binary input as text when no paths are configured', () => {
+            const redactor = RedactionUtils.compileRedactor([]);
+
+            expect(redactor(new TextEncoder().encode('plain'))).toBe('plain');
+        });
     });
 });

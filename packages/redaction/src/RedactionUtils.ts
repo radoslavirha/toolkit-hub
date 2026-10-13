@@ -68,6 +68,8 @@ export class RedactionUtils {
      * value and re-serialised compactly. Any other string — plain text, a raw
      * query string, a JSON primitive — cannot be addressed by path selectors and
      * is returned unchanged; parse such payloads before redacting them.
+     * A `Uint8Array` (including `Buffer`) is first decoded as UTF-8 text and then
+     * handled as a string.
      *
      * @param redactPaths Selectors to censor. An empty list yields a redactor
      *   that only serialises.
@@ -85,18 +87,23 @@ export class RedactionUtils {
         }) as RedactorFunction;
 
         if (redactPaths.length === 0) {
-            return redactor;
+            return (value: unknown): string => redactor(RedactionUtils.decodeBinary(value));
         }
 
         const rootNames = options.caseInsensitiveRoot === true ? RedactionUtils.rootNames(redactPaths) : new Set<string>();
 
         return (value: unknown): string => {
-            const copy = RedactionUtils.toWritableCopy(value);
+            const copy = RedactionUtils.toWritableCopy(RedactionUtils.decodeBinary(value));
 
             RedactionUtils.censorRootNames(copy, rootNames);
 
             return redactor(copy);
         };
+    }
+
+    /** A `Uint8Array` (including `Buffer`) decoded as UTF-8 text, so JSON held in bytes is redacted like JSON text; any other value as is. */
+    private static decodeBinary(value: unknown): unknown {
+        return value instanceof Uint8Array ? new TextDecoder().decode(value) : value;
     }
 
     /** Lowercased property names of the plain (`name`) and bracket (`["name"]`) root-level selectors. */
