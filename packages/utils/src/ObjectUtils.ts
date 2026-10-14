@@ -194,7 +194,9 @@ export class ObjectUtils {
             return [...ObjectUtils.cloneDeep(target), ...ObjectUtils.cloneDeep(source)] as T & S;
         }
 
-        return _.mergeWith(ObjectUtils.cloneDeep(target), ObjectUtils.cloneDeep(source), (targetValue, sourceValue) => {
+        // source class instance -> target subtree it is merged into; lets cyclic instance graphs terminate
+        const merged = new WeakMap<object, object>();
+        const customizer = (targetValue: unknown, sourceValue: unknown): unknown => {
             if (ArrayUtils.isArray(targetValue) && ArrayUtils.isArray(sourceValue)) {
                 return [...targetValue, ...sourceValue];
             }
@@ -211,11 +213,19 @@ export class ObjectUtils {
                 !_.isPlainObject(sourceValue) &&
                 Object.prototype.toString.call(sourceValue) === '[object Object]'
             ) {
-                return ObjectUtils.mergeDeep(targetValue, { ...sourceValue });
+                const known = merged.get(sourceValue as object);
+                if (known) {
+                    return known;
+                }
+                // both values come from the clones made below, so the target can be merged in place
+                merged.set(sourceValue as object, targetValue);
+                return _.mergeWith(targetValue, { ...(sourceValue as object) }, customizer);
             }
 
             return undefined;
-        });
+        };
+
+        return _.mergeWith(ObjectUtils.cloneDeep(target), ObjectUtils.cloneDeep(source), customizer);
     }
 
     /**

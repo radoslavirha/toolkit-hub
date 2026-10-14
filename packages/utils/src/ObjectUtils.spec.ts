@@ -168,6 +168,17 @@ describe('ObjectUtils', () => {
     });
 
     describe('mergeDeep', () => {
+        it('merges class instances that reference themselves in both target and source', () => {
+            class TreeNode {
+                self: TreeNode = this;
+                constructor(public name: string) {}
+            }
+
+            const result = ObjectUtils.mergeDeep({ node: new TreeNode('a') }, { node: new TreeNode('b') });
+
+            expect(result.node.name).toBe('b');
+        });
+
         it('does not mutate an Error nested in target', () => {
             const error = new Error('boom');
 
