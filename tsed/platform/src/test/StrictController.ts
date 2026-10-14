@@ -68,6 +68,11 @@ export class StrictController {
         return { v };
     }
 
+    @Get('/booleans/r')
+    public rBooleans(@QueryParams('v') @Required() @CollectionOf(Boolean) v: boolean[]): { v: unknown } {
+        return { v };
+    }
+
     @Get('/string/o')
     public oString(@QueryParams('v') v?: string): { v: unknown } {
         return { v };

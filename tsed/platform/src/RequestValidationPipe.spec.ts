@@ -141,6 +141,8 @@ describe('RequestValidationPipe', () => {
                 ['/strict/booleans/o?v=1', 200, [true]],
                 ['/strict/booleans/o?v=true&v=0', 200, [true, false]],
                 ['/strict/booleans/o?v=true&v=foo', 400],
+                ['/strict/booleans/o', 200, undefined],
+                ['/strict/booleans/r', 400],
                 ['/strict/string/o?v=null', 200, 'null'],
                 ['/strict/string/o?v=', 200, ''],
                 ['/strict/string/on?v=null', 200, null]
