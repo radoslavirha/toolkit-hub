@@ -53,7 +53,7 @@ export class RequestValidationPipe extends ValidationPipe {
         if (!this.strict) {
             return super.coerceTypes(value, metadata);
         }
-        if (metadata.paramType === ParamTypes.BODY) {
+        if (metadata.paramType === ParamTypes.BODY || CommonUtils.isUndefined(value)) {
             return value;
         }
         if (value === 'null') {
