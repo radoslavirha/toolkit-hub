@@ -155,7 +155,8 @@ applies `$set` only if `updatedAt` still equals the value the caller read, and r
 `{ status: MongoOperationStatus.UPDATED, value }`, `{ status: MongoOperationStatus.CONFLICT }` or `{ status: MongoOperationStatus.NOT_FOUND }`. Have the
 service map `CONFLICT` to 409/412 and `NOT_FOUND` to 404. Over HTTP, send `updatedAt` as the
 `ETag` and take the precondition from `If-Match` / `If-Unmodified-Since`. It needs
-`timestamps: true`; precision is one millisecond. Opt-in per method — existing updates are
+`timestamps: true`; precision is one millisecond. An `Invalid Date` precondition (e.g. a
+malformed `If-Unmodified-Since`) resolves `CONFLICT`, it does not throw. Opt-in per method — existing updates are
 unchanged.
 
 ## References and populated fields

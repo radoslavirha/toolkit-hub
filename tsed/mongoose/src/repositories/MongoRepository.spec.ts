@@ -158,6 +158,18 @@ describe('MongoRepository', () => {
             expect(malformed).toEqual({ status: MongoOperationStatus.NOT_FOUND });
         });
 
+        it('resolves conflict instead of throwing for an invalid expectedUpdatedAt', async () => {
+            expect.assertions(2);
+
+            const doc = await repository.create({ label: 'a' });
+
+            const result = await repository.updateByIdIfUnmodified(doc._id, new Date('not-a-date'), { label: 'b' });
+            const missing = await repository.updateByIdIfUnmodified(new Types.ObjectId().toHexString(), new Date('not-a-date'), { label: 'b' });
+
+            expect(result).toStrictEqual({ status: MongoOperationStatus.CONFLICT });
+            expect(missing).toStrictEqual({ status: MongoOperationStatus.NOT_FOUND });
+        });
+
         it('rejects an update that violates the schema instead of persisting it', async () => {
             class StorageRepository extends MongoRepository<TestStorageMongo> {
                 protected mongo = TestStorageMongo;
