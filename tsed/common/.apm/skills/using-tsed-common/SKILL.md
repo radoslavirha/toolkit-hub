@@ -69,7 +69,7 @@ Ts.ED 8.41 gets several obvious nullable declarations silently wrong. Use these:
 
 - Always pass explicit types: `X | null` makes `design:type` `Object`, so a bare `@Property()` emits `{"type":"object"}`.
 - `@Nullable(String) @Enum(E)`, `s.enums(E).nullable()` and `@Allow(null) @Enum(E)` reject `null`; use `@NullableEnum(E)`.
-- `@Property(Date)` / `@Nullable(Date)` without `@DateTime()` accept any string; `@Allow(null)` silently makes the property required.
+- `@Property(Date)` / `@Nullable(Date)` without `@DateTime()` accept any string; `@Allow(null)` silently makes the property required. `@ArrayOf(Date)` / `@MapOf(Date)` add `format: 'date-time'` to the items themselves, so they need no extra decorator.
 - A required string is non-empty (`@Required()` adds `minLength: 1`); use `@MinLength`/`@MaxLength` on optional strings. Do not use `@Required(true, '')`.
 - Update semantics: absent = keep, `null` = clear, present = replace the whole value (objects, maps, arrays too). Per-key edits belong on dedicated sub-resource endpoints.
 

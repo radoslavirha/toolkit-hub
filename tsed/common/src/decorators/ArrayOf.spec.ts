@@ -22,6 +22,9 @@ class Target {
 
     @ArrayOf(Number, { nullable: true })
     numbers?: number[] | null;
+
+    @ArrayOf(Date)
+    dates?: Date[];
 }
 
 describe('ArrayOf', () => {
@@ -50,6 +53,16 @@ describe('ArrayOf', () => {
         });
     });
 
+    describe('schema (Date items)', () => {
+        it('emits format date-time for Date items in JSON Schema and OAS 3.0', () => {
+            expect(getJsonSchema(Target).properties.dates).toStrictEqual({ type: 'array', items: { type: 'string', format: 'date-time' } });
+            expect(getJsonSchema(Target, { specType: SpecTypes.OPENAPI }).properties.dates).toStrictEqual({
+                type: 'array',
+                items: { type: 'string', format: 'date-time' }
+            });
+        });
+    });
+
     describe('validation', () => {
         it('accepts valid, empty and (when nullable) null arrays', () => {
             expect(() => JSONSchemaValidator.validate(Target, { required: [] })).not.toThrow();
@@ -71,7 +84,8 @@ describe('ArrayOf', () => {
             ['an object instead of an array', { required: {} }],
             ['an object for a nullable array', { required: [], nullable: {} }],
             ['an item of the wrong type', { required: ['x'] }],
-            ['a number item of the wrong type', { required: [], numbers: ['1'] }]
+            ['a number item of the wrong type', { required: [], numbers: ['1'] }],
+            ['a Date item that is not a date-time', { required: [], dates: ['not-a-date'] }]
         ])('rejects %s', (_label, input) => {
             expect(() => JSONSchemaValidator.validate(Target, input)).toThrow();
         });
