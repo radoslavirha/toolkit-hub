@@ -25,9 +25,17 @@ export interface ArrayOfOptions {
  * ```
  */
 export function ArrayOf(type: Type<unknown>, options: ArrayOfOptions = {}): PropertyDecorator {
-    return useDecorators(CollectionOf(type, Array), options.nullable
-        ? JsonEntityFn(store => {
-            store.schema.nullable(true);
-        })
-        : undefined) as PropertyDecorator;
+    return useDecorators(
+        CollectionOf(type, Array),
+        options.nullable
+            ? JsonEntityFn(store => {
+                store.schema.nullable(true);
+            })
+            : undefined,
+        type === Date
+            ? JsonEntityFn(store => {
+                store.itemSchema.format('date-time');
+            })
+            : undefined
+    ) as PropertyDecorator;
 }

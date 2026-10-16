@@ -32,6 +32,11 @@ export function mapSchema(type: Type<unknown>, options: MapSchemaOptions): Prope
             ? JsonEntityFn(store => {
                 store.itemSchema.nullable(true);
             })
+            : undefined,
+        type === Date
+            ? JsonEntityFn(store => {
+                store.itemSchema.format('date-time');
+            })
             : undefined
     ) as PropertyDecorator;
 }

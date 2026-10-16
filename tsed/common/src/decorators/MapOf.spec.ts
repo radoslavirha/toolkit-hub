@@ -25,10 +25,20 @@ class Target {
 
     @MapOf(Child)
     children?: Map<string, Child>;
+
+    @MapOf(Date)
+    dates?: Map<string, Date>;
 }
 
 describe('MapOf', () => {
     describe('schema', () => {
+        it('emits format date-time for Date values in JSON Schema and OAS 3.0', () => {
+            const expected = { type: 'object', additionalProperties: { type: 'string', format: 'date-time' } };
+
+            expect(getJsonSchema(Target).properties.dates).toStrictEqual(expected);
+            expect(getJsonSchema(Target, { specType: SpecTypes.OPENAPI }).properties.dates).toStrictEqual(expected);
+        });
+
         it('emits additionalProperties for the value type', () => {
             const schema = getJsonSchema(Target);
 
@@ -79,7 +89,8 @@ describe('MapOf', () => {
             ['null values without nullableValues', { required: { a: null } }],
             ['a dotted key with mongoSafeKeys', { required: {}, safe: { 'a.b': 1 } }],
             ['a $-prefixed key with mongoSafeKeys', { required: {}, safe: { $a: 1 } }],
-            ['a non-object model value', { required: {}, children: { a: 'x' } }]
+            ['a non-object model value', { required: {}, children: { a: 'x' } }],
+            ['a Date value that is not a date-time', { required: {}, dates: { a: 'not-a-date' } }]
         ])('rejects %s', (_label, input) => {
             expect(() => JSONSchemaValidator.validate(Target, input)).toThrow();
         });
