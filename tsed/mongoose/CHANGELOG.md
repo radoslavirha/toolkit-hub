@@ -1,5 +1,14 @@
 # @radoslavirha/tsed-mongoose
 
+## 5.1.2
+
+### Patch Changes
+
+- [#388](https://github.com/radoslavirha/toolkit-hub/pull/388) [`47e10af`](https://github.com/radoslavirha/toolkit-hub/commit/47e10af4285d12d5459fed25f99e43bfea9b9edb) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `updateByIdIfUnmodified` resolves `conflict` (or `not-found`) for an `Invalid Date` `expectedUpdatedAt` instead of rejecting with a `CastError`.
+- Updated dependencies [[`435b661`](https://github.com/radoslavirha/toolkit-hub/commit/435b6610f5cfac388939a9f7c13a1b2c3b44658d), [`7b17683`](https://github.com/radoslavirha/toolkit-hub/commit/7b176837702cc0288d20756587fc268aa74c8388)]:
+  - @radoslavirha/utils@0.10.1
+  - @radoslavirha/tsed-common@0.7.1
+
 ## 5.1.1
 
 ### Patch Changes

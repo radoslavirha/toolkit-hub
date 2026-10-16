@@ -1,5 +1,13 @@
 # @radoslavirha/tsed-common
 
+## 0.7.1
+
+### Patch Changes
+
+- [#387](https://github.com/radoslavirha/toolkit-hub/pull/387) [`7b17683`](https://github.com/radoslavirha/toolkit-hub/commit/7b176837702cc0288d20756587fc268aa74c8388) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `@ArrayOf(Date)` and `@MapOf(Date)` now emit `format: 'date-time'` for their items, so a malformed date string is rejected instead of deserializing to `Invalid Date`.
+- Updated dependencies [[`435b661`](https://github.com/radoslavirha/toolkit-hub/commit/435b6610f5cfac388939a9f7c13a1b2c3b44658d)]:
+  - @radoslavirha/utils@0.10.1
+
 ## 0.7.0
 
 ### Minor Changes
