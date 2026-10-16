@@ -1,5 +1,12 @@
 # @radoslavirha/redaction
 
+## 0.3.8
+
+### Patch Changes
+
+- Updated dependencies [[`435b661`](https://github.com/radoslavirha/toolkit-hub/commit/435b6610f5cfac388939a9f7c13a1b2c3b44658d)]:
+  - @radoslavirha/utils@0.10.1
+
 ## 0.3.7
 
 ### Patch Changes

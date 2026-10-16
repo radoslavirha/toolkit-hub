@@ -1,5 +1,11 @@
 # @radoslavirha/types
 
+## 0.4.10
+
+### Patch Changes
+
+- [#382](https://github.com/radoslavirha/toolkit-hub/pull/382) [`3bb5b26`](https://github.com/radoslavirha/toolkit-hub/commit/3bb5b26645709c5f244b9197ef71e0c5478c6444) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `FullPartial` keeps `RegExp`, `Map` and `Set` members as they are, so a plain object is no longer accepted where one of them is declared.
+
 ## 0.4.9
 
 ### Patch Changes

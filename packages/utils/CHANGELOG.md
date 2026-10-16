@@ -1,5 +1,13 @@
 # @radoslavirha/utils
 
+## 0.10.1
+
+### Patch Changes
+
+- [#380](https://github.com/radoslavirha/toolkit-hub/pull/380) [`435b661`](https://github.com/radoslavirha/toolkit-hub/commit/435b6610f5cfac388939a9f7c13a1b2c3b44658d) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ObjectUtils.mergeDeep` no longer overflows the stack when target and source hold self-referencing class instances at the same key.
+- Updated dependencies [[`3bb5b26`](https://github.com/radoslavirha/toolkit-hub/commit/3bb5b26645709c5f244b9197ef71e0c5478c6444)]:
+  - @radoslavirha/types@0.4.10
+
 ## 0.10.0
 
 ### Minor Changes
