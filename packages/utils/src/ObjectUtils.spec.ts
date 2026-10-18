@@ -179,6 +179,18 @@ describe('ObjectUtils', () => {
             expect(result.node.name).toBe('b');
         });
 
+        it('merges a class instance shared by two source keys into each target subtree separately', () => {
+            class Defaults {
+                z = 3;
+            }
+            const shared = new Defaults();
+
+            const result = ObjectUtils.mergeDeep({ a: { x: 1 }, b: { y: 2 } }, { a: shared, b: shared });
+
+            expect(result).toStrictEqual({ a: { x: 1, z: 3 }, b: { y: 2, z: 3 } });
+            expect(result.a).not.toBe(result.b);
+        });
+
         it('does not mutate an Error nested in target', () => {
             const error = new Error('boom');
 

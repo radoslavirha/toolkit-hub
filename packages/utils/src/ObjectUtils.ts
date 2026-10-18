@@ -194,8 +194,9 @@ export class ObjectUtils {
             return [...ObjectUtils.cloneDeep(target), ...ObjectUtils.cloneDeep(source)] as T & S;
         }
 
-        // source class instance -> target subtree it is merged into; lets cyclic instance graphs terminate
-        const merged = new WeakMap<object, object>();
+        // source class instance -> target subtree it is merged into; lets cyclic instance graphs terminate.
+        // Keyed by the pair so a shared instance under a different target subtree is merged on its own.
+        const merged = new WeakMap<object, WeakMap<object, object>>();
         const customizer = (targetValue: unknown, sourceValue: unknown): unknown => {
             if (ArrayUtils.isArray(targetValue) && ArrayUtils.isArray(sourceValue)) {
                 return [...targetValue, ...sourceValue];
@@ -213,12 +214,17 @@ export class ObjectUtils {
                 !_.isPlainObject(sourceValue) &&
                 Object.prototype.toString.call(sourceValue) === '[object Object]'
             ) {
-                const known = merged.get(sourceValue as object);
+                let targets = merged.get(sourceValue as object);
+                if (!targets) {
+                    targets = new WeakMap<object, object>();
+                    merged.set(sourceValue as object, targets);
+                }
+                const known = targets.get(targetValue);
                 if (known) {
                     return known;
                 }
                 // both values come from the clones made below, so the target can be merged in place
-                merged.set(sourceValue as object, targetValue);
+                targets.set(targetValue, targetValue);
                 return _.mergeWith(targetValue, { ...(sourceValue as object) }, customizer);
             }
 
