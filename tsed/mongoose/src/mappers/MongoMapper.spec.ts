@@ -383,6 +383,54 @@ describe('MongoMapper', () => {
         expect(second).toStrictEqual({ theme: 'light' });
     });
 
+    it('getModelValue - POST with undefined resolves @Default of a nested model property', () => {
+        class Address {
+            @Property(String)
+            city!: string;
+        }
+
+        class ProfileModel extends BaseModel {
+            @Property(Address)
+            @Default({ city: 'Prague' })
+            address!: Address;
+        }
+
+        class ProfileMapper extends MongoMapper<TestModelMongo, ProfileModel> {
+            protected mongo = TestModelMongo;
+            protected model = ProfileModel;
+        }
+
+        expect.assertions(1);
+
+        const response = new ProfileMapper().getModelValue(new ProfileModel(), 'address');
+
+        expect(response).toStrictEqual({ city: 'Prague' });
+    });
+
+    it('getModelValue - POST with undefined resolves @Default of an array of nested models', () => {
+        class Address {
+            @Property(String)
+            city!: string;
+        }
+
+        class ProfileModel extends BaseModel {
+            @CollectionOf(Address)
+            @Default([{ city: 'Prague' }])
+            addresses!: Address[];
+        }
+
+        class ProfileMapper extends MongoMapper<TestModelMongo, ProfileModel> {
+            protected mongo = TestModelMongo;
+            protected model = ProfileModel;
+        }
+
+        expect.assertions(1);
+
+        const response = new ProfileMapper().getModelValue(new ProfileModel(), 'addresses');
+
+        expect(response).toStrictEqual([{ city: 'Prague' }]);
+    });
+
     describe('mongoToModel', () => {
         it('maps all fields from a mongo document', async () => {
             const childId = '654bcd82bba81536a4ed4df3';
