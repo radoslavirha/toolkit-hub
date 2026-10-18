@@ -1,5 +1,11 @@
 # @radoslavirha/config-typescript
 
+## 1.1.8
+
+### Patch Changes
+
+- [`cf21d7b`](https://github.com/radoslavirha/toolkit-hub/commit/cf21d7b7446ba8b4c0da0ae18d6449e8045bcfa1) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+
 ## 1.1.7
 
 ### Patch Changes
