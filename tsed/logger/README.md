@@ -217,6 +217,9 @@ If the handler threw something that isn't an `Error` (a string, or a plain objec
 `message`), `error_name` and `error_stack` are omitted and `error_message` holds the thrown value
 as a string (JSON for objects).
 
+Validation errors from `@tsed/ajv` echo the rejected value (`... Given value: "x"`). That value would
+bypass `redactPaths`, so `error_message` and `error_stack` always replace it with `Given value: ***`.
+
 ### 6. Disable or selectively suppress request logging
 
 Control what is included in request log entries via in configuration JSON file:

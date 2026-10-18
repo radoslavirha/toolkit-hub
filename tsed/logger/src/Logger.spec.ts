@@ -3,6 +3,7 @@ import { Logger as BaseLogger, LogLevel } from '@radoslavirha/logger';
 import { runInContext } from '@tsed/di';
 import type { PlatformContext } from '@tsed/platform-http';
 import { PlatformTest } from '@tsed/platform-http/testing';
+import { ParamValidationError, ValidationError } from '@tsed/platform-params';
 import { Ignore, Name, Property } from '@tsed/schema';
 
 import { LoggerOptionsSchema } from './RequestLogOptions.schema.js';
@@ -404,6 +405,28 @@ describe('Logger (tsed-logger)', () => {
             expect(meta['error_name']).toBe('TypeError');
             expect(meta['error_message']).toBe('boom');
             expect(meta['error_stack']).toContain('TypeError: boom');
+        });
+        it('does not leak a redacted request field through a validation error message', async () => {
+            // Message as @tsed/ajv's defaultErrorFormatter and ParamValidationError.from build it.
+            const origin = new ValidationError('User.password must NOT have fewer than 12 characters. Given value: "hunter2"', []);
+            const thrown = ParamValidationError.from(
+                { paramType: 'BODY', expression: '' } as unknown as Parameters<typeof ParamValidationError.from>[0],
+                origin
+            );
+            const logger = buildLogger({
+                requests: { enabled: true, request: { enabled: true, redactPaths: ['password'] } }
+            });
+            const errorSpy = vi.spyOn(logger.httpLog, 'error');
+
+            $ctx.request.raw.body = { email: 'a@b.c', password: 'hunter2' };
+            $ctx.response.status(400);
+            ($ctx as unknown as { error: unknown }).error = thrown;
+            await respond(logger, $ctx);
+
+            const meta = (errorSpy.mock.calls[0] as [string, Record<string, unknown>])[1];
+            expect(meta['request']).toBe('{"email":"a@b.c","password":"***"}');
+            expect(JSON.stringify(meta)).not.toContain('hunter2');
+            expect(meta['error_message']).toContain('Given value: ***');
         });
     });
 

@@ -150,6 +150,14 @@ export class Logger extends BaseLogger<LoggerMetadata> {
         return serialize(data, { useAlias: true, ...endpoint.getResponseOptions(response.statusCode, { includes }), endpoint: true });
     }
 
+    /**
+     * `@tsed/ajv` echoes the rejected value into its validation messages (`... Given value: "x"`),
+     * which would bypass the redaction applied to `request` / `query`. The value is one line of JSON.
+     */
+    private static scrubGivenValue(text: string | undefined): string | undefined {
+        return text?.replace(/Given value: .*/g, 'Given value: ***');
+    }
+
     private static serializePlain(data: unknown): unknown {
         return isSerializable(data) ? serialize(data, { useAlias: true }) : data;
     }
@@ -165,7 +173,13 @@ export class Logger extends BaseLogger<LoggerMetadata> {
         }
 
         if (error instanceof Error || StringUtils.isString((error as { message?: unknown }).message)) {
-            return { ...LogErrorUtils.toFields(error as Error & { code?: string }, { stack: this.options.requests.stack }) };
+            const fields = LogErrorUtils.toFields(error as Error & { code?: string }, { stack: this.options.requests.stack });
+
+            return {
+                ...fields,
+                error_message: Logger.scrubGivenValue(fields.error_message),
+                ...(fields.error_stack === undefined ? {} : { error_stack: Logger.scrubGivenValue(fields.error_stack) })
+            };
         }
 
         return { error_message: RedactionUtils.stringifyForLog(error) };
