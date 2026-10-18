@@ -1,5 +1,13 @@
 # @radoslavirha/logger
 
+## 0.4.11
+
+### Patch Changes
+
+- [`cf21d7b`](https://github.com/radoslavirha/toolkit-hub/commit/cf21d7b7446ba8b4c0da0ae18d6449e8045bcfa1) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+- Updated dependencies [[`435b661`](https://github.com/radoslavirha/toolkit-hub/commit/435b6610f5cfac388939a9f7c13a1b2c3b44658d), [`cf21d7b`](https://github.com/radoslavirha/toolkit-hub/commit/cf21d7b7446ba8b4c0da0ae18d6449e8045bcfa1)]:
+  - @radoslavirha/utils@0.10.1
+
 ## 0.4.10
 
 ### Patch Changes

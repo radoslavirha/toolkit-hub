@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-platform
 
+## 6.0.1
+
+### Patch Changes
+
+- [#381](https://github.com/radoslavirha/toolkit-hub/pull/381) [`05c4d3e`](https://github.com/radoslavirha/toolkit-hub/commit/05c4d3e58b9a6ca8f628cb97b3aacb05c369793a) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Strict mode no longer turns an absent `boolean[]` query/path/header parameter into `[]`, so `@Required()` is enforced again and optional ones arrive as `undefined`.
+
+- [`cf21d7b`](https://github.com/radoslavirha/toolkit-hub/commit/cf21d7b7446ba8b4c0da0ae18d6449e8045bcfa1) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update packages
+- Updated dependencies [[`435b661`](https://github.com/radoslavirha/toolkit-hub/commit/435b6610f5cfac388939a9f7c13a1b2c3b44658d), [`cf21d7b`](https://github.com/radoslavirha/toolkit-hub/commit/cf21d7b7446ba8b4c0da0ae18d6449e8045bcfa1)]:
+  - @radoslavirha/utils@0.10.1
+  - @radoslavirha/tsed-configuration@0.9.4
+  - @radoslavirha/tsed-logger@0.7.9
+
 ## 6.0.0
 
 ### Major Changes
