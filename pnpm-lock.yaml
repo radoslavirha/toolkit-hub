@@ -7,8 +7,8 @@ settings:
 catalogs:
   default:
     '@swc/core':
-      specifier: 1.16.13
-      version: 1.16.13
+      specifier: 1.16.18
+      version: 1.16.18
     '@swc/helpers':
       specifier: 0.5.23
       version: 0.5.23
@@ -16,29 +16,29 @@ catalogs:
       specifier: 3.0.4
       version: 3.0.4
     '@types/node':
-      specifier: 26.6.4
-      version: 26.6.4
+      specifier: 26.6.5
+      version: 26.6.5
     '@types/supertest':
       specifier: 7.2.1
       version: 7.2.1
     '@vitest/coverage-v8':
-      specifier: 5.0.3
-      version: 5.0.3
+      specifier: 5.0.5
+      version: 5.0.5
     eslint:
-      specifier: 10.12.0
-      version: 10.12.0
+      specifier: 10.13.0
+      version: 10.13.0
     fast-redact:
       specifier: 3.5.0
       version: 3.5.0
     mongoose:
-      specifier: 9.10.4
-      version: 9.10.4
+      specifier: 9.11.2
+      version: 9.11.2
     supertest:
       specifier: 7.3.1
       version: 7.3.1
     tsdown:
-      specifier: 0.23.0
-      version: 0.23.0
+      specifier: 0.23.1
+      version: 0.23.1
     tslib:
       specifier: 2.8.1
       version: 2.8.1
@@ -46,14 +46,14 @@ catalogs:
       specifier: 6.0.3
       version: 6.0.3
     vitest:
-      specifier: 5.0.3
-      version: 5.0.3
+      specifier: 5.0.5
+      version: 5.0.5
     winston:
       specifier: 3.19.0
       version: 3.19.0
     zod:
-      specifier: 4.6.5
-      version: 4.6.5
+      specifier: 4.6.7
+      version: 4.6.7
   express:
     '@types/body-parser':
       specifier: 1.19.6
@@ -81,17 +81,17 @@ catalogs:
       version: 2.8.6
   tsed:
     '@tsed/ajv':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/core':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/di':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/json-mapper':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/logger':
       specifier: 8.0.7
       version: 8.0.7
@@ -99,35 +99,35 @@ catalogs:
       specifier: 8.0.7
       version: 8.0.7
     '@tsed/mongoose':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/openspec':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/platform-express':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/platform-http':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/platform-log-request':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/platform-params':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/platform-views':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/schema':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/swagger':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     '@tsed/testcontainers-mongo':
-      specifier: 8.41.2
-      version: 8.41.2
+      specifier: 8.44.0
+      version: 8.44.0
     ajv:
       specifier: 8.20.0
       version: 8.20.0
@@ -154,20 +154,20 @@ importers:
     dependencies:
       '@stylistic/eslint-plugin':
         specifier: 5.10.0
-        version: 5.10.0(eslint@10.12.0(supports-color@7.2.0))
+        version: 5.10.0(eslint@10.13.0(supports-color@7.2.0))
       typescript-eslint:
-        specifier: 8.71.0
-        version: 8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+        specifier: 8.71.2
+        version: 8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
     devDependencies:
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
 
   config/config-tsdown:
     devDependencies:
@@ -179,10 +179,10 @@ importers:
         version: link:../config-typescript
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -203,7 +203,7 @@ importers:
     dependencies:
       unplugin-swc:
         specifier: 2.0.0
-        version: 2.0.0(@swc/core@1.16.13(@swc/helpers@0.5.23))(rolldown@1.2.12)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 2.0.0(@swc/core@1.16.18(@swc/helpers@0.5.23))(rolldown@1.2.14)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
     devDependencies:
       '@radoslavirha/config-eslint':
         specifier: workspace:*
@@ -216,16 +216,16 @@ importers:
         version: link:../config-typescript
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -234,7 +234,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
 
   packages/logger:
     dependencies:
@@ -259,19 +259,19 @@ importers:
         version: link:../../config/config-vitest
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@types/node':
         specifier: 'catalog:'
-        version: 26.6.4
+        version: 26.6.5
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -280,7 +280,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
 
   packages/redaction:
     dependencies:
@@ -305,22 +305,22 @@ importers:
         version: link:../../config/config-vitest
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@types/fast-redact':
         specifier: 'catalog:'
         version: 3.0.4
       '@types/node':
         specifier: 'catalog:'
-        version: 26.6.4
+        version: 26.6.5
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -329,10 +329,10 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
       zod:
         specifier: 'catalog:'
-        version: 4.6.5
+        version: 4.6.7
 
   packages/types:
     devDependencies:
@@ -344,7 +344,7 @@ importers:
         version: link:../../config/config-typescript
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -375,22 +375,22 @@ importers:
         version: link:../../config/config-vitest
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@types/lodash':
-        specifier: 4.17.25
-        version: 4.17.25
+        specifier: 4.17.26
+        version: 4.17.26
       '@types/node':
         specifier: 'catalog:'
-        version: 26.6.4
+        version: 26.6.5
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -399,7 +399,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
 
   tsed/common:
     dependencies:
@@ -417,7 +417,7 @@ importers:
         version: 3.0.1(ajv@8.20.0)
       zod:
         specifier: 'catalog:'
-        version: 4.6.5
+        version: 4.6.7
     devDependencies:
       '@radoslavirha/config-eslint':
         specifier: workspace:*
@@ -433,31 +433,31 @@ importers:
         version: link:../../config/config-vitest
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@tsed/core':
         specifier: catalog:tsed
-        version: 8.41.2
+        version: 8.44.0
       '@tsed/json-mapper':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/schema':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       '@types/supertest':
         specifier: 'catalog:'
         version: 7.2.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       supertest:
         specifier: 'catalog:'
         version: 7.3.1(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -466,7 +466,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
 
   tsed/configuration:
     dependencies:
@@ -497,34 +497,34 @@ importers:
         version: link:../../config/config-vitest
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.23
       '@tsed/core':
         specifier: catalog:tsed
-        version: 8.41.2
+        version: 8.44.0
       '@tsed/di':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
       '@tsed/json-mapper':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/schema':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       '@types/node':
         specifier: 'catalog:'
-        version: 26.6.4
+        version: 26.6.5
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -533,10 +533,10 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
       zod:
         specifier: 'catalog:'
-        version: 4.6.5
+        version: 4.6.7
 
   tsed/logger:
     dependencies:
@@ -551,7 +551,7 @@ importers:
         version: link:../../packages/utils
       zod:
         specifier: 'catalog:'
-        version: 4.6.5
+        version: 4.6.7
     devDependencies:
       '@radoslavirha/config-eslint':
         specifier: workspace:*
@@ -567,31 +567,31 @@ importers:
         version: link:../../config/config-vitest
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.23
       '@tsed/core':
         specifier: catalog:tsed
-        version: 8.41.2
+        version: 8.44.0
       '@tsed/di':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
       '@tsed/json-mapper':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/platform-express':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))(@tsed/platform-views@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(body-parser@2.3.0(supports-color@7.2.0))(express@5.2.1(supports-color@7.2.0))(multer@2.4.0)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0))(@tsed/platform-views@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(body-parser@2.3.0(supports-color@7.2.0))(express@5.2.1(supports-color@7.2.0))(multer@2.4.0)
       '@tsed/platform-http':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0)
+        version: 8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0)
       '@tsed/platform-params':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/schema':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       '@types/body-parser':
         specifier: catalog:express
         version: 1.19.6
@@ -600,13 +600,13 @@ importers:
         version: 2.8.19
       '@types/node':
         specifier: 'catalog:'
-        version: 26.6.4
+        version: 26.6.5
       '@types/supertest':
         specifier: 'catalog:'
         version: 7.2.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       body-parser:
         specifier: catalog:express
         version: 2.3.0(supports-color@7.2.0)
@@ -615,13 +615,13 @@ importers:
         version: 2.8.6
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       supertest:
         specifier: 'catalog:'
         version: 7.3.1(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -630,7 +630,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
 
   tsed/mongoose:
     dependencies:
@@ -658,40 +658,40 @@ importers:
         version: link:../common
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@tsed/core':
         specifier: catalog:tsed
-        version: 8.41.2
+        version: 8.44.0
       '@tsed/di':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
       '@tsed/mongoose':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/ajv@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0))(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/logger@8.0.7)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(mongoose@9.10.4)
+        version: 8.44.0(@tsed/ajv@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0))(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/logger@8.0.7)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(mongoose@9.11.2)
       '@tsed/platform-http':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0)
+        version: 8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0)
       '@tsed/schema':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       '@tsed/testcontainers-mongo':
         specifier: catalog:tsed
-        version: 8.41.2(@testcontainers/mongodb@12.1.0(supports-color@7.2.0))(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))(mongodb@7.6.0)(testcontainers@12.1.0(supports-color@7.2.0))
+        version: 8.44.0(@testcontainers/mongodb@12.1.0(supports-color@7.2.0))(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0))(mongodb@7.7.0)(testcontainers@12.1.0(supports-color@7.2.0))
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       mongoose:
         specifier: 'catalog:'
-        version: 9.10.4
+        version: 9.11.2
       supertest:
         specifier: 'catalog:'
         version: 7.3.1(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -700,10 +700,10 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
       zod:
         specifier: 'catalog:'
-        version: 4.6.5
+        version: 4.6.7
 
   tsed/platform:
     dependencies:
@@ -749,34 +749,34 @@ importers:
         version: link:../logger
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@swc/helpers':
         specifier: 'catalog:'
         version: 0.5.23
       '@tsed/ajv':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0)
       '@tsed/core':
         specifier: catalog:tsed
-        version: 8.41.2
+        version: 8.44.0
       '@tsed/di':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
       '@tsed/platform-express':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))(@tsed/platform-views@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(body-parser@2.3.0(supports-color@7.2.0))(express@5.2.1(supports-color@7.2.0))(multer@2.4.0)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0))(@tsed/platform-views@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(body-parser@2.3.0(supports-color@7.2.0))(express@5.2.1(supports-color@7.2.0))(multer@2.4.0)
       '@tsed/platform-http':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0)
+        version: 8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0)
       '@tsed/platform-log-request':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/platform-middlewares@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/platform-params@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))
+        version: 8.44.0(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/platform-middlewares@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/platform-params@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))
       '@tsed/platform-params':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/schema':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       '@types/body-parser':
         specifier: catalog:express
         version: 1.19.6
@@ -791,19 +791,19 @@ importers:
         version: 7.2.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       ajv:
         specifier: catalog:tsed
         version: 8.20.0
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       supertest:
         specifier: 'catalog:'
         version: 7.3.1(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -812,7 +812,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
 
   tsed/swagger:
     dependencies:
@@ -849,31 +849,31 @@ importers:
         version: link:../platform
       '@swc/core':
         specifier: 'catalog:'
-        version: 1.16.13(@swc/helpers@0.5.23)
+        version: 1.16.18(@swc/helpers@0.5.23)
       '@tsed/di':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
       '@tsed/json-mapper':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/openspec':
         specifier: catalog:tsed
-        version: 8.41.2
+        version: 8.44.0
       '@tsed/platform-http':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0)
+        version: 8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0)
       '@tsed/platform-params':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/platform-views':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/schema':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+        version: 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       '@tsed/swagger':
         specifier: catalog:tsed
-        version: 8.41.2(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))
+        version: 8.44.0(@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0))
       '@types/html-minifier-terser':
         specifier: 7.0.2
         version: 7.0.2
@@ -882,10 +882,10 @@ importers:
         version: 7.2.1
       '@vitest/coverage-v8':
         specifier: 'catalog:'
-        version: 5.0.3(vitest@5.0.3)
+        version: 5.0.5(vitest@5.0.5)
       eslint:
         specifier: 'catalog:'
-        version: 10.12.0(supports-color@7.2.0)
+        version: 10.13.0(supports-color@7.2.0)
       html-minifier-terser:
         specifier: 7.2.0
         version: 7.2.0
@@ -894,7 +894,7 @@ importers:
         version: 7.3.1(supports-color@7.2.0)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.0(typescript@6.0.3)
+        version: 0.23.1(typescript@6.0.3)
       tslib:
         specifier: 'catalog:'
         version: 2.8.1
@@ -903,7 +903,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+        version: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
 
 packages:
 
@@ -1150,8 +1150,8 @@ packages:
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
 
-  '@oxc-project/types@0.152.0':
-    resolution: {integrity: sha512-oM/5rLBm2tPkg0iBgkH/FOeR3PCDpY19GTgAZjMFM8h9WI9VW7cLgzp6nwtarYKmovavIQZ+Fe/RKX/8C8O/Rw==}
+  '@oxc-project/types@0.154.0':
+    resolution: {integrity: sha512-KYOUGQFlLWR+s4QMV2Q9ko38TZm7EdO87Qm7rvZLqk/webse/cDjtyxKhg/47l0byCbs/k46LT8qc4PKjAikzA==}
 
   '@paralleldrive/cuid2@2.3.1':
     resolution: {integrity: sha512-XO7cAxhnTZl0Yggq6jOgjiOHhbgcO4NqFqwSmQpjK3b6TEE6Uj/jfSk6wzYyemh3+I0sHirKSetjQwn5cZktFw==}
@@ -1194,98 +1194,98 @@ packages:
   '@quansync/fs@1.1.0':
     resolution: {integrity: sha512-qAPG/t3HqML1TlN7sY/pTbEjzFVAKsMjNNMGheyDosro+kT4iw2KCUoHcVdmliwWjorm4elZbgNQyU2eD97eDg==}
 
-  '@rolldown/binding-android-arm-eabi@1.2.12':
-    resolution: {integrity: sha512-dB/a1214qKfHMXCpgqR4OZT+jS4kTyEXbQGJPqzobt5EwH5rX080pxE37alt3RzvR1bf1Yz/yGqRfrYAxuPw0A==}
+  '@rolldown/binding-android-arm-eabi@1.2.14':
+    resolution: {integrity: sha512-aWR+XKH9+rW7m5fWq/5360J3mHycrx/o6xZM2DQFdJnTMdyP7/WzxPjhtLbVWdKo2y612/4U1bWqb3HQhiF7vg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm]
     os: [android]
 
-  '@rolldown/binding-android-arm64@1.2.12':
-    resolution: {integrity: sha512-7KHFgQ5VJxIHcLlrwrc3Xbds7oTNQT7Pgi9gQCJKrd2VGab/UksIOYp6VD8MzCstGxOKMgNamPwUCfxPdP1OHg==}
+  '@rolldown/binding-android-arm64@1.2.14':
+    resolution: {integrity: sha512-QiVxHofl6A8lQU7WAtOUY4QMVZXohxwz7WJJoeh8NBEUyKfIkMRKhYyq8az/1RypNiIXzNTtiS6KwHz0erxYRQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [android]
 
-  '@rolldown/binding-darwin-arm64@1.2.12':
-    resolution: {integrity: sha512-3YIhqHD96nA5SaYNRBR16HnGv4oavZvXfD/ayHM+oYZ0WD/8lBAtf6zQua4kEyAvpqrluKXl0lnOBoiNby7x9w==}
+  '@rolldown/binding-darwin-arm64@1.2.14':
+    resolution: {integrity: sha512-lTQOzHuBIooh3jIr5XINQkjPGEuGy+Dsy0meXDr6Sjty0b99kYgGh4uBC/8mJX1T0kC8d6S0aPP1Y+bHkh6aBw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [darwin]
 
-  '@rolldown/binding-darwin-x64@1.2.12':
-    resolution: {integrity: sha512-UuuJ35MFw4gmFOrE9pEqIV+K3syIKveph+Qc1/ljHZVdoDW4pz/JHR/eMVom+TZGl/5OOvGJOWaOCVt3ZfqhxA==}
+  '@rolldown/binding-darwin-x64@1.2.14':
+    resolution: {integrity: sha512-hyMKEGatjmBYCs/Q4sbIcL/GqpFEqsX3wc+HYVQ/85A4rxc1o7rPm4DUI4GV4k/h0ITddwFSGpqQunI14GXjTA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [darwin]
 
-  '@rolldown/binding-freebsd-x64@1.2.12':
-    resolution: {integrity: sha512-uMvssit0a4W+/7D8CbHUvG719mH3R2jwXAlh/XcPvuHTE0g++LymF88DCGNX0HM2rBOn0xrzgXktIB6fLSJBTQ==}
+  '@rolldown/binding-freebsd-x64@1.2.14':
+    resolution: {integrity: sha512-u371GbXoVXrEgP20PwzoGNOdAOqAMhzo19JzzY+V4YmmnC+DTOoqdbMu+O+54emM59Mik/UdrtWgcuEDKWRPKA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [freebsd]
 
-  '@rolldown/binding-linux-arm-gnueabihf@1.2.12':
-    resolution: {integrity: sha512-XcFu0R0xWnwzSf4IQgFH1rJIckPN1pLy2R+4r9IDB7Yfu/ys9cVqfa4pBrMHj7a3gl8mIR4nRNPg0e5IvEVs6g==}
+  '@rolldown/binding-linux-arm-gnueabihf@1.2.14':
+    resolution: {integrity: sha512-BqwKsdZQf6EqVWr8fv2MrDYzAvOZ7+NYFSJESRGs87fkseEhs0TU9TXgRJTkZoRRkxTizyEg1LKUXfU3/78uqg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm]
     os: [linux]
 
-  '@rolldown/binding-linux-arm64-gnu@1.2.12':
-    resolution: {integrity: sha512-260UrKgn8tz39ak+SMDOirKzr7V04M9dWPw5llW00SwBivCZoWcRBKV1d8cXnRkUmSZA3BdiUmBHWk7734Ulpw==}
+  '@rolldown/binding-linux-arm64-gnu@1.2.14':
+    resolution: {integrity: sha512-SD9kY8M009x/7s57Z1dgUVlP5+uYBgKQK0Tkr1WIWngrtUJmRCW1RJFMY7QDla2khXhmg2i5Io7MUjcmZNZ/KQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@rolldown/binding-linux-arm64-musl@1.2.12':
-    resolution: {integrity: sha512-5YK1I9SqDkbPgc1IA8BgDl34suqUS2q0KWnBrirm0E51YjOs6eo6dV6jbQfNE/argHRSvd0QUGgtpIoYx+WWpw==}
+  '@rolldown/binding-linux-arm64-musl@1.2.14':
+    resolution: {integrity: sha512-BJ2CL19M6uuWesMgnqJzgxoI+N+eV7b0A9O9vLV42y+gitC41fNa8KElau1tHVzuLWX5GzEuxMPhAO0tQXQMkg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@rolldown/binding-linux-ppc64-gnu@1.2.12':
-    resolution: {integrity: sha512-Rkcrmp7eFRg74yL5fXEU91JEWbdEPLevWwGtXpmhbjlD1StScbWTmO94Bhly+Mo+ketKYkdmM1vNUKeWSlx8cQ==}
+  '@rolldown/binding-linux-ppc64-gnu@1.2.14':
+    resolution: {integrity: sha512-4+Kl8daPV8NDHaD7mfCcc1pRM+Qg7ab8DyMm5FG5WoZgv4h2i3KFN1CybYBNbQqmuYm7ftJLvmMI1eHYJ22S/Q==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [ppc64]
     os: [linux]
     libc: [glibc]
 
-  '@rolldown/binding-linux-s390x-gnu@1.2.12':
-    resolution: {integrity: sha512-qvK4DuAsQc2BSjlx+Xr+IzOIvvxbGZqxFwdWfG6F518Erj0GGISyQbJ6pIappnOxlNPzNHvo/L0BwB30GZ+zVw==}
+  '@rolldown/binding-linux-s390x-gnu@1.2.14':
+    resolution: {integrity: sha512-V/h8ePq1fKDrmtFMz6xcCN3DKvuvMRrwwD1q0PkBeeo4DpK64biaKvqWGVxqCeYKqeRk7gE7/iKPxLCn08O97A==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [s390x]
     os: [linux]
     libc: [glibc]
 
-  '@rolldown/binding-linux-x64-gnu@1.2.12':
-    resolution: {integrity: sha512-Q9uLBO53Xd4QIq1WOycVQyPP1O4HhraEV2qqb3uTrnVw6QZih9duY4vNXOivL1xoUS1/z+W8eF4NMfl2a8Sdjw==}
+  '@rolldown/binding-linux-x64-gnu@1.2.14':
+    resolution: {integrity: sha512-WxalXzgrLVpKC93xfpaJ3gCXUWzeCr+FRCbDVD2mUAy4L6Vo3lNVz0epUEUpxPWJkLNYUwM4OSIikv36OJ9mLg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@rolldown/binding-linux-x64-musl@1.2.12':
-    resolution: {integrity: sha512-3IBxWFMjbOZskDPKv8Lf9BCnahlKuHthWkYnyIxOH/QcJrFcS4EmcenthApkwr/5+nEqZlLzeYbxeMaX7A5u4g==}
+  '@rolldown/binding-linux-x64-musl@1.2.14':
+    resolution: {integrity: sha512-3G3tnAmTpdk9jO3GQtyHXqeFD2SlecfTws/Y3M2mmj9nMBwwuLT4kur8sZKeu7ENUHSpVO3cIsm5A52LEWWwlg==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@rolldown/binding-openharmony-arm64@1.2.12':
-    resolution: {integrity: sha512-xtX61xg4LKPkPWilZU1ynKClz5Gj4bf74LML4r3eVLWumKnGjoEr1OSHQhMdbBDoYTi+yjrujvpZe2pUnqCrrA==}
+  '@rolldown/binding-openharmony-arm64@1.2.14':
+    resolution: {integrity: sha512-qyr5XiNGxm2ytx17vvtcJ9nXn6v1gENETi503bJx3OGwZ1tSonj7BosxbMa/xeAfSl5iS9X6KjEWYXLu6v1L7Q==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [openharmony]
 
-  '@rolldown/binding-win32-arm64-msvc@1.2.12':
-    resolution: {integrity: sha512-At7fPB6PCaIjzgIhEZFxuT+BBFqiQibJDT4d3PhiR3f4E7bbMZF4aKblbFfEM3sETRDd1YiQx/+U/g/B/ou5Ew==}
+  '@rolldown/binding-win32-arm64-msvc@1.2.14':
+    resolution: {integrity: sha512-oA4o5o0S2yB199YyYXDzKUv1Z56Rc+mgOjwm7Z/vJ9Z8igiDPYvoOuDyo6g7AK/ZaF09nPhDKVnGBcYHO11GXA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [win32]
 
-  '@rolldown/binding-win32-x64-msvc@1.2.12':
-    resolution: {integrity: sha512-WIw2haVKwjuYdXkHaoC0mF8Le71TuCBxjrdKqLbJGctbBABj+ClfmNvtbOnzpq3RokNo5+V1qhtSzJyXorsklQ==}
+  '@rolldown/binding-win32-x64-msvc@1.2.14':
+    resolution: {integrity: sha512-9mE94bf2GZUaR/fUSXCMpBoWkctu421Mi0ORpm4zqfbkjKep7RxzPFa5etcGs5h+2KApoWBOA/hAJa/7saGgEQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [x64]
     os: [win32]
@@ -1317,86 +1317,86 @@ packages:
     peerDependencies:
       eslint: ^9.0.0 || ^10.0.0
 
-  '@swc/core-darwin-arm64@1.16.13':
-    resolution: {integrity: sha512-JrMH2h7ohd4mOIneNRx/diqTmCDSdWfp9uOdQ8VJ2V2CA7jOJ1jWb+qp8RoZLqgiVmwDDC7eySKB1kbvZ+jVXQ==}
+  '@swc/core-darwin-arm64@1.16.18':
+    resolution: {integrity: sha512-ozgiCHyFDCwfXzTnaLR+i8WxEyt06GTudn9rPh08vj+u3Z8vMvt5Pi8T+BikyNXm7y++h6UMdqsnJuWrV+tk2A==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@swc/core-darwin-x64@1.16.13':
-    resolution: {integrity: sha512-HauZMRxpOImRxgY6GXjw5gbD8ts2NcPZuLMM8htY8Mic7j1Izt/lxkXrKYUwqyU56YLwQZ4dHRT+6jFHkztcag==}
+  '@swc/core-darwin-x64@1.16.18':
+    resolution: {integrity: sha512-tuwxXi+sjxxTAi7GP3NeQXQxOf4SXSiFxKAMYLBdoy7JqGYby6uSDXojcFoLOhSp7oiNGstnaFXxfbP0Hpro9w==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [darwin]
 
-  '@swc/core-linux-arm-gnueabihf@1.16.13':
-    resolution: {integrity: sha512-tUSojGIythnHJKrElDM9OvuhBnK+FF39eM9iIBgj9kdfbAm6PhAM7dKbaSDcnX2gOLG2slkasjD0Z8m/YUlzOA==}
+  '@swc/core-linux-arm-gnueabihf@1.16.18':
+    resolution: {integrity: sha512-SMdhmY1P9Kveh0MRj6vqQF98bsjnDa0lBBvkd/lcpxmjj5QHJOQAU0N3g6h7GPWpBMs3h2g3lHu/QTDn+uMsXg==}
     engines: {node: '>=10'}
     cpu: [arm]
     os: [linux]
 
-  '@swc/core-linux-arm64-gnu@1.16.13':
-    resolution: {integrity: sha512-qS3bk/ezRrLXGn1b764S/EG3/oKj6uRhnTNRAALpnuu8d9I0YwSiUkQghnX7lOH9X/yRr+qrFI3R0wAruO47Tg==}
+  '@swc/core-linux-arm64-gnu@1.16.18':
+    resolution: {integrity: sha512-ep/mQyhblQYZ6tkfq0IJspcVSFl5jdywks3kejanrbB31uuujRD/QWOoGNp2L3lLRdAdQvgl/M3pA7g3hSuQug==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@swc/core-linux-arm64-musl@1.16.13':
-    resolution: {integrity: sha512-aeoYoG6fQsOS3mFOuTKvnJo1aaaxYNI0aRRlhdHaGP4q1YQx4XOc5Hkd35IFduWCBG3eZl3fPTjRuYvxpl7eTA==}
+  '@swc/core-linux-arm64-musl@1.16.18':
+    resolution: {integrity: sha512-pkzGVxrAQu5+febW1a/Aiph3YJk0UiJKXoWbxnDVEIOZWkk5aETHTuyVsOQ3kOgn2dzNMvJVeqcoEQdH+ntqWQ==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@swc/core-linux-ppc64-gnu@1.16.13':
-    resolution: {integrity: sha512-eEFoueZXWZ2S1lsqL8Ve2C8RjhzH9+Ktj8U4IGTUQL6CNG04+VhQiYQWJOf5xfVBU6I+PbH80yvsYegqZOOSZQ==}
+  '@swc/core-linux-ppc64-gnu@1.16.18':
+    resolution: {integrity: sha512-v9kiu4as1pJyQ8ESFTtMNydZ99m86QXLfAtm+XiKPKS93pXL80BCaXokAs9ebioGkIXgmwfbzUCdUC62H3JWkw==}
     engines: {node: '>=10'}
     cpu: [ppc64]
     os: [linux]
     libc: [glibc]
 
-  '@swc/core-linux-s390x-gnu@1.16.13':
-    resolution: {integrity: sha512-K0q1ReVXL3d5bzBgZxS+yJq5q2xRjg4k2XXGj9yiCEpE5ZqJGQ4Gtk1sRrk8W2lo3KY0DCJD3Myt6x2SMvGArQ==}
+  '@swc/core-linux-s390x-gnu@1.16.18':
+    resolution: {integrity: sha512-vU7TKRJ26i86YQr4QY/5bdcH72KzkBbSSUfPlErW6d6KOR47BcVGlYZFTcMMYlmd3CVSXFHW18tBSila66YfoA==}
     engines: {node: '>=10'}
     cpu: [s390x]
     os: [linux]
     libc: [glibc]
 
-  '@swc/core-linux-x64-gnu@1.16.13':
-    resolution: {integrity: sha512-Qvpihw30irhIjy2f91BR1pamcJBCgf8hmr9XWenztAX1YLkneRkkTB/PFGWQubhaBqQhY2uZKViMj/xV61uMBQ==}
+  '@swc/core-linux-x64-gnu@1.16.18':
+    resolution: {integrity: sha512-Ml6kbe0BoVJkSgmYPAEUudGcu84jaQeqDN8xeMumbwNpT0vlmm7241Ddp9XKCjQABvjomnXF0OiNOAfjBhNDNw==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@swc/core-linux-x64-musl@1.16.13':
-    resolution: {integrity: sha512-iCGxHbh3Cq5vqRvCPlw3XkkDz4RlkPSyQwfFKbOKTMj5tiEuojY/rLmf4BMfI9Z8yPJTf9VB07t3NbKInoC97g==}
+  '@swc/core-linux-x64-musl@1.16.18':
+    resolution: {integrity: sha512-TGU24+QmmS8y/hg0BLKgOU3W5TCcQC9bgGl8AB0R61gTNQdWdcmCehRLAJwlZfxtAml66xMJ6PWrX8NKrABOsA==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@swc/core-win32-arm64-msvc@1.16.13':
-    resolution: {integrity: sha512-iOabn6cd+hg3cnoKlAC8j3Yufv8nQHBVU5OIDX8dCPA95PjAZ0B0TlDn9sWivk8ezo/cLJux7p9n0B9vRej+1Q==}
+  '@swc/core-win32-arm64-msvc@1.16.18':
+    resolution: {integrity: sha512-S53hm7Amc3YV8t2BUT6R7J+zSnwiGarG+GnxMca4W0uMkxBZ3Gl6jBwEgb6YqrYjf2DzOuRfauztqptCO76a/w==}
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [win32]
 
-  '@swc/core-win32-ia32-msvc@1.16.13':
-    resolution: {integrity: sha512-+1b/3xBNuVbpnJIZUCAaSdscOPYRWq85eohKx44y/3qbPp56UMiCJWBiWtyr7K5F1nf1JENXm2IBSEJaLgWq6Q==}
+  '@swc/core-win32-ia32-msvc@1.16.18':
+    resolution: {integrity: sha512-+6/10+OJmU12zWkrPVG0QeQEr8VsWeF8gyXrOfHZMIfMOfz8/ULXVZPhV9GhGMKSWake1xEJj2IYCiFRS/xMpQ==}
     engines: {node: '>=10'}
     cpu: [ia32]
     os: [win32]
 
-  '@swc/core-win32-x64-msvc@1.16.13':
-    resolution: {integrity: sha512-6kEJhYshk7OVoVIWryiHqjCNuwZeOlPTS6et+bKV/WhtHs8fLA01wyTLrQGi+4ultgRe/o0M4b25K/KKdvl0dQ==}
+  '@swc/core-win32-x64-msvc@1.16.18':
+    resolution: {integrity: sha512-7LsVrIICAZWSajXT6DwO7PYSTnW9maamOCyQylaOh13Viptrgi/7hl9fP75SiHe+kscaJahGXcorgt4MOOh/1w==}
     engines: {node: '>=10'}
     cpu: [x64]
     os: [win32]
 
-  '@swc/core@1.16.13':
-    resolution: {integrity: sha512-k4uUsIMS0IwOKVsrQs48IZK75O4roV3FnuJEdL7ES+DFESftdgvz73QBqN3VUAbUmUr78We4tzG0kgYj36M22Q==}
+  '@swc/core@1.16.18':
+    resolution: {integrity: sha512-0cYQLkpcwUngg55TDwpwrrVOU+B6zh1NFbp+oS7dVFhmYkzaARelwugo/bzPJh1FrcnppmF+KTqioCGwyqbcEw==}
     engines: {node: '>=10'}
     peerDependencies:
       '@swc/helpers': '>=0.5.17'
@@ -1416,8 +1416,8 @@ packages:
   '@testcontainers/mongodb@12.1.0':
     resolution: {integrity: sha512-ke/WBhHAFzGJ4Yzdt/G55fKfU51TTq8hvAsOxOFVHi6LwgCoFpAM2vyxXBsG1i4aGeJ2gH+8HFfRd1cq8EuiQg==}
 
-  '@tsed/ajv@8.41.2':
-    resolution: {integrity: sha512-gHrL2pYeO1Q0cwcwhnrYjPZitUz9E3/ZK4bTgFtDxo3zPAp32bgBTZOM9LfGTjoDEFB8JCbF+IMOCKZKqeDD1w==}
+  '@tsed/ajv@8.44.0':
+    resolution: {integrity: sha512-NlwZEhlDc4/f3RYZOxIsKO9Gs4NJhM1KIXIn/0KPG9NuqUzM7cJsZMSWO4p9XRcvcFJ/aFqTe0A+Jt0/gRa5xA==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
@@ -1426,11 +1426,11 @@ packages:
       ajv: '>=8.9.0'
       ajv-errors: '>=3.0.0'
 
-  '@tsed/core@8.41.2':
-    resolution: {integrity: sha512-T8C1r5T3WqN1DvdDdhP0pBDDa8Oh252RouxM/GJY2mFYXhlcHp934gyMcOE9YwI3//fIASg2bbtDYq1ZEBYq1Q==}
+  '@tsed/core@8.44.0':
+    resolution: {integrity: sha512-4f+RUycgNJQd5LxC7RZhJXbK7aaCD5mEvZ68n+cCbcX5rSqdI9u8yu02CI7OP4R+Mhg91UWnw03LPvyC5peveQ==}
 
-  '@tsed/di@8.41.2':
-    resolution: {integrity: sha512-nJR1vRXAaxngj6auIN1Zhf3zBKoMuZxQim3YMMOD4w6ds88zIE8OCIxDZM1V5vhky3GKdCOOfVU8PxNdfpwtGw==}
+  '@tsed/di@8.44.0':
+    resolution: {integrity: sha512-6WmeeAYWSCFNVcYO0slIb6ULV2YV3U1coxfL/LhPqqEehdVJtr7OLl7W/gEABZBApeAjjMD/BwwD9psmZkXrSA==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/hooks': '>=8.0.0'
@@ -1439,16 +1439,16 @@ packages:
   '@tsed/engines@8.38.2':
     resolution: {integrity: sha512-gB7+PMfy+kvJn/Izee+BDxhxQzFTWzMtndJnPFq6JbFTkErmFKu/9RkwqMbXD7tbHDfNl8zRxJlFXVCijQmzew==}
 
-  '@tsed/exceptions@8.41.2':
-    resolution: {integrity: sha512-USmACNshEpS6BNmGtwH67QR3W5rCsq3RVfGiqF8WWEBdSRAeO9R58hEMn2QRJl4xlQRpwVgAgS/1wdS4gQ/QiQ==}
+  '@tsed/exceptions@8.44.0':
+    resolution: {integrity: sha512-nuJfYarJD5z62QJAR79+pV2E93pr46LO0L8ZekKQfsfDF5GoQldCCBiMnCv/X99yTsqep0KS0aNpXQDiRrxyWQ==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
 
-  '@tsed/hooks@8.41.2':
-    resolution: {integrity: sha512-a4ua4wFZ8vy2P2ueWz6ukmC6J2ptx5T6WhzrIE6cKHXWuqxmWtjgWgggPCKXNKVtje8MXFCql4xU2VSOoRNVzg==}
+  '@tsed/hooks@8.44.0':
+    resolution: {integrity: sha512-OyWoC6/Yp61v8QChkURVCK+JbH643EcGr3jp+i27OC2IzbrAxAwy/y3Az5uIJZmLE9Eisvo5akNKrs4hCESI8g==}
 
-  '@tsed/json-mapper@8.41.2':
-    resolution: {integrity: sha512-kY2fqsEET66iUHYLCcSXcj8i4Bg/+ZjaWNu0/2dGUfZQ0VyFsy9VtgaAGNrVQbhPtY0rGDuIJoDe7TiGNubcww==}
+  '@tsed/json-mapper@8.44.0':
+    resolution: {integrity: sha512-Gr+zknp+dRfr/CY50XYQQi42++Q1evBsBc2VWDEgM5LkgK4jE9Nli1PzXRLdNkUm8KBGiiytfFEyJi4rplJ7cQ==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/schema': '>=8.0.0'
@@ -1466,8 +1466,8 @@ packages:
   '@tsed/logger@8.0.7':
     resolution: {integrity: sha512-uPQ2amykSHRki/AZUWyGFT783V8zytjBC345+EdwotpCdRet7ffy0MAMAcY8SH7KjGmeqE8AAERxXyMRH6YxBQ==}
 
-  '@tsed/mongoose@8.41.2':
-    resolution: {integrity: sha512-fhrmzoKCHCsSHSkmdM9kHsyd4MnA6G4C0XVQJ8yIo/ulECxvffEURchMt9YFmPEL8fZGVqNs6A4cBRIkt6Vmrg==}
+  '@tsed/mongoose@8.44.0':
+    resolution: {integrity: sha512-c/V1SYKf8EaErzErjr/HEMtFdSEEs6O4YjB8WKNvIRR07LIIuMfJZwBUc9VO8vo3WbD/TLW+nLuNk0yoCi5a4Q==}
     peerDependencies:
       '@tsed/ajv': '>=8.0.0'
       '@tsed/core': '>=8.0.0'
@@ -1477,19 +1477,19 @@ packages:
       '@tsed/schema': '>=8.0.0'
       mongoose: '>=6.0.0'
 
-  '@tsed/normalize-path@8.41.2':
-    resolution: {integrity: sha512-6flWP1IppiTR+G7nbl9zpr1WOc43mMmVJTfVqs+CW570Au1lTwGtLdeUkXgzKu6CwEfGF0YwOA2Xqy0K3ZceLA==}
+  '@tsed/normalize-path@8.44.0':
+    resolution: {integrity: sha512-3+3kidHv89DZzdOVJu9DT8gwU73pVjO6U4ITx90rOK+YGO/4NtMEHgasJ2BDb82/eWsGbMjLgDlpODt7btBJXg==}
 
-  '@tsed/openapi-utils@8.41.2':
-    resolution: {integrity: sha512-k8FxgMVDU3fqIi0XEaT+oRQZ/T4AN/XHvw5VDgtO5i9ZgGbfWeKaLemMGn3f7t7tP2AaFDj/pwh2j0qTr3/yRg==}
+  '@tsed/openapi-utils@8.44.0':
+    resolution: {integrity: sha512-D+bHUewXkDUjYjtM15Nae2qcqhyyIpTTRgM+drlNO3XouaGjO/QEiO7jXrR/iyoOoOLMwAK0Xu2TPD6kB+hwlw==}
     peerDependencies:
       '@tsed/platform-http': '>=8.0.0'
 
-  '@tsed/openspec@8.41.2':
-    resolution: {integrity: sha512-QQ0y+3DHIMaKW8gIvKbKMzh/WH/ShnZ6wAlOEsWMoP6x+ZspV0mxu9xa9GvuHbinoHyZp+Et9gJDerJwG+iMYQ==}
+  '@tsed/openspec@8.44.0':
+    resolution: {integrity: sha512-m78fLREWpLeAs6SN/FG/TTryYO9CthQOOFgQ8ZJEMlColNbUf4Np/9PpWPbNiT/xXmg4SCtZS7x/2swE5T0JPQ==}
 
-  '@tsed/platform-accept-mimes@8.41.2':
-    resolution: {integrity: sha512-PFUAqFJfGDls0aAMP5l/xSirVhLa3ADFOJ24t7WoSZipfNZP4+kY0Rmcge6rtl4qWcSH5+CMO/qLyt4cJdnIHA==}
+  '@tsed/platform-accept-mimes@8.44.0':
+    resolution: {integrity: sha512-y5xrBOfJSzaYgj4bKvZNO30KLkVdKXnomThz0Q94tz/uiyjtPCRE/dQfQNRvmvIpzstfO3sRirhSFWdGGL7cGw==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
@@ -1502,16 +1502,16 @@ packages:
       '@tsed/schema':
         optional: true
 
-  '@tsed/platform-exceptions@8.41.2':
-    resolution: {integrity: sha512-UvZPsHgGfY5VRynps0u0XfvI5Djb1sibgGzldYr9btmoJig3ayeIdaSKFocWhEIC4IHd8i01vx01llRTc0uXJg==}
+  '@tsed/platform-exceptions@8.44.0':
+    resolution: {integrity: sha512-zl3mAwJvovDt24nNVccHEXHoFb/80gzCIYEwp67SnxoFh+/8rZQJG0jeeQJMbgUPwseFsmOPTzI9C8RmbL2LGw==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
       '@tsed/exceptions': '>=8.0.0'
       '@tsed/schema': '>=8.0.0'
 
-  '@tsed/platform-express@8.41.2':
-    resolution: {integrity: sha512-2xwY9ORw3o7OEqIu+0TTfg1pZVqKvmLnJLm8VVZS26JP+lW1i+1EVhi1byDfUd0+kvvGwW1bGqY8Q7a3W+SUNg==}
+  '@tsed/platform-express@8.44.0':
+    resolution: {integrity: sha512-AKTLgUf4SDNbHbbiViXykkr8pWG6Zh6cJ964hJT5v+kFgrFJwUYz2Cjj9g2ZcNl+Ve1Cg0IBci5GEqAp/+kqIg==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
@@ -1528,20 +1528,20 @@ packages:
       '@tsed/platform-views':
         optional: true
 
-  '@tsed/platform-http@8.41.2':
-    resolution: {integrity: sha512-EVfLdYBaEamSwm7xwuy2Rhc+/G3Ild9Cr4u6m72wR0ozQdzGabjH2NX30IdbjLwe88Fct9K5Vii1ZBrYL+5Q0Q==}
+  '@tsed/platform-http@8.44.0':
+    resolution: {integrity: sha512-Nr701uz4YMt+LYAmsc6Xk7FNJewPtDUD9ZIy4M6ffm0OVP3r1kxiqmYB9SHMLBRcxpiZ7gcpHlTPhC0w1LUNOg==}
     peerDependencies:
       '@tsed/logger': '>=8.0.0'
 
-  '@tsed/platform-log-request@8.41.2':
-    resolution: {integrity: sha512-8n493ua8ef2H9vrFcBPQb7qLqu6m5Bi49zCBWMf7e+bn7owWtyUh6ELLDgPy9L+X1YMDOHxqbeCGSaG7tUvA/Q==}
+  '@tsed/platform-log-request@8.44.0':
+    resolution: {integrity: sha512-97RFtT1TkOCQEr7I6tZEtjcTX/Xp8Lju3QluEaU1X8C6rynd6FG077RmDhotXeetySVymdzSlRrS1w31cBwSdQ==}
     peerDependencies:
       '@tsed/di': '>=8.0.0'
       '@tsed/platform-middlewares': '>=8.0.0'
       '@tsed/platform-params': '>=8.0.0'
 
-  '@tsed/platform-middlewares@8.41.2':
-    resolution: {integrity: sha512-OBNz/k69Zt4UfIiSYWoVwp3AofkLUbReZJhYz/vmYfsR8wiDKiBCBH3ipfk7P6dPuev/h6wGExQyD69HEqA4Tg==}
+  '@tsed/platform-middlewares@8.44.0':
+    resolution: {integrity: sha512-IQ6EtfRh/K1QsB5Zp5CWse8rLDqh5+rJfcRIaKkwxX9anfVDTtD6D5diyEkITzXUF9YfN4Ag2qLJfdlr4QgWwQ==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
@@ -1554,8 +1554,8 @@ packages:
       '@tsed/schema':
         optional: true
 
-  '@tsed/platform-multer@8.41.2':
-    resolution: {integrity: sha512-YJan6gLAQmz3AOB+reLHg18qBW3jrnpc0zQLBlKCRr5DdxKO9uAnU9gmu685RJvO3vu4bfrN8dVzgqdfa9BC/w==}
+  '@tsed/platform-multer@8.44.0':
+    resolution: {integrity: sha512-2KxufJSBBEyyWQlhL2jBP3BHEamFUCP1qxvPzJ4GDXA70jrFgg96tU+9GBRdoaJ0hqcwZf1fCfdxcwcQT2MONQ==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
@@ -1566,8 +1566,8 @@ packages:
       '@tsed/schema': '>=8.0.0'
       '@types/multer': '>=2.0.0'
 
-  '@tsed/platform-params@8.41.2':
-    resolution: {integrity: sha512-2QJu9Et7p2pnc1URCUZByXDooOM2MaLergK22rXYdh/dmUmSH96DqM09ZRHM321AsxYZtsFCNUW4kzWc0FqUlA==}
+  '@tsed/platform-params@8.44.0':
+    resolution: {integrity: sha512-aYzNiVgEL2IwxJcZj9zf3F7FjWEf1U4dj3uwr8BnHFrlHP4lCV5CBsweC6p/FXucvVkI//8CsCjSTc0RMz/+yA==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
@@ -1575,8 +1575,8 @@ packages:
       '@tsed/json-mapper': '>=8.0.0'
       '@tsed/schema': '>=8.0.0'
 
-  '@tsed/platform-response-filter@8.41.2':
-    resolution: {integrity: sha512-LufWH+58ZsiZqOoGUbuxoKYC8zRR0D1wrZ6vCmNH7NPhsu8EcHaC0q0q5AbKqDzgjd1/rc8Mql+F5yatF+X1Wg==}
+  '@tsed/platform-response-filter@8.44.0':
+    resolution: {integrity: sha512-H1SA+nS6XnzPv+DLlnQrhdSvGsHgXhfQRXGBDLd7By7IiOM2uYcn3KejuvJ7B1qUn+Y82NagLnHCUhWCRaJ67w==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
@@ -1584,8 +1584,8 @@ packages:
       '@tsed/json-mapper': '>=8.0.0'
       '@tsed/schema': '>=8.0.0'
 
-  '@tsed/platform-router@8.41.2':
-    resolution: {integrity: sha512-T1xBY1Yweb5lEVDCuiBMhkTfV6S6dNY6i3Cgl+s3Hs3mzAR8BgiLADcMmVThbQwdUoz4S5b8WrW8eR5iHvfAPA==}
+  '@tsed/platform-router@8.44.0':
+    resolution: {integrity: sha512-BrwcIlD0gybNJJv4JF8miRArFWi3jZMRoLoHjw4xnbhs28vXCdWKag7uw18H0xjCX9ufcCHXMuUM2M9cR9vffg==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
@@ -1594,8 +1594,8 @@ packages:
       '@tsed/platform-params': '>=8.0.0'
       '@tsed/schema': '>=8.0.0'
 
-  '@tsed/platform-views@8.41.2':
-    resolution: {integrity: sha512-G/PiCbdk/5p5vGDdJ5RFglta2hIlhrT/gpBXlhhzJPQRojTE7ulsDwVpB5S4w3jq/MDeySlj6dWAg3Tb570haw==}
+  '@tsed/platform-views@8.44.0':
+    resolution: {integrity: sha512-6j8TAlqjk+j9iuot/Qy2/vST4wVyMpW1EmW0YTaz9YD+TD5kZ9korL4eIj86CKfcnP6uL3JXmdxLfT8iI3dlkg==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/di': '>=8.0.0'
@@ -1603,20 +1603,20 @@ packages:
       '@tsed/exceptions': '>=8.0.0'
       '@tsed/schema': '>=8.0.0'
 
-  '@tsed/schema@8.41.2':
-    resolution: {integrity: sha512-gMvCpIctrk9YqGCp9zcj3upAi+N2IK+nQBaxCsY84vudeikr8jz9ftKSt9wNxv7QXZxCk/Nm25B0bmOZPWLIuw==}
+  '@tsed/schema@8.44.0':
+    resolution: {integrity: sha512-8mFVtsZfG1ABw6/qphtJRTh2BUuMnA9RosyB1L00pzRC4PCuY/elLGibcTBVreGo3+eNUl2BcRBabb5wJ3mjRw==}
     peerDependencies:
       '@tsed/core': '>=8.0.0'
       '@tsed/hooks': '>=8.0.0'
       '@tsed/openspec': '>=8.0.0'
 
-  '@tsed/swagger@8.41.2':
-    resolution: {integrity: sha512-4JPyH7+ol1LhYm3BP8G/PPu1o8BSRhiesyv5MdIiKh/V+zDnXhvpvaa6TuEQX4rXKsvn/WwO0FY8SGfoQf04hg==}
+  '@tsed/swagger@8.44.0':
+    resolution: {integrity: sha512-N3gvE3F0dsiivbtY27FTRimfwgVo4iBBffbp3a+DjJT2P8bASb3+hglufaxVQYeUX+xuphAWCddp7zHixXlJEQ==}
     peerDependencies:
       '@tsed/platform-http': '>=8.0.0'
 
-  '@tsed/testcontainers-mongo@8.41.2':
-    resolution: {integrity: sha512-bFw4bq1FMimcQ949OMYkNoVpICga4jexU8bn+1BMjE7UKITQLEzim7pnZoQc9lwcSNTUyZtvy+w1qK4Rm5RIkw==}
+  '@tsed/testcontainers-mongo@8.44.0':
+    resolution: {integrity: sha512-htdGK0z6meBDkZu9OBM3U1+98Tk+GDRq8lhbj2WPaMwmBjMokLlOqEpUnSYUWfzaLjT3B01tjQd3UH3KJHcJWw==}
     peerDependencies:
       '@testcontainers/mongodb': '>=10.11.0'
       '@tsed/core': '>=8.0.0'
@@ -1681,8 +1681,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/lodash@4.17.25':
-    resolution: {integrity: sha512-+K1NIO8I+F9/wNulfVvu23QYd0Pe9/OCqRrim4NoYIf1VoEDL90Ve4ClzpyqBLc7NpGGWRvYNCKZ1BE/Jpf8dQ==}
+  '@types/lodash@4.17.26':
+    resolution: {integrity: sha512-48NWfiY6oNcKOh47Z4h+sIvwcQR91h6KPhaYKgeMIrkT2jV82Gy90SErj60vW8jQbeMSOSbhIv3bZ7JoqPPVhA==}
 
   '@types/methods@1.1.4':
     resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
@@ -1693,8 +1693,8 @@ packages:
   '@types/node@18.19.130':
     resolution: {integrity: sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==}
 
-  '@types/node@26.6.4':
-    resolution: {integrity: sha512-ldVPDCzj7fsaGZrLB0NuHuTvJcsNasysBAqMolr/cgxrLd1xbqxIr3XJiPnHHJUCxj5sNF1vnRj9aWnrVh5Jcg==}
+  '@types/node@26.6.5':
+    resolution: {integrity: sha512-uMzsv9stDdofIZBx4UGh4Z9ZgXnGC9seRDscilBcTHAeOFk67MZg/k9bWVfO+bk4qZmG+l52hRnLwUiH2LnJTg==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -1735,70 +1735,70 @@ packages:
   '@types/whatwg-url@13.0.0':
     resolution: {integrity: sha512-N8WXpbE6Wgri7KUSvrmQcqrMllKZ9uxkYWMt+mCSGwNc0Hsw9VQTW7ApqI4XNrx6/SaM2QQJCzMPDEXE058s+Q==}
 
-  '@typescript-eslint/eslint-plugin@8.71.0':
-    resolution: {integrity: sha512-pqcS9c1HxZTHt7End4nXqd0s5lJrrFzrgCkKFJrsbUnaL6M3+6oBFZaslg6Gjsl3argl2DDRFROnXARaZ2e4Nw==}
+  '@typescript-eslint/eslint-plugin@8.71.2':
+    resolution: {integrity: sha512-K72/pvT7qpm8q3k8G5u93NCSN1RcLxX5h7Gw0bQpbMXviBHeY6Nx1WEwmk9wP+eKTSQ8ecxvcgt/ZX/rB938xQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      '@typescript-eslint/parser': ^8.71.0
+      '@typescript-eslint/parser': ^8.71.2
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.1.0'
 
-  '@typescript-eslint/parser@8.71.0':
-    resolution: {integrity: sha512-CG4nPk1f2zc8yw4pALqHsFYH2hdo+h1T9daSp21+Hnxi9LOE3GT9hAfTKJCBXVNM2GmYs1eMEP615wPoeOgk3A==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
-      typescript: '>=4.8.4 <6.1.0'
-
-  '@typescript-eslint/project-service@8.71.0':
-    resolution: {integrity: sha512-aABjw5rjBacYONVPaPiWOCjJu0vEF4a25iQuodlmQYL1trtLZ0X/y+2Vzl3BKI1odM4LnwLE1oUDXYp1wzx1TQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.1.0'
-
-  '@typescript-eslint/scope-manager@8.71.0':
-    resolution: {integrity: sha512-gWF0BhUcnjZxSpLE8ngS/59n2SB0J3YqRxvX1+2aoRJk9hNtHSLOV+TcarFiOr5ipXm3yc1QrI4c9YZc8zyCxw==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript-eslint/tsconfig-utils@8.71.0':
-    resolution: {integrity: sha512-Z1UlWHADEK2Mlb9NpWfDeSjqoZ5EyrOv4R3eQpbkzqn/EwaIdOpXXupEA1+0ZIOSJSZZDBHG0BrQyN8zUG6Pwg==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-    peerDependencies:
-      typescript: '>=4.8.4 <6.1.0'
-
-  '@typescript-eslint/type-utils@8.71.0':
-    resolution: {integrity: sha512-i8uO1qbdxeKgRnS5sCRt6On3/nfo2d2DwQe3Yvjx543zLy7r8ySqRuPPiIIXAhS03U0v5NfAFx+rUgxFzKKwNw==}
+  '@typescript-eslint/parser@8.71.2':
+    resolution: {integrity: sha512-aTtmZjp/x3gsGHkDs04/1I8kNogBJkpQaeGaN0PfiG43NzDEmW2n+OP5im9wfsvyX0yP1UZWBrAGtDBfH9jEVw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.1.0'
 
-  '@typescript-eslint/types@8.71.0':
-    resolution: {integrity: sha512-cJ4OoxPGWvFnBTnSZyaU+qJzGTqPTGJY+gDchj6cRyLRdmIdt4rcsE4twj+zPfrNiWuVi38wijHzShL++Z9atQ==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@typescript-eslint/typescript-estree@8.71.0':
-    resolution: {integrity: sha512-PEEF4G5sLLWAS5BpPrUvms4ySZkiBQQZM4z+3ReI46axK5Vqr/vXBQatJQIZZOYdGyPUAKTtsrWzpqKuU+3DEw==}
+  '@typescript-eslint/project-service@8.71.2':
+    resolution: {integrity: sha512-Pd68GsLVh5ZXlcEccFPdhSOvtHZ/2WU0XsA8zmXOS3F158lVlcTLhfQ6qvtL1RzbMie0Kp8xtbVwAg4nejKPHw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       typescript: '>=4.8.4 <6.1.0'
 
-  '@typescript-eslint/utils@8.71.0':
-    resolution: {integrity: sha512-pKR/tEMVrXZG23UFKUn5BQf3zfmfk7KQceI2cGzywZ5nxM5Eu3hEJU1utjWzydtzBbcJAQhHN8iPCxobHpPcZQ==}
+  '@typescript-eslint/scope-manager@8.71.2':
+    resolution: {integrity: sha512-YF4wgg5iUX5Obywoac27B56FhozMNFhdJSbh11H5GBAwmBtfyRhmgTQqW9tRNNmHDvsZ2CX6UGzoz+YfYn2Leg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@typescript-eslint/tsconfig-utils@8.71.2':
+    resolution: {integrity: sha512-jz49TAWokm/7yWD9/o837nYax9DyALxIPOImdImvVzo6canBCZYzin8zJyqNR5k1j9K1DE0bVvr0XYB+99uAdg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      typescript: '>=4.8.4 <6.1.0'
+
+  '@typescript-eslint/type-utils@8.71.2':
+    resolution: {integrity: sha512-cC8UaalCViJkb3rH/xLIvidEwoFRtMZMUqDjjJMGEKaTFwYRHYBcoczlEGHuvkHEO8svRDrgZ0yQgOArFmwang==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.1.0'
 
-  '@typescript-eslint/visitor-keys@8.71.0':
-    resolution: {integrity: sha512-8eQ9R218XORK+KLosnf4bu/QsUXvUyVwTbArg7/0NMB1Pu87OJKvj4nhFblkYE8gQV73mW1dx1ptlPCkwRGa7A==}
+  '@typescript-eslint/types@8.71.2':
+    resolution: {integrity: sha512-y5Ukl3oVp7e/VGxqIoEXoeb/Roj71PAJ4WG/N/RGj+eeDvKRLM15kGr9MijLbN0i03S52zxu31Z98E5gWChJKw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@vitest/coverage-v8@5.0.3':
-    resolution: {integrity: sha512-+klsyz7BvT1vCU28Zkfzms1Ia78XD0V41U3FUtRaa3S+vOr/EXvK1O6BvVD7l1RzEjm6SONR2aybOvDDf9u0mQ==}
+  '@typescript-eslint/typescript-estree@8.71.2':
+    resolution: {integrity: sha512-DgNOEsl4pdYzwSL+N/Cl33tX1Hlw3FvId73LnKXfq7jnrF2viOEn7X+P7RBkkSWCVm92gnWd28GIC5vJuLREeA==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      '@vitest/browser': 5.0.3
-      vitest: 5.0.3
+      typescript: '>=4.8.4 <6.1.0'
+
+  '@typescript-eslint/utils@8.71.2':
+    resolution: {integrity: sha512-RyKa1G1M9rKHDhrk+HJtiF1MvLD5Ux2JW3TSkzw+02pRALdpJb+QzG1Y5em+LvCgzGwgg8H7mBRFKljNz7ImPw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
+      typescript: '>=4.8.4 <6.1.0'
+
+  '@typescript-eslint/visitor-keys@8.71.2':
+    resolution: {integrity: sha512-zozlN0UA32bSG2zkKAgQyRYSbEISVoyU6vvkKYo2aSny74D8Jh4e+POkJ6Lk0dlezZi5x7TtD+88Xb06IB8nhg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@vitest/coverage-v8@5.0.5':
+    resolution: {integrity: sha512-4KpkGdIrSqBihx/JyP/e+S+IKB98etg1XDQiLAxksLfcShnwi1VReGeOT9NI43hLHbknosKp/1CCLn9Zgcs8mg==}
+    peerDependencies:
+      '@vitest/browser': 5.0.5
+      vitest: 5.0.5
     peerDependenciesMeta:
       '@vitest/browser':
         optional: true
@@ -1811,10 +1811,10 @@ packages:
     resolution: {integrity: sha512-gUsfXZJbzPamoIY5TvHFiMMoXESBrUMo+xqaj+rYrWI69+EnvRlYBlP96ZnHPY4vX8kyUpgAnFUCg5wZG/HkDQ==}
     engines: {node: '>=22'}
 
-  '@vitest/mocker@5.0.3':
-    resolution: {integrity: sha512-T8sWAIbkSyAjkwTcaEc3Iu0o9A27X1/kdXrizhZkGuSKScRQtRzclfAMpOTcGdXCsqxeWlpGy3XjqaW8CpLORg==}
+  '@vitest/mocker@5.0.5':
+    resolution: {integrity: sha512-xLL3lkDegJZw+MGoGaCCsFayDZthGgpAtr3Vziyfc4p7xH89K7KRPcRBBh/kEYm0Aqkt5DtTmkYpBtRV/FrHZg==}
     peerDependencies:
-      msw: ^2.4.9
+      msw: ^2.4.9 || ^3.0.0
       vite: ^6.0.0 || ^7.0.0 || ^8.0.0
     peerDependenciesMeta:
       msw:
@@ -1822,167 +1822,77 @@ packages:
       vite:
         optional: true
 
-  '@vitest/spy@5.0.3':
-    resolution: {integrity: sha512-XhFysQTB8AZ+P4gMi+Lpo99vg2AZi0qKpaB9yXQl37+CaMEAPO3iH/wGVnSyL5MPERiLezpqTVtrR6UZH5GCXg==}
+  '@vitest/spy@5.0.5':
+    resolution: {integrity: sha512-lwJRExuH417257Q5wv9QYugN9IMJkoxcrKrYxGPQkBzl7wlNpTUxD/5yNX4ESKVUIShKPgkGchYPFMWOOk0wzw==}
 
-  '@yuku-codegen/binding-android-arm64@0.10.2':
-    resolution: {integrity: sha512-Oc2KInVkPfUjEB4PeV6X0NvIoyYTzDe/WmqFrTwBqKs6YKnz4A7XwWQvJTb7M0rLz9a6WgpUUiiS5QKaCi4O/g==}
+  '@yuku-core/binding-android-arm64@0.19.0':
+    resolution: {integrity: sha512-wdL2XmTiZixAOaHk9Z0JJZ8u9Qm8d333Zjpc6gaxXFX+UR5BlsfxZ7a2+2Rm71pamppsPYGUGFq2oVLbh6DISw==}
     cpu: [arm64]
     os: [android]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-darwin-arm64@0.10.2':
-    resolution: {integrity: sha512-3H7eNPIHJndUJXZ4QUGBPq1zC6RGcUZfm7bymJes+/N7wTVWUn1bxZ9JcozYHpkWQNm9f23G8YWbaHD9aYH72A==}
+  '@yuku-core/binding-darwin-arm64@0.19.0':
+    resolution: {integrity: sha512-7sNJa6XJhyetnTy64jw3NEi4YgUcezHk1G5GH9FSvXAuC8wIlbaOwT9lgq5qo5sspjrZJQlBR1TWflP49uRpMw==}
     cpu: [arm64]
     os: [darwin]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-darwin-x64@0.10.2':
-    resolution: {integrity: sha512-AJOUpR2s3LF9AWiiub/Uyc/UoXNTWcq8hK3cVI6fUSXtwh34dG21J6hRuNlO6JVJFTo4o3ScVvZOrh/YFfUEAA==}
+  '@yuku-core/binding-darwin-x64@0.19.0':
+    resolution: {integrity: sha512-pTC7dYEc59isdyizc3nsuyFNBu2LU5wMYZ1be6UMr59PY/AJNtO1aBLWV0MgL/z7C1nv/2sX4TNjGgKLoeevJw==}
     cpu: [x64]
     os: [darwin]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-freebsd-x64@0.10.2':
-    resolution: {integrity: sha512-ms7DcZu87u5CiK/wMwvpKAvAmtaqKjCQIXNweMLypG6qbuiaOMQf1jpbB5+j46xBcgCovo8TQMcv0bCQLKIL9w==}
+  '@yuku-core/binding-freebsd-x64@0.19.0':
+    resolution: {integrity: sha512-xrZjF6XOEwyLOiDIfrwDdRCS6ghxcJeirNC1KivQhVcUwlRonaU79S3/Uiyx3lBylPnT8qKJ3/aMT+H52nGTJQ==}
     cpu: [x64]
     os: [freebsd]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-linux-arm-gnu@0.10.2':
-    resolution: {integrity: sha512-xJDpYAsKV5+eaiBhTYl05fvT6sst4PsCeuIFMRu9b0/WCSrNQPfCDtAQ5/MS6xNpsdujdZEPR+gmfWk3ZG5i3A==}
+  '@yuku-core/binding-linux-arm-gnu@0.19.0':
+    resolution: {integrity: sha512-0OyIH53C0I1CbADHn9FSdCfX5qbpeLwJhmOVhonFJNYheybOnkSJ50qGMfTJIb8y5zrwqvLs7FVBvz6Fk8maZg==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-linux-arm-musl@0.10.2':
-    resolution: {integrity: sha512-qfTkgd7AEx61l4K9VtXWCGTxc/fmXJ4ZheDz3i+/AAJUtg4sa0bPrc0VBxPggB/rayR8Z3+JfrBItuyanBJJ9Q==}
+  '@yuku-core/binding-linux-arm-musl@0.19.0':
+    resolution: {integrity: sha512-z/iPfkCOCSXE34VXNt0uP1ORSW+4mEa9b5CiJcWZeqZH08g49bFU/jRM2T04f+Wpw5mJ6HIzNBiojxeAbrHjeg==}
     cpu: [arm]
     os: [linux]
     libc: [musl]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-linux-arm64-gnu@0.10.2':
-    resolution: {integrity: sha512-4e6Mifm/4UdjtU3D8mATIrvgP+xEiH8xtQOjd0zpd72XKWT7ug3sdyhq2utkkZFP6BvYp7SgZrI+aR4VeIOHdw==}
+  '@yuku-core/binding-linux-arm64-gnu@0.19.0':
+    resolution: {integrity: sha512-jLNTi+gzaRwBJ+gwhCJ+rDb5dmx/8hEBx93UWd7hjMSqPTL1D1wvVSvXVAldV5kALvju7b0/m51EHEhs4+I1fA==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-linux-arm64-musl@0.10.2':
-    resolution: {integrity: sha512-RdsJrUfDYFVV3JOmWFUWwSu31fa1APn12xDeIKxgl/YWxrabwtxsDBNjF2561c7tmcbiewdCUvngqRs8AyGVLA==}
+  '@yuku-core/binding-linux-arm64-musl@0.19.0':
+    resolution: {integrity: sha512-YwyPIdW/rN2Fmv0MTFWi47FaB3F9g+2b+sJISyAw83Yd60RWH4T3Nx6XkAHHVN+uKJNBAd6So7/BVihSiFYvuQ==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-linux-x64-gnu@0.10.2':
-    resolution: {integrity: sha512-mVzWimEPPreaPyXIUvxsHoJzvO7ckZ5j0LgQFHz04zQIRwt9A9T2hA7K5/jYjJKkMxWG/U2VjhGNwVhtyU+uqg==}
+  '@yuku-core/binding-linux-x64-gnu@0.19.0':
+    resolution: {integrity: sha512-/vskaAXVX3ESR43FiTdfiYS7z1b9uoQJwVQ/0RgUHgN2sWoAyCZs+aX4CgU7eKGIHTVfp9VFwv+c+2XchYiEtQ==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-linux-x64-musl@0.10.2':
-    resolution: {integrity: sha512-Y77fyISurmr2mvO1yeq3u+x/WJbACgPR4w+lzEVx30ViCxZzIGrZPRN1yEdZ9xUNPNsIO5thBHIdRNG+UGUG+Q==}
+  '@yuku-core/binding-linux-x64-musl@0.19.0':
+    resolution: {integrity: sha512-FuXL5igeSKib9Rye02TdH+D6SQezTyGxIATMu1Qsn/QywrzwpGl35OLpS2C1x5vpGLeVE2XgiLd5mVPFHmIglQ==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-win32-arm64@0.10.2':
-    resolution: {integrity: sha512-1+tGLyG0u5YYy0lev4ck7/0sd8xJ9SZde0dLut7qLDPZV5WVTV8x6OxNXUne/PGuHZyO1vK+txPQzzHOyXHGSw==}
+  '@yuku-core/binding-win32-arm64@0.19.0':
+    resolution: {integrity: sha512-YuJAe7zEKT1Xa7LuHlhGJpPnYQeVtvo0rZvNjJRqkH0hQGOw4C8QeP30Tg5VKGzZfo2x8CjhjEhKt4TmLwfmdg==}
     cpu: [arm64]
     os: [win32]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-codegen/binding-win32-x64@0.10.2':
-    resolution: {integrity: sha512-8a2SExRohRbwC0MY4VpOF0/RSckrJ2ASZqAor5/RYSJJaeadR93n10gZzcKT6pY9ukiSOIZCRKVRD2tH73T0qA==}
+  '@yuku-core/binding-win32-x64@0.19.0':
+    resolution: {integrity: sha512-o8iY/mXwlRkedp0LNTr4+TEfXTPQwoNZmv6k+1WIAd1ZXEn8xJJTBCtB0osaVvdZo/x/cNmV16UrWrrGpM5Mvw==}
     cpu: [x64]
     os: [win32]
-    deprecated: yuku-codegen is pure JavaScript since 0.14
 
-  '@yuku-parser/binding-android-arm64@0.10.2':
-    resolution: {integrity: sha512-2VPBU9fRGRAQ2xPAvghnec3oou5Nrxm2Bezhf+13UMspAxQSkF/32r+ySKXSwIPA5/RivumDJDxAxc301Sgicw==}
-    cpu: [arm64]
-    os: [android]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-darwin-arm64@0.10.2':
-    resolution: {integrity: sha512-LD+PMZE51tCYTOss5HBkm3/AE39MvcMDBfWJx7A4yDcjfNbAQDnHZKtzSOuqrswx+TQHY0ws5xn6+fWOwtmfBA==}
-    cpu: [arm64]
-    os: [darwin]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-darwin-x64@0.10.2':
-    resolution: {integrity: sha512-mmZ8cND+AoIIMRERyMinlg5ApHxP23B9jH2B5wT7T+dliPa9rubLxneB/SUjFwyUjGaFnB5G7t4YvpfbO5zbkQ==}
-    cpu: [x64]
-    os: [darwin]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-freebsd-x64@0.10.2':
-    resolution: {integrity: sha512-gVIjaaIddbRfAhHlC8N809wQWml7mxfSVnzaLtzGXObTeFTPAg/YVnQXt1UOhPM1ah5eG/8Y0RUlNpB4GVe7eQ==}
-    cpu: [x64]
-    os: [freebsd]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-linux-arm-gnu@0.10.2':
-    resolution: {integrity: sha512-q/XPPQQAPdlw05aPj30ygBhekmQryGOwxVraBgApjKK8yY1kNQgqq6XCYLF1WHSee+lhxclrTO7W0/bt7dR1GA==}
-    cpu: [arm]
-    os: [linux]
-    libc: [glibc]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-linux-arm-musl@0.10.2':
-    resolution: {integrity: sha512-A+Cb0I1hFF4wilTQpWs79k1aNnj4B2tkrHx3zsuUNF9BtVY2zPZ4yeQEM/zjXrS/qJlNMZVK9NrWJjwdpnTrfg==}
-    cpu: [arm]
-    os: [linux]
-    libc: [musl]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-linux-arm64-gnu@0.10.2':
-    resolution: {integrity: sha512-aGNSzqIqqphFwAdIFwVvKIyXD1Iy3CxrEJVIZAT87Ecyi4vCmmDD2v2l9h+Gd3/wSy3JZlOI792LJbKAjyy9rQ==}
-    cpu: [arm64]
-    os: [linux]
-    libc: [glibc]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-linux-arm64-musl@0.10.2':
-    resolution: {integrity: sha512-Ddl1sF0rtuCXyHGSOV6dcmdx+ETv1iD+IVFqQuOjzkJZWclxJxdBWX6ZJMRtTiGqGUTbqLEKiTXxpR/Bvqk+2A==}
-    cpu: [arm64]
-    os: [linux]
-    libc: [musl]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-linux-x64-gnu@0.10.2':
-    resolution: {integrity: sha512-/nlcpR6IF5U+0m5L9wvAIXeQa2DT+BXuvqKDsTcOTlcc0B4dHNyqE5hTXsS4hAyimpy2ZK8A1zMNF5hTrjg2cg==}
-    cpu: [x64]
-    os: [linux]
-    libc: [glibc]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-linux-x64-musl@0.10.2':
-    resolution: {integrity: sha512-GX80dxTQD/M/OryyuxJcFzFENzry3cDFPvCFTyWogNWQH3fSHfMrNfpwpl1YzMos1eV9NygK5GSDG7VArQlb4w==}
-    cpu: [x64]
-    os: [linux]
-    libc: [musl]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-win32-arm64@0.10.2':
-    resolution: {integrity: sha512-agePQBV4VHewiGU0ACSjscZ/hJd283f9JfAF19Gf1rI5+wy5tTgx4GS36i0b3xim15AQ4RCpDRosEvhLZ4zAOw==}
-    cpu: [arm64]
-    os: [win32]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-parser/binding-win32-x64@0.10.2':
-    resolution: {integrity: sha512-s8//CMpgL5+y1lvDCdyh1rwGI5+ytDJywFJRe1vnhI7n0j+caxshNucurikYLLVeQ2SYFex6aPrzgQxkabBQRA==}
-    cpu: [x64]
-    os: [win32]
-    deprecated: yuku-parser runs on yuku-core since 0.14
-
-  '@yuku-toolchain/types@0.10.2':
-    resolution: {integrity: sha512-sSeo4SSSToiS+sSD+bwn/s94EEcaLJ7tG5LCp8gFYC1G5VzxzX7fqB6m9RU1yMD8KTpu6zdU/I1NlQf8hVBJ9Q==}
+  '@yuku-toolchain/types@0.19.0':
+    resolution: {integrity: sha512-tFkNbsP4WXX9UMUC5syJGdK9dPMLK0PPaIuXCcCYH75sZ8MrebfBZ2XvCILRTw8AgLivSSCfDa4R67iYBDa4Kg==}
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -2001,8 +1911,8 @@ packages:
     peerDependencies:
       acorn: ^6.0.0 || ^7.0.0 || ^8.0.0
 
-  acorn@8.18.0:
-    resolution: {integrity: sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==}
+  acorn@8.19.0:
+    resolution: {integrity: sha512-oJlA3XiRm7Cyk6qFD2Jn8ak9B7jSy0qy00ADO3+8dpT0LSjFihQYv4C02LFCSYJV3Q37xYwwRy5m+IpIiUzqWw==}
     engines: {node: '>=0.4.0'}
     hasBin: true
 
@@ -2183,8 +2093,8 @@ packages:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
     engines: {node: '>= 0.8'}
 
-  cac@7.0.0:
-    resolution: {integrity: sha512-tixWYgm5ZoOD+3g6UTea91eow5z6AAHaho3g0V9CNSNb45gM8SmflpAc+GRd1InC4AqN/07Unrgp56Y94N9hJQ==}
+  cac@7.1.0:
+    resolution: {integrity: sha512-LMDU/U2yA4IPIY8KT0NsNPWEYZvAMkbgyspxJ6btJaYV+WMDOHAZCmB0lsTObiHaRS1V/ztKAl7+TSkTqXyeoA==}
     engines: {node: '>=20.19.0'}
 
   cacheable@2.5.0:
@@ -2495,8 +2405,8 @@ packages:
     resolution: {integrity: sha512-tD40eHxA35h0PEIZNeIjkHoDR4YjjJp34biM0mDvplBe//mB+IHCqHDGV7pxF+7MklTvighcCPPZC7ynWyjdTA==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
-  eslint@10.12.0:
-    resolution: {integrity: sha512-npHjrHb2o4ehH3mE+YuxABR+0gyb0aVWCIolgJDArwCiHEIsonBm3ZKjel5b0U5+a+MbEvIyRCGCzD3eKKK2NA==}
+  eslint@10.13.0:
+    resolution: {integrity: sha512-UohDjD4zSzEwhf58M3O7vc/ycc8O1I7dNlhtD0WxE8Px8EHNJKtUwzBqrzeGhisRuv2ag4sAYswszCJRgKXYUg==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     hasBin: true
     peerDependencies:
@@ -2737,8 +2647,8 @@ packages:
     resolution: {integrity: sha512-4FbRdAX+bSdmo4AUFuS0WNiPz8NgFt+r8ThgNWmlrjQjt1Q7ZR9+zTlce2859x4KSXrwIsaeTqDoKQmtP8pLmQ==}
     engines: {node: '>= 0.8'}
 
-  human-id@4.2.1:
-    resolution: {integrity: sha512-zPGsiS+dWoTZtZ4AtpA9Y+BdSFSNWvnouNlWNoUFyAM6xHOHmdCvqO3k8AIbdamCOv4gUFUVNPf6rJFfc4UiJw==}
+  human-id@4.2.2:
+    resolution: {integrity: sha512-Z+8unD6em/MJwyrkWQ2M3wygRGI1+MztbutiNwk1DCuEPXOZRWGjtcMPZYP1exY9iNZMhd7ZOSMQSo9WYtiQRw==}
     hasBin: true
 
   husky@9.1.7:
@@ -2849,8 +2759,8 @@ packages:
   jsonc-parser@3.3.1:
     resolution: {integrity: sha512-HUgH65KyejrUFPvHFPbqOY0rsFip3Bo5wb4ngvdi1EpCYWUQDC5V+Y7mZws+DLkr4M//zQJoanu1SP+87Dv1oQ==}
 
-  kareem@3.4.0:
-    resolution: {integrity: sha512-JAKhnR4S027v/8949QXNInRskgETCg9rFUMi1VjhGbjX+XltCAAEFcXykkSocNkom1kc66EMJfjWvhj87BDQKg==}
+  kareem@3.4.1:
+    resolution: {integrity: sha512-UlgCAFNAdk/HLSsbfkmbH8pJqpEN52Ek8RG53Ys1i3Q3gbCQruSrWpplZlgIGyDHX/LNoLW97ei3OG43s7UhUA==}
     engines: {node: '>=18.0.0'}
 
   keyv@5.6.0:
@@ -2859,8 +2769,8 @@ packages:
   kuler@2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
 
-  launch-editor@2.14.1:
-    resolution: {integrity: sha512-QWBrQsMpH7gPr965dsKD/3cKWiNoTjpATQf++Xq63N6sKRGMwlVXz41O1IZTMfZQgBctD/K5Zt06+/I6pP6+HA==}
+  launch-editor@2.14.2:
+    resolution: {integrity: sha512-NHJEb30MGBCkmZXLZwz25t37QR4aY03ZzPYUJXOJaOa92uWwExI9SBQUuIznBYc1xkD7cJNGX7oc3Nl3sq2kQQ==}
 
   lazystream@1.0.1:
     resolution: {integrity: sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==}
@@ -2975,8 +2885,8 @@ packages:
     resolution: {integrity: sha512-U4N8FgzmWxc8k1VH8Kr6lQg18U7Fjvby6wXHVRX/ZZ7IwWbRMgrRbP0Wrb5q5NVinryp4SQampHKdvtecItxUg==}
     engines: {node: 20 || >=22}
 
-  magic-string@1.4.2:
-    resolution: {integrity: sha512-vG+rjFRj1PqdIBozIxAGMjPlOhaVe+GXpbttY/iSK7rGcJRMlwNJO7dcUwmUqkymsFLJiNGI06t4D7Fr7yRC9g==}
+  magic-string@1.4.3:
+    resolution: {integrity: sha512-z12OxmaPGE0F4xlpGdjuAUckipLpQlTAuAmyGhNoD7ODpYUzvDfvtxUbjM/jwznyP178oju/KDdyi220wNJ0RQ==}
 
   magicast@0.5.5:
     resolution: {integrity: sha512-UicdXN8zQ3JHlxVq+28afMXPr1z7WNY6+7EJnzTdQWkTAlMLF5fNCCKxJHBQwGaNGR11581EiQmQzx73+MvszA==}
@@ -3057,8 +2967,8 @@ packages:
     resolution: {integrity: sha512-ZoS07RoFqpKYQwAk59qmrx8+jJHNHU30UjlU96QktiGn1ltvDr+vCznLX5DiUBLEpMAHatHNWV1nM/74ul66kA==}
     engines: {node: '>=20.19.0'}
 
-  mongodb@7.6.0:
-    resolution: {integrity: sha512-WbZ6OCjYw2c53LOjfkQa+reXr7kIiOVpXXglnASFuiMtif0BvsMwHe3ClJHLm1/r7wJFwaasfFtD6iYIktB01g==}
+  mongodb@7.7.0:
+    resolution: {integrity: sha512-XG1xXEqyouAV8GCb3PuRaujofeXKpAJAPvXYWZgHl6Dz4QHSJ1nRLl0+GpqaLTwKvC0RFE9truOur34RNFY1nw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       '@aws-sdk/credential-providers': ^3.806.0
@@ -3084,8 +2994,8 @@ packages:
       socks:
         optional: true
 
-  mongoose@9.10.4:
-    resolution: {integrity: sha512-p1hx2MSD4B+4shFTpRcd/uTwD6DtZeDJ+YxM9ja8/VBDH7vqqLynwGLA6rWa/tD7voOBoGqQR1wM3+/LcUoEfA==}
+  mongoose@9.11.2:
+    resolution: {integrity: sha512-hFkl/2dccpD58coRAya3a/ht8ooAx9YPLzBfxVX9bEsgcrjsNkvuWQe8gplGfDdmzpw2RfFX1IB/G8PiFwyvwg==}
     engines: {node: '>=20.19.0'}
 
   mpath@0.9.0:
@@ -3148,10 +3058,6 @@ packages:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
     engines: {node: '>= 0.4'}
 
-  obug@2.2.1:
-    resolution: {integrity: sha512-XrsrhT5sybtKI6wakr2SPOlGZWWYbUXZ7a0jT8/QOeAPau+1X/bSegNe5YR75oJmEZQbKningirmGOEJCIk61Q==}
-    engines: {node: '>=12.20.0'}
-
   obug@3.0.0:
     resolution: {integrity: sha512-5vvB5+W7ePv+p3uqxi+RcW1XAzLW0/hxt3/4X4Lc4qHudzOhmBiBwOY6DRob4WnanAEGvNcLjF+KNOufrUoEQw==}
     engines: {node: '>=12.20.0'}
@@ -3185,8 +3091,8 @@ packages:
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
 
-  package-manager-detector@1.8.0:
-    resolution: {integrity: sha512-yQA4H19AmPEoMUeavPMDIe1higySl/gH/yaQrkT/s07Qp+7pp2hYz30N3z2l5BkjVkF9Ow6o0wjJamm2y7Sn0A==}
+  package-manager-detector@1.9.0:
+    resolution: {integrity: sha512-zAMfbta9nPA8AKkA4WdmNAT8R8s6Dk0/xwPsqNnRidMFcLo1YkLuPDTgs2f64XdzS8vbLNnoJ+uUIkgbz7oRHA==}
 
   param-case@3.0.4:
     resolution: {integrity: sha512-RXlj7zCYokReqWpOPH9oYivUzLYZ5vAPIfEmCTNViosC78F8F0H9y7T7gG2M39ymgutxF5gcFEsyZQSph9Bp3A==}
@@ -3273,8 +3179,8 @@ packages:
     resolution: {integrity: sha512-+Owyggi9IxT1ePKGafcI87ubSmxol6smwJ+RAHDQlx9+9cPwFWDiKFFCPuWhr9ignlGpZ9vDQLw67N4dcTVFEA==}
     engines: {node: '>=20'}
 
-  qs@6.16.0:
-    resolution: {integrity: sha512-h6fhOIaRrID2CbEY2fqs+7t+UXZo+MLAnU5gRIq85uFtdiUPCdsApMlHhXogKVM4HM2DVbIjGNTTYH2OcmP1vA==}
+  qs@6.16.1:
+    resolution: {integrity: sha512-5Px6J7rfHBAGUhNQ3es4YzcOdBBw0SDcVtThJml4RdnKw4tKs2epA0kPZ+K8X+WiHktT93RHVcQ/3ym5aTCgtg==}
     engines: {node: '>=0.6'}
 
   quansync@1.0.0:
@@ -3328,8 +3234,8 @@ packages:
     resolution: {integrity: sha512-9LkiTwjUh6rT555DtE9rTX+BKByPfrMzEAtnlEtdEwr3Nkffwiihqe2bWADg+OQRjt9gl6ICdmB/ZFDCGAtSow==}
     engines: {node: '>= 4'}
 
-  rolldown-plugin-dts@0.28.6:
-    resolution: {integrity: sha512-qKrFtBfRfR2hP233m7Ic9zf3wv6MSYdZghWKMdEO6dRYZGlNfINJAa1P5ZVvyHh3mrcd7IJQvIY8L9vnm+v5rQ==}
+  rolldown-plugin-dts@0.28.8:
+    resolution: {integrity: sha512-FVhfqxorCWcc20BVT5eVRfRjzLLl6mgzjcMR4gSBf0K4oQMXT0qoHhhzfXy0L7y83fQy7Ug5ZDNk90xM3/LiCQ==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
     peerDependencies:
       '@typescript/native-preview': '*'
@@ -3350,8 +3256,8 @@ packages:
       vue-tsc:
         optional: true
 
-  rolldown@1.2.12:
-    resolution: {integrity: sha512-8wafseiaG80xmXSfqidUNqZcylTlhmPZZt+za2m+js2sFZ8dTNlhIOV2WcbIPx2hgwPBJpEUGFAMZ9bgBBLTSQ==}
+  rolldown@1.2.14:
+    resolution: {integrity: sha512-eTBTTqMR6uHKLgcUqpJP8ntzDI6V4LYA8negAMBEI7gkgVvOdrx6VsvS2Ym+83KhOPdLCHWJu0w7UQFJZhHKNw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -3516,8 +3422,8 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
 
-  swagger-ui-dist@5.33.1:
-    resolution: {integrity: sha512-H872wWkA53bFIsGgi7OWgmq+CRWw3nFQGdJWRqOB9wNwTm6e5ol34+qPDkV4AJlK+gglM2EsJiOOzsGsEGbluA==}
+  swagger-ui-dist@5.33.3:
+    resolution: {integrity: sha512-7xJKxAjf+/ajlW/V/dMfbiY+NC5BWtbvzzdI/AsX5UzMtOMudmFz/tjuKN0jN7QVe5drKKnx01CdYEJvTFvQlw==}
 
   tagged-tag@1.0.0:
     resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
@@ -3554,8 +3460,8 @@ packages:
   text-hex@1.0.0:
     resolution: {integrity: sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==}
 
-  tinybench@6.2.0:
-    resolution: {integrity: sha512-78U2TlB2CnVenajOFzf3BKSm0J6oz5L0NV7g32LCPccvYc0lbWvys4d3uUUCS2B1N8PAf2+aekR8i1KbC3HO7Q==}
+  tinybench@6.2.2:
+    resolution: {integrity: sha512-nIZ2N2dFpjBsg2hgitKu7mA+FvsIJuGJOwysRngmVRRmWgR/UyPjwJj8c/fT/dhm8EkHnF5EOogRf+0Z2qrimA==}
     engines: {node: '>=20.0.0'}
 
   tinyexec@1.3.1:
@@ -3600,14 +3506,14 @@ packages:
     peerDependencies:
       typescript: '>=4.8.4'
 
-  tsdown@0.23.0:
-    resolution: {integrity: sha512-BaT+ep1xnj5hdyICLd5r5SYYE+TXnI1ATePLykv9vcKpHpFTWUWRH+x1AF/E2qcu3YB6+vI8IdyxIIIffEqw5Q==}
+  tsdown@0.23.1:
+    resolution: {integrity: sha512-MSC2WSOts3in95J334/VIS7KPfor3eCSvndJ6KdoVj9Aak9Kh1aNfz9ws5owhdukuTNSXRdfkPEzA/ihpDD6SA==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
     hasBin: true
     peerDependencies:
       '@arethetypeswrong/core': ^0.18.1
-      '@tsdown/css': 0.23.0
-      '@tsdown/exe': 0.23.0
+      '@tsdown/css': 0.23.1
+      '@tsdown/exe': 0.23.1
       '@vitejs/devtools': '*'
       publint: ^0.3.8
       tsx: '*'
@@ -3660,8 +3566,8 @@ packages:
     resolution: {integrity: sha512-faYHw0anBbc/kWF3zFTEnxSFOAGUX9GFbOBthvDdLsIlEoWOFOtS0zgCiQYwIskL9iGXZL3kAXD8OoZ4GmMATA==}
     engines: {node: '>= 18'}
 
-  typescript-eslint@8.71.0:
-    resolution: {integrity: sha512-fBdHYiqQ14RW6mOMXD14Svn82ZsCYAoQSzGRzyEjR59S5A2Krh/l7fGTOQ7iCr8gGy/mHVXtEF7s5fgjEdV0Pw==}
+  typescript-eslint@8.71.2:
+    resolution: {integrity: sha512-Rz4effbMy2g9wnvOJZG6SbVavX313Lap1vNEbk1RUochzickvzP8P4HB+bkNg5e50eVz1hQGjh9K1omI1xB4Bw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
@@ -3745,8 +3651,8 @@ packages:
     resolution: {integrity: sha512-Qo+uWgilfSmAhXCMav1uYFynlQO7fMFiMVZsQqZRMIXp0O7rR7qjkj+cPvBHLgBqi960QCoo/PH2/6ZtVqKvrg==}
     hasBin: true
 
-  uuid@14.0.2:
-    resolution: {integrity: sha512-xZe/16rV4aa+HGSOCiY2YeLT1OybRLrrkL/Rqaq7p7GMVXjFh+6wN4oMYgjFmnSnhY8t6Xpdl2l9qmnHYuMHwQ==}
+  uuid@14.0.3:
+    resolution: {integrity: sha512-Sc5u1VVln93y1Xnz4R+CunOZc7R9LUcTmhj7Rc7Eg3HVcf7rVn2FOoa812fe0W8p3jD7xeoGSYbfqCGGH2B6xw==}
     hasBin: true
 
   validate-npm-package-license@3.0.4:
@@ -3756,8 +3662,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  verkit@0.4.1:
-    resolution: {integrity: sha512-mMVzj0TXExtVdlDEq+Mzp0eyOuyznNpFobNM3uAqe3HVm/Ps2c+u17BligMkZjZCA6EiXpoon8iRTer3iu40SQ==}
+  verkit@0.5.0:
+    resolution: {integrity: sha512-u4J1hr6Y+C/hit34GwL3eIcUf3wngT8TlYUjK7tk0jxydKLAq3sYvifjdTDA6U3KCKRcQCQDGf/srjxfZF3l7g==}
     engines: {node: '>=18.12.0'}
 
   vite@8.2.2:
@@ -3803,20 +3709,20 @@ packages:
       yaml:
         optional: true
 
-  vitest@5.0.3:
-    resolution: {integrity: sha512-xMw97S3rjdtj5dkVat7jCsqWBpvchs3RlpQctUqwJD0KkERk40vz2fJ77lDwW/Vzh/pk18eItYAzkodhSes3jQ==}
+  vitest@5.0.5:
+    resolution: {integrity: sha512-cPODOMF8YnkiiYtDdHo6n4wWmBrOBBbOIYH2d33M4l3CdNn72h+qMmO6uXffUN6A5AZFXNND/d+krS9mgkXRfg==}
     engines: {node: ^22.12.0 || ^24.0.0 || >=26.0.0}
     hasBin: true
     peerDependencies:
       '@edge-runtime/vm': '*'
       '@opentelemetry/api': ^1.9.0
       '@types/node': ^22.0.0 || >=24.0.0
-      '@vitest/browser-playwright': 5.0.3
-      '@vitest/browser-preview': 5.0.3
+      '@vitest/browser-playwright': 5.0.5
+      '@vitest/browser-preview': 5.0.5
       '@vitest/browser-webdriverio': ^5.0.0-beta.5 || >=5.0.0
-      '@vitest/coverage-istanbul': 5.0.3
-      '@vitest/coverage-v8': 5.0.3
-      '@vitest/ui': 5.0.3
+      '@vitest/coverage-istanbul': 5.0.5
+      '@vitest/coverage-v8': 5.0.5
+      '@vitest/ui': 5.0.5
       happy-dom: '*'
       jsdom: '*'
       vite: ^6.4.0 || ^7.0.0 || ^8.0.0
@@ -3909,21 +3815,28 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  yuku-ast@0.10.2:
-    resolution: {integrity: sha512-UnG9mA6giglCvSErft2/40TVFX750Sj1xgwddPLpG7J7rlr/P1wPADg9G2RK+d/1tNLtRVoLdMMOMVBB9561TQ==}
+  yuku-ast@0.19.0:
+    resolution: {integrity: sha512-PyCsiScaelhxBGzL8dyeJkLqvRZycoh78R31Vrt/WqYrm0hMFoKwIw/X7Dx5mBKLWAMlV9I9HEyBOHnj2gZVyw==}
+    engines: {node: '>=14.18.0'}
 
-  yuku-codegen@0.10.2:
-    resolution: {integrity: sha512-hentl2dtrF6cPjiAirtkfxfFZBA6Hdm61UqRJ7cA0qrlDNMk9PZGOjw5w1mx3E0hu/6pHcJF4dJW+D0SXHPZOA==}
+  yuku-codegen@0.19.0:
+    resolution: {integrity: sha512-uymAKHjDuaP4BEpkXC/BSLz4DUEF5oArZ5AuD3888nb2miChjWSgpPdojEJxm3pjpXkgUaCRJQyNAbnMN33wHg==}
+    engines: {node: '>=14.18.0'}
 
-  yuku-parser@0.10.2:
-    resolution: {integrity: sha512-CgaU0/PPjCAIEZ3WQroosOxTY3eeKldAN3h+vk8pMNz4+jl1CZzBR4pW+K/rRPF112VooCL5FdjJoiMNjDrL2A==}
+  yuku-core@0.19.0:
+    resolution: {integrity: sha512-kYK9e1XdfirNhkipzW0wmMcSWcVF/CWnuugodfVYRCUwvoBefweL9HzB96OiKEhsx78V5WbUxbJqlizMX869Qg==}
+    engines: {node: '>=14.18.0'}
+
+  yuku-parser@0.19.0:
+    resolution: {integrity: sha512-XrBh9ZiQK5mJVRxZBAvD6LwRyAYrK3MFtH3+onyuxFL5hFD44EC3QOmIC1FjTj6H2MMwq46/NAI+NZxLZPZgxg==}
+    engines: {node: '>=14.18.0'}
 
   zip-stream@6.0.1:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
 
-  zod@4.6.5:
-    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
 snapshots:
 
@@ -4007,10 +3920,10 @@ snapshots:
       '@clack/prompts': 1.8.1
       '@manypkg/get-packages': 3.1.0
       '@pnpm/deps.graph-sequencer': 1100.0.1
-      cac: 7.0.0
+      cac: 7.1.0
       import-meta-resolve: 4.2.0
-      launch-editor: 2.14.1
-      package-manager-detector: 1.8.0
+      launch-editor: 2.14.2
+      package-manager-detector: 1.9.0
       semver: 7.8.5
       tinyexec: 1.3.1
 
@@ -4026,7 +3939,7 @@ snapshots:
 
   '@changesets/format@0.1.2':
     dependencies:
-      package-manager-detector: 1.8.0
+      package-manager-detector: 1.9.0
       tinyexec: 1.3.1
 
   '@changesets/get-dependents-graph@3.0.0':
@@ -4073,7 +3986,7 @@ snapshots:
     dependencies:
       '@changesets/format': 0.1.2
       '@changesets/types': 7.0.0
-      human-id: 4.2.1
+      human-id: 4.2.2
 
   '@clack/core@1.5.1':
     dependencies:
@@ -4097,9 +4010,9 @@ snapshots:
       enabled: 2.0.0
       kuler: 2.0.0
 
-  '@eslint-community/eslint-utils@4.10.1(eslint@10.12.0(supports-color@7.2.0))':
+  '@eslint-community/eslint-utils@4.10.1(eslint@10.13.0(supports-color@7.2.0))':
     dependencies:
-      eslint: 10.12.0(supports-color@7.2.0)
+      eslint: 10.13.0(supports-color@7.2.0)
       eslint-visitor-keys: 3.4.3
 
   '@eslint-community/regexpp@4.12.2': {}
@@ -4232,7 +4145,7 @@ snapshots:
 
   '@noble/hashes@1.8.0': {}
 
-  '@oxc-project/types@0.152.0': {}
+  '@oxc-project/types@0.154.0': {}
 
   '@paralleldrive/cuid2@2.3.1':
     dependencies:
@@ -4267,49 +4180,49 @@ snapshots:
     dependencies:
       quansync: 1.0.0
 
-  '@rolldown/binding-android-arm-eabi@1.2.12':
+  '@rolldown/binding-android-arm-eabi@1.2.14':
     optional: true
 
-  '@rolldown/binding-android-arm64@1.2.12':
+  '@rolldown/binding-android-arm64@1.2.14':
     optional: true
 
-  '@rolldown/binding-darwin-arm64@1.2.12':
+  '@rolldown/binding-darwin-arm64@1.2.14':
     optional: true
 
-  '@rolldown/binding-darwin-x64@1.2.12':
+  '@rolldown/binding-darwin-x64@1.2.14':
     optional: true
 
-  '@rolldown/binding-freebsd-x64@1.2.12':
+  '@rolldown/binding-freebsd-x64@1.2.14':
     optional: true
 
-  '@rolldown/binding-linux-arm-gnueabihf@1.2.12':
+  '@rolldown/binding-linux-arm-gnueabihf@1.2.14':
     optional: true
 
-  '@rolldown/binding-linux-arm64-gnu@1.2.12':
+  '@rolldown/binding-linux-arm64-gnu@1.2.14':
     optional: true
 
-  '@rolldown/binding-linux-arm64-musl@1.2.12':
+  '@rolldown/binding-linux-arm64-musl@1.2.14':
     optional: true
 
-  '@rolldown/binding-linux-ppc64-gnu@1.2.12':
+  '@rolldown/binding-linux-ppc64-gnu@1.2.14':
     optional: true
 
-  '@rolldown/binding-linux-s390x-gnu@1.2.12':
+  '@rolldown/binding-linux-s390x-gnu@1.2.14':
     optional: true
 
-  '@rolldown/binding-linux-x64-gnu@1.2.12':
+  '@rolldown/binding-linux-x64-gnu@1.2.14':
     optional: true
 
-  '@rolldown/binding-linux-x64-musl@1.2.12':
+  '@rolldown/binding-linux-x64-musl@1.2.14':
     optional: true
 
-  '@rolldown/binding-openharmony-arm64@1.2.12':
+  '@rolldown/binding-openharmony-arm64@1.2.14':
     optional: true
 
-  '@rolldown/binding-win32-arm64-msvc@1.2.12':
+  '@rolldown/binding-win32-arm64-msvc@1.2.14':
     optional: true
 
-  '@rolldown/binding-win32-x64-msvc@1.2.12':
+  '@rolldown/binding-win32-x64-msvc@1.2.14':
     optional: true
 
   '@rolldown/pluginutils@1.0.1': {}
@@ -4329,69 +4242,69 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@stylistic/eslint-plugin@5.10.0(eslint@10.12.0(supports-color@7.2.0))':
+  '@stylistic/eslint-plugin@5.10.0(eslint@10.13.0(supports-color@7.2.0))':
     dependencies:
-      '@eslint-community/eslint-utils': 4.10.1(eslint@10.12.0(supports-color@7.2.0))
-      '@typescript-eslint/types': 8.71.0
-      eslint: 10.12.0(supports-color@7.2.0)
+      '@eslint-community/eslint-utils': 4.10.1(eslint@10.13.0(supports-color@7.2.0))
+      '@typescript-eslint/types': 8.71.2
+      eslint: 10.13.0(supports-color@7.2.0)
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
       estraverse: 5.3.0
       picomatch: 4.0.7
 
-  '@swc/core-darwin-arm64@1.16.13':
+  '@swc/core-darwin-arm64@1.16.18':
     optional: true
 
-  '@swc/core-darwin-x64@1.16.13':
+  '@swc/core-darwin-x64@1.16.18':
     optional: true
 
-  '@swc/core-linux-arm-gnueabihf@1.16.13':
+  '@swc/core-linux-arm-gnueabihf@1.16.18':
     optional: true
 
-  '@swc/core-linux-arm64-gnu@1.16.13':
+  '@swc/core-linux-arm64-gnu@1.16.18':
     optional: true
 
-  '@swc/core-linux-arm64-musl@1.16.13':
+  '@swc/core-linux-arm64-musl@1.16.18':
     optional: true
 
-  '@swc/core-linux-ppc64-gnu@1.16.13':
+  '@swc/core-linux-ppc64-gnu@1.16.18':
     optional: true
 
-  '@swc/core-linux-s390x-gnu@1.16.13':
+  '@swc/core-linux-s390x-gnu@1.16.18':
     optional: true
 
-  '@swc/core-linux-x64-gnu@1.16.13':
+  '@swc/core-linux-x64-gnu@1.16.18':
     optional: true
 
-  '@swc/core-linux-x64-musl@1.16.13':
+  '@swc/core-linux-x64-musl@1.16.18':
     optional: true
 
-  '@swc/core-win32-arm64-msvc@1.16.13':
+  '@swc/core-win32-arm64-msvc@1.16.18':
     optional: true
 
-  '@swc/core-win32-ia32-msvc@1.16.13':
+  '@swc/core-win32-ia32-msvc@1.16.18':
     optional: true
 
-  '@swc/core-win32-x64-msvc@1.16.13':
+  '@swc/core-win32-x64-msvc@1.16.18':
     optional: true
 
-  '@swc/core@1.16.13(@swc/helpers@0.5.23)':
+  '@swc/core@1.16.18(@swc/helpers@0.5.23)':
     dependencies:
       '@swc/counter': 0.1.3
       '@swc/types': 0.1.28
     optionalDependencies:
-      '@swc/core-darwin-arm64': 1.16.13
-      '@swc/core-darwin-x64': 1.16.13
-      '@swc/core-linux-arm-gnueabihf': 1.16.13
-      '@swc/core-linux-arm64-gnu': 1.16.13
-      '@swc/core-linux-arm64-musl': 1.16.13
-      '@swc/core-linux-ppc64-gnu': 1.16.13
-      '@swc/core-linux-s390x-gnu': 1.16.13
-      '@swc/core-linux-x64-gnu': 1.16.13
-      '@swc/core-linux-x64-musl': 1.16.13
-      '@swc/core-win32-arm64-msvc': 1.16.13
-      '@swc/core-win32-ia32-msvc': 1.16.13
-      '@swc/core-win32-x64-msvc': 1.16.13
+      '@swc/core-darwin-arm64': 1.16.18
+      '@swc/core-darwin-x64': 1.16.18
+      '@swc/core-linux-arm-gnueabihf': 1.16.18
+      '@swc/core-linux-arm64-gnu': 1.16.18
+      '@swc/core-linux-arm64-musl': 1.16.18
+      '@swc/core-linux-ppc64-gnu': 1.16.18
+      '@swc/core-linux-s390x-gnu': 1.16.18
+      '@swc/core-linux-x64-gnu': 1.16.18
+      '@swc/core-linux-x64-musl': 1.16.18
+      '@swc/core-win32-arm64-msvc': 1.16.18
+      '@swc/core-win32-ia32-msvc': 1.16.18
+      '@swc/core-win32-x64-msvc': 1.16.18
       '@swc/helpers': 0.5.23
 
   '@swc/counter@0.1.3': {}
@@ -4414,50 +4327,50 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@tsed/ajv@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0)':
+  '@tsed/ajv@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0)':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/exceptions': 8.41.2(@tsed/core@8.41.2)
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/exceptions': 8.44.0(@tsed/core@8.44.0)
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       ajv: 8.20.0
       ajv-errors: 3.0.0(ajv@8.20.0)
       ajv-formats: 3.0.1(ajv@8.20.0)
       tslib: 2.8.1
 
-  '@tsed/core@8.41.2':
+  '@tsed/core@8.44.0':
     dependencies:
       reflect-metadata: 0.2.2
       tslib: 2.8.1
 
-  '@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)':
+  '@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/hooks': 8.41.2
+      '@tsed/core': 8.44.0
+      '@tsed/hooks': 8.44.0
       '@tsed/logger': 8.0.7
       tslib: 2.8.1
-      uuid: 14.0.2
+      uuid: 14.0.3
 
   '@tsed/engines@8.38.2':
     dependencies:
       tslib: 2.8.1
 
-  '@tsed/exceptions@8.41.2(@tsed/core@8.41.2)':
+  '@tsed/exceptions@8.44.0(@tsed/core@8.44.0)':
     dependencies:
-      '@tsed/core': 8.41.2
+      '@tsed/core': 8.44.0
       change-case: 5.4.4
       statuses: 2.0.2
       tslib: 2.8.1
 
-  '@tsed/hooks@8.41.2':
+  '@tsed/hooks@8.44.0':
     dependencies:
       reflect-metadata: 0.2.2
       tslib: 2.8.1
 
-  '@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))':
+  '@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/core': 8.44.0
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       tslib: 2.8.1
 
   '@tsed/logger-connect@8.0.7(@tsed/logger@8.0.7)':
@@ -4479,82 +4392,82 @@ snapshots:
       semver: 7.8.5
       tslib: 2.8.1
 
-  '@tsed/mongoose@8.41.2(@tsed/ajv@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0))(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/logger@8.0.7)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(mongoose@9.10.4)':
+  '@tsed/mongoose@8.44.0(@tsed/ajv@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0))(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/logger@8.0.7)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(mongoose@9.11.2)':
     dependencies:
-      '@tsed/ajv': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0)
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/json-mapper': 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+      '@tsed/ajv': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(ajv-errors@3.0.0(ajv@8.20.0))(ajv@8.20.0)
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/json-mapper': 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/logger': 8.0.7
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       change-case: 5.4.4
-      mongoose: 9.10.4
+      mongoose: 9.11.2
       tslib: 2.8.1
 
-  '@tsed/normalize-path@8.41.2':
+  '@tsed/normalize-path@8.44.0':
     dependencies:
       normalize-path: 3.0.0
       tslib: 2.8.1
 
-  '@tsed/openapi-utils@8.41.2(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))':
+  '@tsed/openapi-utils@8.44.0(@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0))':
     dependencies:
-      '@tsed/openspec': 8.41.2
-      '@tsed/platform-http': 8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0)
+      '@tsed/openspec': 8.44.0
+      '@tsed/platform-http': 8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0)
       micromatch: 4.0.8
       tslib: 2.8.1
 
-  '@tsed/openspec@8.41.2': {}
+  '@tsed/openspec@8.44.0': {}
 
-  '@tsed/platform-accept-mimes@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))':
+  '@tsed/platform-accept-mimes@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))':
     dependencies:
       tslib: 2.8.1
     optionalDependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
 
-  '@tsed/platform-exceptions@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))':
+  '@tsed/platform-exceptions@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/exceptions': 8.41.2(@tsed/core@8.41.2)
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/exceptions': 8.44.0(@tsed/core@8.44.0)
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       tslib: 2.8.1
 
-  '@tsed/platform-express@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))(@tsed/platform-views@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(body-parser@2.3.0(supports-color@7.2.0))(express@5.2.1(supports-color@7.2.0))(multer@2.4.0)':
+  '@tsed/platform-express@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0))(@tsed/platform-views@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(body-parser@2.3.0(supports-color@7.2.0))(express@5.2.1(supports-color@7.2.0))(multer@2.4.0)':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/json-mapper': 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/json-mapper': 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/logger': 8.0.7
-      '@tsed/openspec': 8.41.2
-      '@tsed/platform-http': 8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0)
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/openspec': 8.44.0
+      '@tsed/platform-http': 8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0)
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       body-parser: 2.3.0(supports-color@7.2.0)
       express: 5.2.1(supports-color@7.2.0)
       multer: 2.4.0
       tslib: 2.8.1
     optionalDependencies:
-      '@tsed/platform-views': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+      '@tsed/platform-views': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
 
-  '@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0)':
+  '@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0)':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/exceptions': 8.41.2(@tsed/core@8.41.2)
-      '@tsed/hooks': 8.41.2
-      '@tsed/json-mapper': 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/exceptions': 8.44.0(@tsed/core@8.44.0)
+      '@tsed/hooks': 8.44.0
+      '@tsed/json-mapper': 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/logger': 8.0.7
       '@tsed/logger-std': 8.0.7(@tsed/logger@8.0.7)
-      '@tsed/platform-accept-mimes': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/platform-exceptions': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/platform-middlewares': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/platform-multer': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@tsed/platform-middlewares@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(@types/multer@2.2.0)
-      '@tsed/platform-params': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/platform-response-filter': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/platform-router': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/platform-params@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/platform-views': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/platform-accept-mimes': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/platform-exceptions': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/platform-middlewares': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/platform-multer': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@tsed/platform-middlewares@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(@types/multer@2.2.0)
+      '@tsed/platform-params': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/platform-response-filter': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/platform-router': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/platform-params@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/platform-views': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       '@types/json-schema': 7.0.15
       accepts: 1.3.8
       cookie: 2.0.1
@@ -4566,99 +4479,99 @@ snapshots:
       - '@tsed/openspec'
       - '@types/multer'
 
-  '@tsed/platform-log-request@8.41.2(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/platform-middlewares@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/platform-params@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))':
+  '@tsed/platform-log-request@8.44.0(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/platform-middlewares@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/platform-params@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))':
     dependencies:
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/platform-middlewares': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/platform-params': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/platform-middlewares': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/platform-params': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       tslib: 2.8.1
 
-  '@tsed/platform-middlewares@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))':
+  '@tsed/platform-middlewares@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))':
     dependencies:
       tslib: 2.8.1
     optionalDependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
 
-  '@tsed/platform-multer@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@tsed/platform-middlewares@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))(@types/multer@2.2.0)':
+  '@tsed/platform-multer@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@tsed/platform-middlewares@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))(@types/multer@2.2.0)':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/json-mapper': 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/json-mapper': 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
       '@tsed/logger': 8.0.7
-      '@tsed/openspec': 8.41.2
-      '@tsed/platform-middlewares': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/openspec': 8.44.0
+      '@tsed/platform-middlewares': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       '@types/multer': 2.2.0
       multer: 2.4.0
       tslib: 2.8.1
 
-  '@tsed/platform-params@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))':
+  '@tsed/platform-params@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/exceptions': 8.41.2(@tsed/core@8.41.2)
-      '@tsed/json-mapper': 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/exceptions': 8.44.0(@tsed/core@8.44.0)
+      '@tsed/json-mapper': 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       tslib: 2.8.1
 
-  '@tsed/platform-response-filter@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))':
+  '@tsed/platform-response-filter@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/exceptions': 8.41.2(@tsed/core@8.41.2)
-      '@tsed/json-mapper': 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/exceptions': 8.44.0(@tsed/core@8.44.0)
+      '@tsed/json-mapper': 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       tslib: 2.8.1
 
-  '@tsed/platform-router@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/platform-params@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))':
+  '@tsed/platform-router@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/platform-params@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/exceptions': 8.41.2(@tsed/core@8.41.2)
-      '@tsed/json-mapper': 8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/platform-params': 8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/json-mapper@8.41.2(@tsed/core@8.41.2)(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/exceptions': 8.44.0(@tsed/core@8.44.0)
+      '@tsed/json-mapper': 8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/platform-params': 8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/json-mapper@8.44.0(@tsed/core@8.44.0)(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       tslib: 2.8.1
 
-  '@tsed/platform-views@8.41.2(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.41.2(@tsed/core@8.41.2))(@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2))':
+  '@tsed/platform-views@8.44.0(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/engines@8.38.2)(@tsed/exceptions@8.44.0(@tsed/core@8.44.0))(@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0))':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
       '@tsed/engines': 8.38.2
-      '@tsed/exceptions': 8.41.2(@tsed/core@8.41.2)
-      '@tsed/schema': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)
+      '@tsed/exceptions': 8.44.0(@tsed/core@8.44.0)
+      '@tsed/schema': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)
       ejs: 3.1.10
       tslib: 2.8.1
 
-  '@tsed/schema@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/openspec@8.41.2)':
+  '@tsed/schema@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/openspec@8.44.0)':
     dependencies:
-      '@tsed/core': 8.41.2
-      '@tsed/hooks': 8.41.2
-      '@tsed/openspec': 8.41.2
+      '@tsed/core': 8.44.0
+      '@tsed/hooks': 8.44.0
+      '@tsed/openspec': 8.44.0
       change-case: 5.4.4
       json-schema: 0.4.0
       picomatch: 4.0.4
       statuses: 2.0.2
       tslib: 2.8.1
 
-  '@tsed/swagger@8.41.2(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))':
+  '@tsed/swagger@8.44.0(@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0))':
     dependencies:
-      '@tsed/normalize-path': 8.41.2
-      '@tsed/openapi-utils': 8.41.2(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))
-      '@tsed/openspec': 8.41.2
-      '@tsed/platform-http': 8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0)
-      swagger-ui-dist: 5.33.1
+      '@tsed/normalize-path': 8.44.0
+      '@tsed/openapi-utils': 8.44.0(@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0))
+      '@tsed/openspec': 8.44.0
+      '@tsed/platform-http': 8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0)
+      swagger-ui-dist: 5.33.3
       tslib: 2.8.1
 
-  '@tsed/testcontainers-mongo@8.41.2(@testcontainers/mongodb@12.1.0(supports-color@7.2.0))(@tsed/core@8.41.2)(@tsed/di@8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7))(@tsed/platform-http@8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0))(mongodb@7.6.0)(testcontainers@12.1.0(supports-color@7.2.0))':
+  '@tsed/testcontainers-mongo@8.44.0(@testcontainers/mongodb@12.1.0(supports-color@7.2.0))(@tsed/core@8.44.0)(@tsed/di@8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7))(@tsed/platform-http@8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0))(mongodb@7.7.0)(testcontainers@12.1.0(supports-color@7.2.0))':
     dependencies:
       '@testcontainers/mongodb': 12.1.0(supports-color@7.2.0)
-      '@tsed/core': 8.41.2
-      '@tsed/di': 8.41.2(@tsed/core@8.41.2)(@tsed/hooks@8.41.2)(@tsed/logger@8.0.7)
-      '@tsed/platform-http': 8.41.2(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.41.2)(@types/multer@2.2.0)
-      mongodb: 7.6.0
+      '@tsed/core': 8.44.0
+      '@tsed/di': 8.44.0(@tsed/core@8.44.0)(@tsed/hooks@8.44.0)(@tsed/logger@8.0.7)
+      '@tsed/platform-http': 8.44.0(@tsed/engines@8.38.2)(@tsed/logger@8.0.7)(@tsed/openspec@8.44.0)(@types/multer@2.2.0)
+      mongodb: 7.7.0
       semver: 7.8.5
       testcontainers: 12.1.0(supports-color@7.2.0)
       tslib: 2.8.1
@@ -4666,7 +4579,7 @@ snapshots:
   '@types/body-parser@1.19.6':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@types/chai@5.2.3':
     dependencies:
@@ -4676,11 +4589,11 @@ snapshots:
   '@types/compression@1.8.1':
     dependencies:
       '@types/express': 5.0.6
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@types/cookie-parser@1.4.10(@types/express@5.0.6)':
     dependencies:
@@ -4690,19 +4603,19 @@ snapshots:
 
   '@types/cors@2.8.19':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@types/deep-eql@4.0.2': {}
 
   '@types/docker-modem@3.0.6':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
       '@types/ssh2': 1.15.5
 
   '@types/dockerode@4.0.1':
     dependencies:
       '@types/docker-modem': 3.0.6
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
       '@types/ssh2': 1.15.5
 
   '@types/esrecurse@4.3.1': {}
@@ -4711,7 +4624,7 @@ snapshots:
 
   '@types/express-serve-static-core@5.1.3':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
       '@types/qs': 6.15.1
       '@types/range-parser': 1.2.7
       '@types/send': 1.2.1
@@ -4730,7 +4643,7 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/lodash@4.17.25': {}
+  '@types/lodash@4.17.26': {}
 
   '@types/methods@1.1.4': {}
 
@@ -4742,7 +4655,7 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@26.6.4':
+  '@types/node@26.6.5':
     dependencies:
       undici-types: 8.9.0
 
@@ -4754,20 +4667,20 @@ snapshots:
 
   '@types/send@1.2.1':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@types/serve-static@2.2.0':
     dependencies:
       '@types/http-errors': 2.0.5
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@types/ssh2-streams@0.1.13':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
 
   '@types/ssh2@0.5.52':
     dependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
       '@types/ssh2-streams': 0.1.13
 
   '@types/ssh2@1.15.5':
@@ -4778,7 +4691,7 @@ snapshots:
     dependencies:
       '@types/cookiejar': 2.1.5
       '@types/methods': 1.1.4
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
       form-data: 4.0.6
 
   '@types/supertest@7.2.1':
@@ -4794,15 +4707,15 @@ snapshots:
     dependencies:
       '@types/webidl-conversions': 7.0.3
 
-  '@typescript-eslint/eslint-plugin@8.71.0(@typescript-eslint/parser@8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
+  '@typescript-eslint/eslint-plugin@8.71.2(@typescript-eslint/parser@8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
       '@eslint-community/regexpp': 4.12.2
-      '@typescript-eslint/parser': 8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@typescript-eslint/scope-manager': 8.71.0
-      '@typescript-eslint/type-utils': 8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@typescript-eslint/utils': 8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@typescript-eslint/visitor-keys': 8.71.0
-      eslint: 10.12.0(supports-color@7.2.0)
+      '@typescript-eslint/parser': 8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/scope-manager': 8.71.2
+      '@typescript-eslint/type-utils': 8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/visitor-keys': 8.71.2
+      eslint: 10.13.0(supports-color@7.2.0)
       ignore: 7.0.12
       natural-compare: 1.4.0
       ts-api-utils: 2.5.0(typescript@6.0.3)
@@ -4810,56 +4723,56 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
+  '@typescript-eslint/parser@8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/scope-manager': 8.71.0
-      '@typescript-eslint/types': 8.71.0
-      '@typescript-eslint/typescript-estree': 8.71.0(supports-color@7.2.0)(typescript@6.0.3)
-      '@typescript-eslint/visitor-keys': 8.71.0
+      '@typescript-eslint/scope-manager': 8.71.2
+      '@typescript-eslint/types': 8.71.2
+      '@typescript-eslint/typescript-estree': 8.71.2(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/visitor-keys': 8.71.2
       debug: 4.4.3(supports-color@7.2.0)
-      eslint: 10.12.0(supports-color@7.2.0)
+      eslint: 10.13.0(supports-color@7.2.0)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.71.0(supports-color@7.2.0)(typescript@6.0.3)':
+  '@typescript-eslint/project-service@8.71.2(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/tsconfig-utils': 8.71.0(typescript@6.0.3)
-      '@typescript-eslint/types': 8.71.0
+      '@typescript-eslint/tsconfig-utils': 8.71.2(typescript@6.0.3)
+      '@typescript-eslint/types': 8.71.2
       debug: 4.4.3(supports-color@7.2.0)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/scope-manager@8.71.0':
+  '@typescript-eslint/scope-manager@8.71.2':
     dependencies:
-      '@typescript-eslint/types': 8.71.0
-      '@typescript-eslint/visitor-keys': 8.71.0
+      '@typescript-eslint/types': 8.71.2
+      '@typescript-eslint/visitor-keys': 8.71.2
 
-  '@typescript-eslint/tsconfig-utils@8.71.0(typescript@6.0.3)':
+  '@typescript-eslint/tsconfig-utils@8.71.2(typescript@6.0.3)':
     dependencies:
       typescript: 6.0.3
 
-  '@typescript-eslint/type-utils@8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
+  '@typescript-eslint/type-utils@8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/types': 8.71.0
-      '@typescript-eslint/typescript-estree': 8.71.0(supports-color@7.2.0)(typescript@6.0.3)
-      '@typescript-eslint/utils': 8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/types': 8.71.2
+      '@typescript-eslint/typescript-estree': 8.71.2(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
       debug: 4.4.3(supports-color@7.2.0)
-      eslint: 10.12.0(supports-color@7.2.0)
+      eslint: 10.13.0(supports-color@7.2.0)
       ts-api-utils: 2.5.0(typescript@6.0.3)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/types@8.71.0': {}
+  '@typescript-eslint/types@8.71.2': {}
 
-  '@typescript-eslint/typescript-estree@8.71.0(supports-color@7.2.0)(typescript@6.0.3)':
+  '@typescript-eslint/typescript-estree@8.71.2(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@typescript-eslint/project-service': 8.71.0(supports-color@7.2.0)(typescript@6.0.3)
-      '@typescript-eslint/tsconfig-utils': 8.71.0(typescript@6.0.3)
-      '@typescript-eslint/types': 8.71.0
-      '@typescript-eslint/visitor-keys': 8.71.0
+      '@typescript-eslint/project-service': 8.71.2(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/tsconfig-utils': 8.71.2(typescript@6.0.3)
+      '@typescript-eslint/types': 8.71.2
+      '@typescript-eslint/visitor-keys': 8.71.2
       debug: 4.4.3(supports-color@7.2.0)
       minimatch: 10.2.6
       semver: 7.8.5
@@ -4869,33 +4782,33 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
+  '@typescript-eslint/utils@8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.10.1(eslint@10.12.0(supports-color@7.2.0))
-      '@typescript-eslint/scope-manager': 8.71.0
-      '@typescript-eslint/types': 8.71.0
-      '@typescript-eslint/typescript-estree': 8.71.0(supports-color@7.2.0)(typescript@6.0.3)
-      eslint: 10.12.0(supports-color@7.2.0)
+      '@eslint-community/eslint-utils': 4.10.1(eslint@10.13.0(supports-color@7.2.0))
+      '@typescript-eslint/scope-manager': 8.71.2
+      '@typescript-eslint/types': 8.71.2
+      '@typescript-eslint/typescript-estree': 8.71.2(supports-color@7.2.0)(typescript@6.0.3)
+      eslint: 10.13.0(supports-color@7.2.0)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/visitor-keys@8.71.0':
+  '@typescript-eslint/visitor-keys@8.71.2':
     dependencies:
-      '@typescript-eslint/types': 8.71.0
+      '@typescript-eslint/types': 8.71.2
       eslint-visitor-keys: 5.0.1
 
-  '@vitest/coverage-v8@5.0.3(vitest@5.0.3)':
+  '@vitest/coverage-v8@5.0.5(vitest@5.0.5)':
     dependencies:
       '@bcoe/v8-coverage': 1.0.2
       '@vitest/istanbul-lib-coverage': 1.0.2
       '@vitest/istanbul-lib-report': 1.0.2
       ast-v8-to-istanbul: 1.0.7
       magicast: 0.5.5
-      obug: 2.2.1
+      obug: 3.0.0
       std-env: 4.3.0
       tinyrainbow: 3.2.0
-      vitest: 5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+      vitest: 5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
 
   '@vitest/istanbul-lib-coverage@1.0.2': {}
 
@@ -4903,90 +4816,54 @@ snapshots:
     dependencies:
       '@vitest/istanbul-lib-coverage': 1.0.2
 
-  '@vitest/mocker@5.0.3(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))':
+  '@vitest/mocker@5.0.5(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
-      '@vitest/spy': 5.0.3
+      '@vitest/spy': 5.0.5
       estree-walker: 3.0.3
-      magic-string: 1.4.2
+      magic-string: 1.4.3
     optionalDependencies:
-      vite: 8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1)
+      vite: 8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1)
 
-  '@vitest/spy@5.0.3': {}
+  '@vitest/spy@5.0.5': {}
 
-  '@yuku-codegen/binding-android-arm64@0.10.2':
+  '@yuku-core/binding-android-arm64@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-darwin-arm64@0.10.2':
+  '@yuku-core/binding-darwin-arm64@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-darwin-x64@0.10.2':
+  '@yuku-core/binding-darwin-x64@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-freebsd-x64@0.10.2':
+  '@yuku-core/binding-freebsd-x64@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-linux-arm-gnu@0.10.2':
+  '@yuku-core/binding-linux-arm-gnu@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-linux-arm-musl@0.10.2':
+  '@yuku-core/binding-linux-arm-musl@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-linux-arm64-gnu@0.10.2':
+  '@yuku-core/binding-linux-arm64-gnu@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-linux-arm64-musl@0.10.2':
+  '@yuku-core/binding-linux-arm64-musl@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-linux-x64-gnu@0.10.2':
+  '@yuku-core/binding-linux-x64-gnu@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-linux-x64-musl@0.10.2':
+  '@yuku-core/binding-linux-x64-musl@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-win32-arm64@0.10.2':
+  '@yuku-core/binding-win32-arm64@0.19.0':
     optional: true
 
-  '@yuku-codegen/binding-win32-x64@0.10.2':
+  '@yuku-core/binding-win32-x64@0.19.0':
     optional: true
 
-  '@yuku-parser/binding-android-arm64@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-darwin-arm64@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-darwin-x64@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-freebsd-x64@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-linux-arm-gnu@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-linux-arm-musl@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-linux-arm64-gnu@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-linux-arm64-musl@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-linux-x64-gnu@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-linux-x64-musl@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-win32-arm64@0.10.2':
-    optional: true
-
-  '@yuku-parser/binding-win32-x64@0.10.2':
-    optional: true
-
-  '@yuku-toolchain/types@0.10.2': {}
+  '@yuku-toolchain/types@0.19.0': {}
 
   abort-controller@3.0.0:
     dependencies:
@@ -5002,11 +4879,11 @@ snapshots:
       mime-types: 3.0.2
       negotiator: 1.1.0
 
-  acorn-jsx@5.3.2(acorn@8.18.0):
+  acorn-jsx@5.3.2(acorn@8.19.0):
     dependencies:
-      acorn: 8.18.0
+      acorn: 8.19.0
 
-  acorn@8.18.0: {}
+  acorn@8.19.0: {}
 
   ajv-errors@3.0.0(ajv@8.20.0):
     dependencies:
@@ -5141,7 +5018,7 @@ snapshots:
       http-errors: 2.0.1
       iconv-lite: 0.7.3
       on-finished: 2.4.1
-      qs: 6.16.0
+      qs: 6.16.1
       raw-body: 3.0.2
       type-is: 2.1.0
     transitivePeerDependencies:
@@ -5186,7 +5063,7 @@ snapshots:
 
   bytes@3.1.2: {}
 
-  cac@7.0.0: {}
+  cac@7.1.0: {}
 
   cacheable@2.5.0:
     dependencies:
@@ -5468,9 +5345,9 @@ snapshots:
 
   eslint-visitor-keys@5.0.1: {}
 
-  eslint@10.12.0(supports-color@7.2.0):
+  eslint@10.13.0(supports-color@7.2.0):
     dependencies:
-      '@eslint-community/eslint-utils': 4.10.1(eslint@10.12.0(supports-color@7.2.0))
+      '@eslint-community/eslint-utils': 4.10.1(eslint@10.13.0(supports-color@7.2.0))
       '@eslint-community/regexpp': 4.12.2
       '@eslint/config-array': 0.23.5(supports-color@7.2.0)
       '@eslint/config-helpers': 0.7.0
@@ -5505,14 +5382,14 @@ snapshots:
 
   espree@10.4.0:
     dependencies:
-      acorn: 8.18.0
-      acorn-jsx: 5.3.2(acorn@8.18.0)
+      acorn: 8.19.0
+      acorn-jsx: 5.3.2(acorn@8.19.0)
       eslint-visitor-keys: 4.2.1
 
   espree@11.2.0:
     dependencies:
-      acorn: 8.18.0
-      acorn-jsx: 5.3.2(acorn@8.18.0)
+      acorn: 8.19.0
+      acorn-jsx: 5.3.2(acorn@8.19.0)
       eslint-visitor-keys: 5.0.1
 
   esquery@1.7.0:
@@ -5569,7 +5446,7 @@ snapshots:
       once: 1.4.0
       parseurl: 1.3.3
       proxy-addr: 2.0.8
-      qs: 6.16.0
+      qs: 6.16.1
       range-parser: 1.3.0
       router: 2.2.0(supports-color@7.2.0)
       send: 1.2.1(supports-color@7.2.0)
@@ -5766,7 +5643,7 @@ snapshots:
       statuses: 2.0.2
       toidentifier: 1.0.1
 
-  human-id@4.2.1: {}
+  human-id@4.2.2: {}
 
   husky@9.1.7: {}
 
@@ -5840,7 +5717,7 @@ snapshots:
 
   jsonc-parser@3.3.1: {}
 
-  kareem@3.4.0: {}
+  kareem@3.4.1: {}
 
   keyv@5.6.0:
     dependencies:
@@ -5848,7 +5725,7 @@ snapshots:
 
   kuler@2.0.0: {}
 
-  launch-editor@2.14.1:
+  launch-editor@2.14.2:
     dependencies:
       picocolors: 1.1.1
       shell-quote: 1.12.0
@@ -5940,7 +5817,7 @@ snapshots:
 
   lru-cache@11.5.3: {}
 
-  magic-string@1.4.2:
+  magic-string@1.4.3:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
 
@@ -6004,17 +5881,17 @@ snapshots:
       '@types/whatwg-url': 13.0.0
       whatwg-url: 14.2.0
 
-  mongodb@7.6.0:
+  mongodb@7.7.0:
     dependencies:
       '@mongodb-js/saslprep': 1.5.0
       bson: 7.3.2
       mongodb-connection-string-url: 7.0.2
 
-  mongoose@9.10.4:
+  mongoose@9.11.2:
     dependencies:
       '@standard-schema/spec': 1.1.0
-      kareem: 3.4.0
-      mongodb: 7.6.0
+      kareem: 3.4.1
+      mongodb: 7.7.0
       mpath: 0.9.0
       mquery: 6.0.0
       ms: 2.1.3
@@ -6074,8 +5951,6 @@ snapshots:
 
   object-inspect@1.13.4: {}
 
-  obug@2.2.1: {}
-
   obug@3.0.0: {}
 
   on-finished@2.4.1:
@@ -6111,7 +5986,7 @@ snapshots:
 
   package-json-from-dist@1.0.1: {}
 
-  package-manager-detector@1.8.0: {}
+  package-manager-detector@1.9.0: {}
 
   param-case@3.0.4:
     dependencies:
@@ -6186,7 +6061,7 @@ snapshots:
       '@protobufjs/path': 1.1.2
       '@protobufjs/pool': 1.1.0
       '@protobufjs/utf8': 1.1.2
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
       long: 5.3.2
 
   proxy-addr@2.0.8:
@@ -6205,7 +6080,7 @@ snapshots:
     dependencies:
       hookified: 2.2.0
 
-  qs@6.16.0:
+  qs@6.16.1:
     dependencies:
       es-define-property: 1.0.1
       side-channel: 1.1.1
@@ -6269,40 +6144,40 @@ snapshots:
 
   retry@0.12.0: {}
 
-  rolldown-plugin-dts@0.28.6(rolldown@1.2.12)(typescript@6.0.3):
+  rolldown-plugin-dts@0.28.8(rolldown@1.2.14)(typescript@6.0.3):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
       obug: 3.0.0
-      rolldown: 1.2.12
-      yuku-ast: 0.10.2
-      yuku-codegen: 0.10.2
-      yuku-parser: 0.10.2
+      rolldown: 1.2.14
+      yuku-ast: 0.19.0
+      yuku-codegen: 0.19.0
+      yuku-parser: 0.19.0
     optionalDependencies:
       typescript: 6.0.3
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown@1.2.12:
+  rolldown@1.2.14:
     dependencies:
-      '@oxc-project/types': 0.152.0
+      '@oxc-project/types': 0.154.0
       '@rolldown/pluginutils': 1.0.1
     optionalDependencies:
-      '@rolldown/binding-android-arm-eabi': 1.2.12
-      '@rolldown/binding-android-arm64': 1.2.12
-      '@rolldown/binding-darwin-arm64': 1.2.12
-      '@rolldown/binding-darwin-x64': 1.2.12
-      '@rolldown/binding-freebsd-x64': 1.2.12
-      '@rolldown/binding-linux-arm-gnueabihf': 1.2.12
-      '@rolldown/binding-linux-arm64-gnu': 1.2.12
-      '@rolldown/binding-linux-arm64-musl': 1.2.12
-      '@rolldown/binding-linux-ppc64-gnu': 1.2.12
-      '@rolldown/binding-linux-s390x-gnu': 1.2.12
-      '@rolldown/binding-linux-x64-gnu': 1.2.12
-      '@rolldown/binding-linux-x64-musl': 1.2.12
-      '@rolldown/binding-openharmony-arm64': 1.2.12
-      '@rolldown/binding-win32-arm64-msvc': 1.2.12
-      '@rolldown/binding-win32-x64-msvc': 1.2.12
+      '@rolldown/binding-android-arm-eabi': 1.2.14
+      '@rolldown/binding-android-arm64': 1.2.14
+      '@rolldown/binding-darwin-arm64': 1.2.14
+      '@rolldown/binding-darwin-x64': 1.2.14
+      '@rolldown/binding-freebsd-x64': 1.2.14
+      '@rolldown/binding-linux-arm-gnueabihf': 1.2.14
+      '@rolldown/binding-linux-arm64-gnu': 1.2.14
+      '@rolldown/binding-linux-arm64-musl': 1.2.14
+      '@rolldown/binding-linux-ppc64-gnu': 1.2.14
+      '@rolldown/binding-linux-s390x-gnu': 1.2.14
+      '@rolldown/binding-linux-x64-gnu': 1.2.14
+      '@rolldown/binding-linux-x64-musl': 1.2.14
+      '@rolldown/binding-openharmony-arm64': 1.2.14
+      '@rolldown/binding-win32-arm64-msvc': 1.2.14
+      '@rolldown/binding-win32-x64-msvc': 1.2.14
 
   router@2.2.0(supports-color@7.2.0):
     dependencies:
@@ -6492,7 +6367,7 @@ snapshots:
       formidable: 3.5.4
       methods: 1.1.2
       mime: 2.6.0
-      qs: 6.16.0
+      qs: 6.16.1
     transitivePeerDependencies:
       - supports-color
 
@@ -6509,7 +6384,7 @@ snapshots:
       has-flag: 4.0.0
     optional: true
 
-  swagger-ui-dist@5.33.1:
+  swagger-ui-dist@5.33.3:
     dependencies:
       '@scarf/scarf': 1.4.0
 
@@ -6563,7 +6438,7 @@ snapshots:
   terser@5.51.2:
     dependencies:
       '@jridgewell/source-map': 0.3.11
-      acorn: 8.18.0
+      acorn: 8.19.0
       commander: 2.20.3
       source-map-support: 0.5.21
 
@@ -6598,7 +6473,7 @@ snapshots:
 
   text-hex@1.0.0: {}
 
-  tinybench@6.2.0: {}
+  tinybench@6.2.2: {}
 
   tinyexec@1.3.1: {}
 
@@ -6629,22 +6504,22 @@ snapshots:
     dependencies:
       typescript: 6.0.3
 
-  tsdown@0.23.0(typescript@6.0.3):
+  tsdown@0.23.1(typescript@6.0.3):
     dependencies:
-      cac: 7.0.0
+      cac: 7.1.0
       defu: 6.1.7
       empathic: 2.1.0
       hookable: 6.1.2
       import-without-cache: 0.4.1
-      obug: 2.2.1
+      obug: 3.0.0
       picomatch: 4.0.7
-      rolldown: 1.2.12
-      rolldown-plugin-dts: 0.28.6(rolldown@1.2.12)(typescript@6.0.3)
+      rolldown: 1.2.14
+      rolldown-plugin-dts: 0.28.8(rolldown@1.2.14)(typescript@6.0.3)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
       unconfig-core: 7.5.0
-      verkit: 0.4.1
+      verkit: 0.5.0
     optionalDependencies:
       typescript: 6.0.3
     transitivePeerDependencies:
@@ -6679,13 +6554,13 @@ snapshots:
       media-typer: 1.1.1
       mime-types: 3.0.2
 
-  typescript-eslint@8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3):
+  typescript-eslint@8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3):
     dependencies:
-      '@typescript-eslint/eslint-plugin': 8.71.0(@typescript-eslint/parser@8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@typescript-eslint/parser': 8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      '@typescript-eslint/typescript-estree': 8.71.0(supports-color@7.2.0)(typescript@6.0.3)
-      '@typescript-eslint/utils': 8.71.0(eslint@10.12.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
-      eslint: 10.12.0(supports-color@7.2.0)
+      '@typescript-eslint/eslint-plugin': 8.71.2(@typescript-eslint/parser@8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3))(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/parser': 8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/typescript-estree': 8.71.2(supports-color@7.2.0)(typescript@6.0.3)
+      '@typescript-eslint/utils': 8.71.2(eslint@10.13.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
+      eslint: 10.13.0(supports-color@7.2.0)
       typescript: 6.0.3
     transitivePeerDependencies:
       - supports-color
@@ -6707,12 +6582,12 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  unplugin-swc@2.0.0(@swc/core@1.16.13(@swc/helpers@0.5.23))(rolldown@1.2.12)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1)):
+  unplugin-swc@2.0.0(@swc/core@1.16.18(@swc/helpers@0.5.23))(rolldown@1.2.14)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1)):
     dependencies:
       '@rollup/pluginutils': 5.4.0
-      '@swc/core': 1.16.13(@swc/helpers@0.5.23)
+      '@swc/core': 1.16.18(@swc/helpers@0.5.23)
       load-tsconfig: 0.2.5
-      unplugin: 3.4.0(rolldown@1.2.12)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+      unplugin: 3.4.0(rolldown@1.2.14)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
     transitivePeerDependencies:
       - '@farmfe/core'
       - '@rsbuild/core'
@@ -6725,14 +6600,14 @@ snapshots:
       - vite
       - webpack
 
-  unplugin@3.4.0(rolldown@1.2.12)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1)):
+  unplugin@3.4.0(rolldown@1.2.14)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1)):
     dependencies:
       '@jridgewell/remapping': 2.3.5
       picomatch: 4.0.7
       webpack-virtual-modules: 0.6.2
     optionalDependencies:
-      rolldown: 1.2.12
-      vite: 8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1)
+      rolldown: 1.2.14
+      vite: 8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1)
 
   uri-js@4.4.1:
     dependencies:
@@ -6742,7 +6617,7 @@ snapshots:
 
   uuid@14.0.0: {}
 
-  uuid@14.0.2: {}
+  uuid@14.0.3: {}
 
   validate-npm-package-license@3.0.4:
     dependencies:
@@ -6751,40 +6626,40 @@ snapshots:
 
   vary@1.1.2: {}
 
-  verkit@0.4.1: {}
+  verkit@0.5.0: {}
 
-  vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1):
+  vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1):
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
       postcss: 8.5.26
-      rolldown: 1.2.12
+      rolldown: 1.2.14
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 26.6.4
+      '@types/node': 26.6.5
       fsevents: 2.3.3
       terser: 5.51.2
       yaml: 2.9.1
 
-  vitest@5.0.3(@types/node@26.6.4)(@vitest/coverage-v8@5.0.3)(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1)):
+  vitest@5.0.5(@types/node@26.6.5)(@vitest/coverage-v8@5.0.5)(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.3(vite@8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1))
+      '@vitest/mocker': 5.0.5(vite@8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1))
       chai: 6.3.0
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
-      magic-string: 1.4.2
-      obug: 2.2.1
+      magic-string: 1.4.3
+      obug: 3.0.0
       picomatch: 4.0.7
       std-env: 4.3.0
-      tinybench: 6.2.0
+      tinybench: 6.2.2
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      vite: 8.2.2(@types/node@26.6.4)(terser@5.51.2)(yaml@2.9.1)
+      vite: 8.2.2(@types/node@26.6.5)(terser@5.51.2)(yaml@2.9.1)
       why-is-node-running: 3.2.1
     optionalDependencies:
-      '@types/node': 26.6.4
-      '@vitest/coverage-v8': 5.0.3(vitest@5.0.3)
+      '@types/node': 26.6.5
+      '@vitest/coverage-v8': 5.0.5(vitest@5.0.5)
     transitivePeerDependencies:
       - msw
 
@@ -6857,44 +6732,35 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  yuku-ast@0.10.2:
+  yuku-ast@0.19.0:
     dependencies:
-      '@yuku-toolchain/types': 0.10.2
+      '@yuku-toolchain/types': 0.19.0
 
-  yuku-codegen@0.10.2:
+  yuku-codegen@0.19.0:
     dependencies:
-      '@yuku-toolchain/types': 0.10.2
-    optionalDependencies:
-      '@yuku-codegen/binding-android-arm64': 0.10.2
-      '@yuku-codegen/binding-darwin-arm64': 0.10.2
-      '@yuku-codegen/binding-darwin-x64': 0.10.2
-      '@yuku-codegen/binding-freebsd-x64': 0.10.2
-      '@yuku-codegen/binding-linux-arm-gnu': 0.10.2
-      '@yuku-codegen/binding-linux-arm-musl': 0.10.2
-      '@yuku-codegen/binding-linux-arm64-gnu': 0.10.2
-      '@yuku-codegen/binding-linux-arm64-musl': 0.10.2
-      '@yuku-codegen/binding-linux-x64-gnu': 0.10.2
-      '@yuku-codegen/binding-linux-x64-musl': 0.10.2
-      '@yuku-codegen/binding-win32-arm64': 0.10.2
-      '@yuku-codegen/binding-win32-x64': 0.10.2
+      '@yuku-toolchain/types': 0.19.0
 
-  yuku-parser@0.10.2:
+  yuku-core@0.19.0:
     dependencies:
-      '@yuku-toolchain/types': 0.10.2
-      yuku-ast: 0.10.2
+      '@yuku-toolchain/types': 0.19.0
     optionalDependencies:
-      '@yuku-parser/binding-android-arm64': 0.10.2
-      '@yuku-parser/binding-darwin-arm64': 0.10.2
-      '@yuku-parser/binding-darwin-x64': 0.10.2
-      '@yuku-parser/binding-freebsd-x64': 0.10.2
-      '@yuku-parser/binding-linux-arm-gnu': 0.10.2
-      '@yuku-parser/binding-linux-arm-musl': 0.10.2
-      '@yuku-parser/binding-linux-arm64-gnu': 0.10.2
-      '@yuku-parser/binding-linux-arm64-musl': 0.10.2
-      '@yuku-parser/binding-linux-x64-gnu': 0.10.2
-      '@yuku-parser/binding-linux-x64-musl': 0.10.2
-      '@yuku-parser/binding-win32-arm64': 0.10.2
-      '@yuku-parser/binding-win32-x64': 0.10.2
+      '@yuku-core/binding-android-arm64': 0.19.0
+      '@yuku-core/binding-darwin-arm64': 0.19.0
+      '@yuku-core/binding-darwin-x64': 0.19.0
+      '@yuku-core/binding-freebsd-x64': 0.19.0
+      '@yuku-core/binding-linux-arm-gnu': 0.19.0
+      '@yuku-core/binding-linux-arm-musl': 0.19.0
+      '@yuku-core/binding-linux-arm64-gnu': 0.19.0
+      '@yuku-core/binding-linux-arm64-musl': 0.19.0
+      '@yuku-core/binding-linux-x64-gnu': 0.19.0
+      '@yuku-core/binding-linux-x64-musl': 0.19.0
+      '@yuku-core/binding-win32-arm64': 0.19.0
+      '@yuku-core/binding-win32-x64': 0.19.0
+
+  yuku-parser@0.19.0:
+    dependencies:
+      '@yuku-toolchain/types': 0.19.0
+      yuku-core: 0.19.0
 
   zip-stream@6.0.1:
     dependencies:
@@ -6902,4 +6768,4 @@ snapshots:
       compress-commons: 6.0.2
       readable-stream: 4.7.0
 
-  zod@4.6.5: {}
+  zod@4.6.7: {}
