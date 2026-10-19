@@ -151,7 +151,11 @@ describe('RequestValidationPipe', () => {
                 ['/strict/booleans/r', 400],
                 ['/strict/string/o?v=null', 200, 'null'],
                 ['/strict/string/o?v=', 200, ''],
-                ['/strict/string/on?v=null', 200, null]
+                ['/strict/string/on?v=null', 200, null],
+                ['/strict/model?oBoolean=1', 200, { oBoolean: true }],
+                ['/strict/model?oBoolean=0', 200, { oBoolean: false }],
+                ['/strict/model?oBoolean=foo', 400],
+                ['/strict/model?onNumber=null', 200, { onNumber: null }]
             ];
 
             it.each(cases)('GET %s', async (path, status, value) => {
