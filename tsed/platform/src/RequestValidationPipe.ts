@@ -1,9 +1,9 @@
 import { AjvService } from '@tsed/ajv';
 import { constant, inject, OverrideProvider } from '@tsed/di';
 import { ParamTypes, ValidationPipe } from '@tsed/platform-params';
-import { compile, JsonParameterStore } from '@tsed/schema';
+import { compile, getJsonSchema, JsonParameterStore } from '@tsed/schema';
 import { Ajv } from 'ajv';
-import { ArrayUtils, CommonUtils, StringUtils } from '@radoslavirha/utils';
+import { ArrayUtils, CommonUtils, ObjectUtils, StringUtils } from '@radoslavirha/utils';
 
 /**
  * Ajv service that validates without coercing types. It is built from the DI Ajv, so options,
@@ -26,6 +26,8 @@ class StrictAjvService extends AjvService {
         this.ajv = strict;
     }
 }
+
+type SchemaTypes = { type?: string | string[]; items?: { type?: string | string[] } };
 
 const BOOLEANS = new Map<string, boolean>([['true', true], ['false', false], ['1', true], ['0', false]]);
 
@@ -55,6 +57,9 @@ export class RequestValidationPipe extends ValidationPipe {
         }
         if (metadata.paramType === ParamTypes.BODY || CommonUtils.isUndefined(value)) {
             return value;
+        }
+        if (metadata.isClass && !metadata.isCollection && ObjectUtils.isObject(value)) {
+            return super.coerceTypes(this.coerceModelFields(value as Record<string, unknown>, metadata), metadata);
         }
         if (value === 'null') {
             return metadata.schema.isNullable ? null : value;
@@ -89,6 +94,22 @@ export class RequestValidationPipe extends ValidationPipe {
             type: metadata.isClass ? metadata.type : undefined,
             collectionType: metadata.collectionType
         });
+    }
+
+    private coerceModelFields(value: Record<string, unknown>, metadata: JsonParameterStore): Record<string, unknown> {
+        const { properties = {} } = getJsonSchema(metadata.type, { customKeys: true }) as { properties?: Record<string, SchemaTypes> };
+        const result = { ...value };
+        for (const [key, field] of Object.entries(result)) {
+            const types = ArrayUtils.toArray(properties[key]?.type);
+            if (field === 'null') {
+                result[key] = types.includes('null') ? null : field;
+            } else if (StringUtils.isString(field) && types.includes('boolean')) {
+                result[key] = BOOLEANS.get(field) ?? field;
+            } else if (ArrayUtils.isArray(field) && types.includes('array') && ArrayUtils.toArray(properties[key]?.items?.type).includes('boolean')) {
+                result[key] = field.map((item) => (StringUtils.isString(item) ? (BOOLEANS.get(item) ?? item) : item));
+            }
+        }
+        return result;
     }
 
     private allows(metadata: JsonParameterStore, type: string, items = false): boolean {

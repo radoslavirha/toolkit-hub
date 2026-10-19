@@ -21,6 +21,11 @@ export class StrictBody {
     @CollectionOf(String) public oList?: string[];
 }
 
+export class StrictQuery {
+    @Property() public oBoolean?: boolean;
+    @Nullable(Number) public onNumber?: number | null;
+}
+
 @Controller('/strict')
 export class StrictController {
     @Post('/body')
@@ -81,5 +86,10 @@ export class StrictController {
     @Get('/string/on')
     public onString(@QueryParams('v') @Nullable(String) v?: string | null): { v: unknown } {
         return { v };
+    }
+
+    @Get('/model')
+    public model(@QueryParams() query: StrictQuery): { v: unknown } {
+        return { v: query };
     }
 }
