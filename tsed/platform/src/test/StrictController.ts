@@ -73,6 +73,11 @@ export class StrictController {
         return { v };
     }
 
+    @Get('/strings/o')
+    public oStrings(@QueryParams('v') @CollectionOf(String) v?: string[]): { v: unknown } {
+        return { v };
+    }
+
     @Get('/string/o')
     public oString(@QueryParams('v') v?: string): { v: unknown } {
         return { v };

@@ -57,7 +57,10 @@ export class RequestValidationPipe extends ValidationPipe {
             return value;
         }
         if (value === 'null') {
-            return metadata.schema.isNullable ? null : value;
+            if (metadata.schema.isNullable) {
+                return null;
+            }
+            return metadata.isArray && !this.allows(metadata, 'boolean', true) ? [value] : value;
         }
         if (StringUtils.isString(value) && this.allows(metadata, 'boolean')) {
             return BOOLEANS.get(value) ?? value;
