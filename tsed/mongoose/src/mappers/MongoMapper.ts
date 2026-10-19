@@ -3,7 +3,7 @@ import { Type } from '@tsed/core';
 import { CommonUtils, MappingUtils, ObjectUtils } from '@radoslavirha/utils';
 import { MongooseDocumentMethods, Ref } from '@tsed/mongoose';
 import { Types } from 'mongoose';
-import { SpecTypes, getJsonSchema } from '@tsed/schema';
+import { JsonEntityStore } from '@tsed/schema';
 import { BaseMongo } from '../models/BaseMongo.js';
 import { MongoCreate } from '../types/MongoCreate.js';
 import { MongoUpdate } from '../types/MongoUpdate.js';
@@ -291,7 +291,7 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
     }
 
     /**
-     * Retrieves the default value for a model property from its JSON Schema.
+     * Retrieves the default value for a model property from its Ts.ED metadata.
      * 
      * Extracts the default value defined in the @tsed/schema decorators of the mapper's
      * declared `model` class, so it also works when the value is a plain object (e.g. a spread copy).
@@ -303,12 +303,10 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * @private
      */
     private getModelDefault<PROPERTY extends keyof MODEL>(property: PROPERTY): MODEL[PROPERTY] | undefined {
-        const spec = getJsonSchema(this.model, { specType: SpecTypes.JSON, useAlias: false });
+        // read the metadata, not the rendered schema: Ts.ED renders nested models, collections and grouped properties in shapes that drop the default
+        const store = JsonEntityStore.from(this.model, property as string);
 
-        const schema = spec?.properties?.[property];
-
-        // Ts.ED nests the @Default of a @CollectionOf property under `items` (arrays) or `additionalProperties` (maps)
-        const value = schema?.default ?? schema?.items?.default ?? schema?.additionalProperties?.default ?? undefined;
+        const value = store?.schema?.get('default') ?? store?.itemSchema?.get('default') ?? undefined;
 
         // the schema is cached by Ts.ED; hand out a copy so callers can't change the default for later calls
         return ObjectUtils.isObject(value) || Array.isArray(value) ? ObjectUtils.cloneDeep(value) : value;
