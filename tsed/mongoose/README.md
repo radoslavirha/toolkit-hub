@@ -378,7 +378,7 @@ export class UserRepository extends MongoRepository<UserMongo> {
             return null;
         }
         const result = await this.model
-            .findByIdAndUpdate(id, { $set: data }, { new: true })
+            .findByIdAndUpdate(id, { $set: data }, { returnDocument: 'after' })
             .lean<UserMongo>();
         return this.deserialize(result);
     }

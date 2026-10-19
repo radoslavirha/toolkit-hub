@@ -1,7 +1,8 @@
-import { describe, beforeEach, afterEach, expect, it } from 'vitest';
+import { describe, beforeEach, afterEach, expect, it, vi } from 'vitest';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import SuperTest from 'supertest';
 import { BaseServer } from './BaseServer.js';
+import { silenceLogs } from './test/silenceLogs.js';
 import { StrictController } from './test/StrictController.js';
 
 type Case = [name: string, send: Record<string, unknown>, status: number, received?: Record<string, unknown>];
@@ -17,8 +18,13 @@ const bootstrap = async (strict: boolean): Promise<SuperTest.Agent> => {
 };
 
 describe('RequestValidationPipe', () => {
+    beforeEach(() => {
+        silenceLogs();
+    });
+
     afterEach(async () => {
         await PlatformTest.reset();
+        vi.restoreAllMocks();
     });
 
     describe('requestValidation.strict unset', () => {

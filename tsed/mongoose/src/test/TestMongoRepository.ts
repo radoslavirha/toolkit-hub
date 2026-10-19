@@ -65,7 +65,7 @@ export class TestMongoRepository extends MongoRepository<TestModelMongo> {
             return null;
         }
 
-        const result = await this.model.findByIdAndUpdate(id, { $set: data }, { new: true }).lean<TestModelMongo>();
+        const result = await this.model.findByIdAndUpdate(id, { $set: data }, { returnDocument: 'after' }).lean<TestModelMongo>();
 
         return this.deserialize(result);
     }
@@ -75,7 +75,7 @@ export class TestMongoRepository extends MongoRepository<TestModelMongo> {
     }
 
     async findOneAndUpdate(filter: MongoFilter<TestModelMongo>, data: MongoUpdate<TestModelMongo>): Promise<TestModelMongo | null> {
-        const result = await this.model.findOneAndUpdate(filter, { $set: data }, { new: true }).lean<TestModelMongo>();
+        const result = await this.model.findOneAndUpdate(filter, { $set: data }, { returnDocument: 'after' }).lean<TestModelMongo>();
 
         return this.deserialize(result);
     }

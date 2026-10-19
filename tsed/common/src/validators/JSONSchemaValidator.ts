@@ -2,6 +2,7 @@ import { Type } from '@tsed/core';
 import { getJsonSchema, JsonEntityStore, OneOf, Required } from '@tsed/schema';
 import { Ajv, Options } from 'ajv';
 import formatsPlugin from 'ajv-formats';
+import { ArrayUtils, ObjectUtils } from '@radoslavirha/utils';
 import { Serializer } from '../serializer/Serializer.js';
 
 // ajv-formats is CJS; under nodenext the default import is the module object
@@ -91,7 +92,7 @@ export class JSONSchemaValidator {
         const children = schema.isDiscriminator ? schema.discriminator().children() : [];
 
         if (children.length === 0) {
-            return getJsonSchema(model);
+            return JSONSchemaValidator.typeDiscriminators(getJsonSchema(model));
         }
 
         class Holder {
@@ -102,6 +103,25 @@ export class JSONSchemaValidator {
 
         const { properties, definitions } = getJsonSchema(Holder);
 
-        return { ...(properties?.value as object), ...(definitions ? { definitions } : {}) };
+        return JSONSchemaValidator.typeDiscriminators({ ...(properties?.value as object), ...(definitions ? { definitions } : {}) });
+    }
+
+    /**
+     * Ts.ED emits `discriminator` / `required` on a `oneOf` node without `type: 'object'`,
+     * which AJV flags (`strictTypes`) on every compile. A discriminated value is always an
+     * object, so declare it instead of relaxing AJV's strictness.
+     */
+    private static typeDiscriminators<S>(schema: S): S {
+        if (ArrayUtils.isArray(schema)) {
+            schema.forEach(item => JSONSchemaValidator.typeDiscriminators(item));
+        } else if (ObjectUtils.isObject(schema)) {
+            const node = schema as Record<string, unknown>;
+            if ('discriminator' in node && !('type' in node)) {
+                node.type = 'object';
+            }
+            Object.values(node).forEach(value => JSONSchemaValidator.typeDiscriminators(value));
+        }
+
+        return schema;
     }
 }

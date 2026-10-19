@@ -131,6 +131,16 @@ describe('JSONSchemaValidator', () => {
                 .toThrow(expect.arrayContaining([expect.objectContaining({ keyword: 'type' })]) as never);
         });
 
+        it('does not trigger AJV strictTypes warnings for discriminated schemas', () => {
+            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+            JSONSchemaValidator.validate(Event, { type: 'click', x: 1 });
+            JSONSchemaValidator.validate(EventEnvelope, { event: { type: 'click', x: 1 } });
+
+            expect(warnSpy).not.toHaveBeenCalled();
+            warnSpy.mockRestore();
+        });
+
         it('logs raw data and JSON Schema when debug is true', () => {
             JSONSchemaValidator.validate(ValidModel, { name: 'Bob' }, true);
 

@@ -6,6 +6,7 @@ import { $log } from '@tsed/logger';
 import { LogLevel } from '@radoslavirha/tsed-logger';
 import { TsEDLoggerBridge } from './TsEDLoggerBridge.js';
 import { TestController } from './test/TestController.js';
+import { silenceLogs } from './test/silenceLogs.js';
 
 const parseLogs = (spy: { mock: { calls: unknown[][] } }): Record<string, unknown>[] =>
     spy.mock.calls
@@ -25,8 +26,7 @@ describe('TsEDLoggerBridge', () => {
         vi.spyOn((bridge as unknown as { logger: { log: (level: LogLevel, message: string) => void } }).logger, 'log');
 
     beforeEach(async () => {
-        const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream };
-        stdoutSpy = vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
+        stdoutSpy = silenceLogs().stdout;
         bridge = await PlatformTest.invoke<TsEDLoggerBridge>(TsEDLoggerBridge);
         await PlatformTest.bootstrap(BaseServer, {
             logger: bridge.getTsEDLoggerConfig(),
@@ -37,7 +37,7 @@ describe('TsEDLoggerBridge', () => {
     });
 
     afterEach(async () => {
-        stdoutSpy.mockRestore();
+        vi.restoreAllMocks();
         await PlatformTest.reset();
     });
 

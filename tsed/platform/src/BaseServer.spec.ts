@@ -4,6 +4,7 @@ import SuperTest from 'supertest';
 import { describe, beforeEach, afterEach, expect, vi, it, MockInstance } from 'vitest';
 import { TestController } from './test/TestController.js';
 import { BaseServer } from './BaseServer.js';
+import { silenceLogs } from './test/silenceLogs.js';
 
 class MiddlewareServer extends BaseServer {
     public $beforeRoutesInit(): void {
@@ -21,16 +22,13 @@ class CustomMiddlewareServer extends BaseServer {
     }
 }
 
-const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream; _stderr: NodeJS.WriteStream };
-
 describe('ServerBase', () => {
     let server: BaseServer;
     let loggerInfoSpy: MockInstance;
 
     // Must run BEFORE bootstrap so the $onReady lifecycle hook doesn't produce real output
     beforeEach(() => {
-        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
-        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+        silenceLogs();
         loggerInfoSpy = vi.spyOn(Logger.prototype, 'info').mockImplementation(vi.fn());
     });
 
@@ -82,8 +80,7 @@ describe('ServerBase', () => {
 
 describe('ServerBase middleware stack', () => {
     beforeEach(() => {
-        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
-        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+        silenceLogs();
         vi.spyOn(Logger.prototype, 'info').mockImplementation(vi.fn());
     });
 
@@ -114,8 +111,7 @@ describe('ServerBase middleware stack', () => {
 
 describe('ServerBase registerMiddlewares override', () => {
     beforeEach(() => {
-        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
-        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+        silenceLogs();
         vi.spyOn(Logger.prototype, 'info').mockImplementation(vi.fn());
     });
 
@@ -147,8 +143,7 @@ class EchoServer extends BaseServer {
 
 describe('ServerBase body parser configuration', () => {
     beforeEach(() => {
-        vi.spyOn(consoleLike._stdout, 'write').mockImplementation(() => true);
-        vi.spyOn(consoleLike._stderr, 'write').mockImplementation(() => true);
+        silenceLogs();
         vi.spyOn(Logger.prototype, 'info').mockImplementation(vi.fn());
     });
 

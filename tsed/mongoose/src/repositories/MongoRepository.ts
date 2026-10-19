@@ -71,7 +71,7 @@ import { MongoUpdate } from '../types/MongoUpdate.js';
  *
  *   async findByIdAndUpdate(id: string, data: MongoUpdate<Item>): Promise<Item | null> {
  *     if (!this.isValidId(id)) return null;
- *     const result = await this.model.findByIdAndUpdate(id, { $set: data }, { new: true }).lean<Item>() as Item | null;
+ *     const result = await this.model.findByIdAndUpdate(id, { $set: data }, { returnDocument: 'after' }).lean<Item>() as Item | null;
  *     return this.deserialize(result);
  *   }
  *
@@ -148,7 +148,7 @@ export abstract class MongoRepository<MONGO extends BaseMongo> {
         const updated = Number.isNaN(expectedUpdatedAt.getTime())
             ? null
             : await this.model
-                .findOneAndUpdate({ _id: id, updatedAt: expectedUpdatedAt } as never, { $set: data } as never, { new: true, runValidators: true })
+                .findOneAndUpdate({ _id: id, updatedAt: expectedUpdatedAt } as never, { $set: data } as never, { returnDocument: 'after', runValidators: true })
                 .lean<MONGO>() as MONGO | null;
 
         if (CommonUtils.notNull(updated)) {

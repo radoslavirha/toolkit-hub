@@ -3,6 +3,7 @@ import { describe, beforeEach, afterEach, expect, it, vi } from 'vitest';
 import { Platform } from './Platform.js';
 import { ServerConfiguration } from './ServerConfiguration.js';
 import { BaseServer } from './BaseServer.js';
+import { silenceLogs } from './test/silenceLogs.js';
 
 const parseLogs = (spy: { mock: { calls: unknown[][] } }): Record<string, unknown>[] =>
     spy.mock.calls
@@ -18,13 +19,11 @@ describe('Platform', () => {
     let stdoutSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
-        const consoleLike = console as unknown as { _stdout: NodeJS.WriteStream };
-        stdoutSpy = vi.spyOn(consoleLike._stdout, 'write')
-            .mockImplementation(() => true);
+        stdoutSpy = silenceLogs().stdout;
     });
 
     afterEach(() => {
-        stdoutSpy.mockRestore();
+        vi.restoreAllMocks();
     });
     describe('bootstrap()', () => {
         it('should create platform', async () => {

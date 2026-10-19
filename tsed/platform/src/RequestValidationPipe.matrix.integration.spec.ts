@@ -1,7 +1,8 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { PlatformTest } from '@tsed/platform-http/testing';
 import SuperTest from 'supertest';
 import { BaseServer } from './BaseServer.js';
+import { silenceLogs } from './test/silenceLogs.js';
 import { BODY_TYPES, bodyModelName, COMBOS, type Combo, createMatrixBodyController, received } from './test/MatrixBodyController.js';
 import { MatrixQueryController } from './test/MatrixQueryController.js';
 
@@ -110,10 +111,12 @@ describe.each([true, false])('RequestValidationPipe matrix (requestValidation.st
     let request: SuperTest.Agent;
 
     beforeAll(async () => {
+        silenceLogs();
         request = await bootstrap(strict);
     });
     afterAll(async () => {
         await PlatformTest.reset();
+        vi.restoreAllMocks();
     });
 
     describe('body', () => {

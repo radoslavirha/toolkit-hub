@@ -4,7 +4,8 @@ import { defineConfig, mergeConfig } from 'vitest/config';
 export default defineConfig(mergeConfig(defaultConfig, {
     test: {
         env: {
-            SUPPRESS_NO_CONFIG_WARNING: '1'
+            SUPPRESS_NO_CONFIG_WARNING: '1',
+            SUPPRESS_STRICTNESS_CHECK: '1'
         },
         coverage: {
             exclude: [
