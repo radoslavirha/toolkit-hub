@@ -321,6 +321,16 @@ describe('Logger', () => {
             expect(line['meta_message']).toBe('Service Unavailable');
         });
 
+        it('keeps both values when meta carries a reserved key and its meta_ name', () => {
+            const logger = new Logger();
+            logger.info('Proxy response', { message: 'Bad Gateway', meta_message: 'upstream timeout' });
+
+            const line = getLine();
+            expect(line['message']).toBe('Proxy response');
+            expect(line['meta_message']).toBe('upstream timeout');
+            expect(line['meta_meta_message']).toBe('Bad Gateway');
+        });
+
         it('keeps the pinned child scope when meta carries a scope key', () => {
             const log = new Logger().child('AUTH');
             log.info('Token issued', { scope: 'read:items' });

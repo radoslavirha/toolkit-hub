@@ -254,7 +254,8 @@ emits `"message":"Upstream call failed","meta_message":"Service Unavailable"`, a
 instrumentation scope. `exception` is reserved as well: Winston silently drops any record carrying
 `exception: true`, so `{ exception: true }` is emitted as `"meta_exception":true`. An own `__proto__` key (as `JSON.parse` creates) is
 renamed to `meta___proto__` for the same reason: left alone it would be lost, and could change
-the record's prototype.
+the record's prototype. If the metadata already has the `meta_<key>` field, the reserved key's
+value moves to `meta_meta_<key>` (the prefix repeats until the name is free), so no value is lost.
 
 `fatal` and `error` levels write to **stderr**; all other levels write to **stdout**.
 
