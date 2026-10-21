@@ -92,12 +92,18 @@ export class RedactionUtils {
 
         const rootNames = options.caseInsensitiveRoot === true ? RedactionUtils.rootNames(redactPaths) : new Set<string>();
 
+        const nonce = globalThis.crypto.randomUUID();
+        const placeholder = new RegExp(`"${nonce}(\\d+)"`, 'g');
+
         return (value: unknown): string => {
-            const copy = RedactionUtils.toWritableCopy(RedactionUtils.decodeBinary(value));
+            const numbers: string[] = [];
+            const copy = RedactionUtils.toWritableCopy(RedactionUtils.decodeBinary(value), nonce, numbers);
 
             RedactionUtils.censorRootNames(copy, rootNames);
 
-            return redactor(copy);
+            const serialized = redactor(copy);
+
+            return numbers.length === 0 ? serialized : serialized.replace(placeholder, (_match, index: string) => numbers[Number(index)]);
         };
     }
 
@@ -141,11 +147,13 @@ export class RedactionUtils {
      * A writable copy with the shape the serialiser would emit. Returns the
      * value itself when it has no JSON form, so it serialises as before. A
      * string holding a JSON object or array is parsed, so its paths can be
-     * redacted; any other string is returned as is.
+     * redacted; any other string is returned as is. Number literals of parsed
+     * text that a double cannot round-trip are pushed to `numbers` and replaced
+     * by a `nonce` placeholder string.
      */
-    private static toWritableCopy(value: unknown): unknown {
+    private static toWritableCopy(value: unknown, nonce: string, numbers: string[]): unknown {
         if (StringUtils.isString(value)) {
-            return RedactionUtils.parseJsonContainer(value);
+            return RedactionUtils.parseJsonContainer(value, nonce, numbers);
         }
 
         try {
@@ -161,9 +169,12 @@ export class RedactionUtils {
      * The parsed value when `value` is JSON text for an object or array, else `value` itself.
      * A leading byte order mark is not part of the JSON value (RFC 8259 §8.1), so it is ignored.
      */
-    private static parseJsonContainer(value: string): unknown {
+    private static parseJsonContainer(value: string, nonce: string, numbers: string[]): unknown {
         try {
-            const parsed = JSON.parse(value.charCodeAt(0) === 0xFEFF ? value.slice(1) : value, RedactionUtils.keepNumberText) as unknown;
+            const parsed = JSON.parse(
+                value.charCodeAt(0) === 0xFEFF ? value.slice(1) : value,
+                (_key: string, parsedValue: unknown, context?: { source?: string }) => RedactionUtils.keepNumberText(parsedValue, context, nonce, numbers)
+            ) as unknown;
 
             return ObjectUtils.isObject(parsed) ? parsed : value;
         } catch {
@@ -172,15 +183,18 @@ export class RedactionUtils {
     }
 
     /**
-     * `JSON.parse` reviver that keeps number literals a double cannot round-trip
-     * (large integers, high-precision decimals, out-of-range values) as raw JSON,
-     * so re-serialising writes the original text instead of a rounded value or `null`.
+     * `JSON.parse` reviver step that keeps number literals a double cannot round-trip
+     * (large integers, high-precision decimals, out-of-range values) as text, so
+     * re-serialising writes the original text instead of a rounded value or `null`.
+     * The literal is held outside the parsed tree behind a placeholder string:
+     * `fast-redact` traverses objects, so a `JSON.rawJSON` object there would be
+     * written into by a wildcard selector, and it is frozen.
      */
-    private static keepNumberText(_key: string, value: unknown, context?: { source?: string }): unknown {
+    private static keepNumberText(value: unknown, context: { source?: string } | undefined, nonce: string, numbers: string[]): unknown {
         const source = context?.source;
 
         if (NumberUtils.isNumber(value) && StringUtils.isString(source) && JSON.stringify(value) !== source) {
-            return (JSON as unknown as { rawJSON(text: string): unknown }).rawJSON(source);
+            return `${nonce}${numbers.push(source) - 1}`;
         }
 
         return value;
