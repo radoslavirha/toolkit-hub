@@ -1,5 +1,18 @@
 # @radoslavirha/tsed-platform
 
+## 6.0.2
+
+### Patch Changes
+
+- [#397](https://github.com/radoslavirha/toolkit-hub/pull/397) [`1ea6943`](https://github.com/radoslavirha/toolkit-hub/commit/1ea69430f2d7939621eb8165cb171816a601f009) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Strict request validation no longer answers 400 for `?v=null` on a non-nullable `string[]` query parameter; the text stays text and binds as `['null']`.
+
+- [#398](https://github.com/radoslavirha/toolkit-hub/pull/398) [`8196601`](https://github.com/radoslavirha/toolkit-hub/commit/81966015d5d9b62093e89c00099e59d7e54ff668) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Strict request validation now applies its query rules to fields of a `@QueryParams()` model: `?oBoolean=1|0` binds as a boolean and `?onNumber=null` binds as `null` on nullable fields instead of answering 400.
+
+- [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Silence logs in tests
+- Updated dependencies []:
+  - @radoslavirha/tsed-configuration@0.9.5
+  - @radoslavirha/tsed-logger@0.7.10
+
 ## 6.0.1
 
 ### Patch Changes
