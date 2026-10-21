@@ -1,5 +1,13 @@
 # @radoslavirha/tsed-common
 
+## 0.7.2
+
+### Patch Changes
+
+- [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Declare `type: 'object'` on discriminated schemas in `JSONSchemaValidator`, removing the AJV `strictTypes` warning logged on every validation of a discriminated model
+
+- [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Silence logs in tests
+
 ## 0.7.1
 
 ### Patch Changes

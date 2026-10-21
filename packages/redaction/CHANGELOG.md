@@ -1,5 +1,11 @@
 # @radoslavirha/redaction
 
+## 0.3.9
+
+### Patch Changes
+
+- [#406](https://github.com/radoslavirha/toolkit-hub/pull/406) [`520da4c`](https://github.com/radoslavirha/toolkit-hub/commit/520da4c11313973516d409d604bfb723481c62da) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Case-insensitive root redaction no longer writes `***` into the caller's object when the input cannot be represented as JSON.
+
 ## 0.3.8
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-mongoose
 
+## 5.1.3
+
+### Patch Changes
+
+- [#394](https://github.com/radoslavirha/toolkit-hub/pull/394) [`e78537f`](https://github.com/radoslavirha/toolkit-hub/commit/e78537ff1701eef416d270a5312b0bce51af82f8) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `MongoMapper.getModelValue` now resolves `@Default` on nested-model and model-collection properties by reading the Ts.ED property metadata instead of the rendered JSON schema.
+
+- [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Replace deprecated `new: true` with `returnDocument: 'after'` in `findOneAndUpdate` calls, removing the Mongoose deprecation warning
+
+- [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Silence logs in tests
+- Updated dependencies [[`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d), [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d)]:
+  - @radoslavirha/tsed-common@0.7.2
+
 ## 5.1.2
 
 ### Patch Changes
