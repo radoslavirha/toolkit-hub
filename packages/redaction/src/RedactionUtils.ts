@@ -93,9 +93,13 @@ export class RedactionUtils {
         const rootNames = options.caseInsensitiveRoot === true ? RedactionUtils.rootNames(redactPaths) : new Set<string>();
 
         return (value: unknown): string => {
-            const copy = RedactionUtils.toWritableCopy(RedactionUtils.decodeBinary(value));
+            const decoded = RedactionUtils.decodeBinary(value);
+            const copy = RedactionUtils.toWritableCopy(decoded);
 
-            RedactionUtils.censorRootNames(copy, rootNames);
+            // No copy means the value has no JSON form; censoring would write into the caller's object.
+            if (copy !== decoded) {
+                RedactionUtils.censorRootNames(copy, rootNames);
+            }
 
             return redactor(copy);
         };
