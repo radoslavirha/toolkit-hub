@@ -272,7 +272,7 @@ export class MappingUtils {
             throw new Error(`The value "${String(value)}" doesn't exist in ${sourceTypeName} so then cannot be mapped to ${targetTypeName} type.`);
         }
 
-        const result = target[resultKey!];
+        const result = Object.hasOwn(target, resultKey) ? target[resultKey] : undefined;
         if (CommonUtils.isNil(result) && !ignoreUnknownKeys) {
             throw new Error(`The value "${String(value)}" of ${sourceTypeName}.${resultKey} cannot be mapped to ${targetTypeName}.${resultKey}, it doesn't exist.`);
         }

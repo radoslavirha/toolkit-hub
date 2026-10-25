@@ -161,6 +161,30 @@ describe('MappingUtils', () => {
     });
 
     describe('mapEnum', () => {
+        it('throws when a source key named like an Object.prototype member is missing in target enum', () => {
+            enum MethodSourceEnum {
+                toString = 'TO_STRING'
+            }
+            enum MethodTargetEnum {
+                other = 'OTHER'
+            }
+
+            expect(() =>
+                mappingUtils.mapEnum({ MethodSourceEnum }, { MethodTargetEnum }, MethodSourceEnum.toString)
+            ).toThrow('cannot be mapped to MethodTargetEnum.toString');
+        });
+
+        it('returns undefined for a prototype-named key missing in target enum when ignoring unknown keys', () => {
+            enum MethodSourceEnum {
+                toString = 'TO_STRING'
+            }
+            enum MethodTargetEnum {
+                other = 'OTHER'
+            }
+
+            expect(mappingUtils.mapEnum({ MethodSourceEnum }, { MethodTargetEnum }, MethodSourceEnum.toString, true)).toBeUndefined();
+        });
+
         it('maps enum values by key name', () => {
             const result = mappingUtils.mapEnum({ SourceEnum }, { TargetEnum }, SourceEnum.A);
 
