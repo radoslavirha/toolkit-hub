@@ -92,7 +92,7 @@ export class JSONSchemaValidator {
         const children = schema.isDiscriminator ? schema.discriminator().children() : [];
 
         if (children.length === 0) {
-            return JSONSchemaValidator.typeDiscriminators(getJsonSchema(model));
+            return JSONSchemaValidator.typeDiscriminators(ObjectUtils.cloneDeep(getJsonSchema(model)));
         }
 
         class Holder {
@@ -103,7 +103,16 @@ export class JSONSchemaValidator {
 
         const { properties, definitions } = getJsonSchema(Holder);
 
-        return JSONSchemaValidator.typeDiscriminators({ ...(properties?.value as object), ...(definitions ? { definitions } : {}) });
+        return JSONSchemaValidator.typeDiscriminators(
+            ObjectUtils.cloneDeep({ ...(properties?.value as object), ...(definitions ? { definitions } : {}) })
+        );
+    }
+
+    /** A `discriminator` keyword is `{ propertyName: string, ... }`; a property merely named `discriminator` is a schema. */
+    private static hasDiscriminatorKeyword(node: Record<string, unknown>): boolean {
+        const { discriminator } = node;
+
+        return ObjectUtils.isObject(discriminator) && typeof (discriminator as Record<string, unknown>).propertyName === 'string';
     }
 
     /**
@@ -116,7 +125,7 @@ export class JSONSchemaValidator {
             schema.forEach(item => JSONSchemaValidator.typeDiscriminators(item));
         } else if (ObjectUtils.isObject(schema)) {
             const node = schema as Record<string, unknown>;
-            if ('discriminator' in node && !('type' in node)) {
+            if (JSONSchemaValidator.hasDiscriminatorKeyword(node) && !('type' in node)) {
                 node.type = 'object';
             }
             Object.values(node).forEach(value => JSONSchemaValidator.typeDiscriminators(value));
