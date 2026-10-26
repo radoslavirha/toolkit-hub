@@ -1,3 +1,4 @@
+import { ArrayOf } from '../decorators/ArrayOf.js';
 import { DiscriminatorKey, DiscriminatorValue, OneOf, Property, Required } from '@tsed/schema';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { BaseModel } from '../models/BaseModel.js';
@@ -39,6 +40,15 @@ class EventEnvelope {
     event!: ClickEvent | KeyEvent;
 }
 
+class EventHolder {
+    @Property(Event)
+    @Required()
+    event!: Event;
+
+    @ArrayOf(Event)
+    events?: Event[];
+}
+
 describe('JSONSchemaValidator', () => {
     let consoleLogSpy: ReturnType<typeof vi.spyOn>;
 
@@ -51,6 +61,23 @@ describe('JSONSchemaValidator', () => {
     });
 
     describe('validate', () => {
+        it('throws AJV errors when a discriminated subtype misses a required field in a property typed as the base model', () => {
+            expect(() => JSONSchemaValidator.validate(EventHolder, { event: { type: 'click' } }))
+                .toThrow(expect.arrayContaining([expect.objectContaining({ keyword: 'required', instancePath: '/event' })]) as never);
+        });
+
+        it('throws AJV errors when a discriminated subtype misses a required field in an array of the base model', () => {
+            expect(() => JSONSchemaValidator.validate(EventHolder, { event: { type: 'click', x: 1 }, events: [{ type: 'click' }] }))
+                .toThrow(expect.arrayContaining([expect.objectContaining({ keyword: 'required', instancePath: '/events/0' })]) as never);
+        });
+
+        it('returns subtype instances for valid nested base model input', () => {
+            const result = JSONSchemaValidator.validate(EventHolder, { event: { type: 'click', x: 1 }, events: [{ type: 'key' }] });
+
+            expect(result.event).toBeInstanceOf(ClickEvent);
+            expect(result.events?.[0]).toBeInstanceOf(KeyEvent);
+        });
+
         it('returns deserialized instance when input is valid', () => {
             const result = JSONSchemaValidator.validate(ValidModel, { name: 'Alice', age: 30 });
 

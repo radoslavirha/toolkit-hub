@@ -85,25 +85,71 @@ export class JSONSchemaValidator {
     /**
      * The schema of a discriminator base model only describes the base properties,
      * yet deserialization resolves the subtype. Validate such input against the
-     * `oneOf` of its subtypes (the shape Ts.ED emits for a `@OneOf` property).
+     * `oneOf` of its subtypes (the shape Ts.ED emits for a `@OneOf` property) -
+     * for the model itself and for every base model nested in its properties.
      */
     private static buildSchema(model: Type<object>): ReturnType<typeof getJsonSchema> {
-        const { schema } = JsonEntityStore.from(model);
-        const children = schema.isDiscriminator ? schema.discriminator().children() : [];
+        const children = JSONSchemaValidator.discriminatorChildren(model);
 
         if (children.length === 0) {
-            return JSONSchemaValidator.typeDiscriminators(getJsonSchema(model));
+            const schema = ObjectUtils.cloneDeep(getJsonSchema(model));
+            const bases = [...JSONSchemaValidator.collectNestedBases(model)];
+
+            if (bases.length > 0) {
+                const definitions = (schema.definitions ??= {});
+                for (const base of bases) {
+                    const { node, definitions: childDefinitions } = JSONSchemaValidator.buildOneOf(JSONSchemaValidator.discriminatorChildren(base));
+                    Object.assign(definitions, childDefinitions, { [base.name]: node });
+                }
+            }
+
+            return JSONSchemaValidator.typeDiscriminators(schema);
         }
 
+        const { node, definitions } = JSONSchemaValidator.buildOneOf(children);
+
+        return JSONSchemaValidator.typeDiscriminators({ ...node, ...(definitions ? { definitions } : {}) });
+    }
+
+    private static discriminatorChildren(model: Type<unknown>): Type<unknown>[] {
+        const { schema } = JsonEntityStore.from(model);
+
+        return schema.isDiscriminator ? schema.discriminator().children() : [];
+    }
+
+    private static buildOneOf(children: Type<unknown>[]): { node: object; definitions?: Record<string, unknown> } {
         class Holder {
             value!: unknown;
         }
         OneOf(...children)(Holder.prototype, 'value');
         Required()(Holder.prototype, 'value');
 
-        const { properties, definitions } = getJsonSchema(Holder);
+        const { properties, definitions } = ObjectUtils.cloneDeep(getJsonSchema(Holder));
 
-        return JSONSchemaValidator.typeDiscriminators({ ...(properties?.value as object), ...(definitions ? { definitions } : {}) });
+        return { node: properties?.value as object, definitions };
+    }
+
+    /** Discriminator base models reached through properties (excluding `model` itself). */
+    private static collectNestedBases(model: Type<unknown>, seen = new Set<Type<unknown>>(), bases = new Set<Type<unknown>>()): Set<Type<unknown>> {
+        if (seen.has(model)) {
+            return bases;
+        }
+        seen.add(model);
+
+        for (const property of JsonEntityStore.from(model).children.values()) {
+            const target = property.itemSchema.getTarget();
+            if (!property.itemSchema.isClass || !target) {
+                continue;
+            }
+            const children = JSONSchemaValidator.discriminatorChildren(target);
+            if (children.length > 0) {
+                bases.add(target);
+                children.forEach(child => JSONSchemaValidator.collectNestedBases(child, seen, bases));
+            }
+            JSONSchemaValidator.collectNestedBases(target, seen, bases);
+        }
+
+        return bases;
     }
 
     /**
