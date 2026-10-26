@@ -111,6 +111,22 @@ describe('EnumMapOf', () => {
         ] as const)('throws when the name is reused with %s', (_label, enumType, type, options) => {
             expect(() => EnumMapModel(enumType, type, options)).toThrow(/already used/);
         });
+
+        it('throws when the name is reused with another value class of the same class name', () => {
+            class Item {
+                @Required() @Property(String) name!: string;
+            }
+            const first = Item;
+            const second = (() => {
+                class Item {
+                    @Required() @Property(Number) count!: number;
+                }
+                return Item;
+            })();
+            EnumMapModel(Color, first, { name: 'ColorItems' });
+
+            expect(() => EnumMapModel(Color, second, { name: 'ColorItems' })).toThrow(/already used/);
+        });
     });
 
     describe('validation', () => {
