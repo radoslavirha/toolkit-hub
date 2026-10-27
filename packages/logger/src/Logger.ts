@@ -162,26 +162,14 @@ export class Logger<T extends object = object> {
     /**
      * Moves metadata keys that clash with system fields to `meta_<key>`, so the system
      * value (`timestamp`, `level`, `message`, pinned `scope`) always wins and the caller's
-     * value is kept. `exception` is moved too, so Winston doesn't discard the line. When the
-     * metadata already has the `meta_<key>` field, the prefix is repeated until the name is free.
+     * value is kept. `exception` is moved too, so Winston doesn't discard the line.
      */
     private static renameReservedKeys(metadata: object): object {
         if (!RESERVED_KEYS.some((key) => Object.hasOwn(metadata, key))) {
             return metadata;
         }
-        const taken = new Set(Object.keys(metadata));
         return Object.fromEntries(
-            Object.entries(metadata).map(([key, value]) => {
-                if (!RESERVED_KEYS.includes(key)) {
-                    return [key, value];
-                }
-                let renamed = `meta_${ key }`;
-                while (taken.has(renamed)) {
-                    renamed = `meta_${ renamed }`;
-                }
-                taken.add(renamed);
-                return [renamed, value];
-            })
+            Object.entries(metadata).map(([key, value]) => [RESERVED_KEYS.includes(key) ? `meta_${ key }` : key, value])
         );
     }
 
