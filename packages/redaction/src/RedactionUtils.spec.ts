@@ -152,6 +152,21 @@ describe('RedactionUtils', () => {
             expect(redactor(Object.freeze({ toJSON: () => undefined }))).toBe('[object Object]');
         });
 
+        it('does not modify a case-insensitive root input that JSON cannot represent', () => {
+            const headers: Record<string, unknown> = { Authorization: 'Bearer live-token' };
+            headers.self = headers;
+            const redactor = RedactionUtils.compileRedactor(['authorization'], { caseInsensitiveRoot: true });
+
+            expect(redactor(headers)).toBe('[[ UNSERIALIZABLE ]]');
+            expect(headers.Authorization).toBe('Bearer live-token');
+        });
+
+        it('serialises a frozen case-insensitive root input that JSON cannot represent', () => {
+            const redactor = RedactionUtils.compileRedactor(['authorization'], { caseInsensitiveRoot: true });
+
+            expect(redactor(Object.freeze({ Authorization: 'x', n: 1n }))).toBe('[[ UNSERIALIZABLE ]]');
+        });
+
         it('redacts a non-writable own property', () => {
             const value = { user: 'ada' };
             Object.defineProperty(value, 'password', { value: 'hunter2', enumerable: true, writable: false });

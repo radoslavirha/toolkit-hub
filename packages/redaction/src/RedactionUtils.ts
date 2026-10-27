@@ -97,9 +97,13 @@ export class RedactionUtils {
 
         return (value: unknown): string => {
             const numbers: string[] = [];
-            const copy = RedactionUtils.toWritableCopy(RedactionUtils.decodeBinary(value), nonce, numbers);
+            const decoded = RedactionUtils.decodeBinary(value);
+            const copy = RedactionUtils.toWritableCopy(decoded, nonce, numbers);
 
-            RedactionUtils.censorRootNames(copy, rootNames);
+            // No copy means the value has no JSON form; censoring would write into the caller's object.
+            if (copy !== decoded) {
+                RedactionUtils.censorRootNames(copy, rootNames);
+            }
 
             const serialized = redactor(copy);
 
