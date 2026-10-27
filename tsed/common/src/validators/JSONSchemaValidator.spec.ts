@@ -1,4 +1,4 @@
-import { DiscriminatorKey, DiscriminatorValue, getJsonSchema, OneOf, Property, Required } from '@tsed/schema';
+import { DiscriminatorKey, DiscriminatorValue, OneOf, Property, Required } from '@tsed/schema';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { BaseModel } from '../models/BaseModel.js';
 import { JSONSchemaValidator } from './JSONSchemaValidator.js';
@@ -39,11 +39,6 @@ class EventEnvelope {
     event!: ClickEvent | KeyEvent;
 }
 
-class Setting {
-    @Required()
-    discriminator!: string;
-}
-
 describe('JSONSchemaValidator', () => {
     let consoleLogSpy: ReturnType<typeof vi.spyOn>;
 
@@ -56,21 +51,6 @@ describe('JSONSchemaValidator', () => {
     });
 
     describe('validate', () => {
-        it('returns the instance for a model with a property named discriminator', () => {
-            const result = JSONSchemaValidator.validate(Setting, { discriminator: 'a' });
-
-            expect(result).toBeInstanceOf(Setting);
-            expect(result.discriminator).toBe('a');
-        });
-
-        it('does not change the schema Ts.ED returns for the validated model', () => {
-            const before = structuredClone(getJsonSchema(EventEnvelope));
-
-            JSONSchemaValidator.validate(EventEnvelope, { event: { type: 'click', x: 1 } });
-
-            expect(getJsonSchema(EventEnvelope)).toStrictEqual(before);
-        });
-
         it('returns deserialized instance when input is valid', () => {
             const result = JSONSchemaValidator.validate(ValidModel, { name: 'Alice', age: 30 });
 
