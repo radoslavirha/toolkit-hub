@@ -383,6 +383,25 @@ describe('MongoMapper', () => {
         expect(second).toStrictEqual({ theme: 'light' });
     });
 
+    it('getModelValue - POST with undefined resolves a factory @Default to its value', () => {
+        class TaggedModel extends BaseModel {
+            @CollectionOf(String)
+            @Default(() => ['new'])
+            tags!: string[];
+        }
+
+        class TaggedMapper extends MongoMapper<TestModelMongo, TaggedModel> {
+            protected mongo = TestModelMongo;
+            protected model = TaggedModel;
+        }
+
+        expect.assertions(1);
+
+        const response = new TaggedMapper().getModelValue(new TaggedModel(), 'tags');
+
+        expect(response).toStrictEqual(['new']);
+    });
+
     it('getModelValue - POST with undefined resolves @Default of a nested model property', () => {
         class Address {
             @Property(String)
