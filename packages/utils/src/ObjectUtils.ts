@@ -135,7 +135,6 @@ export class ObjectUtils {
      */
     public static cloneDeep<T extends object>(object: T): T {
         const seen = new WeakMap<Error, Error>();
-        const buffers = new WeakMap<Uint8Array, Uint8Array>();
         // every lodash call keeps its own source -> clone stack; collect them so that objects cloned in one call are reused by the others
         const stacks = new Set<{ get(key: unknown): unknown }>();
         const customizer = (value: unknown, _key?: unknown, _parent?: unknown, stack?: { get(key: unknown): unknown }): unknown => {
@@ -143,17 +142,6 @@ export class ObjectUtils {
                 stacks.add(stack);
             }
             if (!(value instanceof Error)) {
-                // lodash clones a Buffer with `slice()`, which is a view on the same memory in Node
-                if (value instanceof Uint8Array) {
-                    const known = buffers.get(value);
-                    if (known) {
-                        return known;
-                    }
-                    // Uint8Array.prototype.slice copies the bytes and keeps the subclass (Buffer) through its species constructor
-                    const copy = Uint8Array.prototype.slice.call(value);
-                    buffers.set(value, copy);
-                    return copy;
-                }
                 if (_.isObject(value)) {
                     for (const known of stacks) {
                         const clone = known.get(value);

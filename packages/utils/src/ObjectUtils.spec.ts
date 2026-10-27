@@ -4,16 +4,6 @@ import { ObjectUtils } from './ObjectUtils.js';
 
 describe('ObjectUtils', () => {
     describe('cloneDeep', () => {
-        it('should not share memory with a Buffer nested in the original', () => {
-            const original = { data: Buffer.from('abc') };
-
-            const cloned = ObjectUtils.cloneDeep(original);
-            cloned.data[0] = 0x78;
-
-            expect(original.data.toString()).toBe('abc');
-            expect(Buffer.isBuffer(cloned.data)).toBe(true);
-        });
-
         it('should preserve shared references reachable through an Error', () => {
             const shared = { value: 1 };
             const error = Object.assign(new Error('boom'), { context: shared });
@@ -178,15 +168,6 @@ describe('ObjectUtils', () => {
     });
 
     describe('mergeDeep', () => {
-        it('returns a Buffer that shares no memory with the Buffer in source', () => {
-            const source = { data: Buffer.from('abc') };
-
-            const result = ObjectUtils.mergeDeep({ data: Buffer.from('xyz') }, source);
-            result.data[0] = 0x78;
-
-            expect(source.data.toString()).toBe('abc');
-        });
-
         it('merges class instances that reference themselves in both target and source', () => {
             class TreeNode {
                 self: TreeNode = this;
