@@ -21,7 +21,7 @@ export interface EnumMapOfOptions {
 const SCALARS: unknown[] = [String, Number, Boolean, BigInt];
 // @tsed/json-mapper compiles property access as `obj.<key>`, so only identifier-like keys can be (de)serialized
 const MAPPABLE_KEY = /^[A-Za-z_$][\w$]*$/;
-const generated = new Map<string, { model: Type<unknown>; signature: string }>();
+const generated = new Map<string, { model: Type<unknown>; signature: string; type: Type<unknown> }>();
 
 function enumValues(enumType: Record<string, string | number>): string[] {
     // numeric enums carry reverse mappings (value -> name); keep only the declared members
@@ -60,7 +60,8 @@ export function EnumMapModel(enumType: Record<string, string | number>, type: Ty
     const signature = JSON.stringify({ keys, type: type.name, nullableValues: !!options.nullableValues, partial: !!options.partial });
     const existing = generated.get(options.name);
     if (existing) {
-        if (existing.signature !== signature) {
+        // the signature only carries the class name, so two different classes sharing a name need the identity check
+        if (existing.signature !== signature || existing.type !== type) {
             throw new Error(`EnumMapOf: the schema name "${options.name}" is already used for a different enum map (${existing.signature}).`);
         }
         return existing.model;
@@ -73,7 +74,7 @@ export function EnumMapModel(enumType: Record<string, string | number>, type: Ty
         }
     }
     AdditionalProperties(false)(model);
-    generated.set(options.name, { model, signature });
+    generated.set(options.name, { model, signature, type });
     return model;
 }
 
