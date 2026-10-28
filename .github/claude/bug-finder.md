@@ -57,8 +57,21 @@ Label each issue `agent-found`:
 Severity:
 - critical: data loss, secret leak, or crash in a default code path
 - high: wrong result or crash in a common path
-- medium: wrong result in an edge case consumers can plausibly hit
-- low: wrong result only in contrived input
+- medium: wrong result in an edge case consumers can plausibly hit: the input
+  is one a consumer's real data, API traffic or documented usage produces (the
+  consumers are the apps in radoslavirha/homelab-apps; check how they call it)
+- low: anything less likely: input only a test would build, a combination of
+  options no consumer uses, a misuse the docs already warn against
+
+File critical, high and medium only. A low candidate is dropped, not filed; name
+it in your Finish summary as `dropped (low)` with one line. These are low however
+the test reads:
+- a naming clash, prototype key or exotic type (Buffer, Symbol, class instance
+  where a plain object is documented) that no consumer passes
+- a wrong error message or error type when the call fails either way
+- a README or doc wording mistake (not a bug at all: skip it)
+Severity is how likely and how bad, not how sure you are: a test that fails
+cleanly does not lift a contrived case above low.
 
 Title: `<package>: <one-line symptom>`
 
@@ -71,7 +84,7 @@ Body (GitHub markdown, use exactly these sections):
 Concrete input/state → actual result vs expected result.
 
 ## Severity
-critical | high | medium | low — one sentence why.
+critical | high | medium — one sentence why.
 
 ## Confidence
 high | med | low — one sentence why.
