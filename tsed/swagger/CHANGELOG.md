@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-swagger
 
+## 9.1.17
+
+### Patch Changes
+
+- [#425](https://github.com/radoslavirha/toolkit-hub/pull/425) [`c8cf0a3`](https://github.com/radoslavirha/toolkit-hub/commit/c8cf0a3783e8eefb35731fec700e62ae4c3b3d7a) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Fix the README claim that several `@Security()` arguments are alternative schemes (logical OR); extra arguments are scopes and stacked decorators are AND.
+
+- [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Silence logs in tests
+- Updated dependencies [[`1ea6943`](https://github.com/radoslavirha/toolkit-hub/commit/1ea69430f2d7939621eb8165cb171816a601f009), [`8196601`](https://github.com/radoslavirha/toolkit-hub/commit/81966015d5d9b62093e89c00099e59d7e54ff668), [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d)]:
+  - @radoslavirha/tsed-platform@6.0.2
+  - @radoslavirha/tsed-configuration@0.9.5
+  - @radoslavirha/tsed-logger@0.7.10
+
 ## 9.1.16
 
 ### Patch Changes
