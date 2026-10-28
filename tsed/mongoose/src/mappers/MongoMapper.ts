@@ -307,7 +307,10 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
         // read the metadata, not the rendered schema: Ts.ED renders nested models, collections and grouped properties in shapes that drop the default
         const store = getPropertiesStores(this.model).get(property as string);
 
-        const value = store?.schema?.get('default') ?? store?.itemSchema?.get('default') ?? undefined;
+        const stored = store?.schema?.get('default') ?? store?.itemSchema?.get('default') ?? undefined;
+
+        // Ts.ED accepts a factory `@Default(() => value)`; call it so the factory's result is used
+        const value = CommonUtils.isFunction(stored) ? stored() : stored;
 
         // the schema is cached by Ts.ED; hand out a copy so callers can't change the default for later calls
         return ObjectUtils.isObject(value) || Array.isArray(value) ? ObjectUtils.cloneDeep(value) : value;
