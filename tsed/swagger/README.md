@@ -300,7 +300,8 @@ export class UserControllerV1 {
 - `@Docs('v1')` value must match `SwaggerDocumentConfig.docs: 'v1'`
 - Use `@Security()` decorator to require authentication on endpoints
 - Apply `@Security()` at class level for global endpoint security
-- Mix security schemes with multiple `@Security()` parameters (logical OR)
+- `@Security(name, ...scopes)` takes one scheme; extra arguments are OAuth scopes of that scheme, not further schemes
+- Stacking `@Security()` decorators requires all of the schemes (logical AND)
 - Use `@Returns()` for comprehensive response documentation
 - Controllers without `@Docs()` appear in all versions
 
@@ -455,8 +456,10 @@ Enumeration of pre-configured security schemes for OpenAPI authentication.
 @Get('/profile')
 getProfile() {}
 
-// Multiple schemes (logical OR)
-@Security(SwaggerSecurityScheme.BASIC, SwaggerSecurityScheme.BEARER_JWT)
+// Multiple schemes, all required (logical AND)
+// Note: the second argument of @Security() is a scope, not another scheme
+@Security(SwaggerSecurityScheme.BASIC)
+@Security(SwaggerSecurityScheme.BEARER_JWT)
 @Post('/users')
 createUser() {}
 
