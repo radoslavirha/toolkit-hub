@@ -1,5 +1,21 @@
 # @radoslavirha/tsed-mongoose
 
+## 5.1.3
+
+### Patch Changes
+
+- [#394](https://github.com/radoslavirha/toolkit-hub/pull/394) [`e78537f`](https://github.com/radoslavirha/toolkit-hub/commit/e78537ff1701eef416d270a5312b0bce51af82f8) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `MongoMapper.getModelValue` now resolves `@Default` on nested-model and model-collection properties by reading the Ts.ED property metadata instead of the rendered JSON schema.
+
+- [#422](https://github.com/radoslavirha/toolkit-hub/pull/422) [`9915858`](https://github.com/radoslavirha/toolkit-hub/commit/9915858e4bab6a99fd80267bdce9c9798ce7ac23) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `MongoMapper.getModelValue` now resolves a `@Default` declared on a parent model class.
+
+- [#423](https://github.com/radoslavirha/toolkit-hub/pull/423) [`2809a0d`](https://github.com/radoslavirha/toolkit-hub/commit/2809a0d860170f91f51897aaaded6f10f8d227c0) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `MongoMapper.getModelValue` now calls a factory `@Default(() => value)` and returns its result instead of `{}`.
+
+- [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Replace deprecated `new: true` with `returnDocument: 'after'` in `findOneAndUpdate` calls, removing the Mongoose deprecation warning
+
+- [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Silence logs in tests
+- Updated dependencies [[`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d), [`8c3d5e2`](https://github.com/radoslavirha/toolkit-hub/commit/8c3d5e268fe0dd709b2ca3a820c32b85578337a1), [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d)]:
+  - @radoslavirha/tsed-common@0.7.2
+
 ## 5.1.2
 
 ### Patch Changes
