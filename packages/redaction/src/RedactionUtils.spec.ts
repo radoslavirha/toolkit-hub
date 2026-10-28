@@ -246,6 +246,12 @@ describe('RedactionUtils', () => {
                 .toBe('{"token":"***","price":1234567890123456.78,"rate":0.12345678901234567890,"huge":1e400}');
         });
 
+        it('serialises JSON text whose wildcard selector ends on a preserved number', () => {
+            const redactor = RedactionUtils.compileRedactor(['meta.*']);
+
+            expect(redactor('{"meta":10.50,"id":1}')).toBe('{"meta":10.50,"id":1}');
+        });
+
         it('still redacts an unsafe integer that is itself selected', () => {
             const redactor = RedactionUtils.compileRedactor(['id']);
 
