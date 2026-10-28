@@ -321,6 +321,30 @@ describe('MongoMapper', () => {
         expect(response).toStrictEqual('anonymous');
     });
 
+    it('getModelValue - POST with undefined resolves @Default declared on a parent model', () => {
+        class LabelledModel extends BaseModel {
+            @Property(String)
+            @Default('parent')
+            label!: string;
+        }
+
+        class ChildModel extends LabelledModel {
+            @Property(String)
+            other!: string;
+        }
+
+        class ChildMapper extends MongoMapper<TestModelMongo, ChildModel> {
+            protected mongo = TestModelMongo;
+            protected model = ChildModel;
+        }
+
+        expect.assertions(1);
+
+        const response = new ChildMapper().getModelValue(new ChildModel(), 'label');
+
+        expect(response).toStrictEqual('parent');
+    });
+
     it('getModelValue - POST with undefined resolves @Default of an array property', () => {
         class TaggedModel extends BaseModel {
             @CollectionOf(String)

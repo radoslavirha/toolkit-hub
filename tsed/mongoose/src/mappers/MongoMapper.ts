@@ -3,7 +3,7 @@ import { Type } from '@tsed/core';
 import { CommonUtils, MappingUtils, ObjectUtils } from '@radoslavirha/utils';
 import { MongooseDocumentMethods, Ref } from '@tsed/mongoose';
 import { Types } from 'mongoose';
-import { JsonEntityStore } from '@tsed/schema';
+import { getPropertiesStores } from '@tsed/schema';
 import { BaseMongo } from '../models/BaseMongo.js';
 import { MongoCreate } from '../types/MongoCreate.js';
 import { MongoUpdate } from '../types/MongoUpdate.js';
@@ -303,8 +303,9 @@ export abstract class MongoMapper<MONGO extends BaseMongo, MODEL extends BaseMod
      * @private
      */
     private getModelDefault<PROPERTY extends keyof MODEL>(property: PROPERTY): MODEL[PROPERTY] | undefined {
+        // getPropertiesStores walks ancestors, so a @Default declared on a parent model is found
         // read the metadata, not the rendered schema: Ts.ED renders nested models, collections and grouped properties in shapes that drop the default
-        const store = JsonEntityStore.from(this.model, property as string);
+        const store = getPropertiesStores(this.model).get(property as string);
 
         const value = store?.schema?.get('default') ?? store?.itemSchema?.get('default') ?? undefined;
 
