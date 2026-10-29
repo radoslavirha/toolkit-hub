@@ -36,7 +36,7 @@ catalogs:
     '@types/cookie-parser': 1.4.10
     '@types/cors': 2.8.19
     '@types/method-override': 3.0.0
-    body-parser: 2.3.0
+    body-parser: 2.4.0
     compression: 1.8.2
     cookie-parser: 1.4.7
     cors: 2.8.6
