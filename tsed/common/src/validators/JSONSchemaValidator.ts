@@ -92,7 +92,7 @@ export class JSONSchemaValidator {
         const children = schema.isDiscriminator ? schema.discriminator().children() : [];
 
         if (children.length === 0) {
-            return JSONSchemaValidator.typeDiscriminators(getJsonSchema(model));
+            return JSONSchemaValidator.typeDiscriminators(getJsonSchema(model, { groups: false }));
         }
 
         class Holder {
@@ -101,7 +101,7 @@ export class JSONSchemaValidator {
         OneOf(...children)(Holder.prototype, 'value');
         Required()(Holder.prototype, 'value');
 
-        const { properties, definitions } = getJsonSchema(Holder);
+        const { properties, definitions } = getJsonSchema(Holder, { groups: false });
 
         return JSONSchemaValidator.typeDiscriminators({ ...(properties?.value as object), ...(definitions ? { definitions } : {}) });
     }

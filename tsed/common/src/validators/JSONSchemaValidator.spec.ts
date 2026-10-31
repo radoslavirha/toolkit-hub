@@ -1,4 +1,4 @@
-import { DiscriminatorKey, DiscriminatorValue, OneOf, Property, Required } from '@tsed/schema';
+import { DiscriminatorKey, DiscriminatorValue, Groups, OneOf, Property, Required } from '@tsed/schema';
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 import { BaseModel } from '../models/BaseModel.js';
 import { JSONSchemaValidator } from './JSONSchemaValidator.js';
@@ -9,6 +9,16 @@ class ValidModel {
 
     @Property()
     age?: number;
+}
+
+class GroupedModel {
+    @Required()
+    name!: string;
+
+    @Required()
+    @Property(String)
+    @Groups('secret')
+    token!: string;
 }
 
 class UserModel extends BaseModel {
@@ -51,6 +61,13 @@ describe('JSONSchemaValidator', () => {
     });
 
     describe('validate', () => {
+        it('throws AJV errors when a required @Groups property is missing or has the wrong type', () => {
+            expect.assertions(2);
+
+            expect(() => JSONSchemaValidator.validate(GroupedModel, { name: 'Alice' })).toThrow();
+            expect(() => JSONSchemaValidator.validate(GroupedModel, { name: 'Alice', token: { $ne: null } })).toThrow();
+        });
+
         it('returns deserialized instance when input is valid', () => {
             const result = JSONSchemaValidator.validate(ValidModel, { name: 'Alice', age: 30 });
 
