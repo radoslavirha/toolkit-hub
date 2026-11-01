@@ -137,6 +137,15 @@ export class Logger extends BaseLogger<LoggerMetadata> {
      * shows what the client receives and `redactPaths` match wire names.
      */
     private static serializeResponse($ctx: PlatformContext): unknown {
+        try {
+            return Logger.serializeResponseUnsafe($ctx);
+        } catch {
+            // Ts.ED answered the same unserialisable data with a 500; logging must never reject $ctx.finish().
+            return '[[ UNSERIALIZABLE ]]';
+        }
+    }
+
+    private static serializeResponseUnsafe($ctx: PlatformContext): unknown {
         const data = $ctx.data;
 
         if (!$ctx.endpoint || $ctx.endpoint.view || !isSerializable(data)) {

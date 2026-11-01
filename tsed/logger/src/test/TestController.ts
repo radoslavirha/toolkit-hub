@@ -15,6 +15,7 @@ import { EchoPayload, EchoResponse } from './models/index.js';
  * - GET /test/handled-error  — sets status 400 without throwing, so $ctx.error stays null
  * - GET /test/code-error     — throws an error whose name is undefined but code is set (e.g. Node.js ENOENT-style)
  * - GET /test/binary         — returns 200 with Content-Type: application/octet-stream (binary path)
+ * - GET /test/circular       — returns a circular object Ts.ED cannot serialise (500)
  * - POST /test/echo          — returns 200 with echo body
  * - PATCH /test/echo         — returns 200 with echo body
  */
@@ -53,6 +54,14 @@ export class TestController {
     public getBinary(@Response() res: PlatformResponse): Buffer {
         res.contentType('application/octet-stream');
         return Buffer.from([0x01, 0x02, 0x03]);
+    }
+
+    @Get('/circular')
+    @Returns(200)
+    public getCircular(): Record<string, unknown> {
+        const node: Record<string, unknown> = { id: 1 };
+        node['parent'] = { child: node };
+        return node;
     }
 
     @Post('/echo')
