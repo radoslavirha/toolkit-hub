@@ -318,6 +318,25 @@ describe('Logger (integration)', () => {
             expect(rejections).toEqual([]);
             expect(entry).toBeDefined();
         });
+
+        it('logs a request whose response cannot be serialised without rejecting', async () => {
+            const rejections: unknown[] = [];
+            const onRejection = (reason: unknown): void => {
+                rejections.push(reason);
+            };
+            process.on('unhandledRejection', onRejection);
+
+            const response = await request.get('/test/circular');
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            process.off('unhandledRejection', onRejection);
+
+            const logs = parseLogs(stderrSpy);
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['scope'] === 'HTTP_REQUEST') as Record<string, unknown> | undefined;
+
+            expect(response.status).toBe(500);
+            expect(rejections).toEqual([]);
+            expect(entry).toMatchObject({ message: 'Request failed', status: 500, url: '/test/circular' });
+        });
     });
 
     describe('with per-source redaction selectors', () => {
