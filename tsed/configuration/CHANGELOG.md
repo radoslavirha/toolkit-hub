@@ -1,5 +1,12 @@
 # @radoslavirha/tsed-configuration
 
+## 0.9.5
+
+### Patch Changes
+
+- Updated dependencies [[`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d), [`8c3d5e2`](https://github.com/radoslavirha/toolkit-hub/commit/8c3d5e268fe0dd709b2ca3a820c32b85578337a1), [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d)]:
+  - @radoslavirha/tsed-common@0.7.2
+
 ## 0.9.4
 
 ### Patch Changes
