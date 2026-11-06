@@ -140,7 +140,7 @@ defaults). The domain keeps one "no value": `null`, never `undefined`.
 
 - `ArrayUtils.toArray(value)` — normalise `T | T[] | null | undefined` to `T[]`.
 - `ObjectUtils.keys` / `values` — null-safe, typed for both objects and `Dictionary<T>`.
-- `ObjectUtils.mergeDeep(target, source)` — returns `T & S`.
+- `ObjectUtils.mergeDeep(target, source)` — returns `T & S`. Plain, JSON-like objects only; arrays concatenate. Class instances, `Error`, `Buffer`/typed arrays, cyclic data and root-level arrays are out of scope.
 - `NumberUtils` — `round`, `floor`, `ceil` (with precision), `mean`, `min`, `max`,
   `getPercentFromValue`, `getValueFromPercent`.
 - `DefaultsUtil.string(value, fallback)` / `DefaultsUtil.number(value, fallback)` —
