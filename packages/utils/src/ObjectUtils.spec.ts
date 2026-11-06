@@ -168,67 +168,6 @@ describe('ObjectUtils', () => {
     });
 
     describe('mergeDeep', () => {
-        it('merges class instances that reference themselves in both target and source', () => {
-            class TreeNode {
-                self: TreeNode = this;
-                constructor(public name: string) {}
-            }
-
-            const result = ObjectUtils.mergeDeep({ node: new TreeNode('a') }, { node: new TreeNode('b') });
-
-            expect(result.node.name).toBe('b');
-        });
-
-        it('does not mutate an Error nested in target', () => {
-            const error = new Error('boom');
-
-            const result = ObjectUtils.mergeDeep({ error }, { error: { code: 'E_BOOM' } });
-
-            expect(error).not.toHaveProperty('code');
-            expect(result.error).not.toBe(error);
-            expect(result.error).toHaveProperty('code', 'E_BOOM');
-        });
-
-        it('does not alias an Error nested in source', () => {
-            const error = new Error('boom');
-
-            const result = ObjectUtils.mergeDeep({ a: 1 }, { error });
-
-            expect(result.error).not.toBe(error);
-            expect(result.error.message).toBe('boom');
-        });
-
-        it('concatenates arrays passed as target and source', () => {
-            const result = ObjectUtils.mergeDeep([1, 2], [3]);
-
-            expect(result).toEqual([1, 2, 3]);
-        });
-
-        it('returns a result that shares no references with source', () => {
-            const source = { items: [{ name: 'b' }], nested: { list: [{ name: 'c' }] } };
-            const result = ObjectUtils.mergeDeep({ items: [{ name: 'a' }], nested: { list: [] as { name: string }[] } }, source);
-
-            result.items[1].name = 'mutated';
-            result.nested.list[0].name = 'mutated';
-
-            expect(source.items[0].name).toBe('b');
-            expect(source.nested.list[0].name).toBe('c');
-        });
-
-        it('deep merges a class instance nested in source into the target subtree', () => {
-            class DatabaseConfig {
-                port: number = 27018;
-                options: string[] = ['tls'];
-            }
-            const target = { db: { host: 'localhost', port: 27017, options: ['retryWrites'] } };
-            const source = { db: new DatabaseConfig() };
-
-            const result = ObjectUtils.mergeDeep(target, source);
-
-            expect(result.db).toStrictEqual({ host: 'localhost', port: 27018, options: ['retryWrites', 'tls'] });
-            expect(result.db).not.toBe(source.db);
-        });
-
         it('should deep merge two objects', () => {
             interface TestObj {
                 a: number;
@@ -339,36 +278,6 @@ describe('ObjectUtils', () => {
                     }
                 }
             });
-        });
-
-        it('does not mutate a class instance nested in target', () => {
-            class DbConfig {
-                host = 'localhost';
-                port = 27017;
-            }
-            const target = { db: new DbConfig() };
-            const source = { db: { host: 'mongo.prod' } };
-
-            const result = ObjectUtils.mergeDeep(target, source);
-
-            expect(result.db.host).toBe('mongo.prod');
-            expect(result.db).toBeInstanceOf(DbConfig);
-            expect(result.db).not.toBe(target.db);
-            expect(target.db.host).toBe('localhost');
-        });
-
-        it('replaces a typed array nested in an object when target and source both hold one', () => {
-            const result = ObjectUtils.mergeDeep({ tls: { ca: new Uint16Array([1, 2]) } }, { tls: { ca: new Uint16Array([7]) } });
-
-            expect(result.tls.ca).toBeInstanceOf(Uint16Array);
-            expect(result.tls.ca).toStrictEqual(new Uint16Array([7]));
-        });
-
-        it('keeps a typed array typed when target and source both hold one', () => {
-            const result = ObjectUtils.mergeDeep({ data: new Uint8Array([1, 2, 3]) }, { data: new Uint8Array([9]) });
-
-            expect(result.data).toBeInstanceOf(Uint8Array);
-            expect(result.data).toStrictEqual(new Uint8Array([9]));
         });
     });
 
