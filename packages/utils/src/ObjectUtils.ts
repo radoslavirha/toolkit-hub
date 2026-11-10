@@ -175,7 +175,11 @@ export class ObjectUtils {
 
     /**
      * Performs a deep merge of two objects, combining properties recursively.
-     * Arrays are concatenated rather than replaced; binary values (Buffer, typed arrays) in the source replace the target. Returns a new object without mutating inputs.
+     * Arrays are concatenated rather than replaced. Returns a new object without mutating the inputs.
+     *
+     * Intended for plain, JSON-like objects (e.g. configuration). Class instances, `Error`, `Buffer`/typed arrays,
+     * cyclic structures and root-level arrays are out of scope: they get lodash `merge` semantics, and objects
+     * inside concatenated arrays are shared by reference with the inputs.
      * @template T The type of the target object, must be an object.
      * @template S The type of the source object.
      * @param target The target object to merge into. This object is not mutated.
@@ -189,43 +193,13 @@ export class ObjectUtils {
      * // Arrays are concatenated, nested properties are merged
      */
     public static mergeDeep<T extends object, S extends object>(target: T, source: S): T & S {
-        // lodash never calls the customizer for root values, so concatenate root arrays here
-        if (ArrayUtils.isArray(target) && ArrayUtils.isArray(source)) {
-            return [...ObjectUtils.cloneDeep(target), ...ObjectUtils.cloneDeep(source)] as T & S;
-        }
-
-        // source class instance -> target subtree it is merged into; lets cyclic instance graphs terminate
-        const merged = new WeakMap<object, object>();
-        const customizer = (targetValue: unknown, sourceValue: unknown): unknown => {
+        return _.mergeWith({}, target, source, (targetValue: unknown, sourceValue: unknown) => {
             if (ArrayUtils.isArray(targetValue) && ArrayUtils.isArray(sourceValue)) {
                 return [...targetValue, ...sourceValue];
             }
 
-            // lodash would copy the target into a plain Array; binary values replace the target like Date/Map/Set
-            if (ArrayBuffer.isView(sourceValue)) {
-                return sourceValue;
-            }
-
-            // lodash only deep-merges plain-object sources; class instances would replace the target subtree.
-            if (
-                _.isObject(targetValue) &&
-                !ArrayUtils.isArray(targetValue) &&
-                !_.isPlainObject(sourceValue) &&
-                Object.prototype.toString.call(sourceValue) === '[object Object]'
-            ) {
-                const known = merged.get(sourceValue as object);
-                if (known) {
-                    return known;
-                }
-                // both values come from the clones made below, so the target can be merged in place
-                merged.set(sourceValue as object, targetValue);
-                return _.mergeWith(targetValue, { ...(sourceValue as object) }, customizer);
-            }
-
             return undefined;
-        };
-
-        return _.mergeWith(ObjectUtils.cloneDeep(target), ObjectUtils.cloneDeep(source), customizer);
+        });
     }
 
     /**
