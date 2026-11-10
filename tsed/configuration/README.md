@@ -423,13 +423,21 @@ const markdown = ConfigDocs.render(AppConfigSchema, { title: 'my-api' });
 
 **What the page contains:** a table of top-level sections, a minimal example with only the
 required keys, and one table per section (`Key | Type | Required | Default | Description`,
-nested keys as dotted paths). When two or more direct children of a section expand into keys of
-their own (an object, a map or an array of objects), each gets a collapsed `<details>` block
-holding its table and its unions; the other children share one table at the top. A union of objects gets a visible `one of N` heading and one
-collapsed `<details>` block per variant, its summary naming the key that tells them apart
-(`strategy: "token-exchange"`); a union inside a variant nests as another collapsed block.
-GitHub renders the blocks closed, so a reader opens only the variant they use. An
-`enabled: true | false` toggle whose variants share their keys becomes one table.
+nested keys as dotted paths). The same rule holds at every depth, with no size limit and no
+special cases: scalars are rows in their parent's table, and everything that has keys of its own
+gets a closed `<details>` block.
+
+- An object-like child (a plain object, or the items of an array or map) gets a block with its
+  table, its unions and its own children. The parent table keeps the child's own row, so its
+  type, required flag and default stay visible.
+- A union of objects gets a block summarised as `<key>: one of N`, and each variant inside it a
+  block of its own, named by the key that tells them apart (`strategy: "token-exchange"`). A union
+  is printed in full wherever it occurs, also when the same shapes appear at the same path in
+  another variant.
+- A section's own table is never collapsed (unless `collapseSections` is set).
+- Every `<details>` body sits in a `<blockquote>`, so each nested level is indented with a bar
+  beside it (GitHub strips `style`, so this is the one way to indent).
+- An `enabled: true | false` toggle whose variants share their keys becomes one table.
 
 **Input type, not output type.** The schema is read with `toJSONSchema({ io: 'input' })`: a
 key with a default is optional, and a transform's result type is not shown.

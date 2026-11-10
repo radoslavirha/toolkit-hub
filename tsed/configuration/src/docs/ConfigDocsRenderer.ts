@@ -16,12 +16,21 @@ interface DeferredUnion {
     variants: JsonSchemaNode[];
 }
 
-interface ChildGroup {
-    path: string;
-    schema: JsonSchemaNode;
+/**
+ * What one table renders: its rows, the unions whose keys sit in it, and the object-like children
+ * big enough to get a collapsed block of their own.
+ */
+interface Block {
     rows: Row[];
-    deferred: DeferredUnion[];
-    expands: boolean;
+    unions: DeferredUnion[];
+    children: CollapsedChild[];
+}
+
+interface CollapsedChild {
+    /** Path shown in the summary: the object's own path, or `x[]` / `x.<name>` for items. */
+    path: string;
+    description: string;
+    block: Block;
 }
 
 const DEFAULT_INTRO = [
@@ -32,13 +41,11 @@ const DEFAULT_INTRO = [
 ].join('\n');
 
 /**
- * Renders one normalised configuration JSON Schema as Markdown. Holds per-render state (which
- * unions were already printed), so a new instance is made for every render.
+ * Renders one normalised configuration JSON Schema as Markdown. Holds per-render state (the
+ * output lines), so a new instance is made for every render.
  */
 export class ConfigDocsRenderer {
     private readonly lines: string[] = [];
-    private readonly seenUnions = new Map<string, string>();
-    private readonly context: string[] = [];
 
     public constructor(
         private readonly root: JsonSchemaNode,
@@ -81,7 +88,7 @@ export class ConfigDocsRenderer {
             const collapse = this.options.collapseSections === true;
             if (collapse) this.openDetails(`Settings of ${this.htmlCode(key)}`);
             this.renderSection(key, schema, required.has(key), plain);
-            if (collapse) this.push('</details>');
+            if (collapse) this.closeDetails();
         }
 
         return this.lines.join('\n\n').replace(/\n{3,}/g, '\n\n') + '\n';
@@ -90,111 +97,76 @@ export class ConfigDocsRenderer {
     // ---------- blocks ----------
 
     /**
-     * Renders one top-level section. When two or more direct children expand into rows of their
-     * own (a plain object, a map or an array of objects), each gets a collapsed block holding its
-     * table and its unions; the remaining children share one table at the top. Otherwise the whole
-     * section is one table.
+     * Renders one top-level section as an open table. Below it, at every depth, every object-like
+     * child (a plain object, or the items of an array or map) gets a collapsed block of its own.
      */
     private renderSection(key: string, schema: JsonSchemaNode, required: boolean, plain: boolean): void {
-        const groups = plain ? this.childGroups(key, JsonSchemaNormaliser.splitNullable(schema).schema) : [];
-        const expanding = groups.filter((group) => group.expands);
-        if (expanding.length < 2) {
-            // A plain object's own row only repeats the heading; a map, array or union keeps it for its type.
-            const section = { type: 'object', properties: { [key]: schema }, required: required ? [key] : [] };
-            this.renderBlock(section, '', 3, plain ? key : undefined);
-            return;
-        }
-        const flat = groups.filter((group) => !group.expands);
-        if (flat.length > 0) {
-            this.push(this.table(flat.flatMap((group) => group.rows)));
-            for (const union of flat.flatMap((group) => group.deferred)) this.renderUnion(union, 3);
-        }
-        for (const group of expanding) {
-            const description = this.descriptionOf(group.schema);
-            this.openDetails(StringUtils.isNotEmpty(description)
-                ? `${this.htmlCode(group.path)} — ${this.inlineHtml(description)}`
-                : this.htmlCode(group.path));
-            this.push(this.table(group.rows));
-            for (const union of group.deferred) this.renderUnion(union, 3);
-            this.push('</details>');
+        const section = { type: 'object', properties: { [key]: schema }, required: required ? [key] : [] };
+        // The section itself is never collapsed: its table is what the heading introduces.
+        const block = this.block(section, '', false);
+        // A plain object's own row only repeats the heading, unless the section is a single value.
+        if (plain && block.rows.length > 1) block.rows = block.rows.filter((row) => row.path !== key);
+        this.renderBlockContent(block);
+    }
+
+    /** A block's table, then the unions whose keys it holds, then its collapsed children. */
+    private renderBlockContent(block: Block): void {
+        if (block.rows.length > 0) this.push(this.table(block.rows));
+        for (const union of block.unions) this.renderUnion(union);
+        for (const child of block.children) {
+            this.openDetails(StringUtils.isNotEmpty(child.description)
+                ? `${this.htmlCode(child.path)} — ${this.inlineHtml(child.description)}`
+                : this.htmlCode(child.path));
+            this.renderBlockContent(child.block);
+            this.closeDetails();
         }
     }
 
-    /** Rows and deferred unions of each direct child of a section, and whether the child expands. */
-    private childGroups(key: string, node: JsonSchemaNode): ChildGroup[] {
-        const required = new Set(node.required ?? []);
-        return Object.entries(node.properties ?? {}).map(([child, schema]) => {
-            const deferred: DeferredUnion[] = [];
-            const rows = this.rows({ type: 'object', properties: { [child]: schema }, required: required.has(child) ? [child] : [] }, key, deferred);
-            // A union child keeps its row in the shared table; its variants already collapse.
-            const union = CommonUtils.notNull(JsonSchemaNormaliser.variants(JsonSchemaNormaliser.splitNullable(schema).schema));
-            return { path: `${key}.${child}`, schema, rows, deferred, expands: !union && (rows.length > 1 || deferred.length > 0) };
-        });
-    }
-
-    private renderBlock(schema: JsonSchemaNode, path: string, level: number, dropRow?: string): void {
-        const deferred: DeferredUnion[] = [];
-        let rows = this.rows(schema, path, deferred);
-        // A section's own row only repeats its heading, unless the section is a single value.
-        if (CommonUtils.notUndefined(dropRow) && rows.length > 1) rows = rows.filter((row) => row.path !== dropRow);
-        this.push(this.table(rows));
-        for (const union of deferred) this.renderUnion(union, level);
-    }
-
-    private renderUnion({ path, variants }: DeferredUnion, level: number): void {
-        const heading = this.heading(level);
-        const key = path + JSON.stringify(variants);
-        const firstSeen = this.seenUnions.get(key);
-        if (CommonUtils.notUndefined(firstSeen)) {
-            this.push(`${heading} ${this.code(path)}`);
-            this.push(`Same shapes as described above, first listed under ${this.code(firstSeen)}.`);
-            return;
-        }
-        this.seenUnions.set(key, this.context.at(-1) ?? path);
-
+    /**
+     * A union is a closed block: its summary names the key and the number of shapes. Each variant
+     * inside is a closed block of its own. A union is printed in full wherever it occurs, even when
+     * the same shapes appear at the same path elsewhere.
+     */
+    private renderUnion({ path, variants }: DeferredUnion): void {
         const discriminator = JsonSchemaNormaliser.discriminator(variants);
-        this.push(`${heading} ${this.code(path)}: one of ${variants.length}`);
+        this.openDetails(`${this.htmlCode(path)}: one of ${variants.length}`);
         this.push(CommonUtils.notNull(discriminator)
             ? `Pick the variant with ${this.code(discriminator)}.`
             : 'Give exactly one of the shapes below.');
 
-        // Each variant is collapsed: only one applies, so the reader opens the one they picked.
         variants.forEach((variant, index) => {
             const label = CommonUtils.notNull(discriminator)
                 ? this.discriminated(discriminator, variant)
                 : this.distinguishing(variants, variant, index);
-            this.openDetails(`${this.htmlCode(path)} — ${label.html}`);
-            this.context.push(`${path} — ${label.text}`);
+            this.openDetails(`${this.htmlCode(path)} — ${label}`);
             if (StringUtils.isNotEmpty(variant.description)) this.push(variant.description);
-            if (this.isPlainObject(variant)) this.renderBlock(variant, path, level + 1);
+            if (this.isPlainObject(variant)) this.renderBlockContent(this.block(variant, path));
             else this.push(`Type: ${this.typeText(variant)}`);
-            this.context.pop();
-            this.push('</details>');
+            this.closeDetails();
         });
+        this.closeDetails();
     }
 
-    private discriminated(discriminator: string, variant: JsonSchemaNode): { html: string; text: string } {
-        const text = `${discriminator}: ${JSON.stringify(variant.properties?.[discriminator]?.const)}`;
-        return { html: this.htmlCode(text), text };
+    /** A variant's label for its `<summary>`, as HTML. */
+    private discriminated(discriminator: string, variant: JsonSchemaNode): string {
+        return this.htmlCode(`${discriminator}: ${JSON.stringify(variant.properties?.[discriminator]?.const)}`);
     }
 
-    /** Labels a variant without a discriminator by the keys only it requires, as summary HTML and as plain text. */
-    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): { html: string; text: string } {
+    /** Labels a variant without a discriminator by the keys only it requires. */
+    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): string {
         const own = (variant.required ?? []).filter((key) => !variants.every((other) => (other.required ?? []).includes(key)));
-        if (own.length === 0) return { html: `variant ${index + 1}`, text: `variant ${index + 1}` };
-        return {
-            html: `with ${own.map((key) => this.htmlCode(key)).join(', ')}`,
-            text: `with ${own.join(', ')}`
-        };
+        if (own.length === 0) return `variant ${index + 1}`;
+        return `with ${own.map((key) => this.htmlCode(key)).join(', ')}`;
     }
 
     // ---------- rows ----------
 
     /**
      * Flattens a plain object into rows with dotted paths. A union of objects, or an array or map
-     * of them, gets a row here and its own subsection afterwards.
+     * of them, gets a row here and its own subsection afterwards. `collapseOwn` is false only for
+     * a top-level section, whose own object is never collapsed.
      */
-    private rows(schema: JsonSchemaNode, prefix: string, deferred: DeferredUnion[], out: Row[] = []): Row[] {
+    private block(schema: JsonSchemaNode, prefix: string, collapseOwn = true, out: Block = { rows: [], unions: [], children: [] }): Block {
         const required = new Set(schema.required ?? []);
         for (const [key, raw] of Object.entries(schema.properties ?? {})) {
             const path = prefix === '' ? key : `${prefix}.${key}`;
@@ -202,45 +174,66 @@ export class ConfigDocsRenderer {
             const restatesChildren = this.isPlainObject(node)
                 && CommonUtils.notUndefined(raw.default)
                 && this.sameJson(raw.default, this.childDefaults(node));
-            out.push({
+            const row: Row = {
                 path,
                 type: this.typeText(raw),
                 required: this.isRequired(required, key, raw),
                 defaultValue: CommonUtils.notUndefined(raw.default) && !restatesChildren ? this.code(JSON.stringify(raw.default)) : '',
                 description: this.descriptionOf(raw)
-            });
-            this.descend(node, path, deferred, out);
+            };
+            out.rows.push(row);
+            this.descend(node, row, out, collapseOwn);
         }
         return out;
     }
 
-    private descend(node: JsonSchemaNode, path: string, deferred: DeferredUnion[], out: Row[]): void {
+    private descend(node: JsonSchemaNode, row: Row, out: Block, collapseOwn: boolean): void {
         const variants = JsonSchemaNormaliser.variants(node);
         if (CommonUtils.notNull(variants) && variants.some((variant) => variant.type === 'object')) {
-            deferred.push({ path, variants });
+            out.unions.push({ path: row.path, variants });
             return;
         }
         if (this.isPlainObject(node)) {
-            this.rows(node, path, deferred, out);
+            this.nest(node, row.path, row, node, out, collapseOwn);
             return;
         }
         let child: JsonSchemaNode | undefined;
-        let childPath = path;
+        let childPath = row.path;
         if (node.type === 'array' && JsonSchemaNormaliser.isNode(node.items)) {
             child = node.items;
-            childPath = `${path}[]`;
+            childPath = `${row.path}[]`;
         } else if (this.isMap(node)) {
             child = node.additionalProperties as JsonSchemaNode;
-            childPath = `${path}.<name>`;
+            childPath = `${row.path}.<name>`;
         }
         if (CommonUtils.isUndefined(child)) return;
         const inner = JsonSchemaNormaliser.splitNullable(child).schema;
         const innerVariants = JsonSchemaNormaliser.variants(inner);
         if (CommonUtils.notNull(innerVariants) && innerVariants.some((variant) => variant.type === 'object')) {
-            deferred.push({ path: childPath, variants: innerVariants });
+            out.unions.push({ path: childPath, variants: innerVariants });
         } else if (this.isPlainObject(inner)) {
-            this.rows(inner, childPath, deferred, out);
+            this.nest(inner, childPath, row, child, out, true);
         }
+    }
+
+    /**
+     * Flattens an object-like child into its own block, whose table holds the owner's row plus the
+     * child's direct rows. Only a top-level section's own object (`collapsible` false) is merged
+     * inline into the parent instead.
+     */
+    private nest(node: JsonSchemaNode, path: string, row: Row, schema: JsonSchemaNode, out: Block, collapsible: boolean): void {
+        const inner = this.block(node, path);
+        if (collapsible) {
+            out.children.push({
+                path,
+                description: StringUtils.isNotEmpty(this.descriptionOf(schema)) ? this.descriptionOf(schema) : row.description,
+                block: { ...inner, rows: [row, ...inner.rows] }
+            });
+            return;
+        }
+        out.rows.push(...inner.rows);
+        out.unions.push(...inner.unions);
+        out.children.push(...inner.children);
     }
 
     // ---------- type text ----------
@@ -383,16 +376,18 @@ export class ConfigDocsRenderer {
         return [line(header), line(header.map(() => '---')), ...rows.map(line)].join('\n');
     }
 
-    private heading(level: number): string {
-        return '#'.repeat(Math.min(level, 6));
-    }
-
     /**
      * Opens a collapsed `<details>` block. GitHub does not render Markdown inside `<summary>`, so
      * the summary is HTML; the blank line `push` leaves after it lets Markdown render in the body.
+     * The body sits in a `<blockquote>`: GitHub strips `style`, and this is what indents each
+     * nested level and draws a bar beside it.
      */
     private openDetails(summaryHtml: string): void {
-        this.push(`<details>\n<summary>${summaryHtml}</summary>`);
+        this.push(`<details>\n<summary>${summaryHtml}</summary>\n<blockquote>`);
+    }
+
+    private closeDetails(): void {
+        this.push('</blockquote>\n</details>');
     }
 
     private htmlCode(value: string): string {

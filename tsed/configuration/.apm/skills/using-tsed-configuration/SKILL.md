@@ -101,10 +101,11 @@ it('CONFIGURATION.md matches the schema', async () => {
 });
 ```
 
-Each variant of a union is printed as a closed `<details>` block under a visible `one of N`
-heading, so a page with alternative shapes (auth methods, key sources) stays short on GitHub.
-A section with two or more object, map or array-of-objects children (one per external API, one
-per telemetry signal) gets one collapsed block per child, with that child's unions inside it.
+One size rule keeps the page short on GitHub: at every depth, an object, the items of an array or
+map, or a union variant whose table would hold more than `collapseThreshold` rows (default 5) gets
+its own closed `<details>` block, with its unions and its own big children inside; smaller ones
+stay open. A union's `one of N` heading and a section's own table always stay visible. Pass
+`collapseThreshold: Infinity` to keep everything open.
 Pass `collapseSections: true` to fold every top-level section's tables the same way.
 
 `vitest -u` rewrites the page. The page describes the **input** shape: a key with a default is
