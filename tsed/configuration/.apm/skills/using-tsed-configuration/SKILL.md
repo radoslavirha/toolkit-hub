@@ -87,3 +87,20 @@ constructor(private config: ConfigService) {}
 
 Constructing `new ConfigService()` in a service creates a second instance with its own loaded
 state — the values may differ from the one the server booted with, and nothing will report it.
+
+## Document it for people without the source
+
+Every field gets a `.describe()` — that text, not JSDoc, is what reaches the generated
+reference. Then render the schema to a `CONFIGURATION.md` beside the service README and pin it
+with a file snapshot, so a schema change without a regenerated page fails the test run:
+
+```ts ignore
+it('CONFIGURATION.md matches the schema', async () => {
+    await expect(ConfigDocs.render(AppConfigSchema, { title: 'my-api' }))
+        .toMatchFileSnapshot('../../../CONFIGURATION.md');
+});
+```
+
+`vitest -u` rewrites the page. The page describes the **input** shape: a key with a default is
+optional, a transform's output is not shown, and a default that only a `z.preprocess` step
+fills in is invisible unless the field's `.describe()` states it.

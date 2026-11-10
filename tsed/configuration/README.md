@@ -310,9 +310,9 @@ Base Zod schema for JSON configuration files. Extend this schema to define your 
 **Schema:**
 ```typescript
 const BaseConfig = z.object({
-    server: ServerConfig,            // Required — TsED server settings
-    serviceName: z.string().optional(), // Defaults to package.json name if not set
-    publicURL: z.string().optional()    // Full public URL including path (e.g. https://api.example.com/v1)
+    server: ServerConfig.describe('...'),                // Required — TsED server settings
+    serviceName: z.string().optional().describe('...'), // Defaults to package.json name if not set
+    publicURL: z.string().optional().describe('...')    // Full public URL including path (e.g. https://api.example.com/v1)
 });
 ```
 
@@ -400,6 +400,54 @@ Returns sensible default configuration for Ts.ED servers, merged with your `serv
 `request.end` line. The `@radoslavirha/tsed-logger` emitter is separate and is suppressed
 for the same paths by its own `logger.requests.ignorePaths` default. An app that sets its
 own `logger` key in `@Configuration` overrides this wholesale — as with every other key here.
+
+---
+
+### `ConfigDocs.render(schema, options): string`
+
+Generates a human-readable configuration reference (Markdown) from a configuration schema,
+the `BaseConfig` fields included. Use it to ship a `CONFIGURATION.md` with every service, so
+what can be configured is readable without the source code.
+
+```typescript
+import { ConfigDocs } from '@radoslavirha/tsed-configuration';
+
+const markdown = ConfigDocs.render(AppConfigSchema, { title: 'my-api' });
+```
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `title` | `string` | Page title, usually the service name. |
+| `intro` | `string` (optional) | Markdown that replaces the default introduction. |
+
+**What the page contains:** a table of top-level sections, a minimal example with only the
+required keys, and one table per section (`Key | Type | Required | Default | Description`,
+nested keys as dotted paths). A union of objects gets one subsection per variant, named by
+the key that tells them apart (`strategy: "token-exchange"`). An `enabled: true | false`
+toggle whose variants share their keys becomes one table.
+
+**Input type, not output type.** The schema is read with `toJSONSchema({ io: 'input' })`: a
+key with a default is optional, and a transform's result type is not shown.
+
+**Descriptions come from `.describe()`.** JSDoc on a schema field is invisible to it. A
+`z.preprocess` step is invisible too, so a default the preprocess fills in belongs in that
+field's `.describe()`.
+
+**Keep it current with a file snapshot.** The test fails when the schema changes and the
+page was not regenerated; `vitest -u` rewrites it:
+
+```typescript
+import { ConfigDocs } from '@radoslavirha/tsed-configuration';
+import { describe, expect, it } from 'vitest';
+import { ConfigSchema } from './ConfigModel.js';
+
+describe('ConfigSchema', () => {
+    it('CONFIGURATION.md matches the schema', async () => {
+        await expect(ConfigDocs.render(ConfigSchema, { title: 'my-api' }))
+            .toMatchFileSnapshot('../../../CONFIGURATION.md');
+    });
+});
+```
 
 ---
 
