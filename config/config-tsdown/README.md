@@ -80,7 +80,7 @@ pnpm add -D -w tsdown @radoslavirha/config-tsdown
 See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
-- `tsdown` ^0.23.7
+- `tsdown` >= 0.14.0
 
 ## What's Included
 

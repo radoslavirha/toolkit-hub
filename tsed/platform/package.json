@@ -78,15 +78,15 @@
     },
     "peerDependencies": {
         "@radoslavirha/tsed-logger": "workspace:*",
-        "@tsed/ajv": "^8.46.2",
-        "@tsed/core": "^8.46.2",
-        "@tsed/di": "^8.46.2",
-        "@tsed/platform-express": "^8.46.2",
-        "@tsed/platform-http": "^8.46.2",
-        "@tsed/platform-log-request": "^8.46.2",
-        "@tsed/platform-params": "^8.46.2",
-        "@tsed/schema": "^8.46.2",
-        "ajv": "^8.20.0"
+        "@tsed/ajv": "catalog:tsed",
+        "@tsed/core": "catalog:tsed",
+        "@tsed/di": "catalog:tsed",
+        "@tsed/platform-express": "catalog:tsed",
+        "@tsed/platform-http": "catalog:tsed",
+        "@tsed/platform-log-request": "catalog:tsed",
+        "@tsed/platform-params": "catalog:tsed",
+        "@tsed/schema": "catalog:tsed",
+        "ajv": "catalog:tsed"
     },
     "engines": {
         "node": ">= 24",

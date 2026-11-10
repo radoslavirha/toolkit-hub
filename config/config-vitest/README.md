@@ -77,9 +77,9 @@ pnpm add -D -w @radoslavirha/config-vitest vitest @swc/core @vitest/coverage-v8
 See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
-- `vitest` ^5.1.0
-- `@swc/core` ^1.16.22
-- `@vitest/coverage-v8` ^5.1.0
+- `vitest` >= 4.0.0
+- `@swc/core` >= 1.0.0
+- `@vitest/coverage-v8` >= 4.0.0
 
 **Dependencies (included):**
 - `unplugin-swc` - SWC plugin for Vitest

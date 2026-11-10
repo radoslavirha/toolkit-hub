@@ -80,7 +80,7 @@ pnpm add -D -w @radoslavirha/config-eslint eslint
 See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
-- `eslint` ^10.14.0
+- `eslint` >= 9.0.0
 
 **Dependencies (included):**
 - `typescript-eslint` - TypeScript ESLint integration

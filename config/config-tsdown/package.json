@@ -43,7 +43,7 @@
         "typescript": "catalog:"
     },
     "peerDependencies": {
-        "tsdown": "^0.23.7"
+        "tsdown": "catalog:"
     },
     "engines": {
         "node": ">= 24",
