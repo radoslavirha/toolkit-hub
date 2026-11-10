@@ -75,10 +75,10 @@
         "vitest": "catalog:"
     },
     "peerDependencies": {
-        "@tsed/core": "catalog:tsed",
-        "@tsed/di": "catalog:tsed",
-        "@tsed/json-mapper": "catalog:tsed",
-        "@tsed/platform-http": "catalog:tsed"
+        "@tsed/core": "^8.46.2",
+        "@tsed/di": "^8.46.2",
+        "@tsed/json-mapper": "^8.46.2",
+        "@tsed/platform-http": "^8.46.2"
     },
     "engines": {
         "node": ">= 24",

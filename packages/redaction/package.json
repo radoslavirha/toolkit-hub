@@ -46,7 +46,7 @@
         "fast-redact": "catalog:"
     },
     "peerDependencies": {
-        "zod": "catalog:"
+        "zod": "^4.6.7"
     },
     "devDependencies": {
         "@radoslavirha/config-eslint": "workspace:*",

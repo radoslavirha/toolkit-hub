@@ -64,8 +64,8 @@ pnpm add -D -w @radoslavirha/config-typescript tslib typescript
 See [root README](../../README.md#-installation) for registry setup and monorepo details.
 
 **Peer dependencies:**
-- `typescript` >= 5.0.0
-- `tslib` >= 2.0.0
+- `typescript` ^6.0.3
+- `tslib` ^2.9.1
 
 ## Presets
 

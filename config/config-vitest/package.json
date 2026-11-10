@@ -51,9 +51,9 @@
         "vitest": "catalog:"
     },
     "peerDependencies": {
-        "@swc/core": "catalog:",
-        "@vitest/coverage-v8": "catalog:",
-        "vitest": "catalog:"
+        "@swc/core": "^1.16.22",
+        "@vitest/coverage-v8": "^5.1.0",
+        "vitest": "^5.1.0"
     },
     "engines": {
         "node": ">= 24",

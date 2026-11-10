@@ -31,7 +31,7 @@
     },
     "dependencies": {
         "@stylistic/eslint-plugin": "5.10.0",
-        "typescript-eslint": "8.71.2"
+        "typescript-eslint": "8.72.1"
     },
     "devDependencies": {
         "@vitest/coverage-v8": "catalog:",
@@ -39,7 +39,7 @@
         "vitest": "catalog:"
     },
     "peerDependencies": {
-        "eslint": "catalog:"
+        "eslint": "^10.14.0"
     },
     "engines": {
         "node": ">= 24",

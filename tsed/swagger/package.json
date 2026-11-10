@@ -75,14 +75,14 @@
         "@radoslavirha/tsed-configuration": "workspace:*",
         "@radoslavirha/tsed-logger": "workspace:*",
         "@radoslavirha/tsed-platform": "workspace:*",
-        "@tsed/di": "catalog:tsed",
-        "@tsed/json-mapper": "catalog:tsed",
-        "@tsed/openspec": "catalog:tsed",
-        "@tsed/platform-http": "catalog:tsed",
-        "@tsed/platform-params": "catalog:tsed",
-        "@tsed/platform-views": "catalog:tsed",
-        "@tsed/schema": "catalog:tsed",
-        "@tsed/swagger": "catalog:tsed"
+        "@tsed/di": "^8.46.2",
+        "@tsed/json-mapper": "^8.46.2",
+        "@tsed/openspec": "^8.46.2",
+        "@tsed/platform-http": "^8.46.2",
+        "@tsed/platform-params": "^8.46.2",
+        "@tsed/platform-views": "^8.46.2",
+        "@tsed/schema": "^8.46.2",
+        "@tsed/swagger": "^8.46.2"
     },
     "engines": {
         "node": ">= 24",

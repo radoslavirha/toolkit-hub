@@ -67,10 +67,10 @@
     },
     "peerDependencies": {
         "@radoslavirha/tsed-common": "workspace:*",
-        "@tsed/core": "catalog:tsed",
-        "@tsed/mongoose": "catalog:tsed",
-        "@tsed/schema": "catalog:tsed",
-        "mongoose": "catalog:"
+        "@tsed/core": "^8.46.2",
+        "@tsed/mongoose": "^8.46.2",
+        "@tsed/schema": "^8.46.2",
+        "mongoose": "^9.12.0"
     },
     "engines": {
         "node": ">= 24",
