@@ -69,6 +69,17 @@ describe('createRedactionSchema', () => {
 
         expect(Schema.parse({ headers: { enabled: true } }).headers.redactPaths).toStrictEqual(['authorization']);
     });
+
+    it('describes enabled and redactPaths of every field in the JSON Schema', () => {
+        const jsonSchema = Schema.toJSONSchema({ io: 'input' }) as {
+            properties: Record<string, { properties: Record<string, { description?: string }> }>;
+        };
+
+        for (const field of Object.values(jsonSchema.properties)) {
+            expect(field.properties.enabled?.description).toEqual(expect.any(String));
+            expect(field.properties.redactPaths?.description).toEqual(expect.any(String));
+        }
+    });
 });
 
 describe('SENSITIVE_HEADER_SELECTORS', () => {
