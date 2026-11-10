@@ -423,7 +423,9 @@ const markdown = ConfigDocs.render(AppConfigSchema, { title: 'my-api' });
 
 **What the page contains:** a table of top-level sections, a minimal example with only the
 required keys, and one table per section (`Key | Type | Required | Default | Description`,
-nested keys as dotted paths). A union of objects gets a visible `one of N` heading and one
+nested keys as dotted paths). When two or more direct children of a section expand into keys of
+their own (an object, a map or an array of objects), each gets a collapsed `<details>` block
+holding its table and its unions; the other children share one table at the top. A union of objects gets a visible `one of N` heading and one
 collapsed `<details>` block per variant, its summary naming the key that tells them apart
 (`strategy: "token-exchange"`); a union inside a variant nests as another collapsed block.
 GitHub renders the blocks closed, so a reader opens only the variant they use. An

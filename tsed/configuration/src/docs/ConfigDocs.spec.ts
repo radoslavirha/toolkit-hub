@@ -101,6 +101,55 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `server.httpPort` | number | yes |  |  |\n\n</details>');
     });
 
+    it('gives each object child of a section its own collapsed block, with its unions inside', () => {
+        const api = z.object({
+            baseURL: z.url(),
+            auth: z.discriminatedUnion('strategy', [
+                z.object({ strategy: z.literal('none') }),
+                z.object({ strategy: z.literal('token'), token: z.string() })
+            ])
+        }).describe('One external API: `baseURL` & auth.');
+        const md = render(z.object({ externalApis: z.object({ timeoutMs: z.number().default(1000), A: api, B: api }) }));
+
+        const shared = md.indexOf('| `externalApis.timeoutMs` | number |  | `1000` |  |');
+        const blockA = md.indexOf('<summary><code>externalApis.A</code> — One external API: <code>baseURL</code> &amp; auth.</summary>');
+        const unionA = md.indexOf('### `externalApis.A.auth`: one of 2');
+        const blockB = md.indexOf('<summary><code>externalApis.B</code>');
+        const unionB = md.indexOf('### `externalApis.B.auth`: one of 2');
+        expect(shared).toBeGreaterThan(-1);
+        expect(blockA).toBeGreaterThan(shared);
+        expect(unionA).toBeGreaterThan(blockA);
+        expect(blockB).toBeGreaterThan(unionA);
+        expect(unionB).toBeGreaterThan(blockB);
+        expect(md).toContain('| `externalApis.A.baseURL` | string (uri) | yes |');
+        // Block A closes after its own variants, before block B opens.
+        expect(md.slice(unionA, blockB).match(/<\/details>/g)).toHaveLength(3);
+        expect(md.match(/<details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
+    });
+
+    it('gives each map or array-of-objects child of a section its own block', () => {
+        const md = render(z.object({
+            net: z.object({
+                apis: z.record(z.string(), z.object({ baseURL: z.url() })),
+                hosts: z.array(z.object({ name: z.string() }))
+            })
+        }));
+
+        expect(md).toContain('<summary><code>net.apis</code></summary>\n\n| Key |');
+        expect(md).toContain('| `net.apis.<name>.baseURL` | string (uri) | yes |');
+        expect(md).toContain('<summary><code>net.hosts</code></summary>');
+        expect(md).toContain('| `net.hosts[].name` | string | yes |');
+    });
+
+    it('keeps a section in one table when at most one child expands', () => {
+        const scalars = render(z.object({ server: z.object({ httpPort: z.number(), host: z.string() }) }));
+        const single = render(z.object({ net: z.object({ port: z.number(), proxy: z.object({ host: z.string() }) }) }));
+
+        expect(scalars).not.toContain('<details>');
+        expect(single).not.toContain('<details>');
+        expect(single).toContain('| `net.port` | number | yes |  |  |\n| `net.proxy` | object | yes |');
+    });
+
     it('collapses an enabled true/false toggle with the same keys into one table', () => {
         const md = render(z.object({
             polling: z.discriminatedUnion('enabled', [
