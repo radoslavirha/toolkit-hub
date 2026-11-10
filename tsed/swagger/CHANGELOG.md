@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-swagger
 
+## 9.1.19
+
+### Patch Changes
+
+- [#441](https://github.com/radoslavirha/toolkit-hub/pull/441) [`ac95a02`](https://github.com/radoslavirha/toolkit-hub/commit/ac95a022a69d5b14f3e1d708b328b9610b6c7388) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Update dependencies: Ts.ED 8.46.2, eslint 10.14.0, typescript-eslint 8.72.1, vitest and @vitest/coverage-v8 5.1.0, @swc/core 1.16.22, @swc/helpers 0.5.24, tsdown 0.23.7, tslib 2.9.1, mongoose 9.12.0, body-parser 2.4.0.
+- Updated dependencies [[`ac95a02`](https://github.com/radoslavirha/toolkit-hub/commit/ac95a022a69d5b14f3e1d708b328b9610b6c7388)]:
+  - @radoslavirha/tsed-configuration@0.10.1
+  - @radoslavirha/tsed-logger@0.7.12
+  - @radoslavirha/tsed-platform@6.0.4
+  - @radoslavirha/types@0.4.10
+  - @radoslavirha/utils@0.11.0
+
 ## 9.1.18
 
 ### Patch Changes
