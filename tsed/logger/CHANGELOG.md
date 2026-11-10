@@ -1,5 +1,13 @@
 # @radoslavirha/tsed-logger
 
+## 0.7.11
+
+### Patch Changes
+
+- [#439](https://github.com/radoslavirha/toolkit-hub/pull/439) [`dbef0fc`](https://github.com/radoslavirha/toolkit-hub/commit/dbef0fc88d422747ef16548d9d0f3f544d54ffd8) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Describe every field of `LoggerOptionsSchema` with `.describe()` (`enabled`, `requests` and all its fields), so `ConfigDocs.render` from `@radoslavirha/tsed-configuration` shows a description on every `logger.*` row.
+- Updated dependencies [[`dbef0fc`](https://github.com/radoslavirha/toolkit-hub/commit/dbef0fc88d422747ef16548d9d0f3f544d54ffd8)]:
+  - @radoslavirha/redaction@0.3.10
+
 ## 0.7.10
 
 ### Patch Changes
