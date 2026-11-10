@@ -90,18 +90,30 @@ export class ConfigDocsRenderer {
     // ---------- blocks ----------
 
     /**
-     * Renders one top-level section. When two or more direct children expand into rows of their
-     * own (a plain object, a map or an array of objects), each gets a collapsed block holding its
-     * table and its unions; the remaining children share one table at the top. Otherwise the whole
-     * section is one table.
+     * Renders one top-level section. Each direct child that expands into rows of its own (a plain
+     * object, a map or an array of objects) gets a collapsed block holding its table and its
+     * unions; the remaining children share one table at the top. A section that is itself a map or
+     * an array of objects keeps its own row visible and collapses its items the same way.
      */
     private renderSection(key: string, schema: JsonSchemaNode, required: boolean, plain: boolean): void {
-        const groups = plain ? this.childGroups(key, JsonSchemaNormaliser.splitNullable(schema).schema) : [];
+        const section = { type: 'object', properties: { [key]: schema }, required: required ? [key] : [] };
+        if (!plain) {
+            const deferred: DeferredUnion[] = [];
+            const rows = this.rows(section, '', deferred);
+            const items = this.itemsOf(key, JsonSchemaNormaliser.splitNullable(schema).schema);
+            if (CommonUtils.isNull(items) || !this.expands(schema, rows, deferred)) {
+                this.renderBlock(section, '', 3);
+                return;
+            }
+            this.push(this.table(rows.slice(0, 1)));
+            this.renderGroup(items.path, items.schema, rows.slice(1), deferred);
+            return;
+        }
+        const groups = this.childGroups(key, JsonSchemaNormaliser.splitNullable(schema).schema);
         const expanding = groups.filter((group) => group.expands);
-        if (expanding.length < 2) {
-            // A plain object's own row only repeats the heading; a map, array or union keeps it for its type.
-            const section = { type: 'object', properties: { [key]: schema }, required: required ? [key] : [] };
-            this.renderBlock(section, '', 3, plain ? key : undefined);
+        if (expanding.length === 0) {
+            // A plain object's own row only repeats the heading.
+            this.renderBlock(section, '', 3, key);
             return;
         }
         const flat = groups.filter((group) => !group.expands);
@@ -109,15 +121,18 @@ export class ConfigDocsRenderer {
             this.push(this.table(flat.flatMap((group) => group.rows)));
             for (const union of flat.flatMap((group) => group.deferred)) this.renderUnion(union, 3);
         }
-        for (const group of expanding) {
-            const description = this.descriptionOf(group.schema);
-            this.openDetails(StringUtils.isNotEmpty(description)
-                ? `${this.htmlCode(group.path)} — ${this.inlineHtml(description)}`
-                : this.htmlCode(group.path));
-            this.push(this.table(group.rows));
-            for (const union of group.deferred) this.renderUnion(union, 3);
-            this.push('</details>');
-        }
+        for (const group of expanding) this.renderGroup(group.path, group.schema, group.rows, group.deferred);
+    }
+
+    /** One collapsed block: summary from the path and description, then the rows and their unions. */
+    private renderGroup(path: string, schema: JsonSchemaNode, rows: Row[], deferred: DeferredUnion[]): void {
+        const description = this.descriptionOf(schema);
+        this.openDetails(StringUtils.isNotEmpty(description)
+            ? `${this.htmlCode(path)} — ${this.inlineHtml(description)}`
+            : this.htmlCode(path));
+        if (rows.length > 0) this.push(this.table(rows));
+        for (const union of deferred) this.renderUnion(union, 3);
+        this.push('</details>');
     }
 
     /** Rows and deferred unions of each direct child of a section, and whether the child expands. */
@@ -126,10 +141,24 @@ export class ConfigDocsRenderer {
         return Object.entries(node.properties ?? {}).map(([child, schema]) => {
             const deferred: DeferredUnion[] = [];
             const rows = this.rows({ type: 'object', properties: { [child]: schema }, required: required.has(child) ? [child] : [] }, key, deferred);
-            // A union child keeps its row in the shared table; its variants already collapse.
-            const union = CommonUtils.notNull(JsonSchemaNormaliser.variants(JsonSchemaNormaliser.splitNullable(schema).schema));
-            return { path: `${key}.${child}`, schema, rows, deferred, expands: !union && (rows.length > 1 || deferred.length > 0) };
+            return { path: `${key}.${child}`, schema, rows, deferred, expands: this.expands(schema, rows, deferred) };
         });
+    }
+
+    /**
+     * Whether a value has rows or unions below its own row. A union keeps its row in the shared
+     * table: its variants already collapse.
+     */
+    private expands(schema: JsonSchemaNode, rows: Row[], deferred: DeferredUnion[]): boolean {
+        const union = CommonUtils.notNull(JsonSchemaNormaliser.variants(JsonSchemaNormaliser.splitNullable(schema).schema));
+        return !union && (rows.length > 1 || deferred.length > 0);
+    }
+
+    /** The item path and schema of an array or a map, as its rows name them; `null` for anything else. */
+    private itemsOf(key: string, node: JsonSchemaNode): { path: string; schema: JsonSchemaNode } | null {
+        if (node.type === 'array' && JsonSchemaNormaliser.isNode(node.items)) return { path: `${key}[]`, schema: node.items };
+        if (this.isMap(node)) return { path: `${key}.<name>`, schema: node.additionalProperties as JsonSchemaNode };
+        return null;
     }
 
     private renderBlock(schema: JsonSchemaNode, path: string, level: number, dropRow?: string): void {

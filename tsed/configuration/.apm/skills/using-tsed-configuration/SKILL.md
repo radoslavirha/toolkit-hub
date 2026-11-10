@@ -103,8 +103,9 @@ it('CONFIGURATION.md matches the schema', async () => {
 
 Each variant of a union is printed as a closed `<details>` block under a visible `one of N`
 heading, so a page with alternative shapes (auth methods, key sources) stays short on GitHub.
-A section with two or more object, map or array-of-objects children (one per external API, one
-per telemetry signal) gets one collapsed block per child, with that child's unions inside it.
+Every object, map or array-of-objects child of a section (each external API, each telemetry
+signal) gets its own collapsed block with that child's unions inside it; a section that is itself
+a map or an array of objects collapses its items the same way. Sections of plain values stay open.
 Pass `collapseSections: true` to fold every top-level section's tables the same way.
 
 `vitest -u` rewrites the page. The page describes the **input** shape: a key with a default is

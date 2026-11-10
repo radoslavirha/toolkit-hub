@@ -141,13 +141,47 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `net.hosts[].name` | string | yes |');
     });
 
-    it('keeps a section in one table when at most one child expands', () => {
-        const scalars = render(z.object({ server: z.object({ httpPort: z.number(), host: z.string() }) }));
-        const single = render(z.object({ net: z.object({ port: z.number(), proxy: z.object({ host: z.string() }) }) }));
+    it('keeps a section of scalars in one plain table', () => {
+        const md = render(z.object({ server: z.object({ httpPort: z.number(), host: z.string() }) }));
 
-        expect(scalars).not.toContain('<details>');
-        expect(single).not.toContain('<details>');
-        expect(single).toContain('| `net.port` | number | yes |  |  |\n| `net.proxy` | object | yes |');
+        expect(md).not.toContain('<details>');
+        expect(md).toContain('| `server.httpPort` | number | yes |  |  |\n| `server.host` | string | yes |');
+    });
+
+    it('collapses a single object child of a section too', () => {
+        const md = render(z.object({ net: z.object({ port: z.number(), proxy: z.object({ host: z.string() }) }) }));
+
+        expect(md).toContain('| `net.port` | number | yes |  |  |\n\n<details>\n<summary><code>net.proxy</code></summary>');
+        expect(md).toContain('| `net.proxy.host` | string | yes |  |  |\n\n</details>');
+    });
+
+    it('collapses the items of a section that is an array of objects, unions included', () => {
+        const md = render(z.object({
+            servers: z.array(z.object({
+                name: z.string(),
+                auth: z.discriminatedUnion('type', [
+                    z.object({ type: z.literal('none') }),
+                    z.object({ type: z.literal('token'), token: z.string() })
+                ])
+            }).describe('One upstream server.'))
+        }));
+
+        const own = md.indexOf('| `servers` | array of object | yes |');
+        const block = md.indexOf('<summary><code>servers[]</code> — One upstream server.</summary>');
+        const union = md.indexOf('### `servers[].auth`: one of 2');
+        expect(own).toBeGreaterThan(-1);
+        expect(block).toBeGreaterThan(own);
+        expect(md.indexOf('| `servers[].name` | string | yes |')).toBeGreaterThan(block);
+        expect(union).toBeGreaterThan(block);
+        expect(md.slice(union).match(/<\/details>/g)).toHaveLength(3);
+        expect(md.match(/<details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
+    });
+
+    it('collapses the values of a section that is a map of objects', () => {
+        const md = render(z.object({ apis: z.record(z.string(), z.object({ baseURL: z.url() })) }));
+
+        expect(md).toContain('| `apis` | map of name → object | yes |  |  |\n\n<details>\n<summary><code>apis.&lt;name&gt;</code></summary>');
+        expect(md).toContain('| `apis.<name>.baseURL` | string (uri) | yes |  |  |\n\n</details>');
     });
 
     it('collapses an enabled true/false toggle with the same keys into one table', () => {
