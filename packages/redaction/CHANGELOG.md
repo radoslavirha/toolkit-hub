@@ -1,5 +1,11 @@
 # @radoslavirha/redaction
 
+## 0.3.10
+
+### Patch Changes
+
+- [#439](https://github.com/radoslavirha/toolkit-hub/pull/439) [`dbef0fc`](https://github.com/radoslavirha/toolkit-hub/commit/dbef0fc88d422747ef16548d9d0f3f544d54ffd8) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Describe `enabled` and `redactPaths` with `.describe()` in `RedactionFieldOptionsSchema` and every schema built by `createRedactionSchema`, so generated configuration docs show what each field does.
+
 ## 0.3.9
 
 ### Patch Changes
