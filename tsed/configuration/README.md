@@ -419,12 +419,15 @@ const markdown = ConfigDocs.render(AppConfigSchema, { title: 'my-api' });
 | --- | --- | --- |
 | `title` | `string` | Page title, usually the service name. |
 | `intro` | `string` (optional) | Markdown that replaces the default introduction. |
+| `collapseSections` | `boolean` (optional, default `false`) | Also folds the body of every top-level section into a closed `<details>` block. The heading, description and `Required.`/default line stay visible. |
 
 **What the page contains:** a table of top-level sections, a minimal example with only the
 required keys, and one table per section (`Key | Type | Required | Default | Description`,
-nested keys as dotted paths). A union of objects gets one subsection per variant, named by
-the key that tells them apart (`strategy: "token-exchange"`). An `enabled: true | false`
-toggle whose variants share their keys becomes one table.
+nested keys as dotted paths). A union of objects gets a visible `one of N` heading and one
+collapsed `<details>` block per variant, its summary naming the key that tells them apart
+(`strategy: "token-exchange"`); a union inside a variant nests as another collapsed block.
+GitHub renders the blocks closed, so a reader opens only the variant they use. An
+`enabled: true | false` toggle whose variants share their keys becomes one table.
 
 **Input type, not output type.** The schema is read with `toJSONSchema({ io: 'input' })`: a
 key with a default is optional, and a transform's result type is not shown.

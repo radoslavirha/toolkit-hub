@@ -21,7 +21,7 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `level` | `"info"` \\| `"debug"` |  | `"info"` | Logging level. |');
     });
 
-    it('renders a discriminated union as one subsection per variant', () => {
+    it('renders a discriminated union as one collapsed block per variant', () => {
         const md = render(z.object({
             key: z.discriminatedUnion('source', [
                 z.object({ source: z.literal('value'), value: z.string().min(1) }),
@@ -31,10 +31,74 @@ describe('ConfigDocs', () => {
 
         expect(md).toContain('### `key`: one of 2');
         expect(md).toContain('Pick the variant with `source`.');
-        expect(md).toContain('#### `key` — `source: "value"`');
+        expect(md).toContain([
+            '<details>',
+            '<summary><code>key</code> — <code>source: "value"</code></summary>',
+            '',
+            '| Key |'
+        ].join('\n'));
         expect(md).toContain('| `key.value` | string (non-empty) | yes |');
-        expect(md).toContain('#### `key` — `source: "jwks"`');
-        expect(md).toContain('| `key.uri` | string (uri) | yes |');
+        expect(md).toContain('<summary><code>key</code> — <code>source: "jwks"</code></summary>');
+        expect(md).toContain('| `key.uri` | string (uri) | yes |  |  |\n\n</details>');
+        expect(md.match(/<details>/g)).toHaveLength(2);
+        expect(md.match(/<\/details>/g)).toHaveLength(2);
+        expect(md).not.toContain('#### `key`');
+    });
+
+    it('nests a union inside a variant as a collapsed block within the variant', () => {
+        const md = render(z.object({
+            auth: z.discriminatedUnion('type', [
+                z.object({
+                    type: z.literal('bearer-jwt'),
+                    key: z.discriminatedUnion('source', [
+                        z.object({ source: z.literal('value'), value: z.string() }),
+                        z.object({ source: z.literal('jwks'), uri: z.url() })
+                    ])
+                }),
+                z.object({ type: z.literal('unauthenticated') })
+            ])
+        }));
+
+        const outer = md.indexOf('<summary><code>auth</code> — <code>type: "bearer-jwt"</code></summary>');
+        const nested = md.indexOf('#### `auth.key`: one of 2');
+        const inner = md.indexOf('<summary><code>auth.key</code> — <code>source: "value"</code></summary>');
+        const sibling = md.indexOf('<summary><code>auth</code> — <code>type: "unauthenticated"</code></summary>');
+        expect(outer).toBeGreaterThan(-1);
+        expect(nested).toBeGreaterThan(outer);
+        expect(inner).toBeGreaterThan(nested);
+        expect(sibling).toBeGreaterThan(inner);
+        // Both inner variants close before the outer variant does.
+        expect(md.slice(inner, sibling).match(/<\/details>/g)).toHaveLength(3);
+        expect(md.match(/<details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
+    });
+
+    it('escapes HTML in a variant summary', () => {
+        const md = render(z.object({
+            target: z.record(z.string(), z.discriminatedUnion('kind', [
+                z.object({ kind: z.literal('a&b'), host: z.string() }),
+                z.object({ kind: z.literal('c'), port: z.number() })
+            ]))
+        }));
+
+        expect(md).toContain('<summary><code>target.&lt;name&gt;</code> — <code>kind: "a&amp;b"</code></summary>');
+    });
+
+    it('keeps sections expanded by default and collapses them when asked', () => {
+        const schema = z.object({ server: z.object({ httpPort: z.number() }) });
+
+        expect(render(schema)).not.toContain('<details>');
+        const md = ConfigDocs.render(schema, { title: 't', collapseSections: true });
+        expect(md).toContain([
+            '## server',
+            '',
+            'Required.',
+            '',
+            '<details>',
+            '<summary>Settings of <code>server</code></summary>',
+            '',
+            '| Key |'
+        ].join('\n'));
+        expect(md).toContain('| `server.httpPort` | number | yes |  |  |\n\n</details>');
     });
 
     it('collapses an enabled true/false toggle with the same keys into one table', () => {
@@ -71,8 +135,8 @@ describe('ConfigDocs', () => {
         }));
 
         expect(md).toContain('### `headers[]`: one of 2');
-        expect(md).toContain('#### `headers[]` — with `credential`');
-        expect(md).toContain('#### `headers[]` — with `value`');
+        expect(md).toContain('<summary><code>headers[]</code> — with <code>credential</code></summary>');
+        expect(md).toContain('<summary><code>headers[]</code> — with <code>value</code></summary>');
     });
 
     it('prints a union repeated at the same path once', () => {
@@ -87,7 +151,7 @@ describe('ConfigDocs', () => {
             ])
         }));
 
-        expect(md.match(/— with `credential`/g)).toHaveLength(1);
+        expect(md.match(/— with <code>credential<\/code>/g)).toHaveLength(1);
         expect(md).toContain('Same shapes as described above, first listed under `auth — strategy: "a"`.');
     });
 
@@ -140,7 +204,7 @@ describe('ConfigDocs', () => {
     it('gives a non-object variant of a mixed union a type line', () => {
         const md = render(z.object({ target: z.union([z.object({ host: z.string() }), z.string()]) }));
 
-        expect(md).toContain('#### `target` — variant 2');
+        expect(md).toContain('<summary><code>target</code> — variant 2</summary>');
         expect(md).toContain('Type: string');
     });
 

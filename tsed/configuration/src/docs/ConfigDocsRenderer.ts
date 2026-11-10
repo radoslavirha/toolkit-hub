@@ -70,9 +70,12 @@ export class ConfigDocsRenderer {
                 facts.push(`Default ${this.code(JSON.stringify(schema.default))}.`);
             }
             this.push(facts.join(' '));
+            const collapse = this.options.collapseSections === true;
+            if (collapse) this.openDetails(`Settings of ${this.htmlCode(key)}`);
             // A plain object's own row only repeats the heading; a map, array or union keeps it for its type.
             const section = { type: 'object', properties: { [key]: schema }, required: required.has(key) ? [key] : [] };
             this.renderBlock(section, '', 3, plain ? key : undefined);
+            if (collapse) this.push('</details>');
         }
 
         return this.lines.join('\n\n').replace(/\n{3,}/g, '\n\n') + '\n';
@@ -106,22 +109,34 @@ export class ConfigDocsRenderer {
             ? `Pick the variant with ${this.code(discriminator)}.`
             : 'Give exactly one of the shapes below.');
 
+        // Each variant is collapsed: only one applies, so the reader opens the one they picked.
         variants.forEach((variant, index) => {
             const label = CommonUtils.notNull(discriminator)
-                ? this.code(`${discriminator}: ${JSON.stringify(variant.properties?.[discriminator]?.const)}`)
+                ? this.discriminated(discriminator, variant)
                 : this.distinguishing(variants, variant, index);
-            this.push(`${this.heading(level + 1)} ${this.code(path)} — ${label}`);
-            this.context.push(`${path} — ${label.replace(/`/g, '')}`);
+            this.openDetails(`${this.htmlCode(path)} — ${label.html}`);
+            this.context.push(`${path} — ${label.text}`);
             if (StringUtils.isNotEmpty(variant.description)) this.push(variant.description);
-            if (this.isPlainObject(variant)) this.renderBlock(variant, path, level + 2);
+            if (this.isPlainObject(variant)) this.renderBlock(variant, path, level + 1);
             else this.push(`Type: ${this.typeText(variant)}`);
             this.context.pop();
+            this.push('</details>');
         });
     }
 
-    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): string {
+    private discriminated(discriminator: string, variant: JsonSchemaNode): { html: string; text: string } {
+        const text = `${discriminator}: ${JSON.stringify(variant.properties?.[discriminator]?.const)}`;
+        return { html: this.htmlCode(text), text };
+    }
+
+    /** Labels a variant without a discriminator by the keys only it requires, as summary HTML and as plain text. */
+    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): { html: string; text: string } {
         const own = (variant.required ?? []).filter((key) => !variants.every((other) => (other.required ?? []).includes(key)));
-        return own.length > 0 ? `with ${own.map((key) => this.code(key)).join(', ')}` : `variant ${index + 1}`;
+        if (own.length === 0) return { html: `variant ${index + 1}`, text: `variant ${index + 1}` };
+        return {
+            html: `with ${own.map((key) => this.htmlCode(key)).join(', ')}`,
+            text: `with ${own.join(', ')}`
+        };
     }
 
     // ---------- rows ----------
@@ -321,6 +336,22 @@ export class ConfigDocsRenderer {
 
     private heading(level: number): string {
         return '#'.repeat(Math.min(level, 6));
+    }
+
+    /**
+     * Opens a collapsed `<details>` block. GitHub does not render Markdown inside `<summary>`, so
+     * the summary is HTML; the blank line `push` leaves after it lets Markdown render in the body.
+     */
+    private openDetails(summaryHtml: string): void {
+        this.push(`<details>\n<summary>${summaryHtml}</summary>`);
+    }
+
+    private htmlCode(value: string): string {
+        return `<code>${this.escapeHtml(value)}</code>`;
+    }
+
+    private escapeHtml(value: string): string {
+        return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     private code(value: string): string {
