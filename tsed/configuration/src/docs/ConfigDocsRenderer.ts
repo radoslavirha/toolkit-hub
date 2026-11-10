@@ -16,6 +16,14 @@ interface DeferredUnion {
     variants: JsonSchemaNode[];
 }
 
+interface ChildGroup {
+    path: string;
+    schema: JsonSchemaNode;
+    rows: Row[];
+    deferred: DeferredUnion[];
+    expands: boolean;
+}
+
 const DEFAULT_INTRO = [
     'The service reads one JSON document (the `config` library: `config/<NODE_ENV>.json`; in a cluster, the mounted ConfigMap). '
     + 'It is validated at boot, and an invalid document stops the service. Keys not listed here are ignored.',
@@ -70,15 +78,59 @@ export class ConfigDocsRenderer {
                 facts.push(`Default ${this.code(JSON.stringify(schema.default))}.`);
             }
             this.push(facts.join(' '));
-            // A plain object's own row only repeats the heading; a map, array or union keeps it for its type.
-            const section = { type: 'object', properties: { [key]: schema }, required: required.has(key) ? [key] : [] };
-            this.renderBlock(section, '', 3, plain ? key : undefined);
+            const collapse = this.options.collapseSections === true;
+            if (collapse) this.openDetails(`Settings of ${this.htmlCode(key)}`);
+            this.renderSection(key, schema, required.has(key), plain);
+            if (collapse) this.push('</details>');
         }
 
         return this.lines.join('\n\n').replace(/\n{3,}/g, '\n\n') + '\n';
     }
 
     // ---------- blocks ----------
+
+    /**
+     * Renders one top-level section. When two or more direct children expand into rows of their
+     * own (a plain object, a map or an array of objects), each gets a collapsed block holding its
+     * table and its unions; the remaining children share one table at the top. Otherwise the whole
+     * section is one table.
+     */
+    private renderSection(key: string, schema: JsonSchemaNode, required: boolean, plain: boolean): void {
+        const groups = plain ? this.childGroups(key, JsonSchemaNormaliser.splitNullable(schema).schema) : [];
+        const expanding = groups.filter((group) => group.expands);
+        if (expanding.length < 2) {
+            // A plain object's own row only repeats the heading; a map, array or union keeps it for its type.
+            const section = { type: 'object', properties: { [key]: schema }, required: required ? [key] : [] };
+            this.renderBlock(section, '', 3, plain ? key : undefined);
+            return;
+        }
+        const flat = groups.filter((group) => !group.expands);
+        if (flat.length > 0) {
+            this.push(this.table(flat.flatMap((group) => group.rows)));
+            for (const union of flat.flatMap((group) => group.deferred)) this.renderUnion(union, 3);
+        }
+        for (const group of expanding) {
+            const description = this.descriptionOf(group.schema);
+            this.openDetails(StringUtils.isNotEmpty(description)
+                ? `${this.htmlCode(group.path)} — ${this.inlineHtml(description)}`
+                : this.htmlCode(group.path));
+            this.push(this.table(group.rows));
+            for (const union of group.deferred) this.renderUnion(union, 3);
+            this.push('</details>');
+        }
+    }
+
+    /** Rows and deferred unions of each direct child of a section, and whether the child expands. */
+    private childGroups(key: string, node: JsonSchemaNode): ChildGroup[] {
+        const required = new Set(node.required ?? []);
+        return Object.entries(node.properties ?? {}).map(([child, schema]) => {
+            const deferred: DeferredUnion[] = [];
+            const rows = this.rows({ type: 'object', properties: { [child]: schema }, required: required.has(child) ? [child] : [] }, key, deferred);
+            // A union child keeps its row in the shared table; its variants already collapse.
+            const union = CommonUtils.notNull(JsonSchemaNormaliser.variants(JsonSchemaNormaliser.splitNullable(schema).schema));
+            return { path: `${key}.${child}`, schema, rows, deferred, expands: !union && (rows.length > 1 || deferred.length > 0) };
+        });
+    }
 
     private renderBlock(schema: JsonSchemaNode, path: string, level: number, dropRow?: string): void {
         const deferred: DeferredUnion[] = [];
@@ -106,22 +158,34 @@ export class ConfigDocsRenderer {
             ? `Pick the variant with ${this.code(discriminator)}.`
             : 'Give exactly one of the shapes below.');
 
+        // Each variant is collapsed: only one applies, so the reader opens the one they picked.
         variants.forEach((variant, index) => {
             const label = CommonUtils.notNull(discriminator)
-                ? this.code(`${discriminator}: ${JSON.stringify(variant.properties?.[discriminator]?.const)}`)
+                ? this.discriminated(discriminator, variant)
                 : this.distinguishing(variants, variant, index);
-            this.push(`${this.heading(level + 1)} ${this.code(path)} — ${label}`);
-            this.context.push(`${path} — ${label.replace(/`/g, '')}`);
+            this.openDetails(`${this.htmlCode(path)} — ${label.html}`);
+            this.context.push(`${path} — ${label.text}`);
             if (StringUtils.isNotEmpty(variant.description)) this.push(variant.description);
-            if (this.isPlainObject(variant)) this.renderBlock(variant, path, level + 2);
+            if (this.isPlainObject(variant)) this.renderBlock(variant, path, level + 1);
             else this.push(`Type: ${this.typeText(variant)}`);
             this.context.pop();
+            this.push('</details>');
         });
     }
 
-    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): string {
+    private discriminated(discriminator: string, variant: JsonSchemaNode): { html: string; text: string } {
+        const text = `${discriminator}: ${JSON.stringify(variant.properties?.[discriminator]?.const)}`;
+        return { html: this.htmlCode(text), text };
+    }
+
+    /** Labels a variant without a discriminator by the keys only it requires, as summary HTML and as plain text. */
+    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): { html: string; text: string } {
         const own = (variant.required ?? []).filter((key) => !variants.every((other) => (other.required ?? []).includes(key)));
-        return own.length > 0 ? `with ${own.map((key) => this.code(key)).join(', ')}` : `variant ${index + 1}`;
+        if (own.length === 0) return { html: `variant ${index + 1}`, text: `variant ${index + 1}` };
+        return {
+            html: `with ${own.map((key) => this.htmlCode(key)).join(', ')}`,
+            text: `with ${own.join(', ')}`
+        };
     }
 
     // ---------- rows ----------
@@ -321,6 +385,27 @@ export class ConfigDocsRenderer {
 
     private heading(level: number): string {
         return '#'.repeat(Math.min(level, 6));
+    }
+
+    /**
+     * Opens a collapsed `<details>` block. GitHub does not render Markdown inside `<summary>`, so
+     * the summary is HTML; the blank line `push` leaves after it lets Markdown render in the body.
+     */
+    private openDetails(summaryHtml: string): void {
+        this.push(`<details>\n<summary>${summaryHtml}</summary>`);
+    }
+
+    private htmlCode(value: string): string {
+        return `<code>${this.escapeHtml(value)}</code>`;
+    }
+
+    /** Description text for a `<summary>`: escaped, newlines folded, inline code kept as `<code>`. */
+    private inlineHtml(value: string): string {
+        return this.escapeHtml(value).replace(/\r?\n+/g, ' ').replace(/`([^`]+)`/g, '<code>$1</code>').trim();
+    }
+
+    private escapeHtml(value: string): string {
+        return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
     private code(value: string): string {

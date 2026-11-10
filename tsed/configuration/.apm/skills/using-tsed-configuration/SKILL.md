@@ -101,6 +101,12 @@ it('CONFIGURATION.md matches the schema', async () => {
 });
 ```
 
+Each variant of a union is printed as a closed `<details>` block under a visible `one of N`
+heading, so a page with alternative shapes (auth methods, key sources) stays short on GitHub.
+A section with two or more object, map or array-of-objects children (one per external API, one
+per telemetry signal) gets one collapsed block per child, with that child's unions inside it.
+Pass `collapseSections: true` to fold every top-level section's tables the same way.
+
 `vitest -u` rewrites the page. The page describes the **input** shape: a key with a default is
 optional, a transform's output is not shown, and a default that only a `z.preprocess` step
 fills in is invisible unless the field's `.describe()` states it.
