@@ -420,14 +420,16 @@ const markdown = ConfigDocs.render(AppConfigSchema, { title: 'my-api' });
 | `title` | `string` | Page title, usually the service name. |
 | `intro` | `string` (optional) | Markdown that replaces the default introduction. |
 | `collapseSections` | `boolean` (optional, default `false`) | Also folds the body of every top-level section into a closed `<details>` block. The heading, description and `Required.`/default line stay visible. |
+| `collapseThreshold` | `number` (optional, default `5`) | Row count above which an object-like child gets its own closed `<details>` block. `Infinity` turns it off. Union variants collapse regardless. |
 
 **What the page contains:** a table of top-level sections, a minimal example with only the
 required keys, and one table per section (`Key | Type | Required | Default | Description`,
-nested keys as dotted paths). Every direct child of a section that expands into keys of its own
-(an object, a map or an array of objects) gets a collapsed `<details>` block holding its table
-and its unions; the other children share one table at the top. A section that is itself a map or
-an array of objects keeps its own row visible and collapses its items the same way, and a section
-of plain values stays one open table. A union of objects gets a visible `one of N` heading and one
+nested keys as dotted paths). At every depth below a section, an object-like child (a plain
+object, or the items of an array or map) whose table would hold more than `collapseThreshold`
+rows (its own row plus every nested row not collapsed further down) gets a closed `<details>`
+block with its table, its unions and its own big children; smaller children stay inline. The
+parent table keeps the child's own row, so its type, required flag and default stay visible. A
+section's own table is never collapsed (unless `collapseSections` is set). A union of objects gets a visible `one of N` heading and one
 collapsed `<details>` block per variant, its summary naming the key that tells them apart
 (`strategy: "token-exchange"`); a union inside a variant nests as another collapsed block.
 GitHub renders the blocks closed, so a reader opens only the variant they use. An

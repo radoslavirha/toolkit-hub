@@ -101,46 +101,6 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `server.httpPort` | number | yes |  |  |\n\n</details>');
     });
 
-    it('gives each object child of a section its own collapsed block, with its unions inside', () => {
-        const api = z.object({
-            baseURL: z.url(),
-            auth: z.discriminatedUnion('strategy', [
-                z.object({ strategy: z.literal('none') }),
-                z.object({ strategy: z.literal('token'), token: z.string() })
-            ])
-        }).describe('One external API: `baseURL` & auth.');
-        const md = render(z.object({ externalApis: z.object({ timeoutMs: z.number().default(1000), A: api, B: api }) }));
-
-        const shared = md.indexOf('| `externalApis.timeoutMs` | number |  | `1000` |  |');
-        const blockA = md.indexOf('<summary><code>externalApis.A</code> — One external API: <code>baseURL</code> &amp; auth.</summary>');
-        const unionA = md.indexOf('### `externalApis.A.auth`: one of 2');
-        const blockB = md.indexOf('<summary><code>externalApis.B</code>');
-        const unionB = md.indexOf('### `externalApis.B.auth`: one of 2');
-        expect(shared).toBeGreaterThan(-1);
-        expect(blockA).toBeGreaterThan(shared);
-        expect(unionA).toBeGreaterThan(blockA);
-        expect(blockB).toBeGreaterThan(unionA);
-        expect(unionB).toBeGreaterThan(blockB);
-        expect(md).toContain('| `externalApis.A.baseURL` | string (uri) | yes |');
-        // Block A closes after its own variants, before block B opens.
-        expect(md.slice(unionA, blockB).match(/<\/details>/g)).toHaveLength(3);
-        expect(md.match(/<details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
-    });
-
-    it('gives each map or array-of-objects child of a section its own block', () => {
-        const md = render(z.object({
-            net: z.object({
-                apis: z.record(z.string(), z.object({ baseURL: z.url() })),
-                hosts: z.array(z.object({ name: z.string() }))
-            })
-        }));
-
-        expect(md).toContain('<summary><code>net.apis</code></summary>\n\n| Key |');
-        expect(md).toContain('| `net.apis.<name>.baseURL` | string (uri) | yes |');
-        expect(md).toContain('<summary><code>net.hosts</code></summary>');
-        expect(md).toContain('| `net.hosts[].name` | string | yes |');
-    });
-
     it('keeps a section of scalars in one plain table', () => {
         const md = render(z.object({ server: z.object({ httpPort: z.number(), host: z.string() }) }));
 
@@ -148,40 +108,80 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `server.httpPort` | number | yes |  |  |\n| `server.host` | string | yes |');
     });
 
-    it('collapses a single object child of a section too', () => {
-        const md = render(z.object({ net: z.object({ port: z.number(), proxy: z.object({ host: z.string() }) }) }));
-
-        expect(md).toContain('| `net.port` | number | yes |  |  |\n\n<details>\n<summary><code>net.proxy</code></summary>');
-        expect(md).toContain('| `net.proxy.host` | string | yes |  |  |\n\n</details>');
-    });
-
-    it('collapses the items of a section that is an array of objects, unions included', () => {
+    it('keeps a small object child inline and collapses a big one', () => {
         const md = render(z.object({
-            servers: z.array(z.object({
-                name: z.string(),
-                auth: z.discriminatedUnion('type', [
-                    z.object({ type: z.literal('none') }),
-                    z.object({ type: z.literal('token'), token: z.string() })
-                ])
-            }).describe('One upstream server.'))
+            net: z.object({
+                port: z.number(),
+                small: z.object({ a: z.string(), b: z.string(), c: z.string() }),
+                big: z.object({ a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() }).describe('Big `one`.')
+            })
         }));
 
-        const own = md.indexOf('| `servers` | array of object | yes |');
-        const block = md.indexOf('<summary><code>servers[]</code> — One upstream server.</summary>');
-        const union = md.indexOf('### `servers[].auth`: one of 2');
-        expect(own).toBeGreaterThan(-1);
-        expect(block).toBeGreaterThan(own);
-        expect(md.indexOf('| `servers[].name` | string | yes |')).toBeGreaterThan(block);
-        expect(union).toBeGreaterThan(block);
-        expect(md.slice(union).match(/<\/details>/g)).toHaveLength(3);
-        expect(md.match(/<details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
+        // small: own row + 3 = 4 rows, at most 5 → inline. big: own row + 5 = 6 rows → collapsed.
+        expect(md).toContain('| `net.small` | object | yes |  |  |\n| `net.small.a` |');
+        expect(md).toContain('| `net.big` | object | yes |  | Big `one`. |\n\n<details>');
+        expect(md).toContain('<summary><code>net.big</code> — Big <code>one</code>.</summary>\n\n| Key | Type | Required | Default | Description |\n| --- | --- | --- | --- | --- |\n| `net.big` | object |');
+        expect(md).toContain('| `net.big.e` | string | yes |  |  |\n\n</details>');
+        expect(md.match(/<details>/g)).toHaveLength(1);
     });
 
-    it('collapses the values of a section that is a map of objects', () => {
-        const md = render(z.object({ apis: z.record(z.string(), z.object({ baseURL: z.url() })) }));
+    it('collapses a big child inside a big child, recursively', () => {
+        const five = { a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() };
+        const md = render(z.object({ root: z.object({ outer: z.object({ ...five, inner: z.object(five) }) }) }));
 
-        expect(md).toContain('| `apis` | map of name → object | yes |  |  |\n\n<details>\n<summary><code>apis.&lt;name&gt;</code></summary>');
-        expect(md).toContain('| `apis.<name>.baseURL` | string (uri) | yes |  |  |\n\n</details>');
+        const outer = md.indexOf('<summary><code>root.outer</code></summary>');
+        const inner = md.indexOf('<summary><code>root.outer.inner</code></summary>');
+        expect(outer).toBeGreaterThan(-1);
+        expect(inner).toBeGreaterThan(outer);
+        // The outer table keeps the inner row; the inner rows sit only in the inner block.
+        expect(md.slice(outer, inner)).toContain('| `root.outer.inner` | object | yes |');
+        expect(md.slice(outer, inner)).not.toContain('`root.outer.inner.a`');
+        expect(md.slice(inner)).toContain('| `root.outer.inner.a` | string | yes |');
+        expect(md.slice(inner).match(/<\/details>/g)).toHaveLength(2);
+    });
+
+    it('collapses the items of an array or map by the same size rule', () => {
+        const item = z.object({ a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() });
+        const md = render(z.object({ servers: z.array(item), apis: z.record(z.string(), item.describe('One API.')) }));
+
+        expect(md).toContain('| `servers` | array of object | yes |  |  |\n\n<details>\n<summary><code>servers[]</code></summary>');
+        expect(md).toContain('<summary><code>apis.&lt;name&gt;</code> — One API.</summary>');
+        expect(md).toContain('| `apis.<name>.e` | string | yes |  |  |\n\n</details>');
+    });
+
+    it('follows a custom collapse threshold, and Infinity turns it off', () => {
+        const schema = z.object({ net: z.object({ port: z.number(), proxy: z.object({ host: z.string() }) }) });
+
+        expect(render(schema)).not.toContain('<details>');
+        expect(ConfigDocs.render(schema, { title: 't', collapseThreshold: 1 })).toContain('<summary><code>net.proxy</code></summary>');
+        const big = z.object({ net: z.object({ big: z.object({ a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() }) }) });
+        expect(ConfigDocs.render(big, { title: 't', collapseThreshold: Infinity })).not.toContain('<details>');
+    });
+
+    it('puts a union inside the innermost collapsed block holding its key', () => {
+        const api = z.object({
+            baseURL: z.url(),
+            a: z.string(),
+            b: z.string(),
+            c: z.string(),
+            auth: z.discriminatedUnion('strategy', [
+                z.object({ strategy: z.literal('none') }),
+                z.object({ strategy: z.literal('token'), token: z.string() })
+            ])
+        });
+        const md = render(z.object({ externalApis: z.object({ timeoutMs: z.number().default(1000), A: api, B: api }) }));
+
+        const blockA = md.indexOf('<summary><code>externalApis.A</code></summary>');
+        const unionA = md.indexOf('### `externalApis.A.auth`: one of 2');
+        const blockB = md.indexOf('<summary><code>externalApis.B</code></summary>');
+        const unionB = md.indexOf('### `externalApis.B.auth`: one of 2');
+        expect(md.indexOf('| `externalApis.timeoutMs` | number |  | `1000` |  |')).toBeLessThan(blockA);
+        expect(unionA).toBeGreaterThan(blockA);
+        expect(blockB).toBeGreaterThan(unionA);
+        expect(unionB).toBeGreaterThan(blockB);
+        // Block A closes after its own two variants, before block B opens.
+        expect(md.slice(unionA, blockB).match(/<\/details>/g)).toHaveLength(3);
+        expect(md.match(/<details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
     });
 
     it('collapses an enabled true/false toggle with the same keys into one table', () => {

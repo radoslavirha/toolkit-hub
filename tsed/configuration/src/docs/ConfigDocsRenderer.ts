@@ -16,13 +16,24 @@ interface DeferredUnion {
     variants: JsonSchemaNode[];
 }
 
-interface ChildGroup {
-    path: string;
-    schema: JsonSchemaNode;
+/**
+ * What one table renders: its rows, the unions whose keys sit in it, and the object-like children
+ * big enough to get a collapsed block of their own.
+ */
+interface Block {
     rows: Row[];
-    deferred: DeferredUnion[];
-    expands: boolean;
+    unions: DeferredUnion[];
+    children: CollapsedChild[];
 }
+
+interface CollapsedChild {
+    /** Path shown in the summary: the object's own path, or `x[]` / `x.<name>` for items. */
+    path: string;
+    description: string;
+    block: Block;
+}
+
+const DEFAULT_COLLAPSE_THRESHOLD = 5;
 
 const DEFAULT_INTRO = [
     'The service reads one JSON document (the `config` library: `config/<NODE_ENV>.json`; in a cluster, the mounted ConfigMap). '
@@ -90,84 +101,34 @@ export class ConfigDocsRenderer {
     // ---------- blocks ----------
 
     /**
-     * Renders one top-level section. Each direct child that expands into rows of its own (a plain
-     * object, a map or an array of objects) gets a collapsed block holding its table and its
-     * unions; the remaining children share one table at the top. A section that is itself a map or
-     * an array of objects keeps its own row visible and collapses its items the same way.
+     * Renders one top-level section as an open table. Below it, at every depth, an object-like
+     * child (a plain object, or the items of an array or map) whose table would hold more than
+     * `collapseThreshold` rows gets a collapsed block of its own; smaller ones stay inline.
      */
     private renderSection(key: string, schema: JsonSchemaNode, required: boolean, plain: boolean): void {
         const section = { type: 'object', properties: { [key]: schema }, required: required ? [key] : [] };
-        if (!plain) {
-            const deferred: DeferredUnion[] = [];
-            const rows = this.rows(section, '', deferred);
-            const items = this.itemsOf(key, JsonSchemaNormaliser.splitNullable(schema).schema);
-            if (CommonUtils.isNull(items) || !this.expands(schema, rows, deferred)) {
-                this.renderBlock(section, '', 3);
-                return;
-            }
-            this.push(this.table(rows.slice(0, 1)));
-            this.renderGroup(items.path, items.schema, rows.slice(1), deferred);
-            return;
+        // The section itself is never collapsed: its table is what the heading introduces.
+        const block = this.block(section, '', false);
+        // A plain object's own row only repeats the heading, unless the section is a single value.
+        if (plain && block.rows.length > 1) block.rows = block.rows.filter((row) => row.path !== key);
+        this.renderBlockContent(block, 3);
+    }
+
+    private renderBlock(schema: JsonSchemaNode, path: string, level: number): void {
+        this.renderBlockContent(this.block(schema, path), level);
+    }
+
+    /** A block's table, then the unions whose keys it holds, then its collapsed children. */
+    private renderBlockContent(block: Block, level: number): void {
+        if (block.rows.length > 0) this.push(this.table(block.rows));
+        for (const union of block.unions) this.renderUnion(union, level);
+        for (const child of block.children) {
+            this.openDetails(StringUtils.isNotEmpty(child.description)
+                ? `${this.htmlCode(child.path)} — ${this.inlineHtml(child.description)}`
+                : this.htmlCode(child.path));
+            this.renderBlockContent(child.block, level);
+            this.push('</details>');
         }
-        const groups = this.childGroups(key, JsonSchemaNormaliser.splitNullable(schema).schema);
-        const expanding = groups.filter((group) => group.expands);
-        if (expanding.length === 0) {
-            // A plain object's own row only repeats the heading.
-            this.renderBlock(section, '', 3, key);
-            return;
-        }
-        const flat = groups.filter((group) => !group.expands);
-        if (flat.length > 0) {
-            this.push(this.table(flat.flatMap((group) => group.rows)));
-            for (const union of flat.flatMap((group) => group.deferred)) this.renderUnion(union, 3);
-        }
-        for (const group of expanding) this.renderGroup(group.path, group.schema, group.rows, group.deferred);
-    }
-
-    /** One collapsed block: summary from the path and description, then the rows and their unions. */
-    private renderGroup(path: string, schema: JsonSchemaNode, rows: Row[], deferred: DeferredUnion[]): void {
-        const description = this.descriptionOf(schema);
-        this.openDetails(StringUtils.isNotEmpty(description)
-            ? `${this.htmlCode(path)} — ${this.inlineHtml(description)}`
-            : this.htmlCode(path));
-        if (rows.length > 0) this.push(this.table(rows));
-        for (const union of deferred) this.renderUnion(union, 3);
-        this.push('</details>');
-    }
-
-    /** Rows and deferred unions of each direct child of a section, and whether the child expands. */
-    private childGroups(key: string, node: JsonSchemaNode): ChildGroup[] {
-        const required = new Set(node.required ?? []);
-        return Object.entries(node.properties ?? {}).map(([child, schema]) => {
-            const deferred: DeferredUnion[] = [];
-            const rows = this.rows({ type: 'object', properties: { [child]: schema }, required: required.has(child) ? [child] : [] }, key, deferred);
-            return { path: `${key}.${child}`, schema, rows, deferred, expands: this.expands(schema, rows, deferred) };
-        });
-    }
-
-    /**
-     * Whether a value has rows or unions below its own row. A union keeps its row in the shared
-     * table: its variants already collapse.
-     */
-    private expands(schema: JsonSchemaNode, rows: Row[], deferred: DeferredUnion[]): boolean {
-        const union = CommonUtils.notNull(JsonSchemaNormaliser.variants(JsonSchemaNormaliser.splitNullable(schema).schema));
-        return !union && (rows.length > 1 || deferred.length > 0);
-    }
-
-    /** The item path and schema of an array or a map, as its rows name them; `null` for anything else. */
-    private itemsOf(key: string, node: JsonSchemaNode): { path: string; schema: JsonSchemaNode } | null {
-        if (node.type === 'array' && JsonSchemaNormaliser.isNode(node.items)) return { path: `${key}[]`, schema: node.items };
-        if (this.isMap(node)) return { path: `${key}.<name>`, schema: node.additionalProperties as JsonSchemaNode };
-        return null;
-    }
-
-    private renderBlock(schema: JsonSchemaNode, path: string, level: number, dropRow?: string): void {
-        const deferred: DeferredUnion[] = [];
-        let rows = this.rows(schema, path, deferred);
-        // A section's own row only repeats its heading, unless the section is a single value.
-        if (CommonUtils.notUndefined(dropRow) && rows.length > 1) rows = rows.filter((row) => row.path !== dropRow);
-        this.push(this.table(rows));
-        for (const union of deferred) this.renderUnion(union, level);
     }
 
     private renderUnion({ path, variants }: DeferredUnion, level: number): void {
@@ -221,9 +182,10 @@ export class ConfigDocsRenderer {
 
     /**
      * Flattens a plain object into rows with dotted paths. A union of objects, or an array or map
-     * of them, gets a row here and its own subsection afterwards.
+     * of them, gets a row here and its own subsection afterwards. `collapseOwn` is false only for
+     * a top-level section, whose own object is never collapsed.
      */
-    private rows(schema: JsonSchemaNode, prefix: string, deferred: DeferredUnion[], out: Row[] = []): Row[] {
+    private block(schema: JsonSchemaNode, prefix: string, collapseOwn = true, out: Block = { rows: [], unions: [], children: [] }): Block {
         const required = new Set(schema.required ?? []);
         for (const [key, raw] of Object.entries(schema.properties ?? {})) {
             const path = prefix === '' ? key : `${prefix}.${key}`;
@@ -231,45 +193,67 @@ export class ConfigDocsRenderer {
             const restatesChildren = this.isPlainObject(node)
                 && CommonUtils.notUndefined(raw.default)
                 && this.sameJson(raw.default, this.childDefaults(node));
-            out.push({
+            const row: Row = {
                 path,
                 type: this.typeText(raw),
                 required: this.isRequired(required, key, raw),
                 defaultValue: CommonUtils.notUndefined(raw.default) && !restatesChildren ? this.code(JSON.stringify(raw.default)) : '',
                 description: this.descriptionOf(raw)
-            });
-            this.descend(node, path, deferred, out);
+            };
+            out.rows.push(row);
+            this.descend(node, row, out, collapseOwn);
         }
         return out;
     }
 
-    private descend(node: JsonSchemaNode, path: string, deferred: DeferredUnion[], out: Row[]): void {
+    private descend(node: JsonSchemaNode, row: Row, out: Block, collapseOwn: boolean): void {
         const variants = JsonSchemaNormaliser.variants(node);
         if (CommonUtils.notNull(variants) && variants.some((variant) => variant.type === 'object')) {
-            deferred.push({ path, variants });
+            out.unions.push({ path: row.path, variants });
             return;
         }
         if (this.isPlainObject(node)) {
-            this.rows(node, path, deferred, out);
+            this.nest(node, row.path, row, node, out, collapseOwn);
             return;
         }
         let child: JsonSchemaNode | undefined;
-        let childPath = path;
+        let childPath = row.path;
         if (node.type === 'array' && JsonSchemaNormaliser.isNode(node.items)) {
             child = node.items;
-            childPath = `${path}[]`;
+            childPath = `${row.path}[]`;
         } else if (this.isMap(node)) {
             child = node.additionalProperties as JsonSchemaNode;
-            childPath = `${path}.<name>`;
+            childPath = `${row.path}.<name>`;
         }
         if (CommonUtils.isUndefined(child)) return;
         const inner = JsonSchemaNormaliser.splitNullable(child).schema;
         const innerVariants = JsonSchemaNormaliser.variants(inner);
         if (CommonUtils.notNull(innerVariants) && innerVariants.some((variant) => variant.type === 'object')) {
-            deferred.push({ path: childPath, variants: innerVariants });
+            out.unions.push({ path: childPath, variants: innerVariants });
         } else if (this.isPlainObject(inner)) {
-            this.rows(inner, childPath, deferred, out);
+            this.nest(inner, childPath, row, child, out, true);
         }
+    }
+
+    /**
+     * Flattens an object-like child into its own block. Its table holds the owner's row plus every
+     * row not collapsed further down; above the threshold it becomes a collapsed child, otherwise
+     * it is merged inline into the parent.
+     */
+    private nest(node: JsonSchemaNode, path: string, row: Row, schema: JsonSchemaNode, out: Block, collapsible: boolean): void {
+        const inner = this.block(node, path);
+        const threshold = this.options.collapseThreshold ?? DEFAULT_COLLAPSE_THRESHOLD;
+        if (collapsible && inner.rows.length + 1 > threshold) {
+            out.children.push({
+                path,
+                description: StringUtils.isNotEmpty(this.descriptionOf(schema)) ? this.descriptionOf(schema) : row.description,
+                block: { ...inner, rows: [row, ...inner.rows] }
+            });
+            return;
+        }
+        out.rows.push(...inner.rows);
+        out.unions.push(...inner.unions);
+        out.children.push(...inner.children);
     }
 
     // ---------- type text ----------
