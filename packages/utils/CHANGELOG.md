@@ -1,5 +1,11 @@
 # @radoslavirha/utils
 
+## 0.11.0
+
+### Minor Changes
+
+- [#437](https://github.com/radoslavirha/toolkit-hub/pull/437) [`9b3cbcf`](https://github.com/radoslavirha/toolkit-hub/commit/9b3cbcf7e28b38dbef725b71de9049032af9aa32) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - `ObjectUtils.mergeDeep` is back to a plain-object merge (arrays concatenate). Class instances, `Error`, `Buffer`/typed arrays, cyclic data and root-level arrays are out of scope and get lodash `merge` semantics; objects inside concatenated arrays are shared by reference with the inputs.
+
 ## 0.10.1
 
 ### Patch Changes

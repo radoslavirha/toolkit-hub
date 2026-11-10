@@ -1,5 +1,15 @@
 # @radoslavirha/tsed-logger
 
+## 0.7.10
+
+### Patch Changes
+
+- [#433](https://github.com/radoslavirha/toolkit-hub/pull/433) [`6552880`](https://github.com/radoslavirha/toolkit-hub/commit/65528806a6aef03294e547be81db255526fde353) Thanks [@claude-agent-irha](https://github.com/apps/claude-agent-irha)! - Request logging no longer rejects when the response cannot be serialised (e.g. a circular object). The response is logged as `[[ UNSERIALIZABLE ]]` instead of crashing the process with an unhandled rejection.
+- Updated dependencies [[`9b3cbcf`](https://github.com/radoslavirha/toolkit-hub/commit/9b3cbcf7e28b38dbef725b71de9049032af9aa32), [`3dba562`](https://github.com/radoslavirha/toolkit-hub/commit/3dba562c5dbe5c5cca35053e040360b8e9768cdf), [`520da4c`](https://github.com/radoslavirha/toolkit-hub/commit/520da4c11313973516d409d604bfb723481c62da)]:
+  - @radoslavirha/utils@0.11.0
+  - @radoslavirha/redaction@0.3.9
+  - @radoslavirha/logger@0.4.12
+
 ## 0.7.9
 
 ### Patch Changes

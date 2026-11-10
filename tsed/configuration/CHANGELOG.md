@@ -1,5 +1,17 @@
 # @radoslavirha/tsed-configuration
 
+## 0.10.0
+
+### Minor Changes
+
+- [#438](https://github.com/radoslavirha/toolkit-hub/pull/438) [`f06ba60`](https://github.com/radoslavirha/toolkit-hub/commit/f06ba604d264b1daecc7a1c853e150ee2b8a1411) Thanks [@radoslavirha](https://github.com/radoslavirha)! - Add `ConfigDocs.render(schema, { title })`, which turns a configuration schema into a human-readable Markdown reference, and describe the `BaseConfig` and `ServerConfig` fields with `.describe()` so they appear in it.
+
+### Patch Changes
+
+- Updated dependencies [[`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d), [`9b3cbcf`](https://github.com/radoslavirha/toolkit-hub/commit/9b3cbcf7e28b38dbef725b71de9049032af9aa32), [`8c3d5e2`](https://github.com/radoslavirha/toolkit-hub/commit/8c3d5e268fe0dd709b2ca3a820c32b85578337a1), [`28ac521`](https://github.com/radoslavirha/toolkit-hub/commit/28ac521269f5897e5a8f2a7c2f7c088e43f21a4d)]:
+  - @radoslavirha/tsed-common@0.7.2
+  - @radoslavirha/utils@0.11.0
+
 ## 0.9.4
 
 ### Patch Changes
