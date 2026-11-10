@@ -420,21 +420,24 @@ const markdown = ConfigDocs.render(AppConfigSchema, { title: 'my-api' });
 | `title` | `string` | Page title, usually the service name. |
 | `intro` | `string` (optional) | Markdown that replaces the default introduction. |
 | `collapseSections` | `boolean` (optional, default `false`) | Also folds the body of every top-level section into a closed `<details>` block. The heading, description and `Required.`/default line stay visible. |
-| `collapseThreshold` | `number` (optional, default `5`) | Row count above which an object-like child or a union variant gets its own closed `<details>` block. `Infinity` turns it off. |
 
 **What the page contains:** a table of top-level sections, a minimal example with only the
 required keys, and one table per section (`Key | Type | Required | Default | Description`,
-nested keys as dotted paths). At every depth below a section, an object-like child (a plain
-object, or the items of an array or map) whose table would hold more than `collapseThreshold`
-rows (its own row plus every nested row not collapsed further down) gets a closed `<details>`
-block with its table, its unions and its own big children; smaller children stay inline. The
-parent table keeps the child's own row, so its type, required flag and default stay visible. A
-section's own table is never collapsed (unless `collapseSections` is set). A union of objects gets
-a visible `one of N` heading, then one entry per variant named by the key that tells them apart
-(`strategy: "token-exchange"`). The same rule applies: a variant whose table holds more than
-`collapseThreshold` rows is a closed `<details>` block, a smaller one an open `####` heading and
-its table. Nested unions and objects that collapse on their own do not count toward it. An
-`enabled: true | false` toggle whose variants share their keys becomes one table.
+nested keys as dotted paths). The same rule holds at every depth, with no size limit and no
+special cases: scalars are rows in their parent's table, and everything that has keys of its own
+gets a closed `<details>` block.
+
+- An object-like child (a plain object, or the items of an array or map) gets a block with its
+  table, its unions and its own children. The parent table keeps the child's own row, so its
+  type, required flag and default stay visible.
+- A union of objects gets a block summarised as `<key>: one of N`, and each variant inside it a
+  block of its own, named by the key that tells them apart (`strategy: "token-exchange"`). A union
+  is printed in full wherever it occurs, also when the same shapes appear at the same path in
+  another variant.
+- A section's own table is never collapsed (unless `collapseSections` is set).
+- Every `<details>` body sits in a `<blockquote>`, so each nested level is indented with a bar
+  beside it (GitHub strips `style`, so this is the one way to indent).
+- An `enabled: true | false` toggle whose variants share their keys becomes one table.
 
 **Input type, not output type.** The schema is read with `toJSONSchema({ io: 'input' })`: a
 key with a default is optional, and a transform's result type is not shown.

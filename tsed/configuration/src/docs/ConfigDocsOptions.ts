@@ -12,12 +12,4 @@ export interface ConfigDocsOptions {
      * visible, so the links in the Sections table keep working. Default `false`.
      */
     collapseSections?: boolean;
-    /**
-     * At every depth below a section, an object-like child (a plain object, or the items of an
-     * array or map) gets its own closed `<details>` block when its table would hold more than this
-     * many rows: its own row plus every nested row not collapsed further down. Smaller children
-     * stay inline in the parent table. Union variants follow the same rule: above it a closed
-     * block, otherwise an open heading and table. `Infinity` turns collapsing off. Default `5`.
-     */
-    collapseThreshold?: number;
 }

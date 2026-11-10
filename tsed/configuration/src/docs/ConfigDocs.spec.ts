@@ -21,7 +21,7 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `level` | `"info"` \\| `"debug"` |  | `"info"` | Logging level. |');
     });
 
-    it('renders a small variant open, under its own heading', () => {
+    it('collapses a union and every variant in it, whatever their size', () => {
         const md = render(z.object({
             key: z.discriminatedUnion('source', [
                 z.object({ source: z.literal('value'), value: z.string().min(1) }),
@@ -29,28 +29,13 @@ describe('ConfigDocs', () => {
             ])
         }));
 
-        expect(md).toContain('### `key`: one of 2');
-        expect(md).toContain('Pick the variant with `source`.');
-        expect(md).toContain('#### `key` — `source: "value"`\n\n| Key |');
+        expect(md).toContain('<details>\n<summary><code>key</code>: one of 2</summary>\n<blockquote>\n\nPick the variant with `source`.');
+        expect(md).toContain('<details>\n<summary><code>key</code> — <code>source: "value"</code></summary>\n<blockquote>\n\n| Key |');
         expect(md).toContain('| `key.value` | string (non-empty) | yes |');
-        expect(md).toContain('#### `key` — `source: "jwks"`');
-        expect(md).toContain('| `key.uri` | string (uri) | yes |');
-        expect(md).not.toContain('<details>');
-    });
-
-    it('collapses a variant whose table is above the threshold', () => {
-        const md = render(z.object({
-            key: z.discriminatedUnion('source', [
-                z.object({ source: z.literal('value'), value: z.string() }),
-                z.object({ source: z.literal('jwks'), a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() })
-            ])
-        }));
-
-        // value: 2 rows, open. jwks: 6 rows, above the default threshold of 5.
-        expect(md).toContain('#### `key` — `source: "value"`');
-        expect(md).toContain('<details>\n<summary><code>key</code> — <code>source: "jwks"</code></summary>\n\n| Key |');
-        expect(md).toContain('| `key.e` | string | yes |  |  |\n\n</details>');
-        expect(md.match(/<details>/g)).toHaveLength(1);
+        expect(md).toContain('<summary><code>key</code> — <code>source: "jwks"</code></summary>');
+        expect(md).toContain('| `key.uri` | string (uri) | yes |  |  |\n\n</blockquote>\n</details>\n\n</blockquote>\n</details>');
+        expect(md.match(/<details>/g)).toHaveLength(3);
+        expect(md).not.toMatch(/^#{3,} /m);
     });
 
     it('nests a collapsed union inside a collapsed variant', () => {
@@ -65,19 +50,21 @@ describe('ConfigDocs', () => {
                 }),
                 z.object({ type: z.literal('unauthenticated') })
             ])
-        }), { title: 't', collapseThreshold: 1 });
+        }), { title: 't' });
 
         const outer = md.indexOf('<summary><code>auth</code> — <code>type: "bearer-jwt"</code></summary>');
-        const nested = md.indexOf('#### `auth.key`: one of 2');
+        const nested = md.indexOf('<summary><code>auth.key</code>: one of 2</summary>');
         const inner = md.indexOf('<summary><code>auth.key</code> — <code>source: "value"</code></summary>');
-        // One row is not above a threshold of 1, so this variant stays open.
-        const sibling = md.indexOf('#### `auth` — `type: "unauthenticated"`');
+        const sibling = md.indexOf('<summary><code>auth</code> — <code>type: "unauthenticated"</code></summary>');
         expect(outer).toBeGreaterThan(-1);
         expect(nested).toBeGreaterThan(outer);
         expect(inner).toBeGreaterThan(nested);
         expect(sibling).toBeGreaterThan(inner);
-        // Both inner variants close before the outer variant does.
-        expect(md.slice(inner, sibling).match(/<\/details>/g)).toHaveLength(3);
+        // Every body is indented in a blockquote that closes with its block.
+        expect(md.match(/<blockquote>/g)).toHaveLength(md.match(/<details>/g)?.length ?? 0);
+        expect(md.match(/<\/blockquote>\n<\/details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
+        // Both inner variants and their union close before the outer variant does.
+        expect(md.slice(inner, sibling).match(/<\/details>/g)).toHaveLength(4);
         expect(md.match(/<details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
     });
 
@@ -87,7 +74,7 @@ describe('ConfigDocs', () => {
                 z.object({ kind: z.literal('a&b'), host: z.string() }),
                 z.object({ kind: z.literal('c'), port: z.number() })
             ]))
-        }), { title: 't', collapseThreshold: 1 });
+        }), { title: 't' });
 
         expect(md).toContain('<summary><code>target.&lt;name&gt;</code> — <code>kind: "a&amp;b"</code></summary>');
     });
@@ -104,10 +91,11 @@ describe('ConfigDocs', () => {
             '',
             '<details>',
             '<summary>Settings of <code>server</code></summary>',
+            '<blockquote>',
             '',
             '| Key |'
         ].join('\n'));
-        expect(md).toContain('| `server.httpPort` | number | yes |  |  |\n\n</details>');
+        expect(md).toContain('| `server.httpPort` | number | yes |  |  |\n\n</blockquote>\n</details>');
     });
 
     it('keeps a section of scalars in one plain table', () => {
@@ -117,24 +105,21 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `server.httpPort` | number | yes |  |  |\n| `server.host` | string | yes |');
     });
 
-    it('keeps a small object child inline and collapses a big one', () => {
+    it('collapses every object child, however small, and keeps its own row in the parent', () => {
         const md = render(z.object({
             net: z.object({
                 port: z.number(),
-                small: z.object({ a: z.string(), b: z.string(), c: z.string() }),
-                big: z.object({ a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() }).describe('Big `one`.')
+                proxy: z.object({ host: z.string() }).describe('Proxy `one`.')
             })
         }));
 
-        // small: own row + 3 = 4 rows, at most 5 → inline. big: own row + 5 = 6 rows → collapsed.
-        expect(md).toContain('| `net.small` | object | yes |  |  |\n| `net.small.a` |');
-        expect(md).toContain('| `net.big` | object | yes |  | Big `one`. |\n\n<details>');
-        expect(md).toContain('<summary><code>net.big</code> — Big <code>one</code>.</summary>\n\n| Key | Type | Required | Default | Description |\n| --- | --- | --- | --- | --- |\n| `net.big` | object |');
-        expect(md).toContain('| `net.big.e` | string | yes |  |  |\n\n</details>');
+        expect(md).toContain('| `net.port` | number | yes |  |  |\n| `net.proxy` | object | yes |  | Proxy `one`. |\n\n<details>');
+        expect(md).toContain('<summary><code>net.proxy</code> — Proxy <code>one</code>.</summary>\n<blockquote>\n\n| Key | Type | Required | Default | Description |\n| --- | --- | --- | --- | --- |\n| `net.proxy` | object |');
+        expect(md).toContain('| `net.proxy.host` | string | yes |  |  |\n\n</blockquote>\n</details>');
         expect(md.match(/<details>/g)).toHaveLength(1);
     });
 
-    it('collapses a big child inside a big child, recursively', () => {
+    it('collapses a child inside a child, recursively', () => {
         const five = { a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() };
         const md = render(z.object({ root: z.object({ outer: z.object({ ...five, inner: z.object(five) }) }) }));
 
@@ -149,22 +134,13 @@ describe('ConfigDocs', () => {
         expect(md.slice(inner).match(/<\/details>/g)).toHaveLength(2);
     });
 
-    it('collapses the items of an array or map by the same size rule', () => {
+    it('collapses the items of an array or map the same way', () => {
         const item = z.object({ a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() });
         const md = render(z.object({ servers: z.array(item), apis: z.record(z.string(), item.describe('One API.')) }));
 
         expect(md).toContain('| `servers` | array of object | yes |  |  |\n\n<details>\n<summary><code>servers[]</code></summary>');
         expect(md).toContain('<summary><code>apis.&lt;name&gt;</code> — One API.</summary>');
-        expect(md).toContain('| `apis.<name>.e` | string | yes |  |  |\n\n</details>');
-    });
-
-    it('follows a custom collapse threshold, and Infinity turns it off', () => {
-        const schema = z.object({ net: z.object({ port: z.number(), proxy: z.object({ host: z.string() }) }) });
-
-        expect(render(schema)).not.toContain('<details>');
-        expect(ConfigDocs.render(schema, { title: 't', collapseThreshold: 1 })).toContain('<summary><code>net.proxy</code></summary>');
-        const big = z.object({ net: z.object({ big: z.object({ a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() }) }) });
-        expect(ConfigDocs.render(big, { title: 't', collapseThreshold: Infinity })).not.toContain('<details>');
+        expect(md).toContain('| `apis.<name>.e` | string | yes |  |  |\n\n</blockquote>\n</details>');
     });
 
     it('puts a union inside the innermost collapsed block holding its key', () => {
@@ -181,16 +157,16 @@ describe('ConfigDocs', () => {
         const md = render(z.object({ externalApis: z.object({ timeoutMs: z.number().default(1000), A: api, B: api }) }));
 
         const blockA = md.indexOf('<summary><code>externalApis.A</code></summary>');
-        const unionA = md.indexOf('### `externalApis.A.auth`: one of 2');
+        const unionA = md.indexOf('<summary><code>externalApis.A.auth</code>: one of 2</summary>');
         const blockB = md.indexOf('<summary><code>externalApis.B</code></summary>');
-        const unionB = md.indexOf('### `externalApis.B.auth`: one of 2');
+        const unionB = md.indexOf('<summary><code>externalApis.B.auth</code>: one of 2</summary>');
         expect(md.indexOf('| `externalApis.timeoutMs` | number |  | `1000` |  |')).toBeLessThan(blockA);
         expect(unionA).toBeGreaterThan(blockA);
         expect(blockB).toBeGreaterThan(unionA);
         expect(unionB).toBeGreaterThan(blockB);
-        // Block A closes after its own (open) variants, before block B opens.
-        expect(md.slice(unionA, blockB)).toContain('#### `externalApis.A.auth` — `strategy: "token"`');
-        expect(md.slice(unionA, blockB).match(/<\/details>/g)).toHaveLength(1);
+        // Both variants, the union, then block A close before block B opens.
+        expect(md.slice(unionA, blockB)).toContain('<summary><code>externalApis.A.auth</code> — <code>strategy: "token"</code></summary>');
+        expect(md.slice(unionA, blockB).match(/<\/details>/g)).toHaveLength(4);
         expect(md.match(/<details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
     });
 
@@ -227,12 +203,12 @@ describe('ConfigDocs', () => {
             ]))
         }));
 
-        expect(md).toContain('### `headers[]`: one of 2');
-        expect(md).toContain('#### `headers[]` — with `credential`');
-        expect(md).toContain('#### `headers[]` — with `value`');
+        expect(md).toContain('<summary><code>headers[]</code>: one of 2</summary>');
+        expect(md).toContain('<summary><code>headers[]</code> — with <code>credential</code></summary>');
+        expect(md).toContain('<summary><code>headers[]</code> — with <code>value</code></summary>');
     });
 
-    it('prints a union repeated at the same path once', () => {
+    it('prints a union in full wherever it occurs, without back-references', () => {
         const headers = z.array(z.union([
             z.object({ name: z.string(), credential: z.string() }),
             z.object({ name: z.string(), value: z.string() })
@@ -244,8 +220,9 @@ describe('ConfigDocs', () => {
             ])
         }));
 
-        expect(md.match(/— with `credential`/g)).toHaveLength(1);
-        expect(md).toContain('Same shapes as described above, first listed under `auth — strategy: "a"`.');
+        expect(md.match(/<summary><code>auth\.headers\[\]<\/code>: one of 2<\/summary>/g)).toHaveLength(2);
+        expect(md.match(/— with <code>credential<\/code>/g)).toHaveLength(2);
+        expect(md).not.toContain('same shapes');
     });
 
     it('renders a map of named entries and a nullable value', () => {
@@ -297,7 +274,7 @@ describe('ConfigDocs', () => {
     it('gives a non-object variant of a mixed union a type line', () => {
         const md = render(z.object({ target: z.union([z.object({ host: z.string() }), z.string()]) }));
 
-        expect(md).toContain('#### `target` — variant 2');
+        expect(md).toContain('<summary><code>target</code> — variant 2</summary>');
         expect(md).toContain('Type: string');
     });
 

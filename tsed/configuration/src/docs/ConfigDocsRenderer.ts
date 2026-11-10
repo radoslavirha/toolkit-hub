@@ -33,15 +33,6 @@ interface CollapsedChild {
     block: Block;
 }
 
-/** A union variant's label: summary HTML, heading Markdown, and plain text for back-references. */
-interface VariantLabel {
-    html: string;
-    markdown: string;
-    text: string;
-}
-
-const DEFAULT_COLLAPSE_THRESHOLD = 5;
-
 const DEFAULT_INTRO = [
     'The service reads one JSON document (the `config` library: `config/<NODE_ENV>.json`; in a cluster, the mounted ConfigMap). '
     + 'It is validated at boot, and an invalid document stops the service. Keys not listed here are ignored.',
@@ -50,13 +41,11 @@ const DEFAULT_INTRO = [
 ].join('\n');
 
 /**
- * Renders one normalised configuration JSON Schema as Markdown. Holds per-render state (which
- * unions were already printed), so a new instance is made for every render.
+ * Renders one normalised configuration JSON Schema as Markdown. Holds per-render state (the
+ * output lines), so a new instance is made for every render.
  */
 export class ConfigDocsRenderer {
     private readonly lines: string[] = [];
-    private readonly seenUnions = new Map<string, string>();
-    private readonly context: string[] = [];
 
     public constructor(
         private readonly root: JsonSchemaNode,
@@ -99,7 +88,7 @@ export class ConfigDocsRenderer {
             const collapse = this.options.collapseSections === true;
             if (collapse) this.openDetails(`Settings of ${this.htmlCode(key)}`);
             this.renderSection(key, schema, required.has(key), plain);
-            if (collapse) this.push('</details>');
+            if (collapse) this.closeDetails();
         }
 
         return this.lines.join('\n\n').replace(/\n{3,}/g, '\n\n') + '\n';
@@ -108,9 +97,8 @@ export class ConfigDocsRenderer {
     // ---------- blocks ----------
 
     /**
-     * Renders one top-level section as an open table. Below it, at every depth, an object-like
-     * child (a plain object, or the items of an array or map) whose table would hold more than
-     * `collapseThreshold` rows gets a collapsed block of its own; smaller ones stay inline.
+     * Renders one top-level section as an open table. Below it, at every depth, every object-like
+     * child (a plain object, or the items of an array or map) gets a collapsed block of its own.
      */
     private renderSection(key: string, schema: JsonSchemaNode, required: boolean, plain: boolean): void {
         const section = { type: 'object', properties: { [key]: schema }, required: required ? [key] : [] };
@@ -118,77 +106,57 @@ export class ConfigDocsRenderer {
         const block = this.block(section, '', false);
         // A plain object's own row only repeats the heading, unless the section is a single value.
         if (plain && block.rows.length > 1) block.rows = block.rows.filter((row) => row.path !== key);
-        this.renderBlockContent(block, 3);
+        this.renderBlockContent(block);
     }
 
     /** A block's table, then the unions whose keys it holds, then its collapsed children. */
-    private renderBlockContent(block: Block, level: number): void {
+    private renderBlockContent(block: Block): void {
         if (block.rows.length > 0) this.push(this.table(block.rows));
-        for (const union of block.unions) this.renderUnion(union, level);
+        for (const union of block.unions) this.renderUnion(union);
         for (const child of block.children) {
             this.openDetails(StringUtils.isNotEmpty(child.description)
                 ? `${this.htmlCode(child.path)} — ${this.inlineHtml(child.description)}`
                 : this.htmlCode(child.path));
-            this.renderBlockContent(child.block, level);
-            this.push('</details>');
+            this.renderBlockContent(child.block);
+            this.closeDetails();
         }
     }
 
-    private renderUnion({ path, variants }: DeferredUnion, level: number): void {
-        const heading = this.heading(level);
-        const key = path + JSON.stringify(variants);
-        const firstSeen = this.seenUnions.get(key);
-        if (CommonUtils.notUndefined(firstSeen)) {
-            this.push(`${heading} ${this.code(path)}`);
-            this.push(`Same shapes as described above, first listed under ${this.code(firstSeen)}.`);
-            return;
-        }
-        this.seenUnions.set(key, this.context.at(-1) ?? path);
-
+    /**
+     * A union is a closed block: its summary names the key and the number of shapes. Each variant
+     * inside is a closed block of its own. A union is printed in full wherever it occurs, even when
+     * the same shapes appear at the same path elsewhere.
+     */
+    private renderUnion({ path, variants }: DeferredUnion): void {
         const discriminator = JsonSchemaNormaliser.discriminator(variants);
-        this.push(`${heading} ${this.code(path)}: one of ${variants.length}`);
+        this.openDetails(`${this.htmlCode(path)}: one of ${variants.length}`);
         this.push(CommonUtils.notNull(discriminator)
             ? `Pick the variant with ${this.code(discriminator)}.`
             : 'Give exactly one of the shapes below.');
 
-        // A variant follows the same size rule as an object: above the threshold it is a closed
-        // block, otherwise an open heading (which keeps its anchor) and its table.
         variants.forEach((variant, index) => {
             const label = CommonUtils.notNull(discriminator)
                 ? this.discriminated(discriminator, variant)
                 : this.distinguishing(variants, variant, index);
-            this.context.push(`${path} — ${label.text}`);
-            const block = this.isPlainObject(variant) ? this.block(variant, path) : null;
-            const collapsed = CommonUtils.notNull(block) && this.overThreshold(block.rows.length);
-            if (collapsed) this.openDetails(`${this.htmlCode(path)} — ${label.html}`);
-            else this.push(`${this.heading(level + 1)} ${this.code(path)} — ${label.markdown}`);
+            this.openDetails(`${this.htmlCode(path)} — ${label}`);
             if (StringUtils.isNotEmpty(variant.description)) this.push(variant.description);
-            if (CommonUtils.notNull(block)) this.renderBlockContent(block, collapsed ? level + 1 : level + 2);
+            if (this.isPlainObject(variant)) this.renderBlockContent(this.block(variant, path));
             else this.push(`Type: ${this.typeText(variant)}`);
-            if (collapsed) this.push('</details>');
-            this.context.pop();
+            this.closeDetails();
         });
+        this.closeDetails();
     }
 
-    private discriminated(discriminator: string, variant: JsonSchemaNode): VariantLabel {
-        const text = `${discriminator}: ${JSON.stringify(variant.properties?.[discriminator]?.const)}`;
-        return { html: this.htmlCode(text), markdown: this.code(text), text };
+    /** A variant's label for its `<summary>`, as HTML. */
+    private discriminated(discriminator: string, variant: JsonSchemaNode): string {
+        return this.htmlCode(`${discriminator}: ${JSON.stringify(variant.properties?.[discriminator]?.const)}`);
     }
 
     /** Labels a variant without a discriminator by the keys only it requires. */
-    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): VariantLabel {
+    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): string {
         const own = (variant.required ?? []).filter((key) => !variants.every((other) => (other.required ?? []).includes(key)));
-        if (own.length === 0) return { html: `variant ${index + 1}`, markdown: `variant ${index + 1}`, text: `variant ${index + 1}` };
-        return {
-            html: `with ${own.map((key) => this.htmlCode(key)).join(', ')}`,
-            markdown: `with ${own.map((key) => this.code(key)).join(', ')}`,
-            text: `with ${own.join(', ')}`
-        };
-    }
-
-    /** The one size rule for objects, array or map items, and union variants. */
-    private overThreshold(rows: number): boolean {
-        return rows > (this.options.collapseThreshold ?? DEFAULT_COLLAPSE_THRESHOLD);
+        if (own.length === 0) return `variant ${index + 1}`;
+        return `with ${own.map((key) => this.htmlCode(key)).join(', ')}`;
     }
 
     // ---------- rows ----------
@@ -249,13 +217,13 @@ export class ConfigDocsRenderer {
     }
 
     /**
-     * Flattens an object-like child into its own block. Its table holds the owner's row plus every
-     * row not collapsed further down; above the threshold it becomes a collapsed child, otherwise
-     * it is merged inline into the parent.
+     * Flattens an object-like child into its own block, whose table holds the owner's row plus the
+     * child's direct rows. Only a top-level section's own object (`collapsible` false) is merged
+     * inline into the parent instead.
      */
     private nest(node: JsonSchemaNode, path: string, row: Row, schema: JsonSchemaNode, out: Block, collapsible: boolean): void {
         const inner = this.block(node, path);
-        if (collapsible && this.overThreshold(inner.rows.length + 1)) {
+        if (collapsible) {
             out.children.push({
                 path,
                 description: StringUtils.isNotEmpty(this.descriptionOf(schema)) ? this.descriptionOf(schema) : row.description,
@@ -408,16 +376,18 @@ export class ConfigDocsRenderer {
         return [line(header), line(header.map(() => '---')), ...rows.map(line)].join('\n');
     }
 
-    private heading(level: number): string {
-        return '#'.repeat(Math.min(level, 6));
-    }
-
     /**
      * Opens a collapsed `<details>` block. GitHub does not render Markdown inside `<summary>`, so
      * the summary is HTML; the blank line `push` leaves after it lets Markdown render in the body.
+     * The body sits in a `<blockquote>`: GitHub strips `style`, and this is what indents each
+     * nested level and draws a bar beside it.
      */
     private openDetails(summaryHtml: string): void {
-        this.push(`<details>\n<summary>${summaryHtml}</summary>`);
+        this.push(`<details>\n<summary>${summaryHtml}</summary>\n<blockquote>`);
+    }
+
+    private closeDetails(): void {
+        this.push('</blockquote>\n</details>');
     }
 
     private htmlCode(value: string): string {
