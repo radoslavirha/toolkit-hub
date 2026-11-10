@@ -21,7 +21,7 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `level` | `"info"` \\| `"debug"` |  | `"info"` | Logging level. |');
     });
 
-    it('renders a discriminated union as one collapsed block per variant', () => {
+    it('renders a small variant open, under its own heading', () => {
         const md = render(z.object({
             key: z.discriminatedUnion('source', [
                 z.object({ source: z.literal('value'), value: z.string().min(1) }),
@@ -31,22 +31,30 @@ describe('ConfigDocs', () => {
 
         expect(md).toContain('### `key`: one of 2');
         expect(md).toContain('Pick the variant with `source`.');
-        expect(md).toContain([
-            '<details>',
-            '<summary><code>key</code> — <code>source: "value"</code></summary>',
-            '',
-            '| Key |'
-        ].join('\n'));
+        expect(md).toContain('#### `key` — `source: "value"`\n\n| Key |');
         expect(md).toContain('| `key.value` | string (non-empty) | yes |');
-        expect(md).toContain('<summary><code>key</code> — <code>source: "jwks"</code></summary>');
-        expect(md).toContain('| `key.uri` | string (uri) | yes |  |  |\n\n</details>');
-        expect(md.match(/<details>/g)).toHaveLength(2);
-        expect(md.match(/<\/details>/g)).toHaveLength(2);
-        expect(md).not.toContain('#### `key`');
+        expect(md).toContain('#### `key` — `source: "jwks"`');
+        expect(md).toContain('| `key.uri` | string (uri) | yes |');
+        expect(md).not.toContain('<details>');
     });
 
-    it('nests a union inside a variant as a collapsed block within the variant', () => {
+    it('collapses a variant whose table is above the threshold', () => {
         const md = render(z.object({
+            key: z.discriminatedUnion('source', [
+                z.object({ source: z.literal('value'), value: z.string() }),
+                z.object({ source: z.literal('jwks'), a: z.string(), b: z.string(), c: z.string(), d: z.string(), e: z.string() })
+            ])
+        }));
+
+        // value: 2 rows, open. jwks: 6 rows, above the default threshold of 5.
+        expect(md).toContain('#### `key` — `source: "value"`');
+        expect(md).toContain('<details>\n<summary><code>key</code> — <code>source: "jwks"</code></summary>\n\n| Key |');
+        expect(md).toContain('| `key.e` | string | yes |  |  |\n\n</details>');
+        expect(md.match(/<details>/g)).toHaveLength(1);
+    });
+
+    it('nests a collapsed union inside a collapsed variant', () => {
+        const md = ConfigDocs.render(z.object({
             auth: z.discriminatedUnion('type', [
                 z.object({
                     type: z.literal('bearer-jwt'),
@@ -57,12 +65,13 @@ describe('ConfigDocs', () => {
                 }),
                 z.object({ type: z.literal('unauthenticated') })
             ])
-        }));
+        }), { title: 't', collapseThreshold: 1 });
 
         const outer = md.indexOf('<summary><code>auth</code> — <code>type: "bearer-jwt"</code></summary>');
         const nested = md.indexOf('#### `auth.key`: one of 2');
         const inner = md.indexOf('<summary><code>auth.key</code> — <code>source: "value"</code></summary>');
-        const sibling = md.indexOf('<summary><code>auth</code> — <code>type: "unauthenticated"</code></summary>');
+        // One row is not above a threshold of 1, so this variant stays open.
+        const sibling = md.indexOf('#### `auth` — `type: "unauthenticated"`');
         expect(outer).toBeGreaterThan(-1);
         expect(nested).toBeGreaterThan(outer);
         expect(inner).toBeGreaterThan(nested);
@@ -73,12 +82,12 @@ describe('ConfigDocs', () => {
     });
 
     it('escapes HTML in a variant summary', () => {
-        const md = render(z.object({
+        const md = ConfigDocs.render(z.object({
             target: z.record(z.string(), z.discriminatedUnion('kind', [
                 z.object({ kind: z.literal('a&b'), host: z.string() }),
                 z.object({ kind: z.literal('c'), port: z.number() })
             ]))
-        }));
+        }), { title: 't', collapseThreshold: 1 });
 
         expect(md).toContain('<summary><code>target.&lt;name&gt;</code> — <code>kind: "a&amp;b"</code></summary>');
     });
@@ -179,8 +188,9 @@ describe('ConfigDocs', () => {
         expect(unionA).toBeGreaterThan(blockA);
         expect(blockB).toBeGreaterThan(unionA);
         expect(unionB).toBeGreaterThan(blockB);
-        // Block A closes after its own two variants, before block B opens.
-        expect(md.slice(unionA, blockB).match(/<\/details>/g)).toHaveLength(3);
+        // Block A closes after its own (open) variants, before block B opens.
+        expect(md.slice(unionA, blockB)).toContain('#### `externalApis.A.auth` — `strategy: "token"`');
+        expect(md.slice(unionA, blockB).match(/<\/details>/g)).toHaveLength(1);
         expect(md.match(/<details>/g)).toHaveLength(md.match(/<\/details>/g)?.length ?? 0);
     });
 
@@ -218,8 +228,8 @@ describe('ConfigDocs', () => {
         }));
 
         expect(md).toContain('### `headers[]`: one of 2');
-        expect(md).toContain('<summary><code>headers[]</code> — with <code>credential</code></summary>');
-        expect(md).toContain('<summary><code>headers[]</code> — with <code>value</code></summary>');
+        expect(md).toContain('#### `headers[]` — with `credential`');
+        expect(md).toContain('#### `headers[]` — with `value`');
     });
 
     it('prints a union repeated at the same path once', () => {
@@ -234,7 +244,7 @@ describe('ConfigDocs', () => {
             ])
         }));
 
-        expect(md.match(/— with <code>credential<\/code>/g)).toHaveLength(1);
+        expect(md.match(/— with `credential`/g)).toHaveLength(1);
         expect(md).toContain('Same shapes as described above, first listed under `auth — strategy: "a"`.');
     });
 
@@ -287,7 +297,7 @@ describe('ConfigDocs', () => {
     it('gives a non-object variant of a mixed union a type line', () => {
         const md = render(z.object({ target: z.union([z.object({ host: z.string() }), z.string()]) }));
 
-        expect(md).toContain('<summary><code>target</code> — variant 2</summary>');
+        expect(md).toContain('#### `target` — variant 2');
         expect(md).toContain('Type: string');
     });
 

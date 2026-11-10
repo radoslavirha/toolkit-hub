@@ -33,6 +33,13 @@ interface CollapsedChild {
     block: Block;
 }
 
+/** A union variant's label: summary HTML, heading Markdown, and plain text for back-references. */
+interface VariantLabel {
+    html: string;
+    markdown: string;
+    text: string;
+}
+
 const DEFAULT_COLLAPSE_THRESHOLD = 5;
 
 const DEFAULT_INTRO = [
@@ -114,10 +121,6 @@ export class ConfigDocsRenderer {
         this.renderBlockContent(block, 3);
     }
 
-    private renderBlock(schema: JsonSchemaNode, path: string, level: number): void {
-        this.renderBlockContent(this.block(schema, path), level);
-    }
-
     /** A block's table, then the unions whose keys it holds, then its collapsed children. */
     private renderBlockContent(block: Block, level: number): void {
         if (block.rows.length > 0) this.push(this.table(block.rows));
@@ -148,34 +151,44 @@ export class ConfigDocsRenderer {
             ? `Pick the variant with ${this.code(discriminator)}.`
             : 'Give exactly one of the shapes below.');
 
-        // Each variant is collapsed: only one applies, so the reader opens the one they picked.
+        // A variant follows the same size rule as an object: above the threshold it is a closed
+        // block, otherwise an open heading (which keeps its anchor) and its table.
         variants.forEach((variant, index) => {
             const label = CommonUtils.notNull(discriminator)
                 ? this.discriminated(discriminator, variant)
                 : this.distinguishing(variants, variant, index);
-            this.openDetails(`${this.htmlCode(path)} — ${label.html}`);
             this.context.push(`${path} — ${label.text}`);
+            const block = this.isPlainObject(variant) ? this.block(variant, path) : null;
+            const collapsed = CommonUtils.notNull(block) && this.overThreshold(block.rows.length);
+            if (collapsed) this.openDetails(`${this.htmlCode(path)} — ${label.html}`);
+            else this.push(`${this.heading(level + 1)} ${this.code(path)} — ${label.markdown}`);
             if (StringUtils.isNotEmpty(variant.description)) this.push(variant.description);
-            if (this.isPlainObject(variant)) this.renderBlock(variant, path, level + 1);
+            if (CommonUtils.notNull(block)) this.renderBlockContent(block, collapsed ? level + 1 : level + 2);
             else this.push(`Type: ${this.typeText(variant)}`);
+            if (collapsed) this.push('</details>');
             this.context.pop();
-            this.push('</details>');
         });
     }
 
-    private discriminated(discriminator: string, variant: JsonSchemaNode): { html: string; text: string } {
+    private discriminated(discriminator: string, variant: JsonSchemaNode): VariantLabel {
         const text = `${discriminator}: ${JSON.stringify(variant.properties?.[discriminator]?.const)}`;
-        return { html: this.htmlCode(text), text };
+        return { html: this.htmlCode(text), markdown: this.code(text), text };
     }
 
-    /** Labels a variant without a discriminator by the keys only it requires, as summary HTML and as plain text. */
-    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): { html: string; text: string } {
+    /** Labels a variant without a discriminator by the keys only it requires. */
+    private distinguishing(variants: JsonSchemaNode[], variant: JsonSchemaNode, index: number): VariantLabel {
         const own = (variant.required ?? []).filter((key) => !variants.every((other) => (other.required ?? []).includes(key)));
-        if (own.length === 0) return { html: `variant ${index + 1}`, text: `variant ${index + 1}` };
+        if (own.length === 0) return { html: `variant ${index + 1}`, markdown: `variant ${index + 1}`, text: `variant ${index + 1}` };
         return {
             html: `with ${own.map((key) => this.htmlCode(key)).join(', ')}`,
+            markdown: `with ${own.map((key) => this.code(key)).join(', ')}`,
             text: `with ${own.join(', ')}`
         };
+    }
+
+    /** The one size rule for objects, array or map items, and union variants. */
+    private overThreshold(rows: number): boolean {
+        return rows > (this.options.collapseThreshold ?? DEFAULT_COLLAPSE_THRESHOLD);
     }
 
     // ---------- rows ----------
@@ -242,8 +255,7 @@ export class ConfigDocsRenderer {
      */
     private nest(node: JsonSchemaNode, path: string, row: Row, schema: JsonSchemaNode, out: Block, collapsible: boolean): void {
         const inner = this.block(node, path);
-        const threshold = this.options.collapseThreshold ?? DEFAULT_COLLAPSE_THRESHOLD;
-        if (collapsible && inner.rows.length + 1 > threshold) {
+        if (collapsible && this.overThreshold(inner.rows.length + 1)) {
             out.children.push({
                 path,
                 description: StringUtils.isNotEmpty(this.descriptionOf(schema)) ? this.descriptionOf(schema) : row.description,
