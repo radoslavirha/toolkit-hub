@@ -1,5 +1,12 @@
 # @radoslavirha/logger
 
+## 0.4.12
+
+### Patch Changes
+
+- Updated dependencies [[`9b3cbcf`](https://github.com/radoslavirha/toolkit-hub/commit/9b3cbcf7e28b38dbef725b71de9049032af9aa32)]:
+  - @radoslavirha/utils@0.11.0
+
 ## 0.4.11
 
 ### Patch Changes
