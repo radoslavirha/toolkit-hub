@@ -169,4 +169,27 @@ describe('LoggerOptionsSchema', () => {
         const _check: LoggerOptions = result;
         expect(_check.enabled).toBe(true);
     });
+
+    describe('JSON Schema descriptions', () => {
+        interface Node {
+            description?: string;
+            properties?: Record<string, Node>;
+        }
+
+        /** Every property path in the input JSON Schema, paired with its description. */
+        const collect = (node: Node, prefix = ''): [string, string | undefined][] =>
+            Object.entries(node.properties ?? {}).flatMap(([key, child]) => {
+                const path = prefix === '' ? key : `${prefix}.${key}`;
+
+                return [[path, child.description] as [string, string | undefined], ...collect(child, path)];
+            });
+
+        it('describes every field, so generated configuration docs have no empty rows', () => {
+            const fields = collect(LoggerOptionsSchema.toJSONSchema({ io: 'input' }) as Node);
+            const undescribed = fields.filter(([, description]) => !description).map(([path]) => path);
+
+            expect(fields.length).toBeGreaterThan(10);
+            expect(undescribed).toStrictEqual([]);
+        });
+    });
 });

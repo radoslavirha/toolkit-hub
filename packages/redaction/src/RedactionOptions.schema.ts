@@ -42,8 +42,15 @@ export const SENSITIVE_HEADER_SELECTORS = [
  * `enabled: false` means the field is omitted from the output entirely, not that
  * it is logged unredacted.
  */
+const ENABLED_DESCRIPTION = 'Include this field in the output. `false` omits the field entirely; it never means logging it unredacted.';
+
+const REDACT_PATHS_DESCRIPTION = 'Path selectors whose values are replaced with `***` before the field is written: '
+    + '`token` (root key), `user.password` (nested path), `items.*.token` (wildcard), `["set-cookie"]` '
+    + '(bracket form, required for names that are not identifiers, such as ones with a hyphen). '
+    + 'A configured list replaces the default; it is never merged with it, and `[]` redacts nothing.';
+
 export const RedactionFieldOptionsSchema = z.object({
-    enabled: z.boolean().default(true),
+    enabled: z.boolean().default(true).describe(ENABLED_DESCRIPTION),
     /**
      * Path selectors to censor.
      *
@@ -53,7 +60,7 @@ export const RedactionFieldOptionsSchema = z.object({
      * - `["set-cookie"]` → bracket notation, required for names that are not
      *   valid identifiers (e.g. containing a hyphen)
      */
-    redactPaths: z.array(RedactionSelectorSchema).default(() => [])
+    redactPaths: z.array(RedactionSelectorSchema).default(() => []).describe(REDACT_PATHS_DESCRIPTION)
 });
 
 /**
@@ -88,7 +95,7 @@ export function createRedactionSchema<K extends string>(
             // for a partially configured field, which is exactly the case that leaks.
             // Both getters copy, so a caller mutating one parse result cannot poison the next.
             RedactionFieldOptionsSchema
-                .extend({ redactPaths: z.array(RedactionSelectorSchema).default(() => [...redactPaths]) })
+                .extend({ redactPaths: z.array(RedactionSelectorSchema).default(() => [...redactPaths]).describe(REDACT_PATHS_DESCRIPTION) })
                 .default(() => ({ enabled: true, redactPaths: [...redactPaths] }))
         ])
     ) as Record<K, z.ZodDefault<typeof RedactionFieldOptionsSchema>>;
