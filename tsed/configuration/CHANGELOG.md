@@ -1,5 +1,11 @@
 # @radoslavirha/tsed-configuration
 
+## 0.11.0
+
+### Minor Changes
+
+- [#443](https://github.com/radoslavirha/toolkit-hub/pull/443) [`8f90d8f`](https://github.com/radoslavirha/toolkit-hub/commit/8f90d8f31a0aa50542376fe607fa1bd35b2b87b8) Thanks [@radoslavirha](https://github.com/radoslavirha)! - `ConfigDocs.render` output is now collapsible on GitHub. Each variant of a union is a closed `<details>` block instead of a heading; the `one of N` union heading stays visible. When two or more direct children of a top-level section expand into keys of their own (an object, a map or an array of objects), each child gets its own closed block holding its table and its unions, instead of one long section table with every union after it. New option `collapseSections` (default `false`) also folds every top-level section's body. A `CONFIGURATION.md` pinned by a file snapshot must be regenerated with `vitest -u`.
+
 ## 0.10.1
 
 ### Patch Changes
