@@ -18,7 +18,7 @@ const numericString = (value: unknown): unknown =>
  * `httpPort` accepts a numeric string (as supplied by an environment variable mapping).
  */
 export const ServerConfig = z.looseObject({
-    httpPort: z.preprocess(numericString, z.number())
+    httpPort: z.preprocess(numericString, z.number()).describe('HTTP port the server listens on. A numeric string (from an environment variable) is accepted.')
 });
 
 /**

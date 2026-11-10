@@ -22,11 +22,11 @@ import { ServerConfig } from './ServerConfig.js';
  */
 export const BaseConfig = z.object({
     /** TsED server configuration settings. */
-    server: ServerConfig,
+    server: ServerConfig.describe('Ts.ED server settings. Keys other than httpPort are passed to the Ts.ED server configuration unchanged.'),
     /** Service name. If not set, the name from package.json will be used. */
-    serviceName: z.string().optional(),
+    serviceName: z.string().optional().describe('Service name. Defaults to the name in package.json.'),
     /** Public URL of the service including protocol, domain and path if deployed behind a reverse proxy. */
-    publicURL: z.string().optional()
+    publicURL: z.string().optional().describe('Public URL of the service, with protocol, host and path, when it is served behind a reverse proxy.')
 });
 
 /**
