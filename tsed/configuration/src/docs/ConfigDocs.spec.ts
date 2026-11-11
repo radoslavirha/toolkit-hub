@@ -79,6 +79,15 @@ describe('ConfigDocs', () => {
         expect(md).toContain('<summary><code>target.&lt;name&gt;</code> — <code>kind: "a&amp;b"</code></summary>');
     });
 
+    it('escapes an angle-bracket placeholder in a table description outside code spans', () => {
+        const md = render(z.object({
+            publicURL: z.string().describe('On the shared api.<domain>/iot/qr-manager route, include `/r`.')
+        }));
+
+        expect(md).toContain('| `publicURL` | string | yes |  | On the shared api.&lt;domain&gt;/iot/qr-manager route, include `/r`. |');
+        expect(md).not.toContain('api.<domain>');
+    });
+
     it('keeps sections expanded by default and collapses them when asked', () => {
         const schema = z.object({ server: z.object({ httpPort: z.number() }) });
 
