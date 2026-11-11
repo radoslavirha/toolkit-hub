@@ -66,7 +66,7 @@ export class ConfigDocsRenderer {
             properties.map(([key, schema]) => [
                 `[${this.code(key)}](#${key.toLowerCase()})`,
                 this.isRequired(required, key, schema) ? 'yes' : '',
-                this.cell(this.descriptionOf(schema))
+                this.cell(this.markdownText(this.descriptionOf(schema)))
             ])
         ));
 
@@ -77,7 +77,7 @@ export class ConfigDocsRenderer {
         for (const [key, schema] of properties) {
             this.push(`## ${key}`);
             const description = this.descriptionOf(schema);
-            if (StringUtils.isNotEmpty(description)) this.push(description);
+            if (StringUtils.isNotEmpty(description)) this.push(this.markdownText(description));
             const node = JsonSchemaNormaliser.splitNullable(schema).schema;
             const plain = this.isPlainObject(node);
             const facts = [this.isRequired(required, key, schema) ? 'Required.' : 'Optional.'];
@@ -139,7 +139,7 @@ export class ConfigDocsRenderer {
                 ? this.discriminated(discriminator, variant)
                 : this.distinguishing(variants, variant, index);
             this.openDetails(`${this.htmlCode(path)} — ${label}`);
-            if (StringUtils.isNotEmpty(variant.description)) this.push(variant.description);
+            if (StringUtils.isNotEmpty(variant.description)) this.push(this.markdownText(variant.description));
             if (this.isPlainObject(variant)) this.renderBlockContent(this.block(variant, path));
             else this.push(`Type: ${this.typeText(variant)}`);
             this.closeDetails();
@@ -366,7 +366,7 @@ export class ConfigDocsRenderer {
                 this.cell(row.type),
                 row.required ? 'yes' : '',
                 this.cell(row.defaultValue),
-                this.cell(row.description)
+                this.cell(this.markdownText(row.description))
             ])
         );
     }
@@ -397,6 +397,11 @@ export class ConfigDocsRenderer {
     /** Description text for a `<summary>`: escaped, newlines folded, inline code kept as `<code>`. */
     private inlineHtml(value: string): string {
         return this.escapeHtml(value).replace(/\r?\n+/g, ' ').replace(/`([^`]+)`/g, '<code>$1</code>').trim();
+    }
+
+    /** Escapes Markdown description text outside code spans, so `<domain>` is not parsed as an HTML tag. */
+    private markdownText(value: string): string {
+        return value.split(/(`[^`]*`)/).map((part, i) => (i % 2 === 1 ? part : this.escapeHtml(part))).join('');
     }
 
     private escapeHtml(value: string): string {
