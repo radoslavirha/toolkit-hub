@@ -332,4 +332,14 @@ describe('ConfigDocs', () => {
         expect(md).toContain('Custom intro.');
         expect(md).not.toContain('It is validated at boot');
     });
+
+    it('documents every shape of a union that holds an array', () => {
+        const md = render(z.object({
+            extract: z.union([z.string(), z.array(z.object({ path: z.string(), as: z.string() }))]),
+            aud: z.union([z.string(), z.array(z.string())])
+        }));
+
+        expect(md).toMatch(/`extract(\[\])?\.as`/);
+        expect(md).toContain('| `aud` | string \\| array of string | yes |');
+    });
 });

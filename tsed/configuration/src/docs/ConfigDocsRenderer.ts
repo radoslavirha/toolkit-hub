@@ -141,10 +141,37 @@ export class ConfigDocsRenderer {
             this.openDetails(`${this.htmlCode(path)} — ${label}`);
             if (StringUtils.isNotEmpty(variant.description)) this.push(variant.description);
             if (this.isPlainObject(variant)) this.renderBlockContent(this.block(variant, path));
-            else this.push(`Type: ${this.typeText(variant)}`);
+            else {
+                this.push(`Type: ${this.typeText(variant)}`);
+                this.renderArrayItems(variant, path);
+            }
             this.closeDetails();
         });
         this.closeDetails();
+    }
+
+    /** An array variant whose items are objects: their keys, as `path[]`, below its `Type:` line. */
+    private renderArrayItems(variant: JsonSchemaNode, path: string): void {
+        if (variant.type !== 'array' || !JsonSchemaNormaliser.isNode(variant.items)) return;
+        const items = JsonSchemaNormaliser.splitNullable(variant.items).schema;
+        const itemVariants = JsonSchemaNormaliser.variants(items);
+        if (CommonUtils.notNull(itemVariants) && itemVariants.some((item) => this.needsBelow(item))) {
+            this.renderUnion({ path: `${path}[]`, variants: itemVariants });
+        } else if (this.isPlainObject(items)) {
+            this.renderBlockContent(this.block(items, `${path}[]`));
+        }
+    }
+
+    /**
+     * Whether a union variant has keys that only a subsection can show: an object, or an array of
+     * objects (or of a union holding one). Scalars and arrays of scalars are printed inline.
+     */
+    private needsBelow(variant: JsonSchemaNode): boolean {
+        if (variant.type === 'object') return true;
+        if (variant.type !== 'array' || !JsonSchemaNormaliser.isNode(variant.items)) return false;
+        const items = JsonSchemaNormaliser.splitNullable(variant.items).schema;
+        const itemVariants = JsonSchemaNormaliser.variants(items);
+        return CommonUtils.notNull(itemVariants) ? itemVariants.some((item) => this.needsBelow(item)) : this.needsBelow(items);
     }
 
     /** A variant's label for its `<summary>`, as HTML. */
@@ -189,7 +216,7 @@ export class ConfigDocsRenderer {
 
     private descend(node: JsonSchemaNode, row: Row, out: Block, collapseOwn: boolean): void {
         const variants = JsonSchemaNormaliser.variants(node);
-        if (CommonUtils.notNull(variants) && variants.some((variant) => variant.type === 'object')) {
+        if (CommonUtils.notNull(variants) && variants.some((variant) => this.needsBelow(variant))) {
             out.unions.push({ path: row.path, variants });
             return;
         }
@@ -209,7 +236,7 @@ export class ConfigDocsRenderer {
         if (CommonUtils.isUndefined(child)) return;
         const inner = JsonSchemaNormaliser.splitNullable(child).schema;
         const innerVariants = JsonSchemaNormaliser.variants(inner);
-        if (CommonUtils.notNull(innerVariants) && innerVariants.some((variant) => variant.type === 'object')) {
+        if (CommonUtils.notNull(innerVariants) && innerVariants.some((variant) => this.needsBelow(variant))) {
             out.unions.push({ path: childPath, variants: innerVariants });
         } else if (this.isPlainObject(inner)) {
             this.nest(inner, childPath, row, child, out, true);
@@ -245,7 +272,7 @@ export class ConfigDocsRenderer {
         if ('const' in node) text = this.code(JSON.stringify(node.const));
         else if (ArrayUtils.isArray(node.enum)) text = node.enum.map((value) => this.code(JSON.stringify(value))).join(' | ');
         else if (CommonUtils.notNull(variants)) {
-            const simple = variants.every((variant) => variant.type !== 'object' && variant.type !== 'array');
+            const simple = !variants.some((variant) => this.needsBelow(variant));
             text = simple ? variants.map((variant) => this.typeText(variant)).join(' | ') : 'one of (see below)';
         } else if (node.type === 'array') {
             text = `array of ${JsonSchemaNormaliser.isNode(node.items) ? this.typeText(node.items) : 'any'}`;
