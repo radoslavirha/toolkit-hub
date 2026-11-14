@@ -183,6 +183,26 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `polling.intervalMs` | number |  | `1000` |  |');
     });
 
+    it('fills a required toggle in the minimal example with true, matching the keys it lists', () => {
+        const md = render(z.object({
+            mongodb: z.union([
+                z.object({ enabled: z.literal(true), url: z.string() }),
+                z.object({ enabled: z.literal(false).optional(), url: z.string().optional() })
+            ])
+        }));
+
+        expect(md).toContain([
+            '```json',
+            '{',
+            '  "mongodb": {',
+            '    "enabled": true,',
+            '    "url": "<string>"',
+            '  }',
+            '}',
+            '```'
+        ].join('\n'));
+    });
+
     it('drops a variant that an intersection makes impossible', () => {
         const toggle = z.discriminatedUnion('enabled', [
             z.object({ enabled: z.literal(true), url: z.string() }),

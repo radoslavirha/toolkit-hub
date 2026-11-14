@@ -7,6 +7,7 @@ export interface JsonSchemaNode {
     description?: string;
     default?: unknown;
     const?: unknown;
+    examples?: unknown[];
     enum?: unknown[];
     format?: string;
     pattern?: string;

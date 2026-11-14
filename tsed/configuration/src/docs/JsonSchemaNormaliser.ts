@@ -142,6 +142,8 @@ export class JsonSchemaNormaliser {
                         [key]: {
                             ...toggle,
                             type: 'boolean',
+                            // The keys listed are the ones `on` requires, so the example keeps its value.
+                            examples: [on.properties?.[key]?.const],
                             description: toggle.description
                                 ?? 'Set to `false` to disable. Keys marked required are required only when this is `true`.'
                         }
