@@ -284,6 +284,8 @@ export class ConfigDocsRenderer {
         if (ArrayUtils.isArray(node.enum)) return node.enum[0];
         const variants = JsonSchemaNormaliser.variants(node);
         if (CommonUtils.notNull(variants)) return this.example(variants[0]);
+        const [given] = node.examples ?? [];
+        if (CommonUtils.notUndefined(given)) return given;
         switch (node.type) {
             case 'object': {
                 const out: Record<string, unknown> = {};
