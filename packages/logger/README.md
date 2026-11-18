@@ -245,6 +245,8 @@ Every log line is a single JSON object:
 An `Error` passed as `meta` is flattened into the `error_*` fields above. An `Error` held in a
 top-level `meta` key (`{ error }`), or in an own property of an `Error` passed as `meta`
 (`originalError`, `inner`), or in a `metaProvider` result, is emitted as `{ name, message, stack }` instead of `{}`.
+An `Error` carried by such an error (`origin`, `inner`) is converted the same way, so a wrapper's root cause is kept.
+An error that references itself is cut short rather than followed forever.
 
 `timestamp`, `level`, `message` and `scope` are reserved: the logger's own value always wins, and
 a metadata key with one of these names (from `meta`, `metaProvider` or an `Error`'s own

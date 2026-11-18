@@ -41,7 +41,7 @@ variable parts in the metadata, not interpolated into the message, or the lines 
 groupable.
 
 Pass a caught `Error` straight in as the metadata — `log.error('Payment failed', error)` emits
-`error_name`, `error_message` and `error_stack` fields. An `Error` nested one level down
+`error_name`, `error_message` and `error_stack` fields. An `Error` nested one level down (and any `Error` it carries, such as `origin`)
 (`{ orderId, error }`, or a wrapper error's `originalError` property) is emitted as
 `{ name, message, stack }`. To combine an error with other
 flat fields, spread `LogErrorUtils.toFields(error)` into the metadata. Don't copy
