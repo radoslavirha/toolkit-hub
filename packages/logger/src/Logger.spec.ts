@@ -240,6 +240,27 @@ describe('Logger', () => {
     });
 
     describe('Error metadata', () => {
+        it('keeps the inner Error of a wrapper Error nested in meta', () => {
+            const logger = new Logger();
+            const origin = new Error('connection refused');
+            const error = Object.assign(new Error('Bootstrap failed'), { origin });
+            logger.error('Bootstrap failed.', { error });
+
+            expect(getLine()['error']).toMatchObject({
+                message: 'Bootstrap failed',
+                origin: { name: 'Error', message: 'connection refused', stack: origin.stack }
+            });
+        });
+
+        it('does not recurse forever on an Error that references itself', () => {
+            const logger = new Logger();
+            const error = new Error('loop');
+            Object.assign(error, { self: error });
+            logger.error('Looped.', { error });
+
+            expect(getLine()['error']).toMatchObject({ message: 'loop', self: { message: 'loop' } });
+        });
+
         it('keeps the error name, message and stack when an Error is passed as meta', () => {
             const logger = new Logger();
             const error = new Error('card declined');

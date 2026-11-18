@@ -185,8 +185,12 @@ export class Logger<T extends object = object> {
         return Logger.serializeNestedErrors(meta);
     }
 
-    /** Replaces each `Error` among the own enumerable values of `meta` with `{ name, message, stack }`. */
-    private static serializeNestedErrors(meta?: object | null): object | undefined {
+    /**
+     * Replaces each `Error` among the own enumerable values of `meta` with `{ name, message, stack }`.
+     * An `Error` carried by such an error (`origin`, `inner`, …) is converted the same way;
+     * one already being converted (a cycle) is dropped.
+     */
+    private static serializeNestedErrors(meta?: object | null, seen: Set<object> = new Set()): object | undefined {
         if (CommonUtils.isNil(meta)) {
             return undefined;
         }
@@ -194,11 +198,16 @@ export class Logger<T extends object = object> {
             return meta;
         }
         return Object.fromEntries(
-            Object.entries(meta).map(([key, value]) => [
-                key,
-                Error.isError(value) ? { ...value, name: value.name, message: value.message, stack: value.stack } : value
-            ])
+            Object.entries(meta).map(([key, value]) => [key, Error.isError(value) ? Logger.serializeError(value, seen) : value])
         );
+    }
+
+    private static serializeError(error: Error, seen: Set<object>): object {
+        if (seen.has(error)) {
+            return { name: error.name, message: error.message };
+        }
+        const inner = Logger.serializeNestedErrors(error, new Set(seen).add(error));
+        return { ...inner, name: error.name, message: error.message, stack: error.stack };
     }
 
     private static buildLogger(options: LoggerOptions): winston.Logger {
