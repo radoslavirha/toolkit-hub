@@ -132,11 +132,15 @@ export class JsonSchemaNormaliser {
                 && list.every((variant) => BooleanUtils.isBoolean(variant.properties?.[key]?.const));
             if (isToggle) {
                 const on = list.find((variant) => variant.properties?.[key]?.const === true) ?? list[0];
+                const off = list.find((variant) => variant !== on) ?? on;
                 const toggle = JsonSchemaNormaliser.without(on.properties?.[key] ?? {}, 'const');
+                // The toggle key is required only if both variants require it; `{}` selects the optional one.
+                const toggleRequired = (on.required ?? []).includes(key) && (off.required ?? []).includes(key);
                 return {
                     ...on,
                     ...rest,
                     description: rest.description ?? on.description,
+                    required: (on.required ?? []).filter((name) => name !== key || toggleRequired),
                     properties: {
                         ...on.properties,
                         [key]: {

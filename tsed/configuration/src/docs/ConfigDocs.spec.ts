@@ -183,6 +183,18 @@ describe('ConfigDocs', () => {
         expect(md).toContain('| `polling.intervalMs` | number |  | `1000` |  |');
     });
 
+    it('marks a toggle optional when its false variant leaves it out', () => {
+        const md = render(z.object({
+            mongodb: z.union([
+                z.object({ enabled: z.literal(true), url: z.string() }),
+                z.object({ enabled: z.literal(false).optional(), url: z.string().optional() })
+            ])
+        }));
+
+        expect(md).toContain('| `mongodb.enabled` | boolean |  |  | Set to `false` to disable.');
+        expect(md).toContain('| `mongodb.url` | string | yes |');
+    });
+
     it('drops a variant that an intersection makes impossible', () => {
         const toggle = z.discriminatedUnion('enabled', [
             z.object({ enabled: z.literal(true), url: z.string() }),
