@@ -110,6 +110,7 @@ export class JsonSchemaNormaliser {
             out = {
                 ...out,
                 ...part,
+                description: rest.description ?? part.description,
                 properties: Object.keys(properties).length > 0 ? properties : undefined,
                 required: [...new Set([...(out.required ?? []), ...(part.required ?? [])])]
             };
