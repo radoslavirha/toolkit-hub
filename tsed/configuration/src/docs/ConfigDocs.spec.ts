@@ -320,6 +320,15 @@ describe('ConfigDocs', () => {
         expect(md).not.toContain('{"inner"');
     });
 
+    it('keeps the description of an intersection over its members\' descriptions', () => {
+        const shared = z.object({ url: z.string() }).describe('Shared connection.');
+        const md = render(z.object({
+            store: shared.and(z.object({ bucket: z.string() })).describe('Object store of this service.')
+        }));
+
+        expect(md).toContain('| [`store`](#store) | yes | Object store of this service. |');
+    });
+
     it('throws when an intersection can never be satisfied', () => {
         const schema = z.object({ enabled: z.literal(true) }).and(z.object({ enabled: z.literal(false) }));
 
