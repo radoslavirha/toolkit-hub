@@ -266,6 +266,16 @@ describe('Logger (integration)', () => {
             expect(entry['error_name']).toBe('ENOENT');
         });
 
+        it('logs the error body the client receives as response on a failed request', async () => {
+            const res = await request.get('/test/error');
+
+            const logs = parseLogs(stderrSpy);
+            const entry = logs.find((l: unknown) => (l as Record<string, unknown>)?.['message'] === 'Request failed') as Record<string, unknown>;
+
+            expect(res.body).toMatchObject({ name: 'Error', message: 'Something went wrong', status: 500 });
+            expect(entry['response']).toBe(JSON.stringify(res.body));
+        });
+
         it('logs a 4xx response without error fields when $ctx.error is null', async () => {
             const res = await request.get('/test/handled-error');
             expect(res.status).toBe(400);
