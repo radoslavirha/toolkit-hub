@@ -259,7 +259,7 @@ emitter — `@radoslavirha/tsed-configuration`'s `getServerDefaultConfig()` sile
 - `items.*.token` redacts wildcard path matches.
 - `["x-api-key"]` — the bracket form is **required** for names containing a hyphen.
 
-The logged `response` is the serialised payload, as the client receives it: `@Ignore`d and out-of-`@Groups` fields are absent, and `response.redactPaths` refer to wire names (`@Name` aliases).
+The logged `response` is the serialised payload, as the client receives it: `@Ignore`d and out-of-`@Groups` fields are absent, and `response.redactPaths` refer to wire names (`@Name` aliases). On a failed request (status 400+) where the handler returned nothing, `response` is the error body Ts.ED sent; an AJV validation error body carries the rejected value in `errors[].data`, so add `errors.*.data` to `response.redactPaths` if it may hold secrets.
 
 ### Header redaction is on by default
 

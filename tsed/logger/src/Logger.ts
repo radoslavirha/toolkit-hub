@@ -136,6 +136,11 @@ export class Logger extends BaseLogger<LoggerMetadata> {
      * writes the result back. Apply the same serialisation (`@Ignore`, `@Name`, `@Groups`) so the log
      * shows what the client receives and `redactPaths` match wire names.
      */
+    private static responseBody($ctx: PlatformContext, status: number): unknown {
+        // A handler that threw never set $ctx.data; the error body Ts.ED sent is on the response.
+        return CommonUtils.isUndefined($ctx.data) && status >= 400 ? $ctx.response.data : Logger.serializeResponse($ctx);
+    }
+
     private static serializeResponse($ctx: PlatformContext): unknown {
         try {
             return Logger.serializeResponseUnsafe($ctx);
@@ -206,7 +211,7 @@ export class Logger extends BaseLogger<LoggerMetadata> {
             headers: $ctx.request.headers,
             query: $ctx.request.query,
             ...(isRequestTextSafe ? { request: Logger.decodeBinary($ctx.request.body) } : {}),
-            ...(isTextSafe ? { response: Logger.decodeBinary(Logger.serializeResponse($ctx)) } : {})
+            ...(isTextSafe ? { response: Logger.decodeBinary(Logger.responseBody($ctx, status)) } : {})
         }));
 
         if (!isRequestTextSafe && this.redaction.isEnabled('request')) {
